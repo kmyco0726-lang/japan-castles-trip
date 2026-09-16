@@ -331,7 +331,7 @@
     const STORAGE_KEY_ITINERARY = "jp_castles_itinerary_v1";
     const STORAGE_KEY_ITINERARY_VER = "jp_castles_itinerary_ver";
     const STORAGE_KEY_DELETED_SPOTS = "jp_castles_deleted_spots_v1";
-    const CURRENT_ITINERARY_VER = "2027_01_13_DAY8_AIRPORT_TIGERAIR_V15";
+    const CURRENT_ITINERARY_VER = "2027_01_13_DAY3_YUNOGO_START_V16";
 
     let state = {
       spots: [],
@@ -350,7 +350,7 @@
     const CANONICAL_SPOT_ORDER = {
       1: ['okayama_airport', 'chiyagyu_bisai', 'chiyagyu_kuya', 'okayama_aeon', 'okayama_hotel'],
       2: ['kibitsuhiko_jinja', 'kibitsu_jinja', 'kinojo', 'tsuyama', 'yunogo_onsen'],
-      3: ['tottori_takumi', 'tottori', 'tottori_sakyu', 'hakuto_jinja', 'tottori_tsubomi', 'kaike_onsen'],
+      3: ['yunogo_onsen', 'tottori_takumi', 'tottori', 'tottori_sakyu', 'hakuto_jinja', 'tottori_tsubaki', 'kaike_onsen'],
       4: ['gassan_toda', 'adachi_museum', 'matsue', 'matsue_horikawa', 'yaegaki_jinja', 'izumo_taisha', 'tamatsukuri_yu_jinja', 'tamatsukuri_onsen'],
       5: ['taikodani_inari', 'tsuwano', 'motonosumi_jinja', 'hagi'],
       6: ['iwakuni', 'itsukushima_jinja', 'hiroshima', 'pokemon_center_hiroshima', 'hiroshima_peace_museum', 'hiroshima_jinseki', 'hiroshima_atago'],
@@ -369,20 +369,22 @@
         return d1Desired.filter(id => spotIds.includes(id));
       }
 
-      // 其他天數：按地理順路表排序，溫泉與住宿點 (isLodgingSpot) 一律排在當天最後面！
+      // 其他天數：優先按權威地理順路表 (orderList) 排序！
+      // 若景點已明列在 orderList 中 (如 Day 3 開頭湯郷溫泉、結尾皆生溫泉)，100% 遵照權威順序
       return [...spotIds].sort((a, b) => {
+        const idxA = orderList.indexOf(a);
+        const idxB = orderList.indexOf(b);
+        if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+        if (idxA !== -1) return -1;
+        if (idxB !== -1) return 1;
+
+        // 不在權威清單中的自訂點，若為住宿則排在最後
         const spA = state.spots.find(s => s.id === a);
         const spB = state.spots.find(s => s.id === b);
         const aIsLodging = isLodgingSpot(spA);
         const bIsLodging = isLodgingSpot(spB);
         if (aIsLodging && !bIsLodging) return 1;
         if (!aIsLodging && bIsLodging) return -1;
-
-        const idxA = orderList.indexOf(a);
-        const idxB = orderList.indexOf(b);
-        if (idxA !== -1 && idxB !== -1) return idxA - idxB;
-        if (idxA !== -1) return -1;
-        if (idxB !== -1) return 1;
         return 0;
       });
     }
@@ -538,6 +540,18 @@
         day1.title = "Day 1：抵達岡山・機場 ➔ 住宿 ➔ 和牛 ➔ 逛街";
         day1.spotIds = ['okayama_airport', 'chiyagyu_bisai', 'okayama_aeon', 'okayama_hotel'];
         day1.notes = "• 【機場抵達】：搭乘台灣虎航下午抵達岡山桃太郎機場 (OKJ)。出關後於 2 號乘車處搭乘利木津巴士約 30 分鐘直達岡山站西口 (單程 780 円，可刷 IC 卡)。\n• 【住宿 Check-in】：進駐岡山站前飯店 (格蘭比亞 / 大和Roynet / 三井花園) 辦理入住手續並放下大件行李。\n• 【和牛晚餐 (岡山千屋牛)】：前往岡山格蘭比亞 2F 直結之「鉄板焼 備彩」，零距離品嚐日本最古老血統和牛——岡山千屋牛頂級鐵板燒。\n• 【商圈漫遊 & 逛街】：餐後漫步西日本最大級「AEON Mall Okayama」(營業至 21:00，350間店鋪) 逛街採買藥妝物資，無其他多餘奔波行程，早點休息為明日 12 名城巡禮儲備體力！";
+      }
+
+      // 確保 Day 3 開頭從前夜住宿湯郷溫泉出發，且路線連貫
+      const day3 = state.itinerary.find(d => d.dayNumber === 3);
+      if (day3 && day3.spotIds) {
+        if (!day3.spotIds.includes('yunogo_onsen')) {
+          day3.spotIds.unshift('yunogo_onsen');
+        }
+        day3.title = "Day 3：湯郷名湯晨出 ➔ 因幡鳥取與海濱皆生名湯";
+        day3.lodging = "皆生溫泉 海濱旅館 (米子市)";
+        day3.notes = "• 【🌅 晨間出發地：湯郷溫泉】：昨夜宿美作湯郷名湯，晨間自溫泉旅館出發啟程！\n• 【🚌 實戰交通與接駁時間確認 (前往鳥取最佳路徑)】：\n  1. 【推薦王道路徑 A (JR Pass 全包・特急超級因幡號首選)】：\n     - 湯郷旅館專車免費接駁 (約 08:40) 或計程車 (8分) 前往「JR 林野站」。\n     - 林野站搭乘 JR 姫新線至「佐用站」(約 35 分，JR Pass 全包)。\n     - 佐用站同站轉乘 智頭急行 特急「スーパーいなば (超級因幡號)」直達「鳥取站」(約 48 分，JR Pass 100% 包含且可免費劃指定席！)。\n     - 車程順暢舒適，不用在津山苦等ローカル線，約 10:45~11:00 充裕抵達鳥取！\n  2. 【路徑 B (經津山站因美線)】：搭乘接駁至林野站搭 JR 姫新線 (09:07 發 ➔ 09:27 抵津山)。津山往智頭因美線上午僅 06:47 與 11:33 兩班車，若搭 11:33 班次抵達鳥取已約 13:20。\n  3. 【計程車特急捷徑】：湯郷溫泉直接叫計程車直攻智頭急行「大原站」(約 25 分)，大原站直接搭特急超級因幡號直達鳥取 (僅 43 分)！\n• 【和牛午餐神級推薦 (鳥取和牛元祖)】：出鳥取站北口步行僅 4 分鐘，前往日本牛肉涮涮鍋起源發祥店「たくみ割烹店」享用鳥取和牛元祖涮涮鍋 (すすぎ鍋) 或味噌牛肉鍋！\n• 【鳥取城・天球丸石垣 (建議預留 1.5h)】：午後搭百圓公車至仁風閣與鳥取城跡，參觀特殊圓形天球丸石垣與歷史館。\n• 【寶可夢人孔蓋巡禮 (穿山鼠)】：\n  1. 鳥取市 (鳥取城/砂丘)：鳥取砂丘會館前 / 仁風閣旁有鳥取限定「穿山鼠、皮卡丘」寶可夢彩繪人孔蓋！\n  2. 米子市 (皆生溫泉)：皆生海濱公園（溫泉街旁海濱步道）設有「享受溫泉泡湯的穿山鼠」特色人孔蓋，抵達溫泉旅館散步時必拍！\n• 【山陰海岸特急】：午後搭乘特急超級松風號橫越山陰海岸直達米子站。\n• 【皆生溫泉・海濱夜宿】：米子站搭公車 15 分進駐皆生溫泉，眺望日本海白沙日落，享用海鮮會席與高濃度海濱鹽湯。";
+        day3.spotIds = sortDaySpots(3, day3.spotIds);
       }
 
       // 確保 Day 4 包含出雲大社與玉作湯神社 (排在玉造溫泉住宿前)
@@ -880,7 +894,7 @@
         [35.0645, 134.0048]  // 津山城 (鶴山公園)
       ],
 
-      // Day 2: 津山 ➔ 湯郷溫泉 (宇野巴士 / 國道179號 吉井川走廊)
+      // Day 2: 津山 ➔ 湯郷溫泉 (JR 姫新線至林野 / 國道179號 吉井川走廊)
       "tsuyama_to_yunogo_onsen": [
         [35.0645, 134.0048], // 津山城
         [35.0538, 134.0041], // 津山站
@@ -2329,19 +2343,19 @@
         tips: "津山站下車步行 10 分鐘即達津山城 (鶴山公園備中櫓)"
       },
       "tsuyama_to_yunogo_onsen": {
-        name: "宇野巴士 (宇野バス 湯郷溫泉・美作林野行)",
-        time: "約 35~40 分鐘",
-        passCovered: false,
-        passNote: "私營公車非 JR，單程自費約 680 円",
-        tips: "津山站前公車乘車處直達湯郷溫泉老街"
+        name: "JR 姬新線 (津山 ➔ 林野 18分) + 旅館專車免費接送 / 計程車 (8分)",
+        time: "合計約 25~30 分鐘",
+        passCovered: true,
+        passNote: "JR 姬新線全額包含！(林野站至溫泉旅館可預約免費接送，計程車約 1,200 円)",
+        tips: "津山站搭 JR 姬新線快速直達林野站，出站轉旅館專車直達湯郷溫泉街！(亦可自津山站叫計程車約30分直達)"
       },
       // Day 3
       "yunogo_onsen_to_tottori": {
-        name: "JR 因美線 + 智頭急行特急「スーパーいなば」或直達普通車",
-        time: "約 1.5 ~ 2 小時",
+        name: "旅館接駁至JR林野站 + 姬新線(至佐用) + 智頭急行特急「スーパーいなば」直達鳥取",
+        time: "合計約 1 小時 30 分鐘",
         passCovered: true,
-        passNote: "JR 因美線 & 智頭急行線 100% 包含！特急免費劃指定席",
-        tips: "抵達鳥取站出北口步行 4 分即達和牛名店「たくみ割烹店」(鳥取和牛涮涮鍋元祖)"
+        passNote: "JR 姬新線與智頭急行特急 100% 包含！特急可免費劃指定席 (接駁車免費/計程車約1,200円)",
+        tips: "【特急首選】：湯郷旅館專車 8 分至林野站，搭 JR 姬新線至佐用站，轉特急超級因幡號直達鳥取；【備案】：亦可由湯郷搭計程車 25 分至大原站直接搭特急(43分直達鳥取)。避開津山因美線上午無車空窗！"
       },
       "tottori_to_kaike_onsen": {
         name: "JR 山陰本線 特急「スーパーまつかぜ」或「スーパーおき」",
@@ -2577,55 +2591,74 @@
         const isLodging = isLodgingSpot(spot);
 
         // 車次轉乘指示與詳細班次/時間/周遊券檢核
-        const transitInfo = getTransitDetails(prevSpot, spot, day.dayNumber);
-        const transitTitle = isLodging 
-          ? `<span class="flex items-center gap-1.5 font-bold text-indigo-950"><span>🏨</span><span class="text-indigo-700">前往夜宿：</span><strong>${escapeHtml(fromStation)}</strong> ➔ <strong>${escapeHtml(toStation)}</strong></span>`
-          : `<span class="flex items-center gap-1.5 font-medium text-slate-800"><span>🚃</span><span>搭乘區間：</span><strong>${escapeHtml(fromStation)}</strong> ➔ <strong>${escapeHtml(toStation)}</strong></span>`;
-        const transitBoxBg = isLodging ? 'bg-indigo-50/90 border-indigo-300 text-indigo-950' : `${theme.transitBorder} border bg-white/70`;
-
-        const passBadge = transitInfo.passCovered
-          ? `<span class="bg-emerald-100 text-emerald-900 border border-emerald-300 font-bold px-2 py-0.5 rounded text-[10px] flex items-center gap-1 shadow-2xs" title="${escapeHtml(transitInfo.passNote)}">
-               <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-               <span>🎫 JR Pass ✅ 包含</span>
-               <span class="hidden sm:inline text-[10px] text-emerald-700 font-normal">(${escapeHtml(transitInfo.passNote)})</span>
-             </span>`
-          : `<span class="bg-amber-100 text-amber-900 border border-amber-300 font-bold px-2 py-0.5 rounded text-[10px] flex items-center gap-1 shadow-2xs" title="${escapeHtml(transitInfo.passNote)}">
-               <span>⚠️ JR Pass ❌ 不含</span>
-               <span class="hidden sm:inline text-[10px] text-amber-800 font-normal">(${escapeHtml(transitInfo.passNote)})</span>
-             </span>`;
-
-        html += `
-          <div class="${transitBoxBg} rounded-xl p-2.5 text-xs space-y-2 shadow-2xs border">
-            <!-- 站點與查詢外部直連 -->
-            <div class="flex items-center justify-between gap-1.5 flex-wrap">
-              ${transitTitle}
-              <div class="flex items-center gap-1.5 shrink-0">
-                <a href="${yahooUrl}" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-2 py-0.5 rounded shadow-2xs transition flex items-center gap-1 text-[11px]">
-                  <span>🔍</span> Yahoo車次 ↗
-                </a>
-                <a href="${gmapsUrl}" target="_blank" class="bg-slate-700 hover:bg-slate-800 text-white px-2 py-0.5 rounded shadow-2xs transition text-[11px]">
-                  🗺️ 路線 ↗
-                </a>
+                let transitCardHeaderHtml = "";
+        if (idx === 0 && (spot.id === 'okayama_airport' || isLodging)) {
+          // 當第 0 個點是機場或晨間出發住宿點時 (如 Day 3 湯郷溫泉)，顯示晨間出發起點，不顯示反向區間
+          if (spot.id === 'okayama_airport') {
+            transitCardHeaderHtml = `
+              <div class="bg-sky-50 border border-sky-300 rounded-xl p-2.5 text-xs text-sky-950 flex items-center justify-between shadow-2xs">
+                <span class="font-bold flex items-center gap-1.5"><span>✈️</span><span>旅程起點：抵達岡山桃太郎機場 (OKJ)</span></span>
+                <span class="text-[11px] bg-sky-100 text-sky-800 font-bold px-2 py-0.5 rounded border border-sky-300">搭乘台灣虎航 IT214 抵達</span>
               </div>
+            `;
+          } else {
+            transitCardHeaderHtml = `
+              <div class="bg-amber-50 border border-amber-300 rounded-xl p-2.5 text-xs text-amber-950 flex items-center justify-between shadow-2xs">
+                <span class="font-bold flex items-center gap-1.5"><span>🌅</span><span>晨間出發地：${escapeHtml(spot.name)} (昨夜名湯住宿)</span></span>
+                <span class="text-[11px] bg-amber-100 text-amber-900 font-bold px-2 py-0.5 rounded border border-amber-300">今日旅程由此啟程 ➔ 前往鳥取</span>
+              </div>
+            `;
+          }
+        } else {
+          const transitInfo = getTransitDetails(prevSpot, spot, day.dayNumber);
+          const transitTitle = isLodging 
+            ? `<span class="flex items-center gap-1.5 font-bold text-indigo-950"><span>🏨</span><span class="text-indigo-700">前往夜宿：</span><strong>${escapeHtml(fromStation)}</strong> ➔ <strong>${escapeHtml(toStation)}</strong></span>`
+            : `<span class="flex items-center gap-1.5 font-medium text-slate-800"><span>🚃</span><span>搭乘區間：</span><strong>${escapeHtml(fromStation)}</strong> ➔ <strong>${escapeHtml(toStation)}</strong></span>`;
+          const transitBoxBg = isLodging ? 'bg-indigo-50/90 border-indigo-300 text-indigo-950' : `${theme.transitBorder} border bg-white/70`;
+
+          const passBadge = transitInfo.passCovered
+            ? `<span class="bg-emerald-100 text-emerald-900 border border-emerald-300 font-bold px-2 py-0.5 rounded text-[10px] flex items-center gap-1 shadow-2xs" title="${escapeHtml(transitInfo.passNote)}">
+                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                 <span>🎫 JR Pass ✅ 包含</span>
+                 <span class="hidden sm:inline text-[10px] text-emerald-700 font-normal">(${escapeHtml(transitInfo.passNote)})</span>
+               </span>`
+            : `<span class="bg-amber-100 text-amber-900 border border-amber-300 font-bold px-2 py-0.5 rounded text-[10px] flex items-center gap-1 shadow-2xs" title="${escapeHtml(transitInfo.passNote)}">
+                 <span>⚠️ JR Pass ❌ 不含</span>
+                 <span class="hidden sm:inline text-[10px] text-amber-800 font-normal">(${escapeHtml(transitInfo.passNote)})</span>
+               </span>`;
+
+          transitCardHeaderHtml = `
+            <div class="${transitBoxBg} rounded-xl p-2.5 text-xs space-y-2 shadow-2xs border">
+              <div class="flex items-center justify-between gap-1.5 flex-wrap">
+                ${transitTitle}
+                <div class="flex items-center gap-1.5 shrink-0">
+                  <a href="${yahooUrl}" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-2 py-0.5 rounded shadow-2xs transition flex items-center gap-1 text-[11px]">
+                    <span>🔍</span> Yahoo車次 ↗
+                  </a>
+                  <a href="${gmapsUrl}" target="_blank" class="bg-slate-700 hover:bg-slate-800 text-white px-2 py-0.5 rounded shadow-2xs transition text-[11px]">
+                    🗺️ 路線 ↗
+                  </a>
+                </div>
+              </div>
+              <div class="pt-1.5 border-t border-slate-200/80 flex flex-wrap items-center justify-between gap-1.5 text-[11px]">
+                <div class="flex items-center gap-2 flex-wrap text-slate-700">
+                  <span class="font-bold text-slate-900 flex items-center gap-1 bg-white px-2 py-0.5 rounded border border-slate-200 shadow-3xs">
+                    <span>🚅</span> ${escapeHtml(transitInfo.name)}
+                  </span>
+                  <span class="text-slate-600 flex items-center gap-0.5">
+                    <span>⏱️</span> 車程：<strong class="text-slate-900 font-bold">${escapeHtml(transitInfo.time)}</strong>
+                  </span>
+                </div>
+                <div>
+                  ${passBadge}
+                </div>
+              </div>
+              ${transitInfo.tips ? `<div class="text-[10px] text-slate-500 bg-slate-100/80 px-2 py-0.5 rounded flex items-center gap-1"><span>💡</span><span>${escapeHtml(transitInfo.tips)}</span></div>` : ''}
             </div>
+          `;
+        }
 
-            <!-- 具體車次編號、耗時與 JR 周遊券覆蓋標籤 -->
-            <div class="pt-1.5 border-t border-slate-200/80 flex flex-wrap items-center justify-between gap-1.5 text-[11px]">
-              <div class="flex items-center gap-2 flex-wrap text-slate-700">
-                <span class="font-bold text-slate-900 flex items-center gap-1 bg-white px-2 py-0.5 rounded border border-slate-200 shadow-3xs">
-                  <span>🚅</span> ${escapeHtml(transitInfo.name)}
-                </span>
-                <span class="text-slate-600 flex items-center gap-0.5">
-                  <span>⏱️</span> 車程：<strong class="text-slate-900 font-bold">${escapeHtml(transitInfo.time)}</strong>
-                </span>
-              </div>
-              <div>
-                ${passBadge}
-              </div>
-            </div>
-            ${transitInfo.tips ? `<div class="text-[10px] text-slate-500 bg-slate-100/80 px-2 py-0.5 rounded flex items-center gap-1"><span>💡</span><span>${escapeHtml(transitInfo.tips)}</span></div>` : ''}
-          </div>
-        `;
+        html += transitCardHeaderHtml;
 
         // 景點卡片
         const lodgingBadge = isLodging ? `<span class="text-[10px] bg-indigo-100 text-indigo-800 font-bold px-2 py-0.5 rounded border border-indigo-300">♨️ 當日夜宿住宿點</span>` : '';
@@ -2935,7 +2968,7 @@
                   <li>岡山機場利木津巴士：單程 780 円 (可刷 IC 卡)</li>
                   <li>鬼ノ城計程車：總社站往返單程約 3,500 円</li>
                   <li>備中松山城合乘計程車：高梁站往返單程 500 円 (需預約)</li>
-                  <li>湯郷溫泉宇野巴士：津山往返單程約 680 円</li>
+                  <li>湯郷溫泉接駁：林野站至溫泉街旅館大多提供免費專車接送 (計程車約 1,200 円；JR 姫新線 Pass 全包)</li>
                   <li>皆生溫泉日之丸巴士：米子站往返單程 300 円</li>
                   <li>月山富田城安來市營黃色公車：單程 200 円</li>
                   <li>津和野城觀光登山吊椅纜車：來回 700 円</li>
@@ -3326,7 +3359,7 @@
       { name: "鉄板焼 神石 (廣島牛・Granvia 21F)", type: "custom", prefecture: "廣島", nearestStation: "広島駅", lat: 34.3980, lng: 132.4760, stayDuration: "1.5 小時", climbLevelText: "廣島站直結21F", openHours: "11:30~14:30 / 17:00~21:30", transitInfo: "廣島格蘭比亞21F", notes: "21F高空夜景特選廣島牛鐵板燒。推薦D6晚餐！", closedDay: "None", reservationUrl: "https://jrwest-hotels.jp/granvia-hiroshima/restaurant/jinseki/" },
       { name: "鉄板焼 愛宕 (廣島牛・ANA 1F)", type: "custom", prefecture: "廣島", nearestStation: "袋町駅", lat: 34.3900, lng: 132.4580, stayDuration: "1.5 小時", climbLevelText: "平和公園旁徒步7分", openHours: "11:30~14:30 / 17:30~21:30", transitInfo: "ANA皇冠假日酒店1F", notes: "廣島牛比婆牛星級鐵板燒。推薦D6晚餐！", closedDay: "None", reservationUrl: "https://www.anacrowneplaza-hiroshima.jp/restaurants/atago/" },
       { name: "岡山桃太郎機場 (OKJ)", type: "custom", prefecture: "岡山", nearestStation: "岡山駅", lat: 34.7578, lng: 133.8553, openHours: "全天 (配合航班營運)", transitInfo: "搭乘利木津巴士約30分直達岡山站西口 (單程780円)", notes: "台灣虎航直飛起降機場。入境直奔岡山站前商圈逛街！", closedDay: "None" },
-      { name: "湯郷溫泉 (美作市)", type: "lodging", prefecture: "岡山", nearestStation: "津山駅", lat: 35.0064, lng: 134.0925, openHours: "全天 (夜宿住宿 / 鷺溫泉館)", transitInfo: "JR 津山駅搭乘「宇野巴士」往湯郷溫泉約35分直達", notes: "美作三湯之一，千年白鷺古湯，弱鹼性美肌名湯，和風老街", closedDay: "None" },
+      { name: "湯郷溫泉 (美作市)", type: "lodging", prefecture: "岡山", nearestStation: "林野駅", lat: 35.0064, lng: 134.0925, openHours: "全天 (夜宿住宿 / 鷺溫泉館)", transitInfo: "JR 姫新線「林野駅」轉乘旅館專車/計程車約8分 (或津山站搭計程車約30分)", notes: "美作三湯之一，千年白鷺古湯，弱鹼性美肌名湯，和風老街", closedDay: "None" },
       { name: "皆生溫泉 (米子市)", type: "lodging", prefecture: "鳥取", nearestStation: "米子駅", lat: 35.4578, lng: 133.3556, openHours: "全天 (夜宿住宿)", transitInfo: "JR 米子站搭路線巴士往皆生溫泉約20分", notes: "米子之奧座敷，海濱溫泉，眺望日本海與大山", closedDay: "None" },
       { name: "玉造溫泉", type: "lodging", prefecture: "島根", nearestStation: "玉造温泉駅", lat: 35.4192, lng: 133.0105, openHours: "全天 (夜宿住宿)", transitInfo: "JR 玉造溫泉站轉搭公車約7分抵達溫泉街", notes: "日本最古美肌溫泉之一，松江與出雲巡禮極佳夜宿基地", closedDay: "None" },
       { name: "鞆之浦溫泉 (福山市)", type: "lodging", prefecture: "廣島", nearestStation: "福山駅", lat: 34.3828, lng: 133.3831, openHours: "全天 (夜宿住宿)", transitInfo: "JR 福山駅南口 5 號月台搭乘「鞆鐵道巴士」約30分直達", notes: "宮崎駿《崖上的波妞》舞台、江戶常夜燈古港，仙醉島海景露天風呂", closedDay: "None" },
