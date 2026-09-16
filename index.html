@@ -1,0 +1,3892 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>山陰山陽 100名城巡禮規劃器</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Leaflet CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    #map { height: 100%; min-height: 480px; z-index: 10; }
+    .custom-marker {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      border: 2px solid white;
+      font-size: 14px;
+      font-weight: bold;
+      color: white;
+    }
+    .custom-marker.castle { background-color: #dc2626; }
+    .custom-marker.lodging { background-color: #2563eb; }
+    .custom-marker.custom { background-color: #059669; }
+    .custom-marker.number-badge {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: #111827;
+      color: #facc15;
+      font-size: 11px;
+      border-radius: 9999px;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid white;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col h-screen overflow-hidden">
+
+  <!-- 頂部導航列 -->
+  <header class="bg-slate-900 text-white px-5 py-3 flex items-center justify-between shadow-md shrink-0">
+    <div class="flex items-center gap-3">
+      <span class="text-2xl">🏯</span>
+      <div>
+        <h1 class="text-lg font-bold tracking-wide flex items-center gap-2">
+          山陰山陽 100名城巡禮路線規劃器
+          <span class="text-xs bg-red-600 px-2 py-0.5 rounded font-mono font-normal">12名城+溫泉</span>
+        </h1>
+        <p class="text-xs text-slate-400">含休館日智能檢核・Yahoo乘換案內直連・住宿筆記・離線儲存</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2 text-sm">
+      <button onclick="generateShareUrl()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded flex items-center gap-1.5 transition shadow-sm text-xs">
+        🔗 複製分享連結
+      </button>
+      <a href="route_poll.html" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-3 py-1.5 rounded flex items-center gap-1.5 transition shadow-sm text-xs">
+        🗳️ 旅伴路線二選一投票
+      </a>
+      <button onclick="exportMarkdown()" class="bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded flex items-center gap-1.5 transition">
+        📄 匯出手冊 (Markdown)
+      </button>
+      <button onclick="exportJSON()" class="bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded flex items-center gap-1.5 transition">
+        📥 備份 JSON
+      </button>
+      <label class="bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded flex items-center gap-1.5 cursor-pointer transition">
+        📤 讀取 JSON
+        <input type="file" id="importInput" accept=".json" class="hidden" onchange="importJSON(event)">
+      </label>
+      <button onclick="resetToDefault()" class="bg-rose-900/60 hover:bg-rose-800 text-rose-200 px-3 py-1.5 rounded transition">
+        🔄 重設
+      </button>
+    </div>
+  </header>
+
+  <!-- 主工作區：左側排程/車次/筆記，右側互動地圖 -->
+  <div class="flex flex-1 overflow-hidden">
+    
+    <!-- 左側面板 (Tabs: 行程規劃 / 景點清單 / 快速查車次) -->
+    <div class="w-full md:w-7/12 lg:w-1/2 flex flex-col border-r border-slate-200 bg-white z-20 shadow-lg overflow-hidden">
+      <!-- 標籤切換 -->
+      <div class="flex border-b border-slate-200 bg-slate-100 text-sm font-medium">
+        <button id="tabBtnItinerary" onclick="switchTab('itinerary')" class="flex-1 py-3 px-4 text-center border-b-2 border-red-600 font-bold text-red-600 bg-white">
+          📅 每日行程與車次 (<span id="totalDaysBadge">7</span> 天)
+        </button>
+        <button id="tabBtnSpots" onclick="switchTab('spots')" class="flex-1 py-3 px-4 text-center text-slate-600 hover:text-slate-900">
+          📍 全部景點庫 (<span id="totalSpotsBadge">13</span> 處)
+        </button>
+        <button id="tabBtnTransit" onclick="switchTab('transit')" class="flex-1 py-3 px-4 text-center text-slate-600 hover:text-slate-900">
+          🚅 車次查詢速查
+        </button>
+      </div>
+
+      <!-- 面板內容區域 (可捲動) -->
+      <div class="flex-1 overflow-y-auto p-4 space-y-4" id="mainPanelContent">
+        <!-- 內容由 JavaScript 動態渲染 -->
+      </div>
+    </div>
+
+    <!-- 右側地圖面板 -->
+    <div class="w-full md:w-5/12 lg:w-1/2 flex flex-col relative">
+      <!-- 地圖過濾工具列 -->
+      <div class="absolute top-3 right-3 z-[1000] bg-white/95 backdrop-blur shadow-md rounded-lg p-2 flex items-center gap-2 text-xs">
+        <span class="font-bold text-slate-700">地圖顯示：</span>
+        <select id="mapFilterSelect" onchange="onMapFilterChange()" class="border border-slate-300 rounded px-2 py-1 text-slate-700 bg-white font-medium">
+          <option value="all">🗺️ 全部天數與景點</option>
+          <!-- 動態填入 Day 1, Day 2 等 -->
+        </select>
+        <button onclick="fitMapBounds()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-1 rounded border border-slate-300">
+          🎯 置中縮放
+        </button>
+      </div>
+
+      <!-- 地圖容器 -->
+      <div id="map"></div>
+
+      <!-- 地圖圖例 -->
+      <div class="bg-white border-t border-slate-200 px-4 py-2 flex items-center justify-between text-xs text-slate-600 z-10 shrink-0">
+        <div class="flex items-center gap-4">
+          <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-red-600 inline-block"></span> 100名城 (12座)</span>
+          <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-blue-600 inline-block"></span> 溫泉 / 住宿點</span>
+          <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-emerald-600 inline-block"></span> 自訂地點</span>
+        </div>
+        <span class="text-slate-400">點擊標記查看蓋章地點、營業時間與轉乘案內</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 彈窗：新增自訂景點/住宿 Modal (含自動規劃排程) -->
+  <div id="spotModal" class="fixed inset-0 bg-black/50 z-[2000] hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full p-5 space-y-3.5 max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center border-b pb-2">
+        <h3 class="font-bold text-slate-900 text-base" id="spotModalTitle">新增景點 / 住宿</h3>
+        <button onclick="closeSpotModal()" class="text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+      </div>
+
+      <!-- 快速套用山陰山陽熱門點位 -->
+      <div class="bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs">
+        <div class="text-[11px] font-bold text-slate-700 mb-1.5 flex items-center gap-1">
+          <span>⚡ 快速套用沿途熱門點位 (自動填寫經緯度、車站與轉乘攻略)：</span>
+        </div>
+        <div class="flex flex-wrap gap-1.5" id="presetButtonsContainer">
+          <!-- JS 動態填入預設按鈕 -->
+        </div>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label class="font-medium text-slate-700">名稱 *</label>
+            <button type="button" onclick="autoGeocodeFromName()" id="btnAutoGeocode" class="text-[11px] text-blue-600 hover:text-blue-800 font-bold flex items-center gap-0.5">
+              🔍 線上自動抓取座標與車站
+            </button>
+          </div>
+          <input type="text" id="modalSpotName" oninput="onModalCoordsOrNameChange()" class="w-full border rounded p-2 text-sm" placeholder="例如：出雲大社 / 倉敷美觀地區 / 嚴島神社">
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">類型</label>
+            <select id="modalSpotType" class="w-full border rounded p-2 bg-white">
+              <option value="castle">🏯 名城 / 史蹟</option>
+              <option value="lodging">🏨 住宿 / 飯店 / 溫泉</option>
+              <option value="custom">📍 一般景點 / 美食</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">所在縣市</label>
+            <input type="text" id="modalSpotPrefecture" class="w-full border rounded p-2" placeholder="岡山 / 鳥取 / 島根...">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">最靠近之車站 (供查車次)</label>
+            <input type="text" id="modalSpotStation" class="w-full border rounded p-2" placeholder="例如：倉敷駅 / 岡山駅">
+          </div>
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">公休日</label>
+            <select id="modalSpotClosedDay" onchange="onModalCoordsOrNameChange()" class="w-full border rounded p-2 bg-white">
+              <option value="None">無公休</option>
+              <option value="Monday">週一 (Monday)</option>
+              <option value="Tuesday">週二 (Tuesday)</option>
+              <option value="Wednesday">週三 (Wednesday)</option>
+              <option value="Thursday">週四 (Thursday)</option>
+              <option value="Friday">週五 (Friday)</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">緯度 (Latitude)</label>
+            <input type="number" step="0.0001" id="modalSpotLat" oninput="onModalCoordsOrNameChange()" class="w-full border rounded p-2 font-mono" placeholder="例如：34.595">
+          </div>
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">經度 (Longitude)</label>
+            <input type="number" step="0.0001" id="modalSpotLng" oninput="onModalCoordsOrNameChange()" class="w-full border rounded p-2 font-mono" placeholder="例如：133.771">
+          </div>
+        </div>
+
+        <!-- 🤖 自動規劃排程即時運算區 -->
+        <div id="modalPlanRecommendationBox" class="bg-blue-50/80 border border-blue-200 rounded-lg p-3 space-y-1.5 hidden">
+          <div class="font-bold text-blue-900 flex items-center justify-between text-xs">
+            <span class="flex items-center gap-1">🤖 系統自動規劃建議：</span>
+            <span id="modalRecDayBadge" class="bg-blue-600 text-white text-[11px] px-2 py-0.5 rounded font-bold font-mono">推薦 Day 3</span>
+          </div>
+          <p id="modalRecReasonText" class="text-[11px] text-blue-800 leading-relaxed"></p>
+          <div class="pt-1.5 border-t border-blue-200/80 flex items-center justify-between">
+            <label class="flex items-center gap-1.5 text-slate-800 font-bold cursor-pointer text-xs">
+              <input type="checkbox" id="modalAutoAssignCheckbox" checked class="rounded text-blue-600">
+              <span>儲存時自動排入此最佳天數 (<span id="modalRecInsertPos" class="text-blue-700">第 2 順位</span>)</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">⏱️ 建議預留時間</label>
+            <input type="text" id="modalSpotStayDuration" class="w-full border rounded p-2" placeholder="基本 1 小時 / 爬山 1.5~2 小時">
+          </div>
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">⛰️ 地形 / 登山步道難度</label>
+            <input type="text" id="modalSpotClimbLevel" class="w-full border rounded p-2" placeholder="平山城 / 陡峭山城需爬坡">
+          </div>
+        </div>
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">開放/打卡時間 或 Check-in</label>
+          <input type="text" id="modalSpotHours" class="w-full border rounded p-2" placeholder="09:00 - 17:00 或 15:00入住">
+        </div>
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">交通方式與轉乘說明</label>
+          <textarea id="modalSpotTransit" rows="2" class="w-full border rounded p-2" placeholder="例如：從車站步行10分鐘..."></textarea>
+        </div>
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">備註 / 事項 / 預約網址</label>
+          <textarea id="modalSpotNotes" rows="2" class="w-full border rounded p-2" placeholder="注意事項、票價、電話等"></textarea>
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-2 border-t">
+        <button onclick="closeSpotModal()" class="px-4 py-2 border rounded text-xs text-slate-600 hover:bg-slate-100">取消</button>
+        <button onclick="saveSpotModal()" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded text-xs font-bold shadow-sm">儲存地點</button>
+      </div>
+    </div>
+  </div>
+
+  
+  <!-- 彈窗：為特定天數挑選加入景點 Modal -->
+  <div id="dayAddSpotModal" class="fixed inset-0 bg-black/50 z-[2000] hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl max-w-xl w-full p-5 space-y-3 max-h-[90vh] flex flex-col">
+      <div class="flex justify-between items-center border-b pb-2 shrink-0">
+        <div>
+          <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+            <span>➕ 選擇加入景點至</span>
+            <span id="dayAddSpotModalBadge" class="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded font-bold font-mono">Day 1</span>
+          </h3>
+          <p class="text-xs text-slate-500">點擊「加入」或「移出」即時連動當日行程與地圖路線</p>
+        </div>
+        <button onclick="closeDayAddSpotModal()" class="text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+      </div>
+
+      <!-- 搜尋與分類 -->
+      <div class="flex items-center gap-2 shrink-0">
+        <input type="text" id="dayAddSpotSearchInput" oninput="renderDayAddSpotModalList()" placeholder="搜尋景點名稱、縣市或關鍵字..." class="flex-1 border border-slate-300 rounded-lg px-3 py-1.5 text-xs bg-slate-50 focus:bg-white outline-none">
+        <select id="dayAddSpotCategoryFilter" onchange="renderDayAddSpotModalList()" class="border border-slate-300 rounded-lg px-2 py-1.5 text-xs bg-white text-slate-700">
+          <option value="all">全部分類</option>
+          <option value="shrine">⛩️ 靈驗神社</option>
+          <option value="scenic">🏞️ 沿線絕景</option>
+          <option value="gourmet">🥩 頂級和牛</option>
+          <option value="anime">⚡ 寶可夢/文藝</option>
+          <option value="castle">🏯 100名城</option>
+          <option value="lodging">♨️ 溫泉住宿</option>
+        </select>
+      </div>
+
+      <!-- 景點列表 -->
+      <div id="dayAddSpotModalList" class="flex-1 overflow-y-auto space-y-2 pr-1 text-xs">
+        <!-- 動態渲染景點 -->
+      </div>
+
+      <div class="flex justify-end pt-2 border-t shrink-0">
+        <button onclick="closeDayAddSpotModal()" class="px-4 py-1.5 bg-slate-800 text-white rounded text-xs font-bold hover:bg-slate-900 transition">完成</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 彈窗：智慧規劃排程分析 Modal (針對任一景點評估最佳落點) -->
+  <div id="smartPlanModal" class="fixed inset-0 bg-black/50 z-[2000] hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full p-5 space-y-3.5 max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center border-b pb-2">
+        <div>
+          <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+            <span>✨ 自動排程規劃分析</span>
+            <span id="smartPlanSpotBadge" class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded font-bold"></span>
+          </h3>
+          <p class="text-xs text-slate-500">演算法依據【地理距離繞路成本】、【休館日衝突】與【當日行程負荷】全面排序</p>
+        </div>
+        <button onclick="closeSmartPlanModal()" class="text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+      </div>
+
+      <div id="smartPlanContent" class="space-y-2.5 text-xs">
+        <!-- 動態填入分析評估清單 -->
+      </div>
+
+      <div class="flex justify-end pt-2 border-t">
+        <button onclick="closeSmartPlanModal()" class="px-4 py-2 border rounded text-xs text-slate-600 hover:bg-slate-100">關閉</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 載入原始景點資料庫 -->
+  <script src="spots_data.js"></script>
+
+  <!-- 應用程式主邏輯 -->
+  <script>
+    // ==========================================
+    // 狀態管理與 LocalStorage 初始化
+    // ==========================================
+    const STORAGE_KEY_SPOTS = "jp_castles_spots_v1";
+    const STORAGE_KEY_ITINERARY = "jp_castles_itinerary_v1";
+    const STORAGE_KEY_ITINERARY_VER = "jp_castles_itinerary_ver";
+    const STORAGE_KEY_DELETED_SPOTS = "jp_castles_deleted_spots_v1";
+    const CURRENT_ITINERARY_VER = "2027_01_13_DAY8_AIRPORT_TIGERAIR_V15";
+
+    let state = {
+      spots: [],
+      itinerary: [],
+      deletedSpotIds: [],
+      activeTab: "itinerary",
+      selectedDayFilter: "all",
+      editingSpotId: null
+    };
+
+
+    // ==========================================
+    // 預定義各天景點之真實地理最佳順序表 (Canonical Geographic Routing Sequence)
+    // 告別錯置：嚴格遵循地理行車鐵路先後順序，且所有溫泉/住宿點一律排在最後面！
+    // ==========================================
+    const CANONICAL_SPOT_ORDER = {
+      1: ['okayama_airport', 'chiyagyu_bisai', 'chiyagyu_kuya', 'okayama_aeon', 'okayama_hotel'],
+      2: ['kibitsuhiko_jinja', 'kibitsu_jinja', 'kinojo', 'tsuyama', 'yunogo_onsen'],
+      3: ['tottori_takumi', 'tottori', 'tottori_sakyu', 'hakuto_jinja', 'tottori_tsubomi', 'kaike_onsen'],
+      4: ['gassan_toda', 'adachi_museum', 'matsue', 'matsue_horikawa', 'yaegaki_jinja', 'izumo_taisha', 'tamatsukuri_yu_jinja', 'tamatsukuri_onsen'],
+      5: ['taikodani_inari', 'tsuwano', 'motonosumi_jinja', 'hagi'],
+      6: ['iwakuni', 'itsukushima_jinja', 'hiroshima', 'pokemon_center_hiroshima', 'hiroshima_peace_museum', 'hiroshima_jinseki', 'hiroshima_atago'],
+      7: ['yoshida_koriyama', 'onomichi_senkoji', 'fukuyama', 'tomonoura_onsen'],
+      8: ['kurashiki_bikan', 'bitchu_matsuyama', 'okayama_airport']
+    };
+
+    // 自動排序單日景點 (依地理順路動線與住宿點排最後原則)
+    function sortDaySpots(dayNumber, spotIds) {
+      if (!spotIds || !Array.isArray(spotIds)) return [];
+      const orderList = CANONICAL_SPOT_ORDER[dayNumber] || [];
+
+      // Day 1 特別處理：機場 ➔ 住宿Check-in ➔ 和牛 ➔ 逛街 ➔ 住宿
+      if (dayNumber === 1) {
+        const d1Desired = ['okayama_airport', 'chiyagyu_bisai', 'okayama_aeon', 'okayama_hotel'];
+        return d1Desired.filter(id => spotIds.includes(id));
+      }
+
+      // 其他天數：按地理順路表排序，溫泉與住宿點 (isLodgingSpot) 一律排在當天最後面！
+      return [...spotIds].sort((a, b) => {
+        const spA = state.spots.find(s => s.id === a);
+        const spB = state.spots.find(s => s.id === b);
+        const aIsLodging = isLodgingSpot(spA);
+        const bIsLodging = isLodgingSpot(spB);
+        if (aIsLodging && !bIsLodging) return 1;
+        if (!aIsLodging && bIsLodging) return -1;
+
+        const idxA = orderList.indexOf(a);
+        const idxB = orderList.indexOf(b);
+        if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+        if (idxA !== -1) return -1;
+        if (idxB !== -1) return 1;
+        return 0;
+      });
+    }
+
+    // 自動排序特定天之景點
+    function autoSortDay(dayNumber) {
+      const day = state.itinerary.find(d => d.dayNumber === dayNumber);
+      if (day && day.spotIds && day.spotIds.length > 0) {
+        day.spotIds = sortDaySpots(day.dayNumber, day.spotIds);
+        saveState();
+        renderApp();
+      }
+    }
+
+    // 自動排序全行程所有天數之景點
+    function sortAllDaysSpots(silent = false) {
+      state.itinerary.forEach(day => {
+        if (day.spotIds && day.spotIds.length > 0) {
+          day.spotIds = sortDaySpots(day.dayNumber, day.spotIds);
+        }
+      });
+      saveState();
+      renderApp();
+      if (!silent) {
+        alert("✨ 已自動將所有天數之景點依真實地理動線與住宿最佳順序排序完成！");
+      }
+    }
+
+    // 判定是否為溫泉或住宿地點
+    function isLodgingSpot(spot) {
+      if (!spot) return false;
+      if (spot.type === "lodging") return true;
+      const n = (spot.name || "").toLowerCase();
+      return n.includes("溫泉") || n.includes("温泉") || n.includes("onsen") || 
+             n.includes("旅館") || n.includes("飯店") || n.includes("酒店") || n.includes("hotel") || n.includes("宿");
+    }
+
+    // 強制規則：溫泉與住宿點一律排在當天最後面
+    
+    // 渲染當日行前備忘與注意事項的結構化段落檢視
+    function renderNotesParagraphs(notes) {
+      if (!notes || !notes.trim()) return '';
+      const lines = notes.split('\n').map(l => l.trim()).filter(Boolean);
+      if (lines.length === 0) return '';
+
+      const paragraphsHtml = lines.map(line => {
+        let icon = '📌';
+        if (line.includes('交通') || line.includes('巴士') || line.includes('車次') || line.includes('鐵路') || line.includes('航班') || line.includes('利木津')) icon = '🚌';
+        else if (line.includes('城') || line.includes('天守') || line.includes('登山') || line.includes('步道') || line.includes('攻城') || line.includes('石垣')) icon = '🏯';
+        else if (line.includes('溫泉') || line.includes('夜宿') || line.includes('旅館') || line.includes('飯店') || line.includes('Check-in')) icon = '♨️';
+        else if (line.includes('行李') || line.includes('寄放')) icon = '🧳';
+        else if (line.includes('美食') || line.includes('逛街') || line.includes('採買') || line.includes('商圈')) icon = '🛍️';
+        else if (line.includes('注意') || line.includes('警示') || line.includes('預約') || line.includes('休館')) icon = '⚠️';
+
+        return `
+          <div class="flex items-start gap-2 text-xs text-slate-700 leading-relaxed bg-white/95 p-2 rounded-lg border border-slate-200 shadow-2xs">
+            <span class="text-sm shrink-0 leading-tight">${icon}</span>
+            <div class="flex-1 whitespace-pre-wrap">${escapeHtml(line)}</div>
+          </div>
+        `;
+      }).join('');
+
+      return `
+        <div class="mt-2 space-y-1.5">
+          <div class="text-[11px] font-bold text-slate-600 flex items-center justify-between">
+            <span class="flex items-center gap-1"><span>📖</span> 備忘段落清晰檢視：</span>
+            <span class="text-[10px] text-slate-400 font-normal">已自動排版分段</span>
+          </div>
+          <div class="space-y-1.5">
+            ${paragraphsHtml}
+          </div>
+        </div>
+      `;
+    }
+
+    function sortDaySpotsLodgingAtEnd(spotIds) {
+      if (!spotIds || spotIds.length <= 1) return spotIds || [];
+      const normalSpots = [];
+      const lodgingSpots = [];
+      spotIds.forEach(id => {
+        const sp = state.spots.find(s => s.id === id);
+        if (isLodgingSpot(sp)) {
+          lodgingSpots.push(id);
+        } else {
+          normalSpots.push(id);
+        }
+      });
+      return [...normalSpots, ...lodgingSpots];
+    }
+
+    function initState() {
+      // 支援網址分享還原：若網址含 #plan= 參數，自動優先載入朋友或自己分享的客製行程
+      if (typeof window !== 'undefined' && window.location && window.location.hash && window.location.hash.startsWith('#plan=')) {
+        try {
+          const rawBase64 = window.location.hash.replace('#plan=', '');
+          const decodedJson = decodeURIComponent(escape(atob(rawBase64)));
+          const sharedData = JSON.parse(decodedJson);
+          if (sharedData.itinerary && Array.isArray(sharedData.itinerary)) {
+            state.itinerary = sharedData.itinerary;
+          }
+          if (sharedData.deleted && Array.isArray(sharedData.deleted)) {
+            state.deletedSpotIds = sharedData.deleted;
+          }
+        } catch (err) {
+          console.warn('無法解析分享網址中的行程參數:', err);
+        }
+      }
+
+      // 讀取 LocalStorage，嚴格保護使用者已自訂的行程內容
+      const savedSpots = localStorage.getItem(STORAGE_KEY_SPOTS);
+      const savedItinerary = localStorage.getItem(STORAGE_KEY_ITINERARY);
+      const savedVer = localStorage.getItem(STORAGE_KEY_ITINERARY_VER);
+      
+      // V12 修復：清空先前可能誤刪的 deleted 列表，讓出雲大社與所有名勝完整重現在庫！
+      if (savedVer !== CURRENT_ITINERARY_VER) {
+        state.deletedSpotIds = [];
+        localStorage.removeItem(STORAGE_KEY_DELETED_SPOTS);
+        localStorage.setItem(STORAGE_KEY_ITINERARY_VER, CURRENT_ITINERARY_VER);
+      } else {
+        const savedDeleted = localStorage.getItem(STORAGE_KEY_DELETED_SPOTS);
+        state.deletedSpotIds = savedDeleted ? JSON.parse(savedDeleted) : [];
+      }
+
+      // 行程保護原則：若使用者先前已有儲存排程，絕對以使用者的自訂行程為準！
+      if (savedItinerary) {
+        try {
+          state.itinerary = JSON.parse(savedItinerary);
+        } catch (e) {
+          state.itinerary = JSON.parse(JSON.stringify(DEFAULT_ITINERARY));
+        }
+      } else {
+        state.itinerary = JSON.parse(JSON.stringify(DEFAULT_ITINERARY));
+      }
+
+      // 景點庫合流：確保 DEFAULT_SPOTS 內全部 40 處景點（包含出雲大社、吉備津彥神社等）全數在庫
+      state.spots = savedSpots ? JSON.parse(savedSpots) : [];
+      DEFAULT_SPOTS.forEach(ds => {
+        if (state.deletedSpotIds && state.deletedSpotIds.includes(ds.id)) return;
+        const existing = state.spots.find(s => s.id === ds.id);
+        if (!existing) {
+          state.spots.push(JSON.parse(JSON.stringify(ds)));
+        }
+      });
+
+      // 若某些 spot 缺失預設屬性，補齊
+      state.spots.forEach(s => {
+        if (!s.checklists) s.checklists = {};
+      });
+
+      // 確保 Day 1 嚴格符合指定：「機場 ➔ 和牛 ➔ 逛街 ➔ 住宿，不要有其他行程」
+      const day1 = state.itinerary.find(d => d.dayNumber === 1);
+      if (day1) {
+        day1.title = "Day 1：抵達岡山・機場 ➔ 住宿 ➔ 和牛 ➔ 逛街";
+        day1.spotIds = ['okayama_airport', 'chiyagyu_bisai', 'okayama_aeon', 'okayama_hotel'];
+        day1.notes = "• 【機場抵達】：搭乘台灣虎航下午抵達岡山桃太郎機場 (OKJ)。出關後於 2 號乘車處搭乘利木津巴士約 30 分鐘直達岡山站西口 (單程 780 円，可刷 IC 卡)。\n• 【住宿 Check-in】：進駐岡山站前飯店 (格蘭比亞 / 大和Roynet / 三井花園) 辦理入住手續並放下大件行李。\n• 【和牛晚餐 (岡山千屋牛)】：前往岡山格蘭比亞 2F 直結之「鉄板焼 備彩」，零距離品嚐日本最古老血統和牛——岡山千屋牛頂級鐵板燒。\n• 【商圈漫遊 & 逛街】：餐後漫步西日本最大級「AEON Mall Okayama」(營業至 21:00，350間店鋪) 逛街採買藥妝物資，無其他多餘奔波行程，早點休息為明日 12 名城巡禮儲備體力！";
+      }
+
+      // 確保 Day 4 包含出雲大社與玉作湯神社 (排在玉造溫泉住宿前)
+      const day4 = state.itinerary.find(d => d.dayNumber === 4);
+      if (day4 && day4.spotIds) {
+        if (!day4.spotIds.includes('izumo_taisha')) {
+          day4.spotIds.push('izumo_taisha');
+        }
+        if (!day4.spotIds.includes('tamatsukuri_yu_jinja')) {
+          day4.spotIds.push('tamatsukuri_yu_jinja');
+        }
+        day4.spotIds = sortDaySpots(4, day4.spotIds);
+      }
+
+      // 確保 Day 8 包含回到岡山機場返台
+      const day8 = state.itinerary.find(d => d.dayNumber === 8);
+      if (day8 && day8.spotIds) {
+        if (!day8.spotIds.includes('okayama_airport')) {
+          day8.spotIds.push('okayama_airport');
+        }
+        day8.title = "Day 8：天空之城備中松山城 ➔ 岡山機場返台 (虎航 IT215)";
+        day8.notes = "• 【備中松山城・天空之城 (建議預留 1.5h)】：清晨 07:30 由鞆之浦搭巴士至福山，搭山陽新幹線轉特急八雲號於 09:05 抵備中高梁站。09:20 搭預約乘合計程車至鞴峠，登山探訪現存唯一山城天守與貓城主三十郎。\n• 【特急八雲號直達岡山】：11:15 搭乘合計程車返回備中高梁站，搭乘 11:42 特急やくも 12號 (全車指定席，車程 34 分)，於 12:18 抵達岡山站。可在站內外帶岡山便當或特色伴手禮。\n• 【台灣虎航 IT215 返台班機 (提早 2.5~3 小時到機場)】：\n  - 航班資訊：台灣虎航 IT215 (岡山 OKJ ➔ 台北桃園 TPE)，15:55 準時起飛 (13:25 開櫃報到、15:10 關櫃)。\n  - 機場利木津巴士：岡山站西口 2 號乘車處搭乘 12:40 發車之利木津直達巴士 (車程 30 分，單程 780 円)。\n  - 機場報到安檢：約 13:10 抵達岡山桃太郎機場，起飛前 2 小時 45 分鐘充裕抵達！悠閒完成行李托運、安檢出境與免稅店採買，滿載 12 座名城回憶平安返台！";
+        day8.spotIds = sortDaySpots(8, day8.spotIds);
+      }
+
+      // 啟動時自動排序所有天數
+      state.itinerary.forEach(d => {
+        if (d.spotIds && d.spotIds.length > 0) {
+          d.spotIds = sortDaySpots(d.dayNumber, d.spotIds);
+        }
+      });
+
+      saveState();
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY_SPOTS, JSON.stringify(state.spots));
+      localStorage.setItem(STORAGE_KEY_ITINERARY, JSON.stringify(state.itinerary));
+      localStorage.setItem(STORAGE_KEY_DELETED_SPOTS, JSON.stringify(state.deletedSpotIds || []));
+      updateBadges();
+    }
+
+    function updateBadges() {
+      const dayBadge = document.getElementById("totalDaysBadge");
+      const spotBadge = document.getElementById("totalSpotsBadge");
+      if (dayBadge) dayBadge.innerText = state.itinerary.length;
+      if (spotBadge) spotBadge.innerText = state.spots.length;
+    }
+
+    // ==========================================
+    // Leaflet 地圖初始化與渲染
+    // ==========================================
+    let map = null;
+    let markersLayer = null;
+    let linesLayer = null;
+
+    // ==========================================
+    // 每日主題色系配置 (強烈對比視覺層級)
+    // ==========================================
+    const DAY_THEMES = [
+      {
+        name: "緋紅·赤",
+        hex: "#e11d48", // Rose-600
+        headerGradient: "from-rose-600 via-rose-700 to-red-800",
+        accentBorder: "border-l-[6px] border-l-rose-500",
+        cardBorder: "border-rose-200/90 shadow-sm hover:shadow-md",
+        subCardBg: "bg-rose-50/40 border-rose-200/60",
+        badgeBg: "bg-rose-600 hover:bg-rose-700 text-white",
+        pillBg: "bg-rose-50 text-rose-700 border-rose-300 hover:bg-rose-100",
+        transitBorder: "border-rose-200 bg-rose-50/60 text-rose-950",
+        seqBadge: "bg-rose-600 text-white shadow-xs",
+        cardBg: "bg-white",
+        inputFocus: "focus:border-rose-500 focus:ring-1 focus:ring-rose-500"
+      },
+      {
+        name: "琉璃·藍",
+        hex: "#2563eb", // Blue-600
+        headerGradient: "from-blue-600 via-blue-700 to-indigo-800",
+        accentBorder: "border-l-[6px] border-l-blue-500",
+        cardBorder: "border-blue-200/90 shadow-sm hover:shadow-md",
+        subCardBg: "bg-blue-50/40 border-blue-200/60",
+        badgeBg: "bg-blue-600 hover:bg-blue-700 text-white",
+        pillBg: "bg-blue-50 text-blue-700 border-blue-300 hover:bg-blue-100",
+        transitBorder: "border-blue-200 bg-blue-50/60 text-blue-950",
+        seqBadge: "bg-blue-600 text-white shadow-xs",
+        cardBg: "bg-white",
+        inputFocus: "focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+      },
+      {
+        name: "常磐·綠",
+        hex: "#059669", // Emerald-600
+        headerGradient: "from-emerald-600 via-emerald-700 to-teal-800",
+        accentBorder: "border-l-[6px] border-l-emerald-500",
+        cardBorder: "border-emerald-200/90 shadow-sm hover:shadow-md",
+        subCardBg: "bg-emerald-50/40 border-emerald-200/60",
+        badgeBg: "bg-emerald-600 hover:bg-emerald-700 text-white",
+        pillBg: "bg-emerald-50 text-emerald-700 border-emerald-300 hover:bg-emerald-100",
+        transitBorder: "border-emerald-200 bg-emerald-50/60 text-emerald-950",
+        seqBadge: "bg-emerald-600 text-white shadow-xs",
+        cardBg: "bg-white",
+        inputFocus: "focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+      },
+      {
+        name: "琥珀·金",
+        hex: "#d97706", // Amber-600
+        headerGradient: "from-amber-600 via-amber-700 to-yellow-800",
+        accentBorder: "border-l-[6px] border-l-amber-500",
+        cardBorder: "border-amber-200/90 shadow-sm hover:shadow-md",
+        subCardBg: "bg-amber-50/40 border-amber-200/60",
+        badgeBg: "bg-amber-600 hover:bg-amber-700 text-white",
+        pillBg: "bg-amber-50 text-amber-800 border-amber-300 hover:bg-amber-100",
+        transitBorder: "border-amber-200 bg-amber-50/60 text-amber-950",
+        seqBadge: "bg-amber-600 text-white shadow-xs",
+        cardBg: "bg-white",
+        inputFocus: "focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+      },
+      {
+        name: "紫藤·紫",
+        hex: "#7c3aed", // Violet-600
+        headerGradient: "from-purple-600 via-purple-700 to-indigo-800",
+        accentBorder: "border-l-[6px] border-l-purple-500",
+        cardBorder: "border-purple-200/90 shadow-sm hover:shadow-md",
+        subCardBg: "bg-purple-50/40 border-purple-200/60",
+        badgeBg: "bg-purple-600 hover:bg-purple-700 text-white",
+        pillBg: "bg-purple-50 text-purple-700 border-purple-300 hover:bg-purple-100",
+        transitBorder: "border-purple-200 bg-purple-50/60 text-purple-950",
+        seqBadge: "bg-purple-600 text-white shadow-xs",
+        cardBg: "bg-white",
+        inputFocus: "focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+      },
+      {
+        name: "晴空·青",
+        hex: "#0284c7", // Sky-600
+        headerGradient: "from-sky-600 via-sky-700 to-cyan-800",
+        accentBorder: "border-l-[6px] border-l-sky-500",
+        cardBorder: "border-sky-200/90 shadow-sm hover:shadow-md",
+        subCardBg: "bg-sky-50/40 border-sky-200/60",
+        badgeBg: "bg-sky-600 hover:bg-sky-700 text-white",
+        pillBg: "bg-sky-50 text-sky-700 border-sky-300 hover:bg-sky-100",
+        transitBorder: "border-sky-200 bg-sky-50/60 text-sky-950",
+        seqBadge: "bg-sky-600 text-white shadow-xs",
+        cardBg: "bg-white",
+        inputFocus: "focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+      },
+      {
+        name: "夕照·橙",
+        hex: "#ea580c", // Orange-600
+        headerGradient: "from-orange-600 via-orange-700 to-red-700",
+        accentBorder: "border-l-[6px] border-l-orange-500",
+        cardBorder: "border-orange-200/90 shadow-sm hover:shadow-md",
+        subCardBg: "bg-orange-50/40 border-orange-200/60",
+        badgeBg: "bg-orange-600 hover:bg-orange-700 text-white",
+        pillBg: "bg-orange-50 text-orange-700 border-orange-300 hover:bg-orange-100",
+        transitBorder: "border-orange-200 bg-orange-50/60 text-orange-950",
+        seqBadge: "bg-orange-600 text-white shadow-xs",
+        cardBg: "bg-white",
+        inputFocus: "focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+      },
+      {
+        name: "撫子·粉",
+        hex: "#db2777", // Pink-600
+        headerGradient: "from-pink-600 via-pink-700 to-rose-700",
+        accentBorder: "border-l-[6px] border-l-pink-500",
+        cardBorder: "border-pink-200/90 shadow-sm hover:shadow-md",
+        subCardBg: "bg-pink-50/40 border-pink-200/60",
+        badgeBg: "bg-pink-600 hover:bg-pink-700 text-white",
+        pillBg: "bg-pink-50 text-pink-700 border-pink-300 hover:bg-pink-100",
+        transitBorder: "border-pink-200 bg-pink-50/60 text-pink-950",
+        seqBadge: "bg-pink-600 text-white shadow-xs",
+        cardBg: "bg-white",
+        inputFocus: "focus:border-pink-500 focus:ring-1 focus:ring-pink-500"
+      }
+    ];
+
+    const DAY_COLORS = DAY_THEMES.map(t => t.hex);
+
+    function getDayTheme(dIdx) {
+      return DAY_THEMES[((dIdx % DAY_THEMES.length) + DAY_THEMES.length) % DAY_THEMES.length];
+    }
+
+    function initMap() {
+      // 中國地方 (山陰山陽) 中心點約為 35.0, 133.0
+      map = L.map('map').setView([34.9, 133.2], 8);
+
+      // 圖資配置：避免 OpenStreetMap 官方伺服器阻擋本機 file:// 產生 403 Forbidden
+      const cartoLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        subdomains: 'abcd',
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://carto.com/" target="_blank">CARTO</a> &copy; OpenStreetMap'
+      });
+
+      const gsiStdLayer = L.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: '&copy; <a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank">國土地理院</a>'
+      });
+
+      const gsiReliefLayer = L.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png', {
+        maxZoom: 15,
+        attribution: '&copy; <a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank">國土地理院 (山城高程)</a>'
+      });
+
+      // 預設載入 CARTO 清晰街景圖
+      cartoLayer.addTo(map);
+
+      // 右下角提供底圖切換器
+      L.control.layers({
+        "🗺️ 清晰街道 (CARTO)": cartoLayer,
+        "🇯🇵 日本國土地理院 (官方鐵道站名)": gsiStdLayer,
+        "⛰️ 山城地勢高程 (標高差)": gsiReliefLayer
+      }, null, { position: 'bottomright' }).addTo(map);
+
+      markersLayer = L.layerGroup().addTo(map);
+      linesLayer = L.layerGroup().addTo(map);
+
+      renderMapElements();
+      updateMapFilterDropdown();
+    }
+
+
+    // ==========================================
+    // 山陰山陽 真實鐵路/公路地理軌跡走廊 (Realistic Transit Corridors & Waypoints)
+    // 告別筆直死板直線：貼合 JR 新幹線、伯備線峽谷、山陰海岸線、山口線深山谷地與公路蜿蜒曲線
+    // ==========================================
+    const REALISTIC_TRACK_CORRIDORS = {
+      // Day 1: 岡山機場 ➔ 岡山站 (利木津巴士真實行車路線)
+      // Day 1: 岡山站前住宿 ➔ 鉄板焼 備彩 (格蘭比亞2F直結)
+      "okayama_hotel_to_chiyagyu_bisai": [
+        [34.6655, 133.9185],
+        [34.6651, 133.9185],
+        [34.6648, 133.9185]
+      ],
+      // Day 1: 鉄板焼 備彩 ➔ AEON Mall Okayama (站前地下通道)
+      "chiyagyu_bisai_to_okayama_aeon": [
+        [34.6648, 133.9185],
+        [34.6638, 133.9187],
+        [34.6628, 133.9189]
+      ],
+      // Day 1: AEON Mall Okayama ➔ 岡山站前飯店 (返回住宿)
+      "okayama_aeon_to_okayama_hotel": [
+        [34.6628, 133.9189],
+        [34.6642, 133.9186],
+        [34.6655, 133.9185]
+      ],
+      // Day 1: 岡山機場 ➔ 岡山站前飯店
+      "okayama_airport_to_okayama_hotel": [
+        [34.7578, 133.8552],
+        [34.7385, 133.8652],
+        [34.7214, 133.8821],
+        [34.6985, 133.9052],
+        [34.6812, 133.9145],
+        [34.6655, 133.9185]
+      ],
+      "okayama_airport_to_okayama_station": [
+        [34.7578, 133.8552], // 岡山桃太郎機場
+        [34.7385, 133.8652], // 機場聯絡道
+        [34.7214, 133.8821], // 國道53號岡山北Bypass
+        [34.6985, 133.9052], // 津島高架段
+        [34.6812, 133.9145], // 運動公園旁
+        [34.6663, 133.9185]  // 岡山站西口
+      ],
+      "okayama_airport_to_okayama": [
+        [34.7578, 133.8552],
+        [34.7385, 133.8652],
+        [34.7214, 133.8821],
+        [34.6985, 133.9052],
+        [34.6812, 133.9145],
+        [34.6663, 133.9185]
+      ],
+
+      // 岡山站 ➔ 備彩 (格蘭比亞 2F 直結)
+      "okayama_station_to_chiyagyu_bisai": [
+        [34.6663, 133.9185],
+        [34.6648, 133.9185]
+      ],
+      // 岡山站 ➔ 空也 (西川綠道商圈)
+      "okayama_station_to_chiyagyu_kuya": [
+        [34.6663, 133.9185],
+        [34.6658, 133.9212],
+        [34.6655, 133.9235]
+      ],
+
+      // Day 2: 岡山 ➔ 備前一宮 (吉備津彥神社)
+      "okayama_to_kibitsuhiko_jinja": [
+        [34.6663, 133.9185], // 岡山站
+        [34.6752, 133.8852], // 大安寺
+        [34.6775, 133.8712], // 備前三門
+        [34.6787, 133.8601]  // 吉備津彥神社 (備前一宮站旁)
+      ],
+
+      // 吉備津彥神社 ➔ 吉備津神社
+      "kibitsuhiko_jinja_to_kibitsu_jinja": [
+        [34.6787, 133.8601], // 吉備津彥神社
+        [34.6742, 133.8542], // 吉備路自行車道
+        [34.6698, 133.8504]  // 吉備津神社
+      ],
+
+      // 吉備津神社 ➔ 鬼ノ城
+      "kibitsu_jinja_to_kinojo": [
+        [34.6698, 133.8504], // 吉備津神社
+        [34.6654, 133.8052], // 足守
+        [34.6685, 133.7752], // 服部
+        [34.6738, 133.7431], // 總社站
+        [34.6985, 133.7542], // 砂川溪谷公路
+        [34.7185, 133.7612], // 鬼城山盤山公路
+        [34.7297, 133.7661]  // 鬼ノ城
+      ],
+
+      // 岡山 ➔ 總社 (JR 吉備線 / 桃太郎線 平原鐵道) ➔ 鬼ノ城
+      "okayama_to_kinojo": [
+        [34.6663, 133.9185], // 岡山站
+        [34.6752, 133.8852], // 大安寺
+        [34.6787, 133.8601], // 備前一宮 (吉備津彥神社)
+        [34.6698, 133.8504], // 吉備津站 (吉備津神社)
+        [34.6654, 133.8052], // 足守
+        [34.6685, 133.7752], // 服部
+        [34.6738, 133.7431], // 總社站 (JR線終點)
+        [34.6985, 133.7542], // 砂川溪谷公路
+        [34.7185, 133.7612], // 鬼城山盤山公路
+        [34.7297, 133.7661]  // 鬼ノ城 (遊客中心)
+      ],
+
+      // Day 2: 總社 (鬼ノ城) ➔ 津山城 (伯備線 ➔ 岡山 ➔ 津山線 旭川山谷鐵道)
+      "kinojo_to_tsuyama": [
+        [34.7297, 133.7661], // 鬼ノ城
+        [34.7185, 133.7612], // 盤山道
+        [34.6738, 133.7431], // 總社站
+        [34.6412, 133.7552], // 清音
+        [34.6015, 133.7656], // 倉敷
+        [34.6352, 133.8352], // 中莊
+        [34.6663, 133.9185], // 岡山站轉乘津山線
+        [34.6852, 133.9285], // 法界院
+        [34.7412, 133.9352], // 牧山 (旭川河谷鐵道)
+        [34.8012, 133.9532], // 金川
+        [34.8512, 133.9352], // 建部
+        [34.8954, 133.9214], // 福渡
+        [34.9752, 133.9654], // 弓削
+        [35.0215, 133.9852], // 龜甲
+        [35.0485, 134.0012], // 津山口
+        [35.0538, 134.0041], // 津山站
+        [35.0645, 134.0048]  // 津山城 (鶴山公園)
+      ],
+
+      // Day 2: 津山 ➔ 湯郷溫泉 (宇野巴士 / 國道179號 吉井川走廊)
+      "tsuyama_to_yunogo_onsen": [
+        [35.0645, 134.0048], // 津山城
+        [35.0538, 134.0041], // 津山站
+        [35.0452, 134.0352], // 吉井川沿岸公路
+        [35.0312, 134.0652], // 津山東部
+        [35.0185, 134.1012], // 勝央町
+        [35.0085, 134.1352], // 美作市林野
+        [35.0064, 134.0925]  // 湯郷溫泉街
+      ],
+
+      // Day 3: 湯郷溫泉 ➔ 鳥取城 (因美線 & 智頭急行 穿越因幡連峰)
+      "yunogo_onsen_to_tottori": [
+        [35.0064, 134.0925], // 湯郷溫泉
+        [35.0538, 134.0041], // 津山站
+        [35.0952, 134.0352], // 高野
+        [35.1215, 134.0852], // 美作加茂 (峽谷)
+        [35.1852, 134.1685], // 知和・美作河井
+        [35.2654, 134.2286], // 智頭 (特急超級因幡號合流點)
+        [35.3452, 134.2215], // 用瀨
+        [35.4215, 134.2486], // 郡家
+        [35.4941, 134.2258], // 鳥取站
+        [35.5089, 134.2386]  // 鳥取城跡 / 仁風閣
+      ],
+      "yunogo_onsen_to_tottori_takumi": [
+        [35.0064, 134.0925],
+        [35.0538, 134.0041],
+        [35.2654, 134.2286],
+        [35.4941, 134.2258],
+        [35.4963, 134.2267]  // たくみ割烹店
+      ],
+      "tottori_takumi_to_tottori": [
+        [35.4963, 134.2267],
+        [35.5012, 134.2312],
+        [35.5089, 134.2386]
+      ],
+
+      // Day 3: 鳥取城 ➔ 皆生溫泉 (JR 山陰本線 日本海美麗海岸大弧線鐵道)
+      "tottori_to_kaike_onsen": [
+        [35.5089, 134.2386], // 鳥取城
+        [35.4941, 134.2258], // 鳥取站 (特急超級松風號)
+        [35.5185, 134.1852], // 鳥取湖陵
+        [35.5348, 134.1352], // 白兔海岸 (日本海絕景海岸線)
+        [35.5285, 134.0752], // 末恒海岸
+        [35.5186, 134.0152], // 青谷日本海斷崖
+        [35.4912, 133.9124], // 泊海岸線
+        [35.4412, 133.8564], // 倉吉
+        [35.4852, 133.7652], // 由良 (柯南小鎮)
+        [35.5012, 133.6852], // 琴浦海濱
+        [35.5152, 133.5214], // 赤碕日本海景
+        [35.4785, 133.4215], // 大山町海岸線 (遙望伯耆富士大山)
+        [35.4312, 133.3852], // 伯耆大山
+        [35.4227, 133.3364], // 米子站
+        [35.4412, 133.3485], // 皆生通公路
+        [35.4578, 133.3556]  // 皆生溫泉海濱 (穿山鼠人孔蓋旁)
+      ],
+      "tottori_to_tottori_tsubomi": [
+        [35.5089, 134.2386],
+        [35.4941, 134.2258],
+        [35.5348, 134.1352],
+        [35.4412, 133.8564],
+        [35.4227, 133.3364],
+        [35.4320, 133.3340]  // 鉄板焼 つぼみ
+      ],
+      "tottori_tsubomi_to_kaike_onsen": [
+        [35.4320, 133.3340],
+        [35.4412, 133.3485],
+        [35.4578, 133.3556]
+      ],
+
+      // Day 4: 皆生 ➔ 月山富田城 ➔ 松江城 ➔ 出雲大社 ➔ 玉造溫泉 (神話雙雄與出雲大社)
+      "kaike_onsen_to_gassan_toda": [
+        [35.4578, 133.3556], // 皆生溫泉
+        [35.4227, 133.3364], // 米子站
+        [35.4312, 133.2514], // 安來站 (山陰本線)
+        [35.3952, 133.2215], // 飯梨川山谷公路 (黃色公車路線)
+        [35.3785, 133.2052], // 廣瀨町
+        [35.3614, 133.1906]  // 月山富田城跡
+      ],
+
+      "gassan_toda_to_matsue": [
+        [35.3614, 133.1906], // 月山富田城
+        [35.4312, 133.2514], // 安來站
+        [35.4452, 133.1652], // 荒島 (中海湖畔鐵道)
+        [35.4552, 133.1052], // 東松江
+        [35.4638, 133.0631], // 松江站
+        [35.4753, 133.0506]  // 國寶松江城
+      ],
+
+      "matsue_to_izumo_taisha": [
+        [35.4753, 133.0506], // 松江城
+        [35.4685, 133.0352], // 宍道湖溫泉站 (一畑電車北岸鐵道)
+        [35.4652, 132.9512], // 秋鹿町 (沿宍道湖北岸美麗湖景)
+        [35.4512, 132.8654], // 一畑口
+        [35.4125, 132.7512], // 川跡 (一畑電車大社線分岐)
+        [35.3985, 132.6885], // 出雲大社前站
+        [35.3995, 132.6859]  // 出雲大社 (神樂殿巨型注連繩)
+      ],
+
+      "izumo_taisha_to_tamatsukuri_yu_jinja": [
+        [35.3995, 132.6859], // 出雲大社
+        [35.3654, 132.7552], // 出雲市站 (JR山陰本線)
+        [35.3852, 132.8124], // 直江 (斐川平原)
+        [35.3952, 132.8552], // 莊原
+        [35.4052, 132.9152], // 宍道 (緊貼宍道湖南岸湖濱鐵路)
+        [35.4252, 132.9852], // 玉造溫泉站
+        [35.4147, 133.0089]  // 玉作湯神社 (玉造溫泉最深處)
+      ],
+      "tamatsukuri_yu_jinja_to_tamatsukuri_onsen": [
+        [35.4147, 133.0089], // 玉作湯神社
+        [35.4172, 133.0098], // 溫泉街足湯步道
+        [35.4194, 133.0108]  // 玉造溫泉各大和風旅館 (入住)
+      ],
+      "izumo_taisha_to_tamatsukuri_onsen": [
+        [35.3995, 132.6859], // 出雲大社
+        [35.3654, 132.7552], // 出雲市站 (JR山陰本線)
+        [35.3852, 132.8124], // 直江 (斐川平原)
+        [35.3952, 132.8552], // 莊原
+        [35.4052, 132.9152], // 宍道 (緊貼宍道湖南岸湖濱鐵路)
+        [35.4252, 132.9852], // 玉造溫泉站
+        [35.4194, 133.0108]  // 玉造溫泉街 (美肌神湯)
+      ],
+
+      // Day 5: 玉造溫泉 ➔ 津和野 ➔ 萩城 ➔ 新山口 (特急超級隱岐號 山陰絕景鐵道)
+      "tamatsukuri_onsen_to_tsuwano": [
+        [35.4194, 133.0108], // 玉造溫泉
+        [35.4052, 132.9152], // 宍道
+        [35.3654, 132.7552], // 出雲市站
+        [35.2512, 132.6052], // 西出雲・小田海岸
+        [35.1952, 132.4986], // 大田市 (石見銀山門戶)
+        [35.1254, 132.2152], // 江津 (江之川入海口海岸線)
+        [34.8986, 132.0852], // 濱田 (日本海絕景海岸)
+        [34.7852, 131.9564], // 三保三隅
+        [34.6786, 131.8542], // 益田站 (山陰本線轉入山口線)
+        [34.5952, 131.8352], // 石見橫田 (高津川清流峽谷鐵道)
+        [34.5652, 131.8214], // 日原高津川谷
+        [34.5124, 131.8012], // 青原深谷鐵道
+        [34.4682, 131.7745], // 津和野站
+        [34.4642, 131.7686]  // 津和野城 (山頂天守台)
+      ],
+
+      "tsuwano_to_hagi": [
+        [34.4642, 131.7686], // 津和野城
+        [34.4682, 131.7745], // 津和野站
+        [34.6786, 131.8542], // 益田站 (銜接山陰本線西段)
+        [34.6215, 131.6012], // 須佐 (荷蘭島斷崖海岸)
+        [34.5512, 131.4564], // 奈古 (阿武火山海岸線)
+        [34.4152, 131.4086], // 東萩站
+        [34.4172, 131.3831]  // 萩城跡 (指月公園)
+      ],
+
+      "hagi_to_shin_yamaguchi": [
+        [34.4172, 131.3831], // 萩城
+        [34.4152, 131.4086], // 東萩站 (中國JR巴士特急Super Hagi-go)
+        [34.3412, 131.3912], // 萩IC (小郡萩道路)
+        [34.2652, 131.3752], // 繪堂 (穿越山口秋吉高原山脈)
+        [34.1952, 131.3552], // 大郡
+        [34.1352, 131.3785], // 新山口北口
+        [34.0934, 131.3986]  // 新山口站 (新幹線口)
+      ],
+
+      // Day 6: 新山口 ➔ 新岩國 ➔ 岩國城 ➔ 廣島 (山陽新幹線 & 瀨戶內海海岸鐵路)
+      "shin_yamaguchi_to_iwakuni": [
+        [34.0934, 131.3986], // 新山口站 (山陽新幹線)
+        [34.0565, 131.5714], // 防府
+        [34.0531, 131.8032], // 德山 (瀨戶內海石化灣)
+        [34.1485, 132.1468], // 新岩國站 (新幹線出站)
+        [34.1652, 132.1785], // 錦帶橋 (御庄川錦川走廊)
+        [34.1747, 132.1764]  // 岩國城 (空中纜車直達山頂)
+      ],
+
+      "iwakuni_to_hiroshima": [
+        [34.1747, 132.1764], // 岩國城
+        [34.1718, 132.2255], // 岩國站 (JR山陽本線)
+        [34.2185, 132.2223], // 大竹 (緊貼瀨戶內海平靜海面)
+        [34.3128, 132.3025], // 宮島口 (對望海上嚴島大鳥居)
+        [34.3412, 132.3352], // 廿日市海岸鐵道
+        [34.3685, 132.3785], // 五日市
+        [34.3852, 132.4215], // 西廣島
+        [34.3976, 132.4753], // 廣島站
+        [34.4039, 132.4593]  // 廣島城
+      ],
+
+      "hiroshima_to_pokemon_center_hiroshima": [
+        [34.4039, 132.4593], // 廣島城
+        [34.3995, 132.4578], // 廣島護國神社
+        [34.3962, 132.4571]  // SOGO 廣島店 6F (寶可夢中心廣島)
+      ],
+      "hiroshima_to_pokemon": [
+        [34.4039, 132.4593],
+        [34.3995, 132.4578],
+        [34.3962, 132.4571]
+      ],
+
+      "pokemon_center_hiroshima_to_hiroshima_peace_museum": [
+        [34.3962, 132.4571], // SOGO 廣島店 6F
+        [34.3955, 132.4536], // 原爆圓頂 (原爆ドーム)
+        [34.3942, 132.4531], // 元安川元安橋
+        [34.3916, 132.4526]  // 廣島和平紀念資料館 (和平之火)
+      ],
+      "pokemon_to_peace_museum": [
+        [34.3962, 132.4571],
+        [34.3955, 132.4536],
+        [34.3942, 132.4531],
+        [34.3916, 132.4526]
+      ],
+      "peace_museum_to_hiroshima_jinseki": [
+        [34.3916, 132.4526],
+        [34.3942, 132.4652],
+        [34.3976, 132.4753],
+        [34.3980, 132.4760]  // 鉄板焼 神石 (Granvia 21F)
+      ],
+      "peace_museum_to_hiroshima_atago": [
+        [34.3916, 132.4526],
+        [34.3905, 132.4552],
+        [34.3900, 132.4580]  // 鉄板焼 愛宕 (ANA Crowne Plaza 1F)
+      ],
+
+      // Day 7: 廣島 ➔ 吉田郡山城 ➔ 福山城 ➔ 鞆之浦溫泉 (毛利古都與新幹線)
+      "hiroshima_to_yoshida_koriyama": [
+        [34.3916, 132.4526], // 和平紀念公園
+        [34.3962, 132.4562], // 廣島巴士中心 (廣電客運)
+        [34.4562, 132.4786], // 中筋站
+        [34.5214, 132.5012], // 廣島北交流道 (國道54號深山峽谷)
+        [34.6215, 132.6124], // 向原 (江之川上游流域)
+        [34.6714, 132.7092]  // 安芸高田市役所前 / 吉田郡山城麓
+      ],
+      "hiroshima_peace_museum_to_yoshida_koriyama": [
+        [34.3916, 132.4526],
+        [34.3962, 132.4562],
+        [34.4562, 132.4786],
+        [34.5214, 132.5012],
+        [34.6215, 132.6124],
+        [34.6714, 132.7092]
+      ],
+
+      "yoshida_koriyama_to_fukuyama": [
+        [34.6714, 132.7092], // 吉田郡山城
+        [34.3976, 132.4753], // 客運返廣島站轉山陽新幹線
+        [34.3986, 132.7483], // 東廣島
+        [34.4005, 133.0832], // 三原
+        [34.4045, 133.1932], // 尾道新幹線高架段
+        [34.4897, 133.3614]  // 福山站 (出北口0距離抵福山城)
+      ],
+
+      "fukuyama_to_tomonoura_onsen": [
+        [34.4897, 133.3614], // 福山城 / 福山站南口
+        [34.4512, 133.3685], // 水之手橋 (蘆田川沿線)
+        [34.4152, 133.3812], // 鞆道路海灣沿線 (眺望瀨戶內海群島)
+        [34.3828, 133.3831]  // 鞆之浦溫泉 (宮崎駿波妞古港)
+      ],
+
+      // Day 8: 鞆之浦 ➔ 備中松山城 ➔ 岡山機場 (新幹線 + 伯備線高梁川深邃峽谷鐵道)
+      "tomonoura_onsen_to_bitchu_matsuyama": [
+        [34.3828, 133.3831], // 鞆之浦溫泉
+        [34.4897, 133.3614], // 福山站 (山陽新幹線極速東行)
+        [34.5645, 133.6805], // 新倉敷
+        [34.6015, 133.7656], // 倉敷 (轉入伯備線峽谷鐵道)
+        [34.6738, 133.7431], // 總社 (高梁川入口)
+        [34.7352, 133.6731], // 美袋 (高梁川連續S型大峽谷鐵道)
+        [34.7612, 133.6452], // 木野山
+        [34.7905, 133.6186], // 備中高梁站
+        [34.7942, 133.6231], // 鞴峠 (登山合乘計程車終點)
+        [34.7958, 133.6225]  // 備中松山城天守 (雲海山頂)
+      ],
+
+      "bitchu_matsuyama_to_okayama_airport": [
+        [34.7958, 133.6225], // 備中松山城
+        [34.7905, 133.6186], // 備中高梁站 (特急八雲號順高梁川南下)
+        [34.7352, 133.6731], // 美袋峽谷
+        [34.6738, 133.7431], // 總社
+        [34.6015, 133.7656], // 倉敷
+        [34.6663, 133.9185], // 岡山站西口 (轉乘利木津巴士)
+        [34.6985, 133.9052], // 岡山北Bypass
+        [34.7214, 133.8821], // 國道53號
+        [34.7578, 133.8553]  // 岡山桃太郎機場 (搭機返台)
+      ]
+    };
+
+    // 取得兩點之間的真實鐵路/公路地理軌跡經緯度陣列 (告別生硬直線)
+    function getRealisticTransitTrack(fromSpot, toSpot, dayNumber) {
+      if (!fromSpot || !toSpot) return [];
+      const fromId = fromSpot.id;
+      const toId = toSpot.id;
+
+      // 1. 精確 key 配對
+      const directKey = `${fromId}_to_${toId}`;
+      if (REALISTIC_TRACK_CORRIDORS[directKey]) {
+        return REALISTIC_TRACK_CORRIDORS[directKey];
+      }
+
+      // 反向 key 配對
+      const reverseKey = `${toId}_to_${fromId}`;
+      if (REALISTIC_TRACK_CORRIDORS[reverseKey]) {
+        return [...REALISTIC_TRACK_CORRIDORS[reverseKey]].reverse();
+      }
+
+      // 2. 依關鍵起訖點智能走廊匹配
+      if (toId === 'okayama_airport' || fromId === 'okayama_airport') {
+        return REALISTIC_TRACK_CORRIDORS["okayama_airport_to_okayama_station"];
+      }
+      if (toId === 'kibitsuhiko_jinja') {
+        return REALISTIC_TRACK_CORRIDORS["okayama_to_kibitsuhiko_jinja"];
+      }
+      if (toId === 'kibitsu_jinja') {
+        return REALISTIC_TRACK_CORRIDORS["kibitsuhiko_jinja_to_kibitsu_jinja"];
+      }
+      if (toId === 'kinojo') {
+        return REALISTIC_TRACK_CORRIDORS["okayama_to_kinojo"];
+      }
+      if (toId === 'tsuyama') {
+        return REALISTIC_TRACK_CORRIDORS["kinojo_to_tsuyama"];
+      }
+      if (toId === 'yunogo_onsen') {
+        return REALISTIC_TRACK_CORRIDORS["tsuyama_to_yunogo_onsen"];
+      }
+      if (toId === 'tottori' || toId === 'tottori_takumi') {
+        return REALISTIC_TRACK_CORRIDORS["yunogo_onsen_to_tottori"];
+      }
+      if (toId === 'kaike_onsen' || toId === 'tottori_tsubomi') {
+        return REALISTIC_TRACK_CORRIDORS["tottori_to_kaike_onsen"];
+      }
+      if (toId === 'gassan_toda' || toId === 'adachi_museum') {
+        return REALISTIC_TRACK_CORRIDORS["kaike_onsen_to_gassan_toda"];
+      }
+      if (toId === 'matsue' || toId === 'matsue_horikawa') {
+        return REALISTIC_TRACK_CORRIDORS["gassan_toda_to_matsue"];
+      }
+      if (toId === 'izumo_taisha') {
+        return REALISTIC_TRACK_CORRIDORS["matsue_to_izumo_taisha"];
+      }
+      if (fromId === 'izumo_taisha' && toId === 'tamatsukuri_onsen') {
+        return REALISTIC_TRACK_CORRIDORS["izumo_taisha_to_tamatsukuri_onsen"];
+      }
+      if (toId === 'tsuwano' || toId === 'taikodani_inari') {
+        return REALISTIC_TRACK_CORRIDORS["tamatsukuri_onsen_to_tsuwano"];
+      }
+      if (toId === 'hagi') {
+        return REALISTIC_TRACK_CORRIDORS["tsuwano_to_hagi"];
+      }
+      if (fromId === 'hagi' || toId === 'shin_yamaguchi') {
+        return REALISTIC_TRACK_CORRIDORS["hagi_to_shin_yamaguchi"];
+      }
+      if (toId === 'iwakuni') {
+        return REALISTIC_TRACK_CORRIDORS["shin_yamaguchi_to_iwakuni"];
+      }
+      if (toId === 'hiroshima') {
+        return REALISTIC_TRACK_CORRIDORS["iwakuni_to_hiroshima"];
+      }
+      if (toId === 'pokemon_center_hiroshima') {
+        return REALISTIC_TRACK_CORRIDORS["hiroshima_to_pokemon_center_hiroshima"];
+      }
+      if (toId === 'hiroshima_peace_museum') {
+        return REALISTIC_TRACK_CORRIDORS["pokemon_center_hiroshima_to_hiroshima_peace_museum"];
+      }
+      if (toId === 'hiroshima_jinseki') {
+        return REALISTIC_TRACK_CORRIDORS["peace_museum_to_hiroshima_jinseki"];
+      }
+      if (toId === 'hiroshima_atago') {
+        return REALISTIC_TRACK_CORRIDORS["peace_museum_to_hiroshima_atago"];
+      }
+      if (toId === 'yoshida_koriyama') {
+        return REALISTIC_TRACK_CORRIDORS["hiroshima_to_yoshida_koriyama"];
+      }
+      if (toId === 'fukuyama') {
+        return REALISTIC_TRACK_CORRIDORS["yoshida_koriyama_to_fukuyama"];
+      }
+      if (toId === 'tomonoura_onsen') {
+        return REALISTIC_TRACK_CORRIDORS["fukuyama_to_tomonoura_onsen"];
+      }
+      if (toId === 'bitchu_matsuyama') {
+        return REALISTIC_TRACK_CORRIDORS["tomonoura_onsen_to_bitchu_matsuyama"];
+      }
+
+      // 3. 通用平滑弧線內插 (針對自訂延伸點，沿地理走向產生自然平滑弧線，拒絕生硬直線)
+      return generateCurvedTrack(fromSpot, toSpot);
+    }
+
+    // 針對非預定義點位產生自然微弧線 (配合地形走勢)
+    function generateCurvedTrack(p1, p2) {
+      const lat1 = p1.lat, lng1 = p1.lng;
+      const lat2 = p2.lat, lng2 = p2.lng;
+      const midLat = (lat1 + lat2) / 2;
+      const midLng = (lng1 + lng2) / 2;
+      // 微偏向海岸或平原軸向
+      const offsetLat = (lng2 - lng1) * 0.08;
+      const offsetLng = -(lat2 - lat1) * 0.08;
+      return [
+        [lat1, lng1],
+        [midLat + offsetLat, midLng + offsetLng],
+        [lat2, lng2]
+      ];
+    }
+
+    // 取得每日完整出發/途經/抵達動線點位清單 (含跨日住宿站點接駁)
+    function getDayTransitSequence(day) {
+      if (!day) return [];
+      const spotObjects = (day.spotIds || [])
+        .map(id => state.spots.find(s => s.id === id))
+        .filter(Boolean);
+
+      const dNum = day.dayNumber;
+      // 虛擬/錨點輔助點定義 (以真實經緯度標記)
+      const okayamaStationSpot = { id: 'okayama_station', name: '岡山駅 (市區飯店)', lat: 34.6663, lng: 133.9185, type: 'lodging' };
+      const shinYamaguchiSpot = { id: 'shin_yamaguchi_station', name: '新山口駅 (新幹線飯店)', lat: 34.0934, lng: 131.3986, type: 'lodging' };
+      const hiroshimaCenterSpot = { id: 'hiroshima_center', name: '廣島巴士中心 / 廣島市區', lat: 34.3962, lng: 132.4562, type: 'lodging' };
+      const airportSpot = state.spots.find(s => s.id === 'okayama_airport') || { id: 'okayama_airport', name: '岡山桃太郎機場', lat: 34.7578, lng: 133.8553 };
+
+      const result = [];
+
+      if (dNum === 1) {
+        // Day 1: 岡山機場 ➔ 飯店 Check-in ➔ 和牛晚餐 (備彩) ➔ 逛街採買 (AEON) ➔ 飯店住宿
+        const airportSpot = state.spots.find(s => s.id === 'okayama_airport') || { id: 'okayama_airport', name: '岡山桃太郎機場', lat: 34.7578, lng: 133.8553 };
+        const hotelSpot = state.spots.find(s => s.id === 'okayama_hotel') || okayamaStationSpot;
+        const wagyuSpot = state.spots.find(s => s.id === 'chiyagyu_bisai' || s.id === 'chiyagyu_kuya');
+        const aeonSpot = state.spots.find(s => s.id === 'okayama_aeon');
+
+        result.push(airportSpot);
+        result.push(hotelSpot);
+        if (wagyuSpot) result.push(wagyuSpot);
+        if (aeonSpot) result.push(aeonSpot);
+        result.push(hotelSpot);
+      } else if (dNum === 2) {
+        // Day 2: 岡山站 ➔ 景點群 (鬼ノ城/津山/湯郷溫泉)
+        result.push(okayamaStationSpot);
+        spotObjects.forEach(sp => result.push(sp));
+      } else if (dNum === 3) {
+        // Day 3: 湯郷溫泉 ➔ 鳥取 ➔ 皆生溫泉
+        const yunogoSpot = state.spots.find(s => s.id === 'yunogo_onsen') || { id: 'yunogo_onsen', name: '湯郷溫泉', lat: 35.0064, lng: 134.0925 };
+        if (!spotObjects.find(s => s.id === 'yunogo_onsen')) {
+          result.push(yunogoSpot);
+        }
+        spotObjects.forEach(sp => result.push(sp));
+      } else if (dNum === 4) {
+        // Day 4: 皆生溫泉 ➔ 月山富田城 ➔ 松江城 ➔ 出雲大社 ➔ 玉造溫泉
+        const kaikeSpot = state.spots.find(s => s.id === 'kaike_onsen') || { id: 'kaike_onsen', name: '皆生溫泉', lat: 35.4578, lng: 133.3556 };
+        if (!spotObjects.find(s => s.id === 'kaike_onsen')) {
+          result.push(kaikeSpot);
+        }
+        spotObjects.forEach(sp => result.push(sp));
+      } else if (dNum === 5) {
+        // Day 5: 玉造溫泉 ➔ 津和野 ➔ 萩城 ➔ 新山口站 (宿新山口)
+        const tamatsukuriSpot = state.spots.find(s => s.id === 'tamatsukuri_onsen') || { id: 'tamatsukuri_onsen', name: '玉造溫泉', lat: 35.4194, lng: 133.0108 };
+        if (!spotObjects.find(s => s.id === 'tamatsukuri_onsen')) {
+          result.push(tamatsukuriSpot);
+        }
+        spotObjects.forEach(sp => result.push(sp));
+        // 萩城結束後銜接至新山口站住宿
+        if (!result.find(s => s.id === 'shin_yamaguchi_station')) {
+          result.push(shinYamaguchiSpot);
+        }
+      } else if (dNum === 6) {
+        // Day 6: 新山口站 ➔ 岩國城 ➔ 廣島各景點
+        result.push(shinYamaguchiSpot);
+        spotObjects.forEach(sp => result.push(sp));
+      } else if (dNum === 7) {
+        // Day 7: 廣島市區 ➔ 吉田郡山城 ➔ 福山城 ➔ 鞆之浦溫泉
+        if (!spotObjects.find(s => s.id === 'hiroshima' || s.id === 'hiroshima_peace_museum')) {
+          result.push(hiroshimaCenterSpot);
+        }
+        spotObjects.forEach(sp => result.push(sp));
+      } else if (dNum === 8) {
+        // Day 8: 鞆之浦溫泉 ➔ 備中松山城 ➔ 岡山桃太郎機場
+        const tomonouraSpot = state.spots.find(s => s.id === 'tomonoura_onsen') || { id: 'tomonoura_onsen', name: '鞆之浦溫泉', lat: 34.3828, lng: 133.3831 };
+        if (!spotObjects.find(s => s.id === 'tomonoura_onsen')) {
+          result.push(tomonouraSpot);
+        }
+        spotObjects.forEach(sp => result.push(sp));
+        if (!result.find(s => s.id === 'okayama_airport')) {
+          result.push(airportSpot);
+        }
+      } else {
+        spotObjects.forEach(sp => result.push(sp));
+      }
+
+      return result;
+    }
+
+    function renderMapElements() {
+      if (!map) return;
+      markersLayer.clearLayers();
+      linesLayer.clearLayers();
+
+      const filter = state.selectedDayFilter;
+      const bounds = L.latLngBounds();
+      let hasPoints = false;
+
+      // 如果選定特定 Day，繪製該日之真實鐵路/公路動線與編號標記
+      if (filter !== "all") {
+        const dayNum = parseInt(filter, 10);
+        const day = state.itinerary.find(d => d.dayNumber === dayNum);
+        if (day) {
+          const dayColor = DAY_COLORS[(day.dayNumber - 1) % DAY_COLORS.length];
+
+          // 1. 標記各景點 Marker
+          (day.spotIds || []).forEach((id, idx) => {
+            const spot = state.spots.find(s => s.id === id);
+            if (spot && spot.lat && spot.lng) {
+              const pos = [spot.lat, spot.lng];
+              bounds.extend(pos);
+              hasPoints = true;
+
+              const marker = createCustomMarker(spot, idx + 1, dayColor);
+              marker.addTo(markersLayer);
+            }
+          });
+
+          // 2. 繪製順著鐵路/公路的真實蜿蜒軌跡 (含每日起訖車站/利木津巴士接駁)
+          const transitSeq = getDayTransitSequence(day);
+          for (let i = 0; i < transitSeq.length - 1; i++) {
+            const sp1 = transitSeq[i];
+            const sp2 = transitSeq[i + 1];
+            if (sp1 && sp2 && sp1.lat && sp2.lat) {
+              const trackPoints = getRealisticTransitTrack(sp1, sp2, day.dayNumber);
+              trackPoints.forEach(p => {
+                bounds.extend(p);
+                hasPoints = true;
+              });
+
+              // 外層主題色光暈底線 (平滑圓角)
+              const outerGlow = L.polyline(trackPoints, {
+                color: dayColor,
+                weight: 6,
+                opacity: 0.45,
+                lineCap: 'round',
+                lineJoin: 'round'
+              }).addTo(linesLayer);
+
+              // 內層真實鐵路/巴士軌道主線 (雙色鐵路質感斑馬線)
+              const innerTrack = L.polyline(trackPoints, {
+                color: '#1e293b',
+                weight: 2.5,
+                opacity: 0.9,
+                dashArray: '7, 5',
+                lineCap: 'butt'
+              }).addTo(linesLayer);
+
+              const info = getTransitDetails(sp1, sp2, day.dayNumber);
+              const tooltipContent = `
+                <div class="text-xs p-1">
+                  <div class="font-bold text-slate-900 flex items-center gap-1">
+                    <span>🚅</span> <strong>Day ${day.dayNumber} 移動動線</strong>
+                  </div>
+                  <div class="text-[11px] text-slate-700 mt-0.5">
+                    <strong>${escapeHtml(sp1.name)}</strong> ➔ <strong>${escapeHtml(sp2.name)}</strong>
+                  </div>
+                  <div class="text-[10px] text-blue-700 mt-0.5 font-medium">
+                    ${escapeHtml(info.name)} (${escapeHtml(info.time)})
+                  </div>
+                  <div class="text-[9px] ${info.passCovered ? 'text-emerald-700' : 'text-amber-700'} font-bold">
+                    ${info.passCovered ? '✅ JR Pass 包含' : '⚠️ JR Pass 不含需自費'}
+                  </div>
+                </div>
+              `;
+              innerTrack.bindTooltip(tooltipContent, { sticky: true, direction: 'top' });
+              outerGlow.bindTooltip(tooltipContent, { sticky: true, direction: 'top' });
+            }
+          }
+        }
+      } else {
+        // 全部天數模式：顯示所有景點，並依每日路線畫上真實軌跡
+        state.spots.forEach(spot => {
+          if (spot.lat && spot.lng) {
+            const pos = [spot.lat, spot.lng];
+            bounds.extend(pos);
+            hasPoints = true;
+
+            const marker = createCustomMarker(spot, null, null);
+            marker.addTo(markersLayer);
+          }
+        });
+
+        // 依天數分別畫出真實的鐵路與公路蜿蜒折線
+        state.itinerary.forEach((day, dIdx) => {
+          const dayColor = DAY_COLORS[dIdx % DAY_COLORS.length];
+          const transitSeq = getDayTransitSequence(day);
+
+          for (let i = 0; i < transitSeq.length - 1; i++) {
+            const sp1 = transitSeq[i];
+            const sp2 = transitSeq[i + 1];
+            if (sp1 && sp2 && sp1.lat && sp2.lat) {
+              const trackPoints = getRealisticTransitTrack(sp1, sp2, day.dayNumber);
+              trackPoints.forEach(p => bounds.extend(p));
+
+              // 外層主題色光暈
+              L.polyline(trackPoints, {
+                color: dayColor,
+                weight: 5,
+                opacity: 0.4,
+                lineCap: 'round',
+                lineJoin: 'round'
+              }).addTo(linesLayer);
+
+              // 內層鐵道主線
+              const trackLine = L.polyline(trackPoints, {
+                color: '#334155',
+                weight: 2,
+                opacity: 0.85,
+                dashArray: '6, 5',
+                lineCap: 'butt'
+              }).addTo(linesLayer);
+
+              const info = getTransitDetails(sp1, sp2, day.dayNumber);
+              trackLine.bindTooltip(`<b>Day ${day.dayNumber}</b>: ${escapeHtml(sp1.name)} ➔ ${escapeHtml(sp2.name)}<br><span style="color:#2563eb;">${escapeHtml(info.name)}</span>`, { sticky: true });
+            }
+          }
+        });
+      }
+
+      if (hasPoints && !state._userPanned) {
+        map.fitBounds(bounds, { padding: [40, 40] });
+      }
+    }
+
+    function createCustomMarker(spot, seqNumber, highlightColor) {
+      let iconHtml = "";
+      let bgClass = "castle";
+      let iconEmoji = "🏯";
+
+      if (spot.type === "lodging") {
+        bgClass = "lodging";
+        iconEmoji = "♨️";
+      } else if (spot.type === "custom") {
+        bgClass = "custom";
+        iconEmoji = "📍";
+      }
+
+      const styleOverride = highlightColor ? `background-color: ${highlightColor};` : "";
+      const badgeHtml = seqNumber ? `<span class="custom-marker number-badge">${seqNumber}</span>` : "";
+
+      const html = `
+        <div class="custom-marker ${bgClass}" style="width: 32px; height: 32px; ${styleOverride}">
+          <span>${iconEmoji}</span>
+          ${badgeHtml}
+        </div>
+      `;
+
+      const customIcon = L.divIcon({
+        html: html,
+        className: '',
+        iconSize: [32, 32],
+        iconAnchor: [16, 16],
+        popupAnchor: [0, -18]
+      });
+
+      const marker = L.marker([spot.lat, spot.lng], { icon: customIcon });
+
+      // 檢查休館日
+      const closedDayWarning = spot.closedDay !== "None" 
+        ? `<div class="mt-1 text-xs bg-amber-50 text-amber-800 p-1.5 rounded border border-amber-200">
+            ⚠️ <strong>公休日：</strong>${escapeHtml(spot.closedDayText || spot.closedDay)}
+           </div>`
+        : "";
+
+      const reserveBtn = spot.reservationUrl 
+        ? `<a href="${spot.reservationUrl}" target="_blank" class="inline-block mt-2 text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-2.5 py-1 rounded">
+            🚕 預約計程車 / 票券直連 ↗
+           </a>`
+        : "";
+
+      // 車次直連按鈕
+      const transitBtn = spot.nearestStation 
+        ? `<a href="https://transit.yahoo.co.jp/search/result?from=${encodeURIComponent('岡山')}&to=${encodeURIComponent(spot.nearestStation)}" target="_blank" class="inline-block mt-1 text-xs bg-blue-600 hover:bg-blue-700 text-white px-2 py-0.5 rounded mr-1">
+            🚅 岡山發車查
+           </a>
+           <a href="https://www.google.com/maps/dir/?api=1&destination=${spot.lat},${spot.lng}&travelmode=transit" target="_blank" class="inline-block mt-1 text-xs bg-slate-700 hover:bg-slate-800 text-white px-2 py-0.5 rounded">
+            🗺️ Google轉乘
+           </a>`
+        : "";
+
+      const popupHtml = `
+        <div class="p-1 min-w-[240px]">
+          <div class="flex items-center justify-between border-b pb-1">
+            <h4 class="font-bold text-sm text-slate-900">${escapeHtml(spot.name)}</h4>
+            <span class="text-[11px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded">${escapeHtml(spot.prefecture || '')}</span>
+          </div>
+          <div class="text-xs text-slate-600 mt-2 space-y-1">
+            <div><strong>🚉 最近車站：</strong>${escapeHtml(spot.nearestStation || '無')}</div>
+            ${spot.stayDuration ? `<div><strong>⏱️ 建議停留：</strong><span class="font-bold text-slate-900">${escapeHtml(spot.stayDuration)}</span> ${spot.climbLevelText ? `<span class="text-amber-800 text-[11px]">(${escapeHtml(spot.climbLevelText)})</span>` : ''}</div>` : ''}
+            <div><strong>⏰ 開放/蓋章：</strong>${escapeHtml(spot.openHours || '見官網')}</div>
+            <div><strong>📮 蓋章處：</strong>${escapeHtml(spot.stampLocation || '無')}</div>
+            ${spot.backupStamp ? `<div><strong>🔄 備用章處：</strong>${escapeHtml(spot.backupStamp)}</div>` : ''}
+            <div><strong>🚌 接駁交通：</strong>${escapeHtml(spot.transitInfo || '')}</div>
+            ${closedDayWarning}
+            ${reserveBtn}
+            <div class="pt-2 border-t mt-2 flex flex-wrap gap-1">
+              ${transitBtn}
+            </div>
+          </div>
+        </div>
+      `;
+
+      marker.bindPopup(popupHtml);
+      return marker;
+    }
+
+    function fitMapBounds() {
+      const bounds = L.latLngBounds();
+      let has = false;
+      state.spots.forEach(s => {
+        if (s.lat && s.lng) {
+          bounds.extend([s.lat, s.lng]);
+          has = true;
+        }
+      });
+      if (has && map) {
+        map.fitBounds(bounds, { padding: [30, 30] });
+      }
+    }
+
+    function updateMapFilterDropdown() {
+      const select = document.getElementById("mapFilterSelect");
+      if (!select) return;
+      let html = `<option value="all">🗺️ 全部天數與景點</option>`;
+      state.itinerary.forEach((d, i) => {
+        const th = getDayTheme(i);
+        html += `<option value="${d.dayNumber}">📅 Day ${d.dayNumber} [${th.name.split('·')[0]}]：${escapeHtml(d.title)}</option>`;
+      });
+      select.innerHTML = html;
+      select.value = state.selectedDayFilter;
+    }
+
+    function onMapFilterChange() {
+      const select = document.getElementById("mapFilterSelect");
+      state.selectedDayFilter = select.value;
+      state._userPanned = false;
+      renderMapElements();
+    }
+
+    function focusSpotOnMap(spotId) {
+      const spot = state.spots.find(s => s.id === spotId);
+      if (spot && spot.lat && spot.lng && map) {
+        map.setView([spot.lat, spot.lng], 14, { animate: true });
+        markersLayer.eachLayer(layer => {
+          if (layer.getLatLng && Math.abs(layer.getLatLng().lat - spot.lat) < 0.0001) {
+            layer.openPopup();
+          }
+        });
+      }
+    }
+
+    // ==========================================
+    // 星期計算與休館日衝突警告
+    // ==========================================
+    const DAY_OF_WEEK_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const DAY_OF_WEEK_ZH = ["週日", "週一", "週二", "週三", "週四", "週五", "週六"];
+
+    function getDayOfWeek(dateStr) {
+      if (!dateStr) return null;
+      const d = new Date(dateStr + "T00:00:00");
+      if (isNaN(d.getTime())) return null;
+      return {
+        en: DAY_OF_WEEK_NAMES[d.getDay()],
+        zh: DAY_OF_WEEK_ZH[d.getDay()]
+      };
+    }
+
+    // 檢查某景點在某天是否衝堂公休
+    function checkSpotClosedConflict(spot, dateStr) {
+      if (!spot || !spot.closedDay || spot.closedDay === "None" || !dateStr) return null;
+      const dow = getDayOfWeek(dateStr);
+      if (!dow) return null;
+      if (spot.closedDay.toLowerCase() === dow.en.toLowerCase()) {
+        return {
+          dayZh: dow.zh,
+          spotName: spot.name,
+          closedText: spot.closedDayText || `${dow.zh}休館`,
+          backup: spot.backupStamp
+        };
+      }
+      return null;
+    }
+
+    // ==========================================
+    // 畫面 Tab 切換與渲染
+    // ==========================================
+    function switchTab(tab) {
+      state.activeTab = tab;
+      
+      const btnItinerary = document.getElementById("tabBtnItinerary");
+      const btnSpots = document.getElementById("tabBtnSpots");
+      const btnTransit = document.getElementById("tabBtnTransit");
+
+      const activeClass = "border-b-2 border-red-600 font-bold text-red-600 bg-white";
+      const inactiveClass = "text-slate-600 hover:text-slate-900 bg-transparent";
+
+      btnItinerary.className = `flex-1 py-3 px-4 text-center ${tab === 'itinerary' ? activeClass : inactiveClass}`;
+      btnSpots.className = `flex-1 py-3 px-4 text-center ${tab === 'spots' ? activeClass : inactiveClass}`;
+      btnTransit.className = `flex-1 py-3 px-4 text-center ${tab === 'transit' ? activeClass : inactiveClass}`;
+
+      renderMainPanel();
+    }
+
+    function renderMainPanel() {
+      const container = document.getElementById("mainPanelContent");
+      if (!container) return;
+      const prevScroll = container.scrollTop;
+
+      if (state.activeTab === "itinerary") {
+        renderItineraryTab(container);
+      } else if (state.activeTab === "spots") {
+        renderSpotsTab(container);
+      } else if (state.activeTab === "transit") {
+        renderTransitTab(container);
+      }
+
+      if (prevScroll > 0) {
+        container.scrollTop = prevScroll;
+      }
+    }
+
+    
+    // ==========================================
+    // 推薦景點加選與移出管理模組 (Recommended Spots Manager)
+    // ==========================================
+    let recManagerOpen = true;
+    let recManagerCategory = 'all';
+    let currentAddModalDay = null;
+
+    function getSpotCategory(s) {
+      if (!s) return 'custom';
+      if (s.type === 'castle') return 'castle';
+      if (s.type === 'lodging') return 'lodging';
+      if (s.climbLevel === 'shrine' || s.name.includes('神社') || s.name.includes('大社')) return 'shrine';
+      if (s.climbLevel === 'scenic' || s.id.includes('sakyu') || s.id.includes('bikan') || s.id.includes('senkoji') || s.id.includes('museum') || s.id.includes('mizuki') || s.id.includes('horikawa')) return 'scenic';
+      if (s.climbLevel === 'gourmet' || s.id.includes('chiyagyu') || s.id.includes('takumi') || s.id.includes('tsubomi') || s.id.includes('jinseki') || s.id.includes('atago')) return 'gourmet';
+      if (s.climbLevel === 'anime' || s.climbLevel === 'museum' || s.id.includes('pokemon') || s.id.includes('peace')) return 'anime';
+      return 'custom';
+    }
+
+    function getCategoryBadge(cat) {
+      switch(cat) {
+        case 'shrine': return '<span class="text-[10px] bg-rose-100 text-rose-800 font-bold px-1.5 py-0.5 rounded border border-rose-200">⛩️ 靈驗神社</span>';
+        case 'scenic': return '<span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded border border-emerald-200">🏞️ 沿線絕景</span>';
+        case 'gourmet': return '<span class="text-[10px] bg-amber-100 text-amber-900 font-bold px-1.5 py-0.5 rounded border border-amber-200">🥩 頂級和牛</span>';
+        case 'anime': return '<span class="text-[10px] bg-purple-100 text-purple-800 font-bold px-1.5 py-0.5 rounded border border-purple-200">⚡ 寶可夢/文藝</span>';
+        case 'castle': return '<span class="text-[10px] bg-red-100 text-red-800 font-bold px-1.5 py-0.5 rounded border border-red-200">🏯 100名城</span>';
+        case 'lodging': return '<span class="text-[10px] bg-indigo-100 text-indigo-800 font-bold px-1.5 py-0.5 rounded border border-indigo-200">♨️ 溫泉住宿</span>';
+        default: return '<span class="text-[10px] bg-slate-100 text-slate-700 font-bold px-1.5 py-0.5 rounded">📍 特色點位</span>';
+      }
+    }
+
+    function toggleRecManager() {
+      recManagerOpen = !recManagerOpen;
+      renderMainPanel();
+    }
+
+    function setRecManagerCategory(cat) {
+      recManagerCategory = cat;
+      renderMainPanel();
+    }
+
+    function addSpotToDay(spotId, dayNumber, insertIndex = -1) {
+      const targetDay = state.itinerary.find(d => d.dayNumber === dayNumber);
+      const spot = state.spots.find(s => s.id === spotId);
+      if (!targetDay || !spot) return;
+
+      // 先從其他天移除避免重複
+      state.itinerary.forEach(d => {
+        if (d.spotIds) d.spotIds = d.spotIds.filter(id => id !== spotId);
+      });
+
+      if (!targetDay.spotIds) targetDay.spotIds = [];
+      if (isLodgingSpot(spot) || insertIndex === -1 || insertIndex >= targetDay.spotIds.length) {
+        targetDay.spotIds.push(spotId);
+      } else {
+        targetDay.spotIds.splice(insertIndex, 0, spotId);
+      }
+      targetDay.spotIds = sortDaySpotsLodgingAtEnd(targetDay.spotIds);
+      saveState();
+      renderMainPanel();
+      renderMapElements();
+    }
+
+    function addSpotToBestDay(spotId) {
+      const spot = state.spots.find(s => s.id === spotId);
+      if (!spot) return;
+      const recs = analyzeBestDaysForSpot(spot);
+      if (recs && recs.length > 0) {
+        const best = recs[0];
+        addSpotToDay(spotId, best.dayNumber, best.bestInsertIndex);
+      } else {
+        addSpotToDay(spotId, 1);
+      }
+    }
+
+    function removeSpotFromItinerary(spotId) {
+      let changed = false;
+      state.itinerary.forEach(d => {
+        if (d.spotIds && d.spotIds.includes(spotId)) {
+          d.spotIds = d.spotIds.filter(id => id !== spotId);
+          changed = true;
+        }
+      });
+      if (changed) {
+        saveState();
+        renderMainPanel();
+        renderMapElements();
+      }
+    }
+
+
+    // 清理未加入行程之推薦選項（和牛餐廳無論是否排入皆完整保留；吉備津彥神社保留）
+    
+
+    // 徹底從景點資料庫與行程中刪除景點 (支援復原)
+    function deleteSpotPermanently(spotId) {
+      const spot = state.spots.find(s => s.id === spotId);
+      if (!spot) return;
+
+      const confirmMsg = `確定要將「${spot.name}」從景點資料庫中刪除嗎？\n\n• 刪除後將不再出現在推薦加選庫與行程中\n• 若需找回，可隨時點擊「🔄 恢復預設景點庫」一鍵復原。`;
+      if (!confirm(confirmMsg)) return;
+
+      // 1. 從所有天數中移出
+      state.itinerary.forEach(d => {
+        if (d.spotIds) {
+          d.spotIds = d.spotIds.filter(id => id !== spotId);
+        }
+      });
+
+      // 2. 從 state.spots 中移除
+      state.spots = state.spots.filter(s => s.id !== spotId);
+
+      // 3. 記錄至 deletedSpotIds 避免重新整理時合流補回
+      if (!state.deletedSpotIds) state.deletedSpotIds = [];
+      if (!state.deletedSpotIds.includes(spotId)) {
+        state.deletedSpotIds.push(spotId);
+      }
+
+      saveState();
+      renderMainPanel();
+      renderMapElements();
+      updateMapFilterDropdown();
+
+      // 若加選彈窗開啟中，同步刷新
+      if (currentAddModalDay) {
+        renderDayAddSpotModalList();
+      }
+    }
+
+    // 一鍵恢復所有被刪除的預設景點
+    function restoreDefaultSpots() {
+      const deletedCount = (state.deletedSpotIds || []).length;
+      if (deletedCount === 0) {
+        alert("目前沒有任何被刪除的預設景點，所有 39 處名勝皆完整在庫！");
+        return;
+      }
+
+      if (!confirm(`確定要恢復已刪除的 ${deletedCount} 個預設景點嗎？\n（您現有已排入的行程天數與順序不會受任何影響）`)) return;
+
+      state.deletedSpotIds = [];
+      localStorage.removeItem(STORAGE_KEY_DELETED_SPOTS);
+
+      // 將 DEFAULT_SPOTS 重新合流補齊進 state.spots
+      DEFAULT_SPOTS.forEach(ds => {
+        const existing = state.spots.find(s => s.id === ds.id);
+        if (!existing) {
+          state.spots.push(JSON.parse(JSON.stringify(ds)));
+        }
+      });
+
+      saveState();
+      renderMainPanel();
+      renderMapElements();
+      updateMapFilterDropdown();
+
+      if (currentAddModalDay) {
+        renderDayAddSpotModalList();
+      }
+      alert("已成功恢復所有預設景點！");
+    }
+
+    // 渲染「🥩 頂級和牛加選/備選專區 (依使用者需求：最上方僅保留和牛名店待加入)」
+    function renderRecommendedSpotsSection() {
+      // 依使用者最新需求：景點已加入完成，最上方專注保留「三大和牛名店」供彈性加入或替換晚餐
+      const wagyuSpots = state.spots.filter(s => getSpotCategory(s) === 'gourmet');
+
+      const assignedIds = new Set();
+      state.itinerary.forEach(d => (d.spotIds || []).forEach(id => assignedIds.add(id)));
+      const assignedWagyuCount = wagyuSpots.filter(s => assignedIds.has(s.id)).length;
+
+      let cardsHtml = wagyuSpots.map(spot => {
+        const assignedDay = state.itinerary.find(d => (d.spotIds || []).includes(spot.id));
+        const isAssigned = !!assignedDay;
+
+        // 計算最佳推薦天數
+        let bestDayNum = 1;
+        if (spot.id.includes('chiyagyu')) bestDayNum = 1;
+        else if (spot.id.includes('tottori')) bestDayNum = 3;
+        else if (spot.id.includes('hiroshima')) bestDayNum = 6;
+
+        const cardBorder = isAssigned 
+          ? 'border-emerald-500/80 bg-gradient-to-br from-slate-900 via-slate-850 to-emerald-950/40 ring-1 ring-emerald-400/50' 
+          : 'border-amber-500/40 bg-slate-900/80 hover:border-amber-400';
+
+        const statusBadge = isAssigned
+          ? `<span class="text-[10px] bg-emerald-500/20 text-emerald-300 font-bold px-2 py-0.5 rounded border border-emerald-400/40 flex items-center gap-1 shrink-0">
+               <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+               <span>已排入 Day ${assignedDay.dayNumber}</span>
+             </span>`
+          : `<span class="text-[10px] bg-amber-500/20 text-amber-300 font-bold px-2 py-0.5 rounded border border-amber-400/40 shrink-0">⚪ 待加入 (推薦 D${bestDayNum})</span>`;
+
+        const actionButtons = isAssigned
+          ? `
+            <div class="flex items-center gap-1.5 shrink-0 flex-wrap justify-end">
+              <select onchange="addSpotToDay('${spot.id}', parseInt(this.value, 10))" class="text-[11px] bg-slate-800 text-slate-200 border border-slate-700 rounded px-1.5 py-1 outline-none">
+                ${state.itinerary.map(d => `<option value="${d.dayNumber}" ${d.dayNumber === assignedDay.dayNumber ? 'selected' : ''}>改至 Day ${d.dayNumber}</option>`).join('')}
+              </select>
+              <button onclick="removeSpotFromItinerary('${spot.id}')" class="bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 text-xs font-bold px-2.5 py-1 rounded transition flex items-center gap-1 shadow-2xs">
+                <span>❌</span> 移出
+              </button>
+            </div>
+          `
+          : `
+            <div class="flex items-center gap-1.5 shrink-0 flex-wrap justify-end">
+              <button onclick="addSpotToDay('${spot.id}', ${bestDayNum})" class="bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black px-2.5 py-1 rounded transition flex items-center gap-1 shadow-xs">
+                <span>➕</span> 加入 Day ${bestDayNum}
+              </button>
+              <select onchange="if(this.value) addSpotToDay('${spot.id}', parseInt(this.value, 10))" class="text-[11px] bg-slate-800 text-slate-300 border border-slate-700 rounded px-1 py-1 outline-none">
+                <option value="">指定天數 ▼</option>
+                ${state.itinerary.map(d => `<option value="${d.dayNumber}">Day ${d.dayNumber}</option>`).join('')}
+              </select>
+            </div>
+          `;
+
+        return `
+          <div class="p-3 rounded-xl border ${cardBorder} transition shadow-sm space-y-2 flex flex-col justify-between">
+            <div>
+              <div class="flex items-start justify-between gap-1.5">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <button onclick="focusSpotOnMap('${spot.id}')" class="font-bold text-white text-xs hover:text-amber-300 text-left transition">
+                    ${escapeHtml(spot.name)}
+                  </button>
+                  <span class="text-[10px] bg-amber-400/20 text-amber-300 border border-amber-400/40 font-bold px-1.5 py-0.2 rounded">🥩 頂級和牛</span>
+                  <span class="text-[10px] bg-black/40 text-slate-400 px-1 rounded">${escapeHtml(spot.prefecture || '')}</span>
+                </div>
+                ${statusBadge}
+              </div>
+              <div class="text-[11px] text-slate-300 mt-1 line-clamp-2 leading-relaxed">
+                ${escapeHtml(spot.notes || spot.climbLevelText || '')}
+              </div>
+              ${spot.reservationUrl ? `<div class="mt-1"><a href="${spot.reservationUrl}" target="_blank" class="text-[10px] text-amber-300 hover:underline inline-flex items-center gap-0.5">🔗 查看菜單與預約 ↗</a></div>` : ''}
+            </div>
+            <div class="pt-2 border-t border-slate-700/60 flex items-center justify-between gap-2">
+              <button onclick="focusSpotOnMap('${spot.id}')" class="text-[11px] text-slate-400 hover:text-slate-200 transition">
+                🎯 定位
+              </button>
+              ${actionButtons}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      return `
+        <div class="mb-5 bg-gradient-to-r from-slate-950 via-slate-900 to-amber-950/70 text-white rounded-2xl p-4 shadow-lg border border-amber-500/40">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
+            <div class="flex items-center gap-2">
+              <span class="text-2xl">🥩</span>
+              <div>
+                <h3 class="font-bold text-sm text-white flex items-center gap-2">
+                  三大頂級和牛名店加選專區
+                  <span class="text-[10px] bg-amber-400 text-slate-950 font-black px-2 py-0.5 rounded-full">千屋牛・鳥取和牛・廣島和牛</span>
+                </h3>
+                <p class="text-[11px] text-amber-200/90 mt-0.5">
+                  已加入 <strong>${assignedWagyuCount}</strong> / ${wagyuSpots.length} 間名店・點擊按鈕直接加入推薦順路天數或指定天數
+                </p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="toggleRecManager()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-2.5 py-1 rounded-lg transition flex items-center gap-1">
+                <span>${recManagerOpen ? '▲ 收合和牛專區' : '▼ 展開和牛專區'}</span>
+              </button>
+            </div>
+          </div>
+
+          ${recManagerOpen ? `
+            <!-- 和牛卡片網格 (岡山2間・鳥取2間・廣島2間) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5 max-h-[420px] overflow-y-auto pr-1">
+              ${cardsHtml}
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    // ==========================================
+    // 為特定天數加入景點彈窗 (Day Add Spot Modal)
+    // ==========================================
+    function openAddSpotModalForDay(dayNumber) {
+      currentAddModalDay = dayNumber;
+      const modal = document.getElementById("dayAddSpotModal");
+      const badge = document.getElementById("dayAddSpotModalBadge");
+      const targetDay = state.itinerary.find(d => d.dayNumber === dayNumber);
+      if (badge && targetDay) {
+        badge.innerText = `Day ${dayNumber}：${targetDay.title.split('：')[1] || targetDay.title}`;
+      }
+      document.getElementById("dayAddSpotSearchInput").value = "";
+      document.getElementById("dayAddSpotCategoryFilter").value = "all";
+      renderDayAddSpotModalList();
+      modal.classList.remove("hidden");
+    }
+
+    function closeDayAddSpotModal() {
+      document.getElementById("dayAddSpotModal").classList.add("hidden");
+      currentAddModalDay = null;
+    }
+
+    function renderDayAddSpotModalList() {
+      const container = document.getElementById("dayAddSpotModalList");
+      if (!container || !currentAddModalDay) return;
+      const search = (document.getElementById("dayAddSpotSearchInput").value || "").trim().toLowerCase();
+      const catFilter = document.getElementById("dayAddSpotCategoryFilter").value;
+      const targetDay = state.itinerary.find(d => d.dayNumber === currentAddModalDay);
+      if (!targetDay) return;
+
+      const filtered = state.spots.filter(s => {
+        if (s.id === 'okayama_airport') return false;
+        const cat = getSpotCategory(s);
+        if (catFilter !== 'all' && cat !== catFilter) return false;
+        if (search) {
+          const matchName = (s.name || "").toLowerCase().includes(search);
+          const matchPref = (s.prefecture || "").toLowerCase().includes(search);
+          const matchNotes = (s.notes || "").toLowerCase().includes(search);
+          if (!matchName && !matchPref && !matchNotes) return false;
+        }
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="p-6 text-center text-slate-400">無相符的景點</div>`;
+        return;
+      }
+
+      const html = filtered.map(spot => {
+        const inThisDay = (targetDay.spotIds || []).includes(spot.id);
+        const assignedDay = state.itinerary.find(d => (d.spotIds || []).includes(spot.id));
+        const cat = getSpotCategory(spot);
+        const catBadge = getCategoryBadge(cat);
+
+        let actionBtn = "";
+        let borderCls = "border-slate-200 bg-white";
+
+        if (inThisDay) {
+          borderCls = "border-emerald-300 bg-emerald-50/50";
+          actionBtn = `
+            <span class="text-emerald-700 font-bold text-xs flex items-center gap-1 mr-1">✅ 已在本日</span>
+            <button onclick="removeSpotFromDay(${currentAddModalDay}, ${targetDay.spotIds.indexOf(spot.id)}); renderDayAddSpotModalList();" class="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-2 py-1 rounded text-xs font-bold transition">
+              移出
+            </button>
+          `;
+        } else if (assignedDay) {
+          actionBtn = `
+            <span class="text-slate-500 text-[11px] mr-1">在 Day ${assignedDay.dayNumber}</span>
+            <button onclick="addSpotToDay('${spot.id}', ${currentAddModalDay}); renderDayAddSpotModalList();" class="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 px-2 py-1 rounded text-xs font-bold transition">
+              移入本日
+            </button>
+          `;
+        } else {
+          actionBtn = `
+            <button onclick="addSpotToDay('${spot.id}', ${currentAddModalDay}); renderDayAddSpotModalList();" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded text-xs font-bold transition flex items-center gap-1 shadow-2xs">
+              <span>➕</span> 加入本日
+            </button>
+            <button onclick="deleteSpotPermanently('${spot.id}')" title="不考慮此景點，從資料庫刪除" class="bg-slate-100 hover:bg-rose-100 text-slate-400 hover:text-rose-600 p-1 rounded text-xs transition">
+              🗑️
+            </button>
+          `;
+        }
+
+        return `
+          <div class="p-2.5 rounded-lg border ${borderCls} flex items-center justify-between gap-2 transition">
+            <div>
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="font-bold text-slate-900">${escapeHtml(spot.name)}</span>
+                ${catBadge}
+                <span class="text-[10px] bg-slate-100 text-slate-600 px-1 rounded">${escapeHtml(spot.prefecture || '')}</span>
+              </div>
+              <div class="text-[11px] text-slate-500 mt-0.5 line-clamp-1">
+                ${escapeHtml(spot.notes || spot.climbLevelText || '')}
+              </div>
+            </div>
+            <div class="flex items-center gap-1 shrink-0">
+              ${actionBtn}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      container.innerHTML = html;
+    }
+
+    // ------------------------------------------
+    // Tab 1: 行程規劃 (Itinerary Tab)
+    // ------------------------------------------
+    function renderItineraryTab(container) {
+      // 依使用者需求：已關閉最上方「一鍵自動排入最佳天數」提示，改由使用者完全自主掌控加入與刪除
+      const assignedIds = new Set();
+      state.itinerary.forEach(d => (d.spotIds || []).forEach(id => assignedIds.add(id)));
+
+      // 頂部天數速跳膠囊導航列 (快速直達特定天，帶有當天專屬色票)
+      let dayNavPills = "";
+      if (state.itinerary.length > 0) {
+        dayNavPills = `
+          <div class="sticky -top-4 z-10 bg-white/95 backdrop-blur-md pt-1 pb-2 border-b border-slate-200/90 -mx-4 px-4 mb-4 shadow-2xs">
+            <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">
+              <button onclick="sortAllDaysSpots()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-bold px-2.5 py-1 rounded-full shadow-2xs transition flex items-center gap-1 shrink-0">
+                <span>✨</span>
+                <span>一鍵自動排序所有天數</span>
+              </button>
+              <div class="h-4 w-px bg-slate-300 shrink-0"></div>
+              <span class="text-[11px] font-bold text-slate-500 shrink-0 flex items-center gap-1">
+                <span>⚡</span>
+                <span>天數速跳：</span>
+              </span>
+              <div class="flex items-center gap-1.5 shrink-0">
+                ${state.itinerary.map((d, i) => {
+                  const th = getDayTheme(i);
+                  return `
+                    <button onclick="scrollToDay(${d.dayNumber})" class="text-xs font-bold px-2.5 py-1 rounded-full border transition shrink-0 flex items-center gap-1.5 ${th.pillBg}">
+                      <span class="w-2.5 h-2.5 rounded-full shadow-2xs" style="background-color: ${th.hex};"></span>
+                      <span>D${d.dayNumber} ${th.name.split('·')[0]}</span>
+                    </button>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      let html = `
+        <div class="flex items-center justify-between pb-2 border-b border-slate-200 mb-3">
+          <div>
+            <h2 class="font-bold text-slate-800 text-sm">📅 每日名城巡禮行程與交通排程</h2>
+            <p class="text-xs text-slate-500">各日分配專屬強烈色彩主題・自動避開公休日・交通直連</p>
+          </div>
+          <button onclick="addNewDay()" class="bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold px-3 py-1.5 rounded flex items-center gap-1 transition shadow-sm">
+            ➕ 新增天數
+          </button>
+        </div>
+                ${dayNavPills}
+        ${renderRecommendedSpotsSection()}
+      `;
+
+      state.itinerary.forEach((day, dIdx) => {
+        const dow = getDayOfWeek(day.date);
+        const dowText = dow ? `(${dow.zh})` : "";
+        const theme = getDayTheme(dIdx);
+
+        // 檢查該天所有景點是否有公休衝突
+        const conflicts = [];
+        (day.spotIds || []).forEach(sid => {
+          const sp = state.spots.find(s => s.id === sid);
+          if (sp) {
+            const conf = checkSpotClosedConflict(sp, day.date);
+            if (conf) conflicts.push(conf);
+          }
+        });
+
+        const conflictBanner = conflicts.length > 0 
+          ? `<div class="bg-amber-500/10 border-l-4 border-amber-500 p-2.5 rounded-r my-2 space-y-1">
+              ${conflicts.map(c => `
+                <div class="text-xs text-amber-900 flex items-start gap-1.5">
+                  <span class="text-base leading-none">⚠️</span>
+                  <div>
+                    <strong>【公休警示】</strong>${escapeHtml(c.spotName)} 於 <strong>${c.dayZh}</strong> 休館！<br>
+                    <span class="text-amber-700">${escapeHtml(c.closedText)}</span>
+                    ${c.backup ? `<br><span class="text-xs font-semibold text-emerald-700">💡 備案蓋章處：${escapeHtml(c.backup)}</span>` : ''}
+                  </div>
+                </div>
+              `).join('')}
+             </div>`
+          : "";
+
+        html += `
+          <div id="day-card-${day.dayNumber}" class="rounded-xl bg-white border ${theme.cardBorder} ${theme.accentBorder} overflow-hidden shadow-sm hover:shadow transition mb-6">
+            <!-- Day 標題列：鮮明飽和漸層 Header -->
+            <div class="px-4 py-2.5 bg-gradient-to-r ${theme.headerGradient} text-white flex flex-wrap items-center justify-between gap-2 shadow-xs">
+              <div class="flex items-center gap-2 flex-1 min-w-[220px]">
+                <span class="bg-white/20 backdrop-blur-sm text-white font-black text-xs px-2.5 py-0.5 rounded-full border border-white/30 tracking-wider shadow-2xs">
+                  Day ${day.dayNumber}
+                </span>
+                <span class="text-[11px] font-bold bg-black/25 px-2 py-0.5 rounded text-white/95">
+                  ${theme.name}
+                </span>
+                <input type="text" value="${escapeHtml(day.title)}" 
+                  onchange="updateDayField(${day.dayNumber}, 'title', this.value)" 
+                  class="text-xs font-bold bg-white/10 hover:bg-white/20 focus:bg-white/30 border border-white/30 focus:border-white rounded px-2 py-1 text-white placeholder-white/60 transition flex-1" 
+                  style="max-width: 250px;" 
+                  placeholder="當日行程主題">
+              </div>
+              <div class="flex items-center gap-2">
+                <div class="flex items-center gap-1.5 text-xs bg-black/25 backdrop-blur-sm px-2.5 py-1 rounded-md border border-white/20 text-white font-medium">
+                  <span>📅</span>
+                  <input type="date" value="${day.date || ''}" 
+                    onchange="updateDayField(${day.dayNumber}, 'date', this.value)" 
+                    class="bg-transparent text-xs text-white outline-none cursor-pointer">
+                  <span class="font-bold text-amber-200">${dowText}</span>
+                </div>
+                <button onclick="autoSortDay(${day.dayNumber})" title="依地理順路動線自動排序當日景點" class="text-[11px] font-bold bg-white/20 hover:bg-white/30 text-white px-2 py-0.5 rounded transition flex items-center gap-0.5">
+                  <span>⚡</span>
+                  <span>自動排序</span>
+                </button>
+                <button onclick="deleteDay(${day.dayNumber})" 
+                  class="text-white/80 hover:text-white hover:bg-black/30 p-1.5 rounded text-xs transition" 
+                  title="刪除此天">
+                  🗑️
+                </button>
+              </div>
+            </div>
+
+            <div class="p-3.5 space-y-3">
+              ${conflictBanner}
+
+              <!-- 住宿與備忘紀錄 (微透主題底色) -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs ${theme.subCardBg} p-3 rounded-lg border border-slate-200/80">
+                <div>
+                  <label class="block text-slate-700 font-bold mb-1 flex items-center gap-1">
+                    <span>🏨</span> 今晚住宿 / 基地：
+                  </label>
+                  <input type="text" value="${escapeHtml(day.lodging || '')}" 
+                    onchange="updateDayField(${day.dayNumber}, 'lodging', this.value)" 
+                    placeholder="例如：皆生溫泉 海濱旅館 / 岡山站前大和..." 
+                    class="w-full border border-slate-300 rounded px-2 py-1.5 bg-white ${theme.inputFocus}">
+                </div>
+                <div>
+                  <label class="block text-slate-700 font-bold mb-1 flex items-center gap-1">
+                    <span>🚉</span> 出發 / 樞紐車站：
+                  </label>
+                  <input type="text" value="${escapeHtml(day.baseStation || '')}" 
+                    onchange="updateDayField(${day.dayNumber}, 'baseStation', this.value)" 
+                    placeholder="例如：岡山駅 / 鳥取駅 / 米子駅..." 
+                    class="w-full border border-slate-300 rounded px-2 py-1.5 bg-white ${theme.inputFocus}">
+                </div>
+                <div class="sm:col-span-2">
+                  <div class="flex items-center justify-between mb-1">
+                    <label class="block text-slate-800 font-bold flex items-center gap-1 text-xs">
+                      <span>📝</span> 當日行前備忘與注意事項
+                      <span class="text-[11px] font-normal text-slate-500">(支援換行分段)</span>：
+                    </label>
+                    <span class="text-[10px] text-slate-400">換行即可建立新段落</span>
+                  </div>
+                  <textarea 
+                    rows="3" 
+                    onchange="updateDayField(${day.dayNumber}, 'notes', this.value)" 
+                    placeholder="在此填寫當日行前備忘、注意事項、行李寄放、觀光計程車預約時間等（換行自動切換段落）" 
+                    class="w-full border border-slate-300 rounded-lg p-2.5 bg-white text-xs leading-relaxed text-slate-800 ${theme.inputFocus} resize-y shadow-2xs font-sans whitespace-pre-wrap">${escapeHtml(day.notes || '')}</textarea>
+                  ${renderNotesParagraphs(day.notes)}
+                </div>
+              </div>
+
+              <!-- 景點循序清單與區間車次 -->
+              <div>
+                <div class="flex items-center justify-between text-xs mb-2">
+                  <span class="font-bold text-slate-800 flex items-center gap-1">
+                    <span>📍</span> 造訪順序與轉乘連動：
+                  </span>
+                  <button onclick="openAddSpotModalForDay(${day.dayNumber})" class="text-xs font-bold px-2.5 py-1 rounded shadow-2xs flex items-center gap-1 transition ${theme.badgeBg}">
+                    ➕ 加入景點至 Day ${day.dayNumber}
+                  </button>
+                </div>
+
+                <div class="space-y-2">
+                  ${renderDaySpotsList(day, theme)}
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function scrollToDay(dayNumber) {
+      const el = document.getElementById(`day-card-${dayNumber}`);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        el.classList.add('ring-4', 'ring-amber-400');
+        setTimeout(() => {
+          el.classList.remove('ring-4', 'ring-amber-400');
+        }, 1500);
+      }
+      // 同步切換地圖至該天之真實鐵道動線
+      const select = document.getElementById("mapFilterSelect");
+      if (select && select.value !== String(dayNumber)) {
+        select.value = String(dayNumber);
+        state.selectedDayFilter = String(dayNumber);
+        state._userPanned = false;
+        renderMapElements();
+      }
+    }
+
+
+    // ==========================================
+    // 山陽&山陰地區鐵路周遊券 (JR Sanyo-San'in Area Pass) 交通班次與適用檢核資料庫
+    // ==========================================
+    const TRANSIT_KNOWLEDGE_BASE = {
+      // Day 1
+      "okayama_airport_to_okayama": {
+        name: "岡山機場利木津巴士 (岡電/中鐵巴士)",
+        time: "約 30 分鐘",
+        passCovered: false,
+        passNote: "非 JR 巴士，單程自費 780 円 (可刷 IC 卡)",
+        tips: "配合虎航抵達時間出關，於 2 號乘車處搭乘直達岡山站西口"
+      },
+      "okayama_airport_to_okayama_hotel": {
+        name: "岡山機場利木津巴士 (岡電/中鐵巴士)",
+        time: "約 30 分鐘",
+        passCovered: false,
+        passNote: "非 JR 巴士，單程自費 780 円 (可刷 IC 卡)",
+        tips: "搭乘利木津巴士直達岡山站西口，徒步 1~3 分即達飯店 Check-in 寄放大件行李"
+      },
+      "okayama_hotel_to_chiyagyu_bisai": {
+        name: "站前飯店直結通道 (格蘭比亞 2F)",
+        time: "步行 1~2 分鐘",
+        passCovered: true,
+        passNote: "站前商圈徒步",
+        tips: "零距離享用日本最古老和牛血統——岡山千屋牛頂級鐵板料理"
+      },
+      "chiyagyu_bisai_to_okayama_aeon": {
+        name: "岡山站前地下街通道 (直通 AEON)",
+        time: "步行約 5 分鐘",
+        passCovered: true,
+        passNote: "地下街全天候步道",
+        tips: "漫步西日本最大級購物中心 (350 間店鋪逛街採買)"
+      },
+      "okayama_aeon_to_okayama_hotel": {
+        name: "商圈徒步返回站前飯店",
+        time: "步行約 5 分鐘",
+        passCovered: true,
+        passNote: "徒步返宿",
+        tips: "採買完返回飯店夜宿休息，為明日 12 名城蓄積元氣"
+      },
+      // Day 2
+      "okayama_to_kinojo": {
+        name: "JR 吉備線 (桃太郎線) 或 伯備線 普通車",
+        time: "約 27~40 分鐘",
+        passCovered: true,
+        passNote: "JR 全額包含 (自由席/普通車全包)",
+        tips: "總社站下車轉計程車約 25~30 分 (約 3,500 円，非JR需自費，下車約定回程)"
+      },
+      "kinojo_to_tsuyama": {
+        name: "JR 伯備線 + JR 津山線「快速ことぶき」(岡山轉乘)",
+        time: "約 1 小時 40 分鐘",
+        passCovered: true,
+        passNote: "JR 在來線全額包含",
+        tips: "津山站下車步行 10 分鐘即達津山城 (鶴山公園備中櫓)"
+      },
+      "tsuyama_to_yunogo_onsen": {
+        name: "宇野巴士 (宇野バス 湯郷溫泉・美作林野行)",
+        time: "約 35~40 分鐘",
+        passCovered: false,
+        passNote: "私營公車非 JR，單程自費約 680 円",
+        tips: "津山站前公車乘車處直達湯郷溫泉老街"
+      },
+      // Day 3
+      "yunogo_onsen_to_tottori": {
+        name: "JR 因美線 + 智頭急行特急「スーパーいなば」或直達普通車",
+        time: "約 1.5 ~ 2 小時",
+        passCovered: true,
+        passNote: "JR 因美線 & 智頭急行線 100% 包含！特急免費劃指定席",
+        tips: "抵達鳥取站出北口步行 4 分即達和牛名店「たくみ割烹店」(鳥取和牛涮涮鍋元祖)"
+      },
+      "tottori_to_kaike_onsen": {
+        name: "JR 山陰本線 特急「スーパーまつかぜ」或「スーパーおき」",
+        time: "特急 58 分 (轉日之丸公車 15 分)",
+        passCovered: true,
+        passNote: "特急松風/隱岐號全包！(米子至皆生公車 300 円自費)",
+        tips: "特急直通米子站，轉公車至皆生海濱公園拍溫泉穿山鼠人孔蓋"
+      },
+      // Day 4
+      "kaike_onsen_to_gassan_toda": {
+        name: "JR 山陰本線 (米子➔安來 9分) + 安來市營黃色巴士 (25分)",
+        time: "合計約 45 分鐘",
+        passCovered: true,
+        passNote: "米子至安來 JR 全包 (安來市營黃色公車 200 円自費)",
+        tips: "安來站出站搭黃色公車直達月山富田城麓市立病院/歷史資料館"
+      },
+      "gassan_toda_to_matsue": {
+        name: "JR 山陰本線 特急「やくも」或普通車 (安來 ➔ 松江)",
+        time: "特急約 14 分鐘 / 普通約 24 分鐘",
+        passCovered: true,
+        passNote: "特急八雲/普通車全額包含，可免費劃指定席",
+        tips: "松江站轉搭 Lake Line 觀光巴士 (210 円自費) 10 分至國寶松江城"
+      },
+      "matsue_to_tamatsukuri_onsen": {
+        name: "JR 山陰本線 普通車 (松江 ➔ 玉造溫泉)",
+        time: "約 8 分鐘",
+        passCovered: true,
+        passNote: "JR 全額包含 (溫泉街各大旅館提供免費接駁車)",
+        tips: "玉造站出站轉乘旅館接駁車 5 分進入美肌古湯老街"
+      },
+      "izumo_taisha_to_tamatsukuri_yu_jinja": {
+        name: "一畑巴士/電鐵 (至出雲市) + JR 山陰本線特急/普通車 (至玉造溫泉)",
+        time: "合計約 40 分鐘",
+        passCovered: true,
+        passNote: "出雲市至玉造溫泉 JR 特急/普通車全包！(出雲市公車/電鐵約530円自費)",
+        tips: "出雲大社參拜完回出雲市站，搭乘 JR 山陰本線直達玉造溫泉街最深處參拜玉作湯神社"
+      },
+      "tamatsukuri_yu_jinja_to_tamatsukuri_onsen": {
+        name: "玉造溫泉街溫泉川步道漫步",
+        time: "步行約 5 分鐘",
+        passCovered: true,
+        passNote: "溫泉街散策",
+        tips: "參拜完摸願之石祈福後，沿溫泉街漫步進駐溫泉旅館享受美肌神湯"
+      },
+      // Day 5
+      "tamatsukuri_onsen_to_tsuwano": {
+        name: "JR 山陰本線 特急「スーパーおき 1号」直達！(免換車)",
+        time: "約 2 小時 40 分鐘",
+        passCovered: true,
+        passNote: "特急超級隱岐號全包！免費劃指定席 (原價 5,800+ 円)",
+        tips: "津和野站出站轉搭觀光吊椅登山纜車 (700 円自費) 攻津和野城"
+      },
+      "tsuwano_to_hagi": {
+        name: "JR 山口線 + 山陰本線 (經益田) 或 防長特急巴士",
+        time: "約 1.5 ~ 2 小時",
+        passCovered: true,
+        passNote: "JR 鐵道路線全額包含 (若搭防長巴士需自費)",
+        tips: "東萩站下車轉循環公車 (100 円自費) 漫步指月公園萩城跡"
+      },
+      "hagi_to_shin_yamaguchi": {
+        name: "中國 JR 巴士 特急「スーパーはぎ号」(東萩 ➔ 新山口)",
+        time: "約 60~70 分鐘",
+        passCovered: true,
+        passNote: "超佛心！中國 JR 巴士特急路線納入 Pass 免費搭乘！(現省 1,800 円)",
+        tips: "直通新山口站新幹線口，今晚入住新山口站前商務飯店"
+      },
+      // Day 6
+      "shin_yamaguchi_to_iwakuni": {
+        name: "山陽新幹線「こだま」或「さくら」(新山口 ➔ 新岩國 28分)",
+        time: "新幹線 28 分 (轉公車 15 分)",
+        passCovered: true,
+        passNote: "山陽新幹線指定席/自由席全額包含！(岩國公車與纜車非JR需自費)",
+        tips: "出新岩國搭公車 15 分至錦帶橋，搭空中纜車登岩國城"
+      },
+      "iwakuni_to_hiroshima": {
+        name: "JR 山陽本線 快速「通勤ライナー」或普通車 (岩國 ➔ 廣島)",
+        time: "約 42~48 分鐘",
+        passCovered: true,
+        passNote: "JR 山陽本線全額包含",
+        tips: "廣島站轉乘市區循環巴士前往廣島城與原爆圓頂"
+      },
+      "hiroshima_city_transit": {
+        name: "中國 JR 巴士「廣島市內循環紅葉巴士 meipuru～pu」或步行",
+        time: "各點約 5~10 分鐘",
+        passCovered: true,
+        passNote: "中國 JR 觀光巴士憑 Pass 免費搭乘！(廣島電鐵市電單程 220 円自費)",
+        tips: "廣島城 ➔ 步行8分至SOGO 6F寶可夢中心 ➔ 步行5分至和平紀念資料館"
+      },
+      // Day 7
+      "hiroshima_to_yoshida_koriyama": {
+        name: "廣島電鐵高速巴士 (廣島巴士中心 ➔ 安芸高田市役所前)",
+        time: "約 75~85 分鐘",
+        passCovered: false,
+        passNote: "廣電客運非 JR，單程自費約 1,460 円",
+        tips: "藝備線向原站班次極稀疏且無計程車，搭廣電客運至市役所下車對面即蓋章處"
+      },
+      "yoshida_koriyama_to_fukuyama": {
+        name: "客運返回廣島站 + 山陽新幹線「のぞみ / さくら」(廣島 ➔ 福山)",
+        time: "新幹線僅需 23 分鐘 (極速！)",
+        passCovered: true,
+        passNote: "山陽新幹線 Nozomi / Sakura 指定席全包！(現省 4,500+ 円)",
+        tips: "新幹線出福山站北口，0 距離直達福山城鐵板張天守"
+      },
+      "fukuyama_to_tomonoura_onsen": {
+        name: "鞆鐵道巴士 (福山站南口 ➔ 鞆港/鞆之浦)",
+        time: "約 30 分鐘",
+        passCovered: false,
+        passNote: "鞆鐵巴士非 JR，單程自費 530 円",
+        tips: "入住宮崎駿波妞舞台海景溫泉飯店，欣賞仙醉島海景"
+      },
+      // Day 8
+      "tomonoura_onsen_to_bitchu_matsuyama": {
+        name: "山陽新幹線 (福山➔岡山 16分) + 特急「やくも」(岡山➔備中高梁 34分)",
+        time: "合計約 50 分鐘 (轉合乘計程車 15 分)",
+        passCovered: true,
+        passNote: "新幹線＋特急八雲號全額包含！(高梁觀光合乘計程車 500 円自費)",
+        tips: "特急八雲號為全車指定席，請提前於綠色售票機劃位；觀光計程車需前一日預約"
+      },
+      "bitchu_matsuyama_to_okayama_airport": {
+        name: "JR 伯備線 特急「やくも」(備中高梁 ➔ 岡山 34分) + 機場利木津 (30分)",
+        time: "鐵道 34 分 + 機場巴士 30 分",
+        passCovered: true,
+        passNote: "八雲號特急全包 (岡山站至機場利木津巴士 780 円自費)",
+        tips: "岡山站西口 2 號月台搭機場巴士直達機場，搭乘虎航返台"
+      }
+    };
+
+    function getTransitDetails(fromSpot, toSpot, dayNumber) {
+      const fromId = fromSpot ? fromSpot.id : (dayNumber === 1 ? 'okayama_airport' : '');
+      const toId = toSpot ? toSpot.id : '';
+
+      const exactKey = `${fromId}_to_${toId}`;
+      if (TRANSIT_KNOWLEDGE_BASE[exactKey]) {
+        return TRANSIT_KNOWLEDGE_BASE[exactKey];
+      }
+
+      if (fromId === 'okayama_airport' || (dayNumber === 1 && toId === 'okayama_station')) return TRANSIT_KNOWLEDGE_BASE["okayama_airport_to_okayama_hotel"] || TRANSIT_KNOWLEDGE_BASE["okayama_airport_to_okayama"];
+      if (toId === 'chiyagyu_bisai' || toId === 'chiyagyu_kuya') return TRANSIT_KNOWLEDGE_BASE["okayama_hotel_to_chiyagyu_bisai"] || {
+        name: "岡山站前商圈徒步 (格蘭比亞2F / 西川綠道)",
+        time: "步行 1~3 分鐘",
+        passCovered: true,
+        passNote: "市區徒步商圈",
+        tips: "享用夢幻神戶牛源流「千屋牛」鐵板料理"
+      };
+      if (toId === 'okayama_aeon') return TRANSIT_KNOWLEDGE_BASE["chiyagyu_bisai_to_okayama_aeon"];
+      if (toId === 'okayama_hotel' && fromId === 'okayama_aeon') return TRANSIT_KNOWLEDGE_BASE["okayama_aeon_to_okayama_hotel"];
+      if (toId === 'kinojo') return TRANSIT_KNOWLEDGE_BASE["okayama_to_kinojo"];
+      if (toId === 'tsuyama') return TRANSIT_KNOWLEDGE_BASE["kinojo_to_tsuyama"];
+      if (toId === 'yunogo_onsen') return TRANSIT_KNOWLEDGE_BASE["tsuyama_to_yunogo_onsen"];
+      if (toId === 'tottori' || toId === 'tottori_takumi') return TRANSIT_KNOWLEDGE_BASE["yunogo_onsen_to_tottori"];
+      if (toId === 'kaike_onsen' || toId === 'tottori_tsubomi') return TRANSIT_KNOWLEDGE_BASE["tottori_to_kaike_onsen"];
+      if (toId === 'gassan_toda' || toId === 'adachi_museum') return TRANSIT_KNOWLEDGE_BASE["kaike_onsen_to_gassan_toda"];
+      if (toId === 'matsue' || toId === 'matsue_horikawa') return TRANSIT_KNOWLEDGE_BASE["gassan_toda_to_matsue"];
+      if (fromId === 'izumo_taisha' && toId === 'tamatsukuri_onsen') return {
+        name: "一畑巴士/電鐵 (至出雲市) + JR 山陰本線特急/普通車 (至玉造溫泉)",
+        time: "合計約 40 分鐘",
+        passCovered: true,
+        passNote: "出雲市至玉造溫泉 JR 特急/普通車全包！(出雲市公車/電鐵約530円自費)",
+        tips: "出雲大社參拜完搭車回出雲市站，搭乘 JR 山陰本線直達玉造溫泉站入住美肌名湯"
+      };
+      if (toId === 'tamatsukuri_onsen' || toId === 'tamatsukuri_yu_jinja') return TRANSIT_KNOWLEDGE_BASE["matsue_to_tamatsukuri_onsen"];
+      if (toId === 'tsuwano' || toId === 'taikodani_inari') return TRANSIT_KNOWLEDGE_BASE["tamatsukuri_onsen_to_tsuwano"];
+      if (toId === 'hagi') return TRANSIT_KNOWLEDGE_BASE["tsuwano_to_hagi"];
+      if (fromId === 'hagi' || toId === 'shin_yamaguchi_station' || toId === 'shin_yamaguchi') return TRANSIT_KNOWLEDGE_BASE["hagi_to_shin_yamaguchi"];
+      if (fromId === 'shin_yamaguchi_station' && toId === 'iwakuni') return TRANSIT_KNOWLEDGE_BASE["shin_yamaguchi_to_iwakuni"];
+      if (toId === 'iwakuni') return TRANSIT_KNOWLEDGE_BASE["shin_yamaguchi_to_iwakuni"];
+      if (toId === 'hiroshima' || toId === 'hiroshima_jinseki') return TRANSIT_KNOWLEDGE_BASE["iwakuni_to_hiroshima"];
+      if (toId === 'pokemon_center_hiroshima' || toId === 'hiroshima_peace_museum' || toId === 'hiroshima_atago') return TRANSIT_KNOWLEDGE_BASE["hiroshima_city_transit"];
+      if (toId === 'yoshida_koriyama') return TRANSIT_KNOWLEDGE_BASE["hiroshima_to_yoshida_koriyama"];
+      if (toId === 'fukuyama') return TRANSIT_KNOWLEDGE_BASE["yoshida_koriyama_to_fukuyama"];
+      if (toId === 'tomonoura_onsen' || toId === 'onomichi_senkoji') return TRANSIT_KNOWLEDGE_BASE["fukuyama_to_tomonoura_onsen"];
+      if (toId === 'bitchu_matsuyama') return TRANSIT_KNOWLEDGE_BASE["tomonoura_onsen_to_bitchu_matsuyama"];
+      if (fromId === 'bitchu_matsuyama' && toId === 'okayama_airport') return TRANSIT_KNOWLEDGE_BASE["bitchu_matsuyama_to_okayama_airport"];
+      if (toId === 'kibitsuhiko_jinja') return {
+        name: "JR 吉備線 (桃太郎線) 普通車 (岡山 ➔ 備前一宮)",
+        time: "約 11 分鐘 (出站徒步 3 分)",
+        passCovered: true,
+        passNote: "JR 在來線全額包含",
+        tips: "備前一宮站出站徒步 3 分鐘即達吉備津彥神社，與吉備津神社、鬼ノ城在同條線上"
+      };
+      if (toId === 'kurashiki_bikan') return {
+        name: "JR 山陽本線 / 伯備線 普通車 (岡山 ➔ 倉敷)",
+        time: "約 17 分鐘",
+        passCovered: true,
+        passNote: "JR 在來線全額包含",
+        tips: "倉敷站南口步行 10 分直通美觀地區"
+      };
+      if (toId === 'izumo_taisha') return {
+        name: "JR 山陰本線 (至出雲市) + 一畑電車或公車",
+        time: "特急 30 分 + 巴士 25 分",
+        passCovered: true,
+        passNote: "JR 區間全包 (一畑交通約 530 円自費)",
+        tips: "出雲市站轉乘直達出雲大社正門"
+      };
+      if (toId === 'itsukushima_jinja') return {
+        name: "JR 山陽本線 (至宮島口) + JR 西日本宮島渡輪",
+        time: "鐵道 28 分 + 渡輪 10 分",
+        passCovered: true,
+        passNote: "JR 鐵道與 JR 宮島渡輪 100% 包含！(需現場付宮島訪問稅 100 円)",
+        tips: "認明搭乘 JR-WEST 渡輪，航線最近海上大鳥居"
+      };
+
+      return {
+        name: "JR 在來線 / 新幹線 鐵路動線",
+        time: "約 20~50 分鐘 (依班型)",
+        passCovered: true,
+        passNote: "山陽&山陰周遊券範圍內 JR 鐵道皆全額免費",
+        tips: "點擊上方 Yahoo 車次按鈕可即時查詢今日最速時刻表"
+      };
+    }
+
+    function renderDaySpotsList(day, theme) {
+      if (!theme) {
+        theme = getDayTheme(day.dayNumber - 1);
+      }
+      if (!day.spotIds || day.spotIds.length === 0) {
+        return `<div class="text-xs text-slate-400 p-3 text-center bg-slate-50 border border-dashed rounded-lg">尚未加入任何景點，請點選上方「加入景點至 Day ${day.dayNumber}」</div>`;
+      }
+
+      let html = "";
+      day.spotIds.forEach((sid, idx) => {
+        const spot = state.spots.find(s => s.id === sid);
+        if (!spot) return;
+
+        const prevSpot = idx > 0 ? state.spots.find(s => s.id === day.spotIds[idx - 1]) : null;
+        const fromStation = prevSpot ? (prevSpot.nearestStation || prevSpot.name) : (day.baseStation || "岡山駅");
+        const toStation = spot.nearestStation || spot.name;
+
+        // 車次連結 (Yahoo 乘換案內)
+        const yahooUrl = `https://transit.yahoo.co.jp/search/result?from=${encodeURIComponent(fromStation)}&to=${encodeURIComponent(toStation)}`;
+        const gmapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(fromStation)}&destination=${encodeURIComponent(toStation)}&travelmode=transit`;
+
+        const isLodging = isLodgingSpot(spot);
+
+        // 車次轉乘指示與詳細班次/時間/周遊券檢核
+        const transitInfo = getTransitDetails(prevSpot, spot, day.dayNumber);
+        const transitTitle = isLodging 
+          ? `<span class="flex items-center gap-1.5 font-bold text-indigo-950"><span>🏨</span><span class="text-indigo-700">前往夜宿：</span><strong>${escapeHtml(fromStation)}</strong> ➔ <strong>${escapeHtml(toStation)}</strong></span>`
+          : `<span class="flex items-center gap-1.5 font-medium text-slate-800"><span>🚃</span><span>搭乘區間：</span><strong>${escapeHtml(fromStation)}</strong> ➔ <strong>${escapeHtml(toStation)}</strong></span>`;
+        const transitBoxBg = isLodging ? 'bg-indigo-50/90 border-indigo-300 text-indigo-950' : `${theme.transitBorder} border bg-white/70`;
+
+        const passBadge = transitInfo.passCovered
+          ? `<span class="bg-emerald-100 text-emerald-900 border border-emerald-300 font-bold px-2 py-0.5 rounded text-[10px] flex items-center gap-1 shadow-2xs" title="${escapeHtml(transitInfo.passNote)}">
+               <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+               <span>🎫 JR Pass ✅ 包含</span>
+               <span class="hidden sm:inline text-[10px] text-emerald-700 font-normal">(${escapeHtml(transitInfo.passNote)})</span>
+             </span>`
+          : `<span class="bg-amber-100 text-amber-900 border border-amber-300 font-bold px-2 py-0.5 rounded text-[10px] flex items-center gap-1 shadow-2xs" title="${escapeHtml(transitInfo.passNote)}">
+               <span>⚠️ JR Pass ❌ 不含</span>
+               <span class="hidden sm:inline text-[10px] text-amber-800 font-normal">(${escapeHtml(transitInfo.passNote)})</span>
+             </span>`;
+
+        html += `
+          <div class="${transitBoxBg} rounded-xl p-2.5 text-xs space-y-2 shadow-2xs border">
+            <!-- 站點與查詢外部直連 -->
+            <div class="flex items-center justify-between gap-1.5 flex-wrap">
+              ${transitTitle}
+              <div class="flex items-center gap-1.5 shrink-0">
+                <a href="${yahooUrl}" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-2 py-0.5 rounded shadow-2xs transition flex items-center gap-1 text-[11px]">
+                  <span>🔍</span> Yahoo車次 ↗
+                </a>
+                <a href="${gmapsUrl}" target="_blank" class="bg-slate-700 hover:bg-slate-800 text-white px-2 py-0.5 rounded shadow-2xs transition text-[11px]">
+                  🗺️ 路線 ↗
+                </a>
+              </div>
+            </div>
+
+            <!-- 具體車次編號、耗時與 JR 周遊券覆蓋標籤 -->
+            <div class="pt-1.5 border-t border-slate-200/80 flex flex-wrap items-center justify-between gap-1.5 text-[11px]">
+              <div class="flex items-center gap-2 flex-wrap text-slate-700">
+                <span class="font-bold text-slate-900 flex items-center gap-1 bg-white px-2 py-0.5 rounded border border-slate-200 shadow-3xs">
+                  <span>🚅</span> ${escapeHtml(transitInfo.name)}
+                </span>
+                <span class="text-slate-600 flex items-center gap-0.5">
+                  <span>⏱️</span> 車程：<strong class="text-slate-900 font-bold">${escapeHtml(transitInfo.time)}</strong>
+                </span>
+              </div>
+              <div>
+                ${passBadge}
+              </div>
+            </div>
+            ${transitInfo.tips ? `<div class="text-[10px] text-slate-500 bg-slate-100/80 px-2 py-0.5 rounded flex items-center gap-1"><span>💡</span><span>${escapeHtml(transitInfo.tips)}</span></div>` : ''}
+          </div>
+        `;
+
+        // 景點卡片
+        const lodgingBadge = isLodging ? `<span class="text-[10px] bg-indigo-100 text-indigo-800 font-bold px-2 py-0.5 rounded border border-indigo-300">♨️ 當日夜宿住宿點</span>` : '';
+        const cardBorder = isLodging ? 'border-indigo-300 bg-indigo-50/30' : 'border-slate-200 bg-white hover:border-slate-300';
+
+        // 序號圓徽章：一般景點使用當日專屬主題色 (如 Day 1 緋紅圓標、Day 2 琉璃藍圓標)，溫泉夜宿使用 Indigo 溫泉標誌
+        const seqBadgeHtml = isLodging
+          ? `<span class="w-5 h-5 rounded-full bg-indigo-600 text-white text-[11px] flex items-center justify-center font-bold shrink-0 mt-0.5 shadow-2xs">♨️</span>`
+          : `<span class="w-5 h-5 rounded-full ${theme.seqBadge} text-white text-[11px] flex items-center justify-center font-bold shrink-0 mt-0.5 shadow-2xs">${idx + 1}</span>`;
+
+        html += `
+          <div class="p-2.5 rounded-lg border ${cardBorder} transition shadow-2xs flex flex-col gap-1.5">
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex items-start gap-2">
+                ${seqBadgeHtml}
+                <div>
+                  ${(() => {
+                    let durationBadge = "";
+                    if (spot.stayDuration) {
+                      if (isLodging) {
+                        durationBadge = `<span class="text-[10px] bg-indigo-50 text-indigo-700 font-bold px-1.5 py-0.5 rounded border border-indigo-200">♨️ 夜宿放鬆</span>`;
+                      } else if (spot.climbLevel === "mountain_hard" || spot.climbLevel === "mountain_mid") {
+                        durationBadge = `<span class="text-[10px] bg-amber-50 text-amber-900 font-bold px-1.5 py-0.5 rounded border border-amber-300 flex items-center gap-1" title="${escapeHtml(spot.climbLevelText || '')}"><span>⏱️ 建議停留 ${escapeHtml(spot.stayDuration)}</span><span class="bg-amber-200/90 text-amber-900 text-[9px] px-1 rounded font-bold">需爬坡登山</span></span>`;
+                      } else if (spot.climbLevel === "mountain_cable") {
+                        durationBadge = `<span class="text-[10px] bg-sky-50 text-sky-900 font-bold px-1.5 py-0.5 rounded border border-sky-300 flex items-center gap-1" title="${escapeHtml(spot.climbLevelText || '')}"><span>⏱️ 建議停留 ${escapeHtml(spot.stayDuration)}</span><span class="bg-sky-200/90 text-sky-900 text-[9px] px-1 rounded font-bold">纜車直達</span></span>`;
+                      } else {
+                        durationBadge = `<span class="text-[10px] bg-slate-100 text-slate-700 font-medium px-1.5 py-0.5 rounded border border-slate-200 flex items-center gap-0.5">⏱️ 基本預留 ${escapeHtml(spot.stayDuration)}</span>`;
+                      }
+                    }
+                    return `
+                      <div class="flex items-center gap-1.5 flex-wrap">
+                        <button onclick="focusSpotOnMap('${spot.id}')" class="font-bold text-slate-800 text-xs hover:text-red-600 text-left">
+                          ${escapeHtml(spot.name)}
+                        </button>
+                        ${lodgingBadge}
+                        <span class="text-[10px] bg-slate-100 text-slate-600 px-1 rounded">${escapeHtml(spot.prefecture || '')}</span>
+                        ${durationBadge}
+                        ${spot.reservationUrl ? `<a href="${spot.reservationUrl}" target="_blank" class="text-[10px] bg-emerald-100 text-emerald-800 px-1 rounded font-bold hover:underline">計程車預約 ↗</a>` : ''}
+                      </div>
+                      ${spot.climbLevelText && !isLodging ? `<div class="text-[11px] text-slate-600 mt-0.5 flex items-center gap-1 font-medium"><span class="text-amber-700">🚶</span> <span>${escapeHtml(spot.climbLevelText)}</span></div>` : ''}
+                    `;
+                  })()}
+                  <p class="text-[11px] text-slate-500 line-clamp-1 mt-0.5">
+                    📮 ${escapeHtml(spot.stampLocation || '見官網')} | ⏰ ${escapeHtml(spot.openHours || '見官網')}
+                  </p>
+                </div>
+              </div>
+              
+              <!-- 上移、下移、移除控制 -->
+              <div class="flex items-center gap-1 shrink-0">
+                <button onclick="moveSpotInDay(${day.dayNumber}, ${idx}, -1)" class="text-slate-400 hover:text-slate-700 p-0.5 text-xs ${idx === 0 ? 'opacity-30 pointer-events-none' : ''}">⬆️</button>
+                <button onclick="moveSpotInDay(${day.dayNumber}, ${idx}, 1)" class="text-slate-400 hover:text-slate-700 p-0.5 text-xs ${idx === day.spotIds.length - 1 ? 'opacity-30 pointer-events-none' : ''}">⬇️</button>
+                <button onclick="removeSpotFromDay(${day.dayNumber}, ${idx})" class="text-slate-400 hover:text-red-600 p-0.5 text-xs" title="從本日移除">❌</button>
+              </div>
+            </div>
+
+            <!-- 地圖定位控制 -->
+            <div class="pt-1 border-t border-slate-100 flex items-center justify-end text-[11px]">
+              <button onclick="focusSpotOnMap('${spot.id}')" class="text-red-600 hover:underline text-[11px] flex items-center gap-1">
+                <span>🎯</span> 在地圖中定位
+              </button>
+            </div>
+          </div>
+        `;
+      });
+
+      return html;
+    }
+
+    // ------------------------------------------
+    // Tab 2: 全部景點庫 (Spots Tab)
+    // ------------------------------------------
+    function renderSpotsTab(container) {
+      let html = `
+        <div class="flex items-center justify-between pb-2 border-b border-slate-200">
+          <div>
+            <h2 class="font-bold text-slate-800 text-sm">📍 全部景點與住宿清單資料庫</h2>
+            <p class="text-xs text-slate-500">已自 TXT 解析 12 座名城與各大名所，支援自訂新增、編輯與刪除</p>
+          </div>
+          <div class="flex items-center gap-2">
+            ${(state.deletedSpotIds && state.deletedSpotIds.length > 0) ? `
+              <button onclick="restoreDefaultSpots()" class="bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 text-xs font-bold px-2.5 py-1.5 rounded flex items-center gap-1 transition">
+                🔄 恢復預設景點 (${state.deletedSpotIds.length})
+              </button>
+            ` : ''}
+            <button onclick="openSpotModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1.5 rounded flex items-center gap-1 transition shadow-sm">
+              ➕ 新增景點/住宿
+            </button>
+          </div>
+        </div>
+        <div class="space-y-2">
+      `;
+
+      state.spots.forEach(spot => {
+        let typeBadge = `<span class="bg-red-100 text-red-700 px-1.5 py-0.5 rounded text-[10px] font-bold">🏯 100名城</span>`;
+        if (spot.type === "lodging") {
+          typeBadge = `<span class="bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded text-[10px] font-bold">♨️ 住宿/溫泉</span>`;
+        } else if (spot.type === "custom") {
+          typeBadge = `<span class="bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded text-[10px] font-bold">📍 自訂地點</span>`;
+        }
+
+        const closedText = spot.closedDay !== "None" 
+          ? `<span class="text-amber-700 font-medium">⚠️ 休館：${escapeHtml(spot.closedDayText || spot.closedDay)}</span>`
+          : `<span class="text-slate-400">無公休</span>`;
+
+        html += `
+          <div class="p-3 rounded-lg border border-slate-200 bg-white hover:border-slate-300 transition space-y-2 shadow-xs">
+            <div class="flex items-start justify-between">
+              <div>
+                <div class="flex items-center gap-2">
+                  <h3 class="font-bold text-slate-800 text-sm">${escapeHtml(spot.name)}</h3>
+                  ${typeBadge}
+                  <span class="text-xs text-slate-500">(${escapeHtml(spot.prefecture || '')})</span>
+                </div>
+                <div class="text-xs text-slate-600 mt-1 space-y-0.5">
+                  ${spot.stayDuration ? `<div class="text-slate-800"><strong>⏱️ 建議預留：</strong><span class="font-bold text-slate-900">${escapeHtml(spot.stayDuration)}</span> ${spot.climbLevelText ? `<span class="text-amber-800 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200 text-[11px] font-medium ml-1">${escapeHtml(spot.climbLevelText)}</span>` : ''}</div>` : ''}
+                  <div><strong>🚉 靠近車站：</strong>${escapeHtml(spot.nearestStation || '無')}</div>
+                  <div><strong>⏰ 開放/營業：</strong>${escapeHtml(spot.openHours || '見官網')}</div>
+                  <div><strong>📮 蓋章處：</strong>${escapeHtml(spot.stampLocation || '無')}</div>
+                  ${spot.backupStamp ? `<div><strong>🔄 備用蓋章：</strong>${escapeHtml(spot.backupStamp)}</div>` : ''}
+                  <div><strong>🚌 接駁交通：</strong>${escapeHtml(spot.transitInfo || '無')}</div>
+                  <div>${closedText}</div>
+                </div>
+              </div>
+              <div class="flex flex-col gap-1 items-end shrink-0">
+                <button onclick="focusSpotOnMap('${spot.id}')" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-1 rounded">
+                  🎯 定位
+                </button>
+                <button onclick="openSpotModal('${spot.id}')" class="text-xs text-blue-600 hover:underline">
+                  ✏️ 編輯
+                </button>
+                <button onclick="deleteSpotPermanently('${spot.id}')" class="text-xs text-rose-600 hover:text-rose-800 hover:underline flex items-center gap-0.5">
+                  🗑️ 刪除
+                </button>
+              </div>
+            </div>
+
+            ${spot.notes ? `<div class="bg-slate-50 text-[11px] text-slate-600 p-2 rounded border border-slate-100">📝 <strong>筆記：</strong>${escapeHtml(spot.notes)}</div>` : ''}
+
+            <div class="flex items-center justify-between pt-1 border-t border-slate-100 text-xs">
+              <div class="flex items-center gap-1.5">
+                ${spot.reservationUrl ? `<a href="${spot.reservationUrl}" target="_blank" class="text-emerald-700 font-bold hover:underline">計程車預約 ↗</a>` : ''}
+                <button onclick="openSmartPlanModal('${spot.id}')" class="bg-red-50 hover:bg-red-100 text-red-700 px-2 py-0.5 rounded font-bold border border-red-200 flex items-center gap-1 transition shadow-xs">
+                  ✨ 推薦排哪天？
+                </button>
+              </div>
+              <button onclick="quickAddToDayPrompt('${spot.id}')" class="text-slate-600 hover:text-slate-900 font-medium">
+                ➕ 指定天數
+              </button>
+            </div>
+          </div>
+        `;
+      });
+
+      html += `</div>`;
+      container.innerHTML = html;
+    }
+
+    // ------------------------------------------
+    // Tab 3: 車次速查 (Transit Lookup Tab)
+    // ------------------------------------------
+    function renderTransitTab(container) {
+      let html = `
+        <div class="space-y-4">
+          <div class="pb-2 border-b border-slate-200 flex items-center justify-between">
+            <div>
+              <h2 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                <span>🚅</span> 山陰山陽 鐵路周遊券 (JR Pass) 實戰全解析與車次速查
+              </h2>
+              <p class="text-xs text-slate-500">已完整對齊「山陽&山陰地區鐵路周遊券 7 日券」覆蓋範圍、班次時間與免費劃位</p>
+            </div>
+            <span class="text-xs bg-emerald-100 text-emerald-800 font-black px-2.5 py-1 rounded-full border border-emerald-300">
+              票價 ¥23,000 / 省下 ¥25,000+
+            </span>
+          </div>
+
+          <!-- 山陽&山陰地區鐵路周遊券 7日券 實戰全解析卡片 -->
+          <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-950 text-white p-4 rounded-2xl shadow-md border border-indigo-500/40 space-y-3.5">
+            <div class="flex items-center justify-between border-b border-indigo-500/30 pb-2.5">
+              <div class="flex items-center gap-2">
+                <span class="text-2xl">🎫</span>
+                <div>
+                  <h3 class="font-bold text-sm text-white flex items-center gap-2">
+                    山陽&山陰地區鐵路周遊券 (JR Sanyo-San'in Area Pass)
+                    <span class="text-[10px] bg-amber-400 text-slate-950 font-black px-1.5 py-0.5 rounded">連續 7 天</span>
+                  </h3>
+                  <p class="text-xs text-indigo-200 mt-0.5">全線新幹線普通車指定席・特急八雲號・超級隱岐號・松風號・智頭急行無限次免費劃位！</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 黃金 7 日啟用區間策略 -->
+            <div class="bg-indigo-900/50 border border-indigo-400/30 rounded-xl p-3 text-xs space-y-1.5">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-amber-300 flex items-center gap-1 text-xs">
+                  <span>💡</span> 專家推薦最佳 7 日啟用區間：<strong>Day 2 (2027-01-14) ～ Day 8 (2027-01-20)</strong>
+                </span>
+                <span class="text-[10px] bg-emerald-500/30 text-emerald-200 border border-emerald-400/40 px-2 py-0.5 rounded font-bold">100% 覆蓋所有長途特急</span>
+              </div>
+              <p class="text-[11px] text-slate-300 leading-relaxed">
+                • <strong>為什麼 Day 1 不用啟用？</strong> Day 1 虎航下午抵達岡山，進市區僅搭乘「岡山機場利木津巴士」(780 円，本就非 JR 需自費)。若 Day 1 啟用將在 Day 7 提前過期，導致 Day 8 昂貴的「福山➔岡山新幹線」與「岡山➔高梁特急八雲號」需高額自費！<br>
+                • <strong>延至 Day 2 啟用</strong>：整整 7 天完美覆蓋 Day 2~Day 8 所有昂貴高速鐵道，原價超 48,000 円，<strong>現省超過 25,000 円</strong>！
+              </p>
+            </div>
+
+            <!-- JR 有需要先劃位的統計清單 (全車指定席 / 必劃列車) -->
+            <div class="bg-indigo-950/80 border border-amber-400/50 rounded-xl p-3.5 space-y-2.5">
+              <div class="flex items-center justify-between border-b border-indigo-400/30 pb-2">
+                <span class="font-bold text-amber-300 flex items-center gap-1.5 text-xs">
+                  <span>📝</span> 【統計清單】本行程 JR 有需要先劃位的班次與規則：
+                </span>
+                <span class="text-[10px] bg-rose-600 text-white font-black px-2 py-0.5 rounded">
+                  八雲號全車指定席・無自由席
+                </span>
+              </div>
+
+              <div class="overflow-x-auto text-[11px]">
+                <table class="w-full text-left border-collapse">
+                  <thead>
+                    <tr class="text-indigo-200 border-b border-indigo-800 text-[10px]">
+                      <th class="py-1 px-2">天數</th>
+                      <th class="py-1 px-2">搭乘列車與車種</th>
+                      <th class="py-1 px-2">行駛區間</th>
+                      <th class="py-1 px-2">劃位重要性</th>
+                      <th class="py-1 px-2">劃位原因與車廂提醒</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-indigo-900/60 text-slate-200">
+                    <tr class="bg-rose-950/30">
+                      <td class="py-1.5 px-2 font-bold text-amber-300">Day 4</td>
+                      <td class="py-1.5 px-2 font-bold">特急 やくも (八雲號)</td>
+                      <td class="py-1.5 px-2">安來 ➔ 松江</td>
+                      <td class="py-1.5 px-2"><span class="bg-rose-600 text-white px-1.5 py-0.5 rounded text-[9px] font-bold">🔴 強制必劃</span></td>
+                      <td class="py-1.5 px-2 text-slate-300">2024年全面改為「全車指定席」，無自由席，沒劃位無法搭乘！</td>
+                    </tr>
+                    <tr class="bg-amber-950/30">
+                      <td class="py-1.5 px-2 font-bold text-amber-300">Day 5</td>
+                      <td class="py-1.5 px-2 font-bold">特急 スーパーおき 1号 (超級隱岐號)</td>
+                      <td class="py-1.5 px-2">松江 ➔ 津和野</td>
+                      <td class="py-1.5 px-2"><span class="bg-amber-600 text-slate-950 px-1.5 py-0.5 rounded text-[9px] font-bold">🟠 極度強烈建議</span></td>
+                      <td class="py-1.5 px-2 text-slate-300">全車僅 2 節車廂！長途直達車程長達 2h40m，不劃指定席極可能一路站到津和野。</td>
+                    </tr>
+                    <tr>
+                      <td class="py-1.5 px-2 font-bold text-amber-300">Day 6</td>
+                      <td class="py-1.5 px-2 font-bold">山陽新幹線 さくら (櫻花號) / こだま</td>
+                      <td class="py-1.5 px-2">新山口 ➔ 新岩國</td>
+                      <td class="py-1.5 px-2"><span class="bg-indigo-600 text-white px-1.5 py-0.5 rounded text-[9px]">🟡 建議劃位</span></td>
+                      <td class="py-1.5 px-2 text-slate-300">さくら指定席為「2+2 豪華超寬座」，比自由席 2+3 寬敞舒適媲美綠色車廂！</td>
+                    </tr>
+                    <tr>
+                      <td class="py-1.5 px-2 font-bold text-amber-300">Day 7</td>
+                      <td class="py-1.5 px-2 font-bold">山陽新幹線 のぞみ (希望號) / さくら</td>
+                      <td class="py-1.5 px-2">廣島 ➔ 福山</td>
+                      <td class="py-1.5 px-2"><span class="bg-indigo-600 text-white px-1.5 py-0.5 rounded text-[9px]">🟡 建議劃位</span></td>
+                      <td class="py-1.5 px-2 text-slate-300">Pass 免費無限次劃位，出差觀光尖峰時段建議先劃好指定席。</td>
+                    </tr>
+                    <tr>
+                      <td class="py-1.5 px-2 font-bold text-amber-300">Day 8</td>
+                      <td class="py-1.5 px-2 font-bold">山陽新幹線 のぞみ / さくら</td>
+                      <td class="py-1.5 px-2">福山 ➔ 岡山</td>
+                      <td class="py-1.5 px-2"><span class="bg-indigo-600 text-white px-1.5 py-0.5 rounded text-[9px]">🟡 建議劃位</span></td>
+                      <td class="py-1.5 px-2 text-slate-300">銜接備中高梁八雲號之關鍵早班新幹線，提早劃位確保銜接順暢。</td>
+                    </tr>
+                    <tr class="bg-rose-950/30">
+                      <td class="py-1.5 px-2 font-bold text-amber-300">Day 8</td>
+                      <td class="py-1.5 px-2 font-bold">特急 やくも 5号/7号 (八雲號)</td>
+                      <td class="py-1.5 px-2">岡山 ➔ 備中高梁</td>
+                      <td class="py-1.5 px-2"><span class="bg-rose-600 text-white px-1.5 py-0.5 rounded text-[9px] font-bold">🔴 強制必劃</span></td>
+                      <td class="py-1.5 px-2 text-slate-300">全車指定席！配合高梁預約觀光合乘計程車，務必提早劃妥車次。</td>
+                    </tr>
+                    <tr class="bg-rose-950/30">
+                      <td class="py-1.5 px-2 font-bold text-amber-300">Day 8</td>
+                      <td class="py-1.5 px-2 font-bold">特急 やくも (八雲號)</td>
+                      <td class="py-1.5 px-2">備中高梁 ➔ 岡山</td>
+                      <td class="py-1.5 px-2"><span class="bg-rose-600 text-white px-1.5 py-0.5 rounded text-[9px] font-bold">🔴 強制必劃</span></td>
+                      <td class="py-1.5 px-2 text-slate-300">全車指定席！回岡山站接駁機場利木津巴士返台，必提前劃位取票。</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="text-[10px] text-indigo-300 bg-indigo-900/40 p-2 rounded">
+                💡 <strong>劃位操作建議</strong>：Day 2 於岡山站開卡啟用周遊券時，可直接在「綠色售票機」或綠色窗口，將上述 7 趟車票一次全數劃好並列印出實體指定券，隨身攜帶最安心！
+              </div>
+            </div>
+
+            <!-- 周遊券包含與自費對照 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
+              <div class="bg-emerald-950/60 border border-emerald-500/40 rounded-xl p-2.5 space-y-1">
+                <div class="font-bold text-emerald-300 flex items-center gap-1">
+                  <span>✅</span> 本周遊券 100% 免費包含項目：
+                </div>
+                <ul class="text-[11px] text-slate-300 space-y-0.5 list-disc list-inside">
+                  <li><strong>山陽新幹線全線</strong> (新大阪～博多)：<strong>のぞみ(希望號)・みずほ(瑞穗號)</strong> 皆可免費劃指定席！</li>
+                  <li><strong>在來線特急列車</strong>：特急やくも (八雲號)、スーパーおき (超級隱岐號)、スーパーまつかぜ (松風號)、スーパーいなば (因幡號)。</li>
+                  <li><strong>智頭急行線全線</strong> (上郡～智頭)：免費包含！</li>
+                  <li><strong>特急「スーパーはぎ号」</strong> (新山口～東萩)：中國 JR 巴士特急直達免費搭乘！</li>
+                  <li><strong>廣島市內循環巴士</strong>：中國 JR 巴士「meipuru～pu (めいぷる～ぷ)」全線免費搭乘！</li>
+                  <li><strong>JR 西日本宮島渡輪</strong> (宮島口～宮島)：免費搭乘 (僅需自付宮島訪問稅 100 円)。</li>
+                </ul>
+              </div>
+
+              <div class="bg-amber-950/60 border border-amber-500/40 rounded-xl p-2.5 space-y-1">
+                <div class="font-bold text-amber-300 flex items-center gap-1">
+                  <span>⚠️</span> 需額外自費之非 JR 交通 (已於行程標註)：
+                </div>
+                <ul class="text-[11px] text-slate-300 space-y-0.5 list-disc list-inside">
+                  <li>岡山機場利木津巴士：單程 780 円 (可刷 IC 卡)</li>
+                  <li>鬼ノ城計程車：總社站往返單程約 3,500 円</li>
+                  <li>備中松山城合乘計程車：高梁站往返單程 500 円 (需預約)</li>
+                  <li>湯郷溫泉宇野巴士：津山往返單程約 680 円</li>
+                  <li>皆生溫泉日之丸巴士：米子站往返單程 300 円</li>
+                  <li>月山富田城安來市營黃色公車：單程 200 円</li>
+                  <li>津和野城觀光登山吊椅纜車：來回 700 円</li>
+                  <li>廣電高速巴士 (廣島➔吉田郡山城)：單程約 1,460 円</li>
+                  <li>鞆之浦鞆鐵道巴士：福山站往返單程 530 円</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+
+          <!-- 自訂兩站即時查詢 -->
+          <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2.5">
+            <h3 class="text-xs font-bold text-slate-700">🔍 即時兩站轉乘查詢 (帶入精確日文站名)：</h3>
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              <div>
+                <label class="block text-slate-500 mb-1">出發站</label>
+                <input type="text" id="transitSearchFrom" value="岡山" class="w-full border rounded p-1.5 bg-white font-medium">
+              </div>
+              <div>
+                <label class="block text-slate-500 mb-1">到達站</label>
+                <input type="text" id="transitSearchTo" value="備中高梁" class="w-full border rounded p-1.5 bg-white font-medium">
+              </div>
+            </div>
+            <div class="flex gap-2 pt-1">
+              <button onclick="doTransitSearch('yahoo')" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-1.5 px-3 rounded text-xs transition">
+                🔍 Yahoo! 路線情報查詢
+              </button>
+              <button onclick="doTransitSearch('google')" class="flex-1 bg-slate-800 hover:bg-slate-900 text-white font-bold py-1.5 px-3 rounded text-xs transition">
+                🗺️ Google Maps 路線
+              </button>
+            </div>
+          </div>
+
+          <!-- 關鍵極稀疏線路警示速查卡片 -->
+          <div class="space-y-2 text-xs">
+            <h3 class="font-bold text-slate-700">⚠️ 本行程【極稀疏班次】與【預約制交通】特輯：</h3>
+            
+            <div class="p-3 bg-rose-50 border border-rose-200 rounded-lg space-y-1 text-rose-900">
+              <div class="font-bold flex items-center justify-between">
+                <span>1. 備中松山城 觀光合乘計程車 (観光乗合タクシー)</span>
+                <a href="https://www.asoview.com/item/activity/pln3000045984/" target="_blank" class="bg-rose-600 text-white px-2 py-0.5 rounded text-[11px]">asoview預約 ↗</a>
+              </div>
+              <p class="text-[11px] text-rose-800">
+                • 路線：JR 備中高梁駅前 ➔ 鞴峠 (ふいご峠)<br>
+                • 班次每日僅 4 班 (9:50, 11:20, 12:50, 14:20 發)，必須提前一日 17:00 前預約！單程約 15 分鐘。
+              </p>
+            </div>
+
+            <div class="p-3 bg-amber-50 border border-amber-200 rounded-lg space-y-1 text-amber-900">
+              <div class="font-bold">2. 鬼ノ城 計程車往返 (總社站)</div>
+              <p class="text-[11px] text-amber-800">
+                • JR 總社站無定期公車直達鬼城山遊客中心。單程計程車約 30 分鐘 (約 3,500 日圓)。<br>
+                • 務必在出發前請司機約定回程接駁時間，山上手機訊號部分偏弱且無排班車輛。
+              </p>
+            </div>
+
+            <div class="p-3 bg-amber-50 border border-amber-200 rounded-lg space-y-1 text-amber-900">
+              <div class="font-bold">3. 郡山城 (吉田郡山城) 廣島客運推薦</div>
+              <p class="text-[11px] text-amber-800">
+                • 【極重要】：JR 藝備線向原站車次極少且無常駐計程車，極度推薦由「廣島巴士中心 (広島BC)」搭乘往吉田出張所之客運 (車程約 80 分鐘)，於「安芸高田市役所前」下車直達。
+              </p>
+            </div>
+
+            <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-1 text-slate-800">
+              <div class="font-bold">4. 山陰本線 & 山口線 (津和野、萩) 銜接</div>
+              <p class="text-[11px] text-slate-600">
+                • 新山口 ➔ 津和野：搭乘特急 スーパーおき (Super Oki) 約 1 小時 (班次間隔 2~3 小時)。<br>
+                • 益田 ➔ 東萩：山陰本線普通車班次極少，請務必先對準時刻表。
+              </p>
+            </div>
+          </div>
+        </div>
+      `;
+      container.innerHTML = html;
+    }
+
+    function doTransitSearch(engine) {
+      const from = document.getElementById("transitSearchFrom").value.trim();
+      const to = document.getElementById("transitSearchTo").value.trim();
+      if (!from || !to) {
+        alert("請輸入出發站與到達站");
+        return;
+      }
+      if (engine === "yahoo") {
+        window.open(`https://transit.yahoo.co.jp/search/result?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`, '_blank');
+      } else {
+        window.open(`https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(from)}&destination=${encodeURIComponent(to)}&travelmode=transit`, '_blank');
+      }
+    }
+
+    // ==========================================
+    // 行程操作 (CRUD)
+    // ==========================================
+    function updateDayField(dayNumber, field, value) {
+      const day = state.itinerary.find(d => d.dayNumber === dayNumber);
+      if (day) {
+        day[field] = value;
+        saveState();
+        renderMainPanel();
+        updateMapFilterDropdown();
+      }
+    }
+
+    function addNewDay() {
+      const nextDayNum = state.itinerary.length + 1;
+      let nextDate = "";
+      if (state.itinerary.length > 0) {
+        const lastDate = state.itinerary[state.itinerary.length - 1].date;
+        if (lastDate) {
+          const d = new Date(lastDate + "T00:00:00");
+          d.setDate(d.getDate() + 1);
+          nextDate = d.toISOString().split('T')[0];
+        }
+      }
+      state.itinerary.push({
+        dayNumber: nextDayNum,
+        title: `Day ${nextDayNum}：自訂行程`,
+        date: nextDate,
+        baseStation: "岡山駅",
+        lodging: "",
+        notes: "",
+        spotIds: []
+      });
+      saveState();
+      renderMainPanel();
+      updateMapFilterDropdown();
+    }
+
+    function deleteDay(dayNumber) {
+      if (!confirm(`確定要刪除 Day ${dayNumber} 的行程嗎？`)) return;
+      state.itinerary = state.itinerary.filter(d => d.dayNumber !== dayNumber);
+      // 重新編號
+      state.itinerary.forEach((d, idx) => {
+        d.dayNumber = idx + 1;
+      });
+      saveState();
+      renderMainPanel();
+      updateMapFilterDropdown();
+      renderMapElements();
+    }
+
+    function promptAddSpotToDay(dayNumber) {
+      const day = state.itinerary.find(d => d.dayNumber === dayNumber);
+      if (!day) return;
+
+      const spotList = state.spots.map(s => `${s.id}: ${s.name} (${s.prefecture || ''})`).join('\n');
+      const spotId = prompt(`請輸入要加入 Day ${dayNumber} 的景點 ID：\n\n可選 ID：\n${spotList}\n\n請輸入 ID (例如 kinojo 或 fukuyama)：`);
+      if (!spotId) return;
+
+      const targetSpot = state.spots.find(s => s.id.toLowerCase() === spotId.trim().toLowerCase());
+      if (!targetSpot) {
+        alert("找不到此 ID 的景點，請輸入清單中正確的 ID！");
+        return;
+      }
+
+      if (!day.spotIds) day.spotIds = [];
+      day.spotIds.push(targetSpot.id);
+      day.spotIds = sortDaySpotsLodgingAtEnd(day.spotIds);
+      saveState();
+      renderMainPanel();
+      renderMapElements();
+    }
+
+    function quickAddToDayPrompt(spotId) {
+      const days = state.itinerary.map(d => `Day ${d.dayNumber}: ${d.title}`).join('\n');
+      const ans = prompt(`請輸入要加入的天數號碼 (1 ~ ${state.itinerary.length})：\n\n${days}`);
+      if (!ans) return;
+      const dayNum = parseInt(ans, 10);
+      const day = state.itinerary.find(d => d.dayNumber === dayNum);
+      if (!day) {
+        alert("找不到指定天數！");
+        return;
+      }
+      if (!day.spotIds) day.spotIds = [];
+      day.spotIds.push(spotId);
+      day.spotIds = sortDaySpotsLodgingAtEnd(day.spotIds);
+      saveState();
+      alert(`已將景點加入 Day ${dayNum}！`);
+      switchTab('itinerary');
+      renderMapElements();
+    }
+
+    function removeSpotFromDay(dayNumber, index) {
+      const day = state.itinerary.find(d => d.dayNumber === dayNumber);
+      if (day && day.spotIds) {
+        day.spotIds.splice(index, 1);
+        saveState();
+        renderMainPanel();
+        renderMapElements();
+      }
+    }
+
+    function moveSpotInDay(dayNumber, index, direction) {
+      const day = state.itinerary.find(d => d.dayNumber === dayNumber);
+      if (!day || !day.spotIds) return;
+      const targetIdx = index + direction;
+      if (targetIdx < 0 || targetIdx >= day.spotIds.length) return;
+
+      const currentSpot = state.spots.find(s => s.id === day.spotIds[index]);
+      const targetSpot = state.spots.find(s => s.id === day.spotIds[targetIdx]);
+
+      // 溫泉住宿規範保護：溫泉景點為夜宿地點，一律排在當天行程最後
+      if (isLodgingSpot(currentSpot) && !isLodgingSpot(targetSpot) && direction < 0) {
+        alert("溫泉景點為當天夜宿住宿點，一律排在當天行程最後面！");
+        return;
+      }
+      if (!isLodgingSpot(currentSpot) && isLodgingSpot(targetSpot) && direction > 0) {
+        alert("日間觀光景點不可移至夜宿溫泉點之後，溫泉住宿一律維持在當天最後！");
+        return;
+      }
+
+      const temp = day.spotIds[index];
+      day.spotIds[index] = day.spotIds[targetIdx];
+      day.spotIds[targetIdx] = temp;
+      day.spotIds = sortDaySpotsLodgingAtEnd(day.spotIds);
+      saveState();
+      renderMainPanel();
+      renderMapElements();
+    }
+
+    function toggleSpotChecklist(spotId, key, value) {
+      const spot = state.spots.find(s => s.id === spotId);
+      if (spot) {
+        if (!spot.checklists) spot.checklists = {};
+        spot.checklists[key] = value;
+        saveState();
+      }
+    }
+
+    // ==========================================
+    // 智慧地理距離計算與自動排程分析演算法
+    // ==========================================
+    // 快速大圓距離 (Haversine km)
+    function calcHaversineKm(lat1, lon1, lat2, lon2) {
+      if (!lat1 || !lon1 || !lat2 || !lon2) return 9999;
+      const R = 6371;
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+
+    // 評估特定景點在全部天數中的最佳落點 (溫泉住宿一律排在當天最後面)
+    function analyzeBestDaysForSpot(spot) {
+      if (!spot || !spot.lat || !spot.lng) return [];
+
+      const isCurrentLodging = isLodgingSpot(spot);
+      const results = [];
+
+      state.itinerary.forEach(day => {
+        const dow = getDayOfWeek(day.date);
+        const daySpots = (day.spotIds || [])
+          .map(id => state.spots.find(s => s.id === id))
+          .filter(s => s && s.lat && s.lng);
+
+        // 1. 檢核休館日衝堂 (溫泉住宿點通常無公休)
+        const conflict = checkSpotClosedConflict(spot, day.date);
+        const isClosedConflict = !!conflict;
+
+        let minDetour = 9999;
+        let bestInsertIndex = 0;
+        let closestSpot = null;
+        let minDirectDist = 9999;
+        let reason = "";
+        let insertDesc = "";
+
+        if (daySpots.length === 0) {
+          minDetour = 0;
+          minDirectDist = 0;
+          bestInsertIndex = 0;
+          insertDesc = isCurrentLodging ? "♨️ 作為本日夜宿住宿點" : "作為本日第 1 個目標";
+          reason = isCurrentLodging ? "本日目前尚無行程，直接作為當日夜宿基地" : "本日目前尚無任何景點排程，可直接作為核心起點";
+        } else if (isCurrentLodging) {
+          // 【嚴格規則】：溫泉景點是要住宿的，一律排在當天最後面！
+          bestInsertIndex = daySpots.length;
+          const lastSpot = daySpots[daySpots.length - 1];
+          closestSpot = lastSpot;
+          minDirectDist = calcHaversineKm(lastSpot.lat, lastSpot.lng, spot.lat, spot.lng);
+          minDetour = minDirectDist;
+
+          insertDesc = `♨️ 接續在「${lastSpot.name}」之後 (第 ${bestInsertIndex + 1} 順位，當日夜宿點)`;
+          reason = `溫泉住宿一律排在當天最後面！白天行程結束後前往夜宿旅館 (從「${lastSpot.name}」出發車程約 ${Math.round(minDirectDist)} km)`;
+        } else {
+          // 普通景點 (名城 / 觀光)：不可排在當日既有的溫泉住宿點之後！
+          const hasLodgingAtEnd = daySpots.length > 0 && isLodgingSpot(daySpots[daySpots.length - 1]);
+          const maxAllowedIndex = hasLodgingAtEnd ? daySpots.length - 1 : daySpots.length;
+
+          // 找出距離此景點最近的當日既有景點
+          daySpots.forEach(ds => {
+            const d = calcHaversineKm(spot.lat, spot.lng, ds.lat, ds.lng);
+            if (d < minDirectDist) {
+              minDirectDist = d;
+              closestSpot = ds;
+            }
+          });
+
+          // 位置 0: 插在最前
+          const dFirst = calcHaversineKm(spot.lat, spot.lng, daySpots[0].lat, daySpots[0].lng);
+          minDetour = dFirst;
+          bestInsertIndex = 0;
+
+          // 位置 1 ~ maxAllowedIndex
+          for (let i = 0; i < maxAllowedIndex; i++) {
+            if (i < daySpots.length - 1) {
+              const s1 = daySpots[i];
+              const s2 = daySpots[i + 1];
+              const origDist = calcHaversineKm(s1.lat, s1.lng, s2.lat, s2.lng);
+              const newDist = calcHaversineKm(s1.lat, s1.lng, spot.lat, spot.lng) +
+                              calcHaversineKm(spot.lat, spot.lng, s2.lat, s2.lng);
+              const detour = newDist - origDist;
+              if (detour < minDetour) {
+                minDetour = detour;
+                bestInsertIndex = i + 1;
+              }
+            } else if (!hasLodgingAtEnd) {
+              // 只有當天末尾不是溫泉住宿時，才允許插在最後
+              const dLast = calcHaversineKm(spot.lat, spot.lng, daySpots[daySpots.length - 1].lat, daySpots[daySpots.length - 1].lng);
+              if (dLast < minDetour) {
+                minDetour = dLast;
+                bestInsertIndex = daySpots.length;
+              }
+            }
+          }
+
+          if (bestInsertIndex === 0) {
+            insertDesc = `插在「${daySpots[0].name}」之前 (第 1 順位)`;
+          } else if (hasLodgingAtEnd && bestInsertIndex === daySpots.length - 1) {
+            insertDesc = `插在夜宿點「${daySpots[daySpots.length - 1].name}」之前 (夜宿前最後一站)`;
+          } else if (bestInsertIndex >= daySpots.length) {
+            insertDesc = `接續在「${daySpots[daySpots.length - 1].name}」之後 (第 ${bestInsertIndex + 1} 順位)`;
+          } else {
+            insertDesc = `插在「${daySpots[bestInsertIndex - 1].name}」與「${daySpots[bestInsertIndex].name}」之間 (第 ${bestInsertIndex + 1} 順位)`;
+          }
+
+          reason = `距離當天「${closestSpot ? closestSpot.name : ''}」最近 (約 ${Math.round(minDirectDist)} km)，預估繞路增加 ${Math.round(minDetour)} km`;
+          if (hasLodgingAtEnd) {
+            reason += ` (依規範維持溫泉夜宿於本日最後)`;
+          }
+        }
+
+        if (isClosedConflict) {
+          reason += `；⚠️ 但本日為${dow ? dow.zh : ''}，遇公休休館！`;
+        } else if (!isCurrentLodging) {
+          reason += `；無休館衝突 (當日${dow ? dow.zh : ''}開館)`;
+        }
+
+        // 行程負荷懲罰 (當日超過 2 景點以上，山城體力消耗大)
+        const loadPenalty = daySpots.length >= 2 ? (daySpots.length - 1) * 20 : 0;
+        // 休館日天價懲罰 (避免排入)
+        const closedPenalty = isClosedConflict ? 8000 : 0;
+
+        const score = minDetour + loadPenalty + closedPenalty;
+
+        results.push({
+          dayNumber: day.dayNumber,
+          title: day.title,
+          date: day.date,
+          dayZh: dow ? dow.zh : "",
+          spotCount: daySpots.length,
+          isClosedConflict,
+          conflictText: conflict ? conflict.closedText : "",
+          minDetour: Math.round(minDetour),
+          minDirectDist: Math.round(minDirectDist),
+          closestSpotName: closestSpot ? closestSpot.name : "",
+          bestInsertIndex,
+          insertDesc,
+          score,
+          reason
+        });
+      });
+
+      // 分數由小到大排序 (分數越低越推薦)
+      results.sort((a, b) => a.score - b.score);
+      return results;
+    }
+
+    // 山陰山陽沿線熱門常見點位快選 (含溫泉住宿)
+    const PRESET_SPOTS = [
+      { name: "寶可夢中心 廣島 (SOGO 6F)", type: "custom", prefecture: "廣島", nearestStation: "紙屋町西駅", lat: 34.3962, lng: 132.4571, stayDuration: "1 小時", climbLevelText: "中國地區唯一官方店", openHours: "10:00~19:30", transitInfo: "SOGO廣島本館6F直結", notes: "紅色暴鯉龍與皮卡丘！排在D6廣島城後步行順遊。", closedDay: "None", reservationUrl: "https://www.pokemon.co.jp/shop/pokecen/hiroshima/" },
+      { name: "廣島和平紀念資料館", type: "custom", prefecture: "廣島", nearestStation: "原爆ドーム前駅", lat: 34.3916, lng: 132.4526, stayDuration: "1.5 小時", climbLevelText: "米其林三星歷史見證", openHours: "08:30~18:00", transitInfo: "和平公園內徒步即達", notes: "丹下健三設計，原爆歷史見證。排在D6下午參觀。", closedDay: "None", reservationUrl: "https://hpmmuseum.jp/" },
+      { name: "鉄板焼 備彩 (千屋牛)", type: "custom", prefecture: "岡山", nearestStation: "岡山駅", lat: 34.6648, lng: 133.9185, stayDuration: "1.5 小時", climbLevelText: "岡山站直結2F", openHours: "11:30~14:30 / 17:30~21:30", transitInfo: "岡山格蘭比亞飯店2F直結", notes: "岡山夢幻和牛「千屋牛」鐵板燒。推薦D1晚餐！", closedDay: "None", reservationUrl: "https://jrwest-hotels.jp/tw/granvia-okayama/restaurant/bisai/" },
+      { name: "鉄板焼 空也 (千屋牛)", type: "custom", prefecture: "岡山", nearestStation: "岡山駅", lat: 34.6655, lng: 133.9235, stayDuration: "1.5 小時", climbLevelText: "西川綠道公園", openHours: "18:00~23:00", transitInfo: "岡山站東口步行7分", notes: "A5千屋牛職人鐵板料理。推薦D1晚餐！", closedDay: "Sunday", reservationUrl: "https://teppan-ku-ya.gorp.jp/" },
+      { name: "たくみ割烹店 (鳥取和牛元祖涮涮鍋)", type: "custom", prefecture: "鳥取", nearestStation: "鳥取駅", lat: 35.4963, lng: 134.2267, stayDuration: "1 ~ 1.5 小時", climbLevelText: "鳥取站北口步行4分", openHours: "11:30~14:00 / 17:00~21:00", transitInfo: "鳥取站北口出站步行4分", notes: "日本涮涮鍋元祖發祥店！極度推薦D3午餐！", closedDay: "Wednesday", reservationUrl: "https://www.tottori-mingei.jp/takumikappou.html" },
+      { name: "鉄板焼 つぼみ (米子鳥取和牛)", type: "custom", prefecture: "鳥取", nearestStation: "米子駅", lat: 35.4320, lng: 133.3340, stayDuration: "1.5 小時", climbLevelText: "米子角盤町商圈", openHours: "11:30~14:30 / 17:30~22:00", transitInfo: "米子站公車5分", notes: "大山黑牛特選鐵板燒。可排D3晚餐(溫泉飯店需訂純純早餐房)", closedDay: "Sunday", reservationUrl: "https://teppan-tsubomi.com/menu/" },
+      { name: "鉄板焼 神石 (廣島牛・Granvia 21F)", type: "custom", prefecture: "廣島", nearestStation: "広島駅", lat: 34.3980, lng: 132.4760, stayDuration: "1.5 小時", climbLevelText: "廣島站直結21F", openHours: "11:30~14:30 / 17:00~21:30", transitInfo: "廣島格蘭比亞21F", notes: "21F高空夜景特選廣島牛鐵板燒。推薦D6晚餐！", closedDay: "None", reservationUrl: "https://jrwest-hotels.jp/granvia-hiroshima/restaurant/jinseki/" },
+      { name: "鉄板焼 愛宕 (廣島牛・ANA 1F)", type: "custom", prefecture: "廣島", nearestStation: "袋町駅", lat: 34.3900, lng: 132.4580, stayDuration: "1.5 小時", climbLevelText: "平和公園旁徒步7分", openHours: "11:30~14:30 / 17:30~21:30", transitInfo: "ANA皇冠假日酒店1F", notes: "廣島牛比婆牛星級鐵板燒。推薦D6晚餐！", closedDay: "None", reservationUrl: "https://www.anacrowneplaza-hiroshima.jp/restaurants/atago/" },
+      { name: "岡山桃太郎機場 (OKJ)", type: "custom", prefecture: "岡山", nearestStation: "岡山駅", lat: 34.7578, lng: 133.8553, openHours: "全天 (配合航班營運)", transitInfo: "搭乘利木津巴士約30分直達岡山站西口 (單程780円)", notes: "台灣虎航直飛起降機場。入境直奔岡山站前商圈逛街！", closedDay: "None" },
+      { name: "湯郷溫泉 (美作市)", type: "lodging", prefecture: "岡山", nearestStation: "津山駅", lat: 35.0064, lng: 134.0925, openHours: "全天 (夜宿住宿 / 鷺溫泉館)", transitInfo: "JR 津山駅搭乘「宇野巴士」往湯郷溫泉約35分直達", notes: "美作三湯之一，千年白鷺古湯，弱鹼性美肌名湯，和風老街", closedDay: "None" },
+      { name: "皆生溫泉 (米子市)", type: "lodging", prefecture: "鳥取", nearestStation: "米子駅", lat: 35.4578, lng: 133.3556, openHours: "全天 (夜宿住宿)", transitInfo: "JR 米子站搭路線巴士往皆生溫泉約20分", notes: "米子之奧座敷，海濱溫泉，眺望日本海與大山", closedDay: "None" },
+      { name: "玉造溫泉", type: "lodging", prefecture: "島根", nearestStation: "玉造温泉駅", lat: 35.4192, lng: 133.0105, openHours: "全天 (夜宿住宿)", transitInfo: "JR 玉造溫泉站轉搭公車約7分抵達溫泉街", notes: "日本最古美肌溫泉之一，松江與出雲巡禮極佳夜宿基地", closedDay: "None" },
+      { name: "鞆之浦溫泉 (福山市)", type: "lodging", prefecture: "廣島", nearestStation: "福山駅", lat: 34.3828, lng: 133.3831, openHours: "全天 (夜宿住宿)", transitInfo: "JR 福山駅南口 5 號月台搭乘「鞆鐵道巴士」約30分直達", notes: "宮崎駿《崖上的波妞》舞台、江戶常夜燈古港，仙醉島海景露天風呂", closedDay: "None" },
+      { name: "三朝溫泉", type: "lodging", prefecture: "鳥取", nearestStation: "倉吉駅", lat: 35.4093, lng: 133.8967, openHours: "全天 (夜宿住宿)", transitInfo: "JR 倉吉站搭乘公車約 20 分抵達三朝溫泉", notes: "世界屈指高濃度鐳溫泉，三德山三佛寺山麓名湯", closedDay: "None" },
+      { name: "湯田溫泉", type: "lodging", prefecture: "山口", nearestStation: "湯田温泉駅", lat: 34.1627, lng: 131.4589, openHours: "全天 (夜宿住宿)", transitInfo: "JR 湯田溫泉站步行 10 分鐘抵達溫泉街中心", notes: "白狐傳說名湯，山口市交通核心，足湯眾多", closedDay: "None" },
+      { name: "萩溫泉鄉", type: "lodging", prefecture: "山口", nearestStation: "東萩駅", lat: 34.4172, lng: 131.3965, openHours: "全天 (夜宿住宿)", transitInfo: "JR 東萩站搭車約 5~10 分鐘", notes: "毛利藩城下町旁海濱溫泉，眺望指月山與日本海夕照", closedDay: "None" },
+      { name: "出雲大社", type: "custom", prefecture: "島根", nearestStation: "出雲市駅", lat: 35.3995, lng: 132.6859, openHours: "06:00 - 18:00", transitInfo: "一畑電車「出雲大社前駅」徒步7分，或JR出雲市站搭一畑公車約25分", notes: "日本最古神社之一、結緣聖地，神樂殿注連繩壯觀", closedDay: "None" },
+      { name: "倉敷美觀地區", type: "custom", prefecture: "岡山", nearestStation: "倉敷駅", lat: 34.5954, lng: 133.7716, openHours: "全天開放 (店家約 10:00-17:00)", transitInfo: "JR 倉敷駅南口徒步 10 分鐘即達", notes: "白壁宅邸、倉敷川遊船，江戶天領歷史風情", closedDay: "None" },
+      { name: "嚴島神社 (宮島)", type: "custom", prefecture: "廣島", nearestStation: "宮島口駅", lat: 34.2960, lng: 132.3198, openHours: "06:30 - 17:30 (依季節變動)", transitInfo: "JR 宮島口站搭渡輪 10 分鐘抵達宮島碼頭，徒步 15 分", notes: "世界文化遺產，海上大鳥居、退潮可步行至鳥居下方", closedDay: "None" },
+      { name: "錦帶橋", type: "custom", prefecture: "山口", nearestStation: "岩国駅", lat: 34.1677, lng: 132.1764, openHours: "全天 (夜間點燈)", transitInfo: "JR 岩國站搭公車 20 分鐘抵達錦帶橋巴士中心", notes: "日本三大名橋之一，五連木造拱橋，岩國城纜車山麓站旁", closedDay: "None" },
+      { name: "岡山後樂園", type: "custom", prefecture: "岡山", nearestStation: "岡山駅", lat: 34.6672, lng: 133.9358, openHours: "07:30 - 18:00", transitInfo: "JR 岡山站搭路面電車「東山行」至「城下」徒步10分，或公車直達", notes: "日本三大名園之一，米其林三星評價回遊式庭園", closedDay: "None" },
+      { name: "足立美術館", type: "custom", prefecture: "島根", nearestStation: "安来駅", lat: 35.3780, lng: 133.1979, openHours: "09:00 - 17:30", transitInfo: "JR 安來站搭乘免費接駁巴士約 20 分鐘", notes: "連續 21 年日本庭園評選第一名，橫山大觀名作收藏", closedDay: "None" },
+      { name: "鳥取砂丘", type: "custom", prefecture: "鳥取", nearestStation: "鳥取駅", lat: 35.5418, lng: 134.2274, openHours: "全天開放", transitInfo: "JR 鳥取站搭乘公車約 20 分鐘直達砂丘會館", notes: "日本最大海岸沙丘、馬背頂峰眺望日本海、騎駱駝體驗", closedDay: "None" },
+      { name: "境港水木茂大道", type: "custom", prefecture: "鳥取", nearestStation: "境港駅", lat: 35.5503, lng: 133.2325, openHours: "全天開放 (水木茂紀念館 09:30-17:00)", transitInfo: "JR 境港站出站即達 (米子搭境線妖怪列車約45分)", notes: "800公尺街道設有170多尊妖怪青銅像，紀念館週二休館", closedDay: "None" },
+      { name: "尾道千光寺公園", type: "custom", prefecture: "廣島", nearestStation: "尾道駅", lat: 34.4098, lng: 133.1947, openHours: "全天 (千光寺纜車 09:00-17:15)", transitInfo: "JR 尾道站搭市內巴士至「長江口」搭乘千光寺纜車上山", notes: "俯瞰尾道水道與瀨戶內海絕景、貓之細道、文學小路", closedDay: "None" }
+    ];
+
+    function initPresetButtons() {
+      const container = document.getElementById("presetButtonsContainer");
+      if (!container) return;
+      container.innerHTML = PRESET_SPOTS.map((p, idx) => `
+        <button type="button" onclick="applyPresetSpot(${idx})" class="bg-white hover:bg-amber-100 text-slate-700 hover:text-amber-900 border border-slate-200 rounded px-2 py-1 text-[11px] font-medium transition shadow-2xs">
+          ⚡ ${p.name}
+        </button>
+      `).join('');
+    }
+
+    function applyPresetSpot(idx) {
+      const p = PRESET_SPOTS[idx];
+      if (!p) return;
+      document.getElementById("modalSpotName").value = p.name;
+      document.getElementById("modalSpotType").value = p.type;
+      document.getElementById("modalSpotPrefecture").value = p.prefecture;
+      document.getElementById("modalSpotStation").value = p.nearestStation;
+      document.getElementById("modalSpotClosedDay").value = p.closedDay;
+      document.getElementById("modalSpotLat").value = p.lat;
+      document.getElementById("modalSpotLng").value = p.lng;
+      document.getElementById("modalSpotHours").value = p.openHours;
+      document.getElementById("modalSpotTransit").value = p.transitInfo;
+      document.getElementById("modalSpotNotes").value = p.notes;
+      onModalCoordsOrNameChange();
+    }
+
+    // 線上地理編碼 (Nominatim)
+    async function autoGeocodeFromName() {
+      const name = document.getElementById("modalSpotName").value.trim();
+      if (!name) {
+        alert("請先在名稱欄位輸入景點名稱！");
+        return;
+      }
+
+      // 先查快選
+      const matched = PRESET_SPOTS.find(p => p.name.includes(name) || name.includes(p.name));
+      if (matched) {
+        document.getElementById("modalSpotLat").value = matched.lat;
+        document.getElementById("modalSpotLng").value = matched.lng;
+        if (!document.getElementById("modalSpotPrefecture").value) document.getElementById("modalSpotPrefecture").value = matched.prefecture;
+        if (!document.getElementById("modalSpotStation").value) document.getElementById("modalSpotStation").value = matched.nearestStation;
+        onModalCoordsOrNameChange();
+        return;
+      }
+
+      const btn = document.getElementById("btnAutoGeocode");
+      const originalText = btn.innerText;
+      btn.innerText = "⏳ 查詢中...";
+      btn.disabled = true;
+
+      try {
+        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(name + " 日本")}&limit=1`;
+        const res = await fetch(url);
+        const data = await res.json();
+        if (data && data.length > 0) {
+          document.getElementById("modalSpotLat").value = parseFloat(data[0].lat).toFixed(4);
+          document.getElementById("modalSpotLng").value = parseFloat(data[0].lon).toFixed(4);
+          onModalCoordsOrNameChange();
+        } else {
+          alert("查無此名稱之地理座標，請手動輸入經緯度或選擇上方快選按鈕。");
+        }
+      } catch (err) {
+        alert("線上查詢失敗，請手動輸入經緯度。");
+      } finally {
+        btn.innerText = originalText;
+        btn.disabled = false;
+      }
+    }
+
+    // 模態框經緯度或名稱變更時，即時運算最佳排程天數
+    let currentModalRecommendation = null;
+
+    function onModalCoordsOrNameChange() {
+      const lat = parseFloat(document.getElementById("modalSpotLat").value);
+      const lng = parseFloat(document.getElementById("modalSpotLng").value);
+      const name = document.getElementById("modalSpotName").value.trim();
+      const closedDay = document.getElementById("modalSpotClosedDay").value;
+      const recBox = document.getElementById("modalPlanRecommendationBox");
+
+      if (!lat || !lng || !recBox) {
+        if (recBox) recBox.classList.add("hidden");
+        currentModalRecommendation = null;
+        return;
+      }
+
+      const dummySpot = {
+        name: name || "此地點",
+        lat,
+        lng,
+        closedDay
+      };
+
+      const recs = analyzeBestDaysForSpot(dummySpot);
+      if (recs.length > 0) {
+        currentModalRecommendation = recs[0];
+        recBox.classList.remove("hidden");
+        document.getElementById("modalRecDayBadge").innerText = `首選 Day ${currentModalRecommendation.dayNumber}`;
+        document.getElementById("modalRecReasonText").innerHTML = `
+          <strong>【推薦排入 Day ${currentModalRecommendation.dayNumber}：${escapeHtml(currentModalRecommendation.title)}】</strong><br>
+          • 順序建議：${escapeHtml(currentModalRecommendation.insertDesc)}<br>
+          • 評估原因：${escapeHtml(currentModalRecommendation.reason)}
+        `;
+        document.getElementById("modalRecInsertPos").innerText = currentModalRecommendation.insertDesc;
+      } else {
+        recBox.classList.add("hidden");
+        currentModalRecommendation = null;
+      }
+    }
+
+    // ==========================================
+    // 智慧規劃分析彈窗 (Smart Plan Modal)
+    // ==========================================
+    function openSmartPlanModal(spotId) {
+      const spot = state.spots.find(s => s.id === spotId);
+      if (!spot) return;
+
+      const modal = document.getElementById("smartPlanModal");
+      const badge = document.getElementById("smartPlanSpotBadge");
+      const content = document.getElementById("smartPlanContent");
+
+      badge.innerText = `${spot.name} (${spot.prefecture || ''})`;
+
+      const recs = analyzeBestDaysForSpot(spot);
+      if (!recs || recs.length === 0) {
+        content.innerHTML = `<div class="p-4 text-center text-slate-400">此景點尚無有效經緯度座標，請先編輯輸入經緯度以供計算！</div>`;
+        modal.classList.remove("hidden");
+        return;
+      }
+
+      let html = `<div class="space-y-2.5">`;
+
+      recs.forEach((r, idx) => {
+        let rankBadge = "";
+        let borderClass = "border-slate-200 bg-white";
+
+        if (idx === 0) {
+          rankBadge = `<span class="bg-emerald-600 text-white px-2 py-0.5 rounded font-bold text-[11px]">🥇 首選最佳推薦</span>`;
+          borderClass = "border-emerald-300 bg-emerald-50/50 shadow-xs";
+        } else if (idx === 1) {
+          rankBadge = `<span class="bg-blue-600 text-white px-2 py-0.5 rounded font-bold text-[11px]">🥈 次選推薦</span>`;
+          borderClass = "border-blue-200 bg-blue-50/30";
+        } else if (idx === 2) {
+          rankBadge = `<span class="bg-slate-700 text-white px-2 py-0.5 rounded font-bold text-[11px]">🥉 備選天數</span>`;
+        } else {
+          rankBadge = `<span class="bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded font-medium text-[10px]">候選</span>`;
+        }
+
+        const conflictTag = r.isClosedConflict 
+          ? `<span class="bg-red-100 text-red-800 px-1.5 py-0.5 rounded font-bold text-[10px]">⚠️ 休館衝突！</span>`
+          : `<span class="bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-bold text-[10px]">開館安全</span>`;
+
+        html += `
+          <div class="p-3 rounded-xl border ${borderClass} space-y-2 transition">
+            <div class="flex items-start justify-between gap-2">
+              <div>
+                <div class="flex items-center gap-2">
+                  <h4 class="font-bold text-sm text-slate-900">Day ${r.dayNumber}：${escapeHtml(r.title)}</h4>
+                  ${rankBadge}
+                  ${conflictTag}
+                </div>
+                <div class="text-[11px] text-slate-500 mt-0.5">
+                  📅 日期：${r.date || '未定'} (${r.dayZh}) | 目前已有 ${r.spotCount} 個景點
+                </div>
+              </div>
+              <button onclick="assignSpotToDayAndIndex('${spot.id}', ${r.dayNumber}, ${r.bestInsertIndex})" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-3 py-1.5 rounded text-xs shrink-0 shadow-sm transition">
+                排入此天 ➔
+              </button>
+            </div>
+
+            <div class="bg-white/80 p-2 rounded border border-slate-200/80 text-[11px] space-y-1">
+              <div><strong>📌 建議插入順位：</strong><span class="text-blue-700 font-bold">${escapeHtml(r.insertDesc)}</span></div>
+              <div><strong>🧭 評估說明：</strong>${escapeHtml(r.reason)}</div>
+            </div>
+          </div>
+        `;
+      });
+
+      html += `</div>`;
+      content.innerHTML = html;
+      modal.classList.remove("hidden");
+    }
+
+    function closeSmartPlanModal() {
+      document.getElementById("smartPlanModal").classList.add("hidden");
+    }
+
+    // 將景點指派至特定天數與索引位置 (溫泉住宿一律排在末端)
+    function assignSpotToDayAndIndex(spotId, dayNumber, insertIndex) {
+      const spot = state.spots.find(s => s.id === spotId);
+      const targetDay = state.itinerary.find(d => d.dayNumber === dayNumber);
+      if (!spot || !targetDay) return;
+
+      // 先從其他天移除避免重複
+      state.itinerary.forEach(d => {
+        if (d.spotIds) {
+          d.spotIds = d.spotIds.filter(id => id !== spotId);
+        }
+      });
+
+      if (!targetDay.spotIds) targetDay.spotIds = [];
+
+      if (isLodgingSpot(spot)) {
+        // 溫泉住宿點一律加在最後
+        targetDay.spotIds.push(spotId);
+      } else {
+        if (insertIndex >= targetDay.spotIds.length) {
+          targetDay.spotIds.push(spotId);
+        } else {
+          targetDay.spotIds.splice(insertIndex, 0, spotId);
+        }
+      }
+
+      // 強制確保溫泉住宿排在當天最後面
+      targetDay.spotIds = sortDaySpotsLodgingAtEnd(targetDay.spotIds);
+
+      saveState();
+      closeSmartPlanModal();
+      switchTab('itinerary');
+      renderMainPanel();
+      renderMapElements();
+      const extraMsg = isLodgingSpot(spot) ? " (已依溫泉住宿規範排在本日最後一站)" : "";
+      alert(`已成功將「${spot.name}」排入 Day ${dayNumber}！${extraMsg}`);
+    }
+
+    // 一鍵將所有尚未排程的景點全自動指派至最佳天數 (溫泉住宿強制排在末端)
+    function autoAssignAllUnassigned() {
+      const assignedIds = new Set();
+      state.itinerary.forEach(d => (d.spotIds || []).forEach(id => assignedIds.add(id)));
+      const unassigned = state.spots.filter(s => !assignedIds.has(s.id));
+
+      if (unassigned.length === 0) {
+        alert("所有景點均已排入行程！");
+        return;
+      }
+
+      let count = 0;
+      unassigned.forEach(sp => {
+        const recs = analyzeBestDaysForSpot(sp);
+        if (recs.length > 0) {
+          const best = recs[0];
+          const day = state.itinerary.find(d => d.dayNumber === best.dayNumber);
+          if (day) {
+            if (!day.spotIds) day.spotIds = [];
+            if (isLodgingSpot(sp) || best.bestInsertIndex >= day.spotIds.length) {
+              day.spotIds.push(sp.id);
+            } else {
+              day.spotIds.splice(best.bestInsertIndex, 0, sp.id);
+            }
+            day.spotIds = sortDaySpotsLodgingAtEnd(day.spotIds);
+            count++;
+          }
+        }
+      });
+
+      saveState();
+      renderMainPanel();
+      renderMapElements();
+      alert(`已成功將 ${count} 個未排景點自動規劃安排至最順路的天數！(溫泉住宿點均已固定於各日最末端)`);
+    }
+
+    // ==========================================
+    // 景點 Modal (新增/編輯)
+    // ==========================================
+    function openSpotModal(spotId = null) {
+      state.editingSpotId = spotId;
+      const modal = document.getElementById("spotModal");
+      const title = document.getElementById("spotModalTitle");
+      initPresetButtons();
+
+      if (spotId) {
+        const s = state.spots.find(item => item.id === spotId);
+        title.innerText = `編輯地點：${s.name}`;
+        document.getElementById("modalSpotName").value = s.name || "";
+        document.getElementById("modalSpotType").value = s.type || "castle";
+        document.getElementById("modalSpotPrefecture").value = s.prefecture || "";
+        document.getElementById("modalSpotStation").value = s.nearestStation || "";
+        document.getElementById("modalSpotClosedDay").value = s.closedDay || "None";
+        document.getElementById("modalSpotLat").value = s.lat || "";
+        document.getElementById("modalSpotLng").value = s.lng || "";
+        document.getElementById("modalSpotStayDuration").value = s.stayDuration || "";
+        document.getElementById("modalSpotClimbLevel").value = s.climbLevelText || "";
+        document.getElementById("modalSpotHours").value = s.openHours || "";
+        document.getElementById("modalSpotTransit").value = s.transitInfo || "";
+        document.getElementById("modalSpotNotes").value = s.notes || "";
+      } else {
+        title.innerText = "新增景點 / 住宿點";
+        document.getElementById("modalSpotName").value = "";
+        document.getElementById("modalSpotType").value = "custom";
+        document.getElementById("modalSpotPrefecture").value = "";
+        document.getElementById("modalSpotStation").value = "";
+        document.getElementById("modalSpotClosedDay").value = "None";
+        document.getElementById("modalSpotLat").value = "";
+        document.getElementById("modalSpotLng").value = "";
+        document.getElementById("modalSpotStayDuration").value = "1 小時";
+        document.getElementById("modalSpotClimbLevel").value = "平山城";
+        document.getElementById("modalSpotHours").value = "";
+        document.getElementById("modalSpotTransit").value = "";
+        document.getElementById("modalSpotNotes").value = "";
+      }
+
+      onModalCoordsOrNameChange();
+      modal.classList.remove("hidden");
+    }
+
+    function closeSpotModal() {
+      document.getElementById("spotModal").classList.add("hidden");
+      state.editingSpotId = null;
+      currentModalRecommendation = null;
+    }
+
+    function saveSpotModal() {
+      const name = document.getElementById("modalSpotName").value.trim();
+      if (!name) {
+        alert("請輸入名稱！");
+        return;
+      }
+      const type = document.getElementById("modalSpotType").value;
+      const prefecture = document.getElementById("modalSpotPrefecture").value.trim();
+      const station = document.getElementById("modalSpotStation").value.trim();
+      const closedDay = document.getElementById("modalSpotClosedDay").value;
+      const lat = parseFloat(document.getElementById("modalSpotLat").value) || 34.6;
+      const lng = parseFloat(document.getElementById("modalSpotLng").value) || 133.5;
+      const stayDuration = document.getElementById("modalSpotStayDuration").value.trim();
+      const climbLevelText = document.getElementById("modalSpotClimbLevel").value.trim();
+      const hours = document.getElementById("modalSpotHours").value.trim();
+      const transit = document.getElementById("modalSpotTransit").value.trim();
+      const notes = document.getElementById("modalSpotNotes").value.trim();
+      const autoAssign = document.getElementById("modalAutoAssignCheckbox").checked;
+
+      let targetSpotId = state.editingSpotId;
+
+      if (state.editingSpotId) {
+        const s = state.spots.find(item => item.id === state.editingSpotId);
+        if (s) {
+          s.name = name;
+          s.type = type;
+          s.prefecture = prefecture;
+          s.nearestStation = station;
+          s.closedDay = closedDay;
+          s.lat = lat;
+          s.lng = lng;
+          s.stayDuration = stayDuration;
+          s.climbLevelText = climbLevelText;
+          s.openHours = hours;
+          s.transitInfo = transit;
+          s.notes = notes;
+        }
+      } else {
+        targetSpotId = "custom_" + Date.now();
+        state.spots.push({
+          id: targetSpotId,
+          name: name,
+          type: type,
+          prefecture: prefecture,
+          lat: lat,
+          lng: lng,
+          nearestStation: station,
+          stampLocation: type === "castle" ? "天守閣/管理處" : "",
+          closedDay: closedDay,
+          closedDayText: closedDay !== "None" ? `${closedDay}公休` : "無休",
+          backupStamp: "",
+          stayDuration: stayDuration || "1 小時",
+          climbLevelText: climbLevelText,
+          openHours: hours,
+          transitInfo: transit,
+          reservationUrl: "",
+          notes: notes,
+          checklists: {}
+        });
+      }
+
+      // 如果勾選了「儲存時自動排入此推薦天數」
+      if (autoAssign && currentModalRecommendation) {
+        const targetDay = state.itinerary.find(d => d.dayNumber === currentModalRecommendation.dayNumber);
+        if (targetDay) {
+          // 先從其他天移除避免重複
+          state.itinerary.forEach(d => {
+            if (d.spotIds) d.spotIds = d.spotIds.filter(id => id !== targetSpotId);
+          });
+          if (!targetDay.spotIds) targetDay.spotIds = [];
+          
+          const sObj = state.spots.find(s => s.id === targetSpotId);
+          if (isLodgingSpot(sObj)) {
+            targetDay.spotIds.push(targetSpotId);
+          } else if (currentModalRecommendation.bestInsertIndex >= targetDay.spotIds.length) {
+            targetDay.spotIds.push(targetSpotId);
+          } else {
+            targetDay.spotIds.splice(currentModalRecommendation.bestInsertIndex, 0, targetSpotId);
+          }
+
+          // 強制確保溫泉住宿排在最末端
+          targetDay.spotIds = sortDaySpotsLodgingAtEnd(targetDay.spotIds);
+        }
+      }
+
+      saveState();
+      closeSpotModal();
+      renderMainPanel();
+      renderMapElements();
+      if (autoAssign && currentModalRecommendation) {
+        alert(`已儲存「${name}」並自動規劃排入 Day ${currentModalRecommendation.dayNumber}！`);
+      }
+    }
+
+    // ==========================================
+    // 網址分享 / 匯出 / 匯入 / 重設功能
+    // ==========================================
+    function generateShareUrl() {
+      try {
+        const payload = {
+          itinerary: state.itinerary,
+          deleted: state.deletedSpotIds || []
+        };
+        const jsonStr = JSON.stringify(payload);
+        const base64 = btoa(unescape(encodeURIComponent(jsonStr)));
+        const shareUrl = window.location.origin + window.location.pathname + '#plan=' + base64;
+        
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(shareUrl).then(() => {
+            alert("✅ 已成功複製「專屬行程分享網址」至剪貼簿！\\n\\n發給朋友打開，即可直接瀏覽您客製好的所有天數、車次、備忘與選定景點！");
+          }).catch(() => {
+            prompt("請手動按 Ctrl+C 複製以下專屬分享網址：", shareUrl);
+          });
+        } else {
+          prompt("請手動按 Ctrl+C 複製以下專屬分享網址：", shareUrl);
+        }
+      } catch (err) {
+        alert("產生分享網址失敗：" + err.message);
+      }
+    }
+
+    function exportJSON() {
+      const exportData = {
+        spots: state.spots,
+        itinerary: state.itinerary,
+        exportAt: new Date().toISOString()
+      };
+      const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Japan_100Castles_Trip_${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function importJSON(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          const data = JSON.parse(evt.target.result);
+          if (data.spots && data.itinerary) {
+            state.spots = data.spots;
+            state.itinerary = data.itinerary;
+            saveState();
+            renderMainPanel();
+            renderMapElements();
+            updateMapFilterDropdown();
+            alert("成功匯入行程資料！");
+          } else {
+            alert("檔案格式不正確，缺少 spots 或 itinerary 欄位");
+          }
+        } catch(err) {
+          alert("讀取失敗：" + err.message);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function exportMarkdown() {
+      let md = `# 山陰山陽 100名城巡禮旅行計畫表\n\n`;
+      md += `*產出時間：${new Date().toLocaleString()}*\n\n---\n\n`;
+
+      state.itinerary.forEach(day => {
+        const dow = getDayOfWeek(day.date);
+        md += `## Day ${day.dayNumber}：${day.title} (${day.date || '未定'} ${dow ? dow.zh : ''})\n`;
+        if (day.lodging) md += `- **住宿地點**：${day.lodging}\n`;
+        if (day.baseStation) md += `- **出發/樞紐站**：${day.baseStation}\n`;
+        if (day.notes) md += `- **備註事項**：${day.notes}\n`;
+        md += `\n### 景點與車次順序：\n`;
+
+        if (!day.spotIds || day.spotIds.length === 0) {
+          md += `*(尚未排定景點)*\n\n`;
+        } else {
+          day.spotIds.forEach((sid, idx) => {
+            const sp = state.spots.find(s => s.id === sid);
+            if (!sp) return;
+            const prevSp = idx > 0 ? state.spots.find(s => s.id === day.spotIds[idx - 1]) : null;
+            const fromSt = prevSp ? prevSp.nearestStation : day.baseStation;
+            md += `1. **${sp.name}** (${sp.prefecture})\n`;
+            md += `   - 車站：${sp.nearestStation || '無'} (從 ${fromSt || '起點'} 轉乘)\n`;
+            md += `   - 蓋章地點：${sp.stampLocation || '無'}\n`;
+            md += `   - 開放時間：${sp.openHours || '見官網'} (公休：${sp.closedDayText || '無'})\n`;
+            md += `   - 接駁交通：${sp.transitInfo || '無'}\n`;
+            if (sp.reservationUrl) md += `   - 預約連結：${sp.reservationUrl}\n`;
+            if (sp.notes) md += `   - 攻略筆記：${sp.notes}\n`;
+            md += `\n`;
+          });
+        }
+        md += `---\n\n`;
+      });
+
+      const blob = new Blob([md], { type: "text/markdown;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Japan_100Castles_Itinerary_${new Date().toISOString().split('T')[0]}.md`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function resetToDefault() {
+      if (!confirm("確定要重設為初始的 12 座名城推薦行程嗎？此操作將覆蓋現有修改。")) return;
+      localStorage.removeItem(STORAGE_KEY_SPOTS);
+      localStorage.removeItem(STORAGE_KEY_ITINERARY);
+      localStorage.removeItem(STORAGE_KEY_DELETED_SPOTS);
+      initState();
+      renderMainPanel();
+      renderMapElements();
+      updateMapFilterDropdown();
+      alert("已重設為預設名城資料！");
+    }
+
+    function escapeHtml(str) {
+      if (!str) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    // ==========================================
+    // 啟動程式
+    // ==========================================
+    window.addEventListener("DOMContentLoaded", () => {
+      initState();
+      initMap();
+      renderMainPanel();
+    });
+  </script>
+</body>
+</html>
