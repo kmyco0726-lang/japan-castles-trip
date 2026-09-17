@@ -1385,6 +1385,12 @@ const FLIGHT_COMPARISON_DATA = [
   }
 ];
 
+if (typeof window !== 'undefined') {
+  window.DEFAULT_SPOTS = DEFAULT_SPOTS;
+  window.DEFAULT_ITINERARY = DEFAULT_ITINERARY;
+  window.FLIGHT_COMPARISON_DATA = FLIGHT_COMPARISON_DATA;
+}
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { DEFAULT_SPOTS, DEFAULT_ITINERARY, FLIGHT_COMPARISON_DATA };
 }
+
