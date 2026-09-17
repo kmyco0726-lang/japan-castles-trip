@@ -1,45 +1,165 @@
 // spots_data.js - 預設景點與車站資料庫 (解析自 新文字文件.txt)
 const DEFAULT_SPOTS = [
   {
-  "id": "okayama_hotel",
-  "name": "岡山站前飯店 (住宿 Check-in)",
-  "prefecture": "岡山",
-  "type": "lodging",
-  "lat": 34.6655,
-  "lng": 133.9185,
-  "stayDuration": "夜宿",
-  "climbLevel": "lodging",
-  "climbLevelText": "🏨 站前市區住宿 (Check-in 寄放行李)",
-  "nearestStation": "岡山駅",
-  "stampLocation": "",
-  "closedDay": "None",
-  "closedDayText": "全年無休",
-  "backupStamp": "",
-  "openHours": "15:00 Check-in",
-  "transitInfo": "岡山桃太郎機場搭乘利木津巴士約 30 分直達岡山站西口 (徒步 1~3 分進飯店)",
-  "reservationUrl": "",
-  "notes": "岡山站直結或站前精選飯店（如 Hotel Granvia Okayama / Daiwa Roynet / Mitsui Garden），交通樞紐核心，放下大件行李後即可輕鬆空手出門逛街與享用和牛。"
-},
+    "id": "okayama_hotel",
+    "name": "岡山站前飯店 (住宿 Check-in)",
+    "prefecture": "岡山",
+    "type": "lodging",
+    "lat": 34.6655,
+    "lng": 133.9185,
+    "stayDuration": "夜宿",
+    "climbLevel": "lodging",
+    "climbLevelText": "🏨 站前市區住宿 (Check-in 寄放行李)",
+    "nearestStation": "岡山駅",
+    "stampLocation": "",
+    "closedDay": "None",
+    "closedDayText": "全年無休",
+    "backupStamp": "",
+    "openHours": "15:00 Check-in",
+    "transitInfo": "岡山桃太郎機場搭乘利木津巴士約 30 分直達岡山站西口 (徒步 1~3 分進飯店)",
+    "reservationUrl": "",
+    "notes": "岡山站直結或站前精選飯店（如 Hotel Granvia Okayama / Daiwa Roynet / Mitsui Garden），交通樞紐核心，放下大件行李後即可輕鬆空手出門逛街與享用和牛。"
+  },
   {
-  "id": "okayama_aeon",
-  "name": "AEON Mall Okayama (西日本最大級・逛街採買)",
-  "prefecture": "岡山",
-  "type": "custom",
-  "lat": 34.6628,
-  "lng": 133.9189,
-  "stayDuration": "1.5 ~ 2 小時",
-  "climbLevel": "shopping",
-  "climbLevelText": "🛍️ 大型購物商場 (室內平坦好走)",
-  "nearestStation": "岡山駅",
-  "stampLocation": "",
-  "closedDay": "None",
-  "closedDayText": "無休",
-  "backupStamp": "",
-  "openHours": "10:00 - 21:00",
-  "transitInfo": "JR 岡山站地下街直結，徒步約 5 分鐘即達",
-  "reservationUrl": "https://aeonmall-okayama.com/",
-  "notes": "西日本最大規模都市型 AEON，地下 2 層地上 8 層，進駐 350 家店鋪，涵蓋大規模超市、Bic Camera 電器、各類日系服飾、生活雜貨與免稅店，補給旅行物資首選。"
-},
+    "id": "matsue_lodging",
+    "name": "松江市區飯店 / 宍道湖畔 (住宿建議)",
+    "prefecture": "島根",
+    "type": "lodging",
+    "lat": 35.4639,
+    "lng": 133.0632,
+    "stayDuration": "夜宿放鬆",
+    "climbLevel": "lodging",
+    "climbLevelText": "🏨 站前/湖畔住宿 (建議：松江東急REI / Dormy Inn / 一畑飯店)",
+    "nearestStation": "松江駅",
+    "stampLocation": "飯店櫃檯",
+    "closedDay": "None",
+    "closedDayText": "住宿推薦點",
+    "backupStamp": "",
+    "openHours": "15:00 Check-in",
+    "transitInfo": "JR 松江駅直結步行 3 分；宍道湖畔搭乘市營巴士約 10 分",
+    "reservationUrl": "",
+    "notes": "【住宿建議地點：JR 松江駅周邊 或 宍道湖畔】\\n• 推薦飯店：松江東急REI飯店 (車站直結步行3分)、Dormy Inn Express 松江 (含天然溫泉)、一畑飯店 (Hotel Ichibata 宍道湖景)。\\n• 順路理由：傍晚漫步宍道湖看夕陽，隔日前往出雲大社（一畑電車/JR）極為順暢。"
+  },
+  {
+    "id": "hagi_lodging",
+    "name": "萩市區飯店 / 萩溫泉旅館 (住宿建議)",
+    "prefecture": "山口",
+    "type": "lodging",
+    "lat": 34.4172,
+    "lng": 131.3965,
+    "stayDuration": "夜宿放鬆",
+    "climbLevel": "lodging",
+    "climbLevelText": "🏨 城下町/溫泉住宿 (建議：常茂惠 / 萩本陣 / 北門屋敷)",
+    "nearestStation": "東萩駅",
+    "stampLocation": "飯店櫃檯",
+    "closedDay": "None",
+    "closedDayText": "住宿推薦點",
+    "backupStamp": "",
+    "openHours": "15:00 Check-in",
+    "transitInfo": "自津和野搭防長巴士約 60 分直達萩市",
+    "reservationUrl": "",
+    "notes": "【住宿建議地點：萩市區 / 萩溫泉鄉 或 津和野】\\n• 推薦飯店：萩之宿 常茂惠 (米其林頂級純日式)、萩本陣 (高台海景展望露天池)、萩之鶴 北門屋敷。\\n• 順路理由：津和野搭車直達萩市入住，次日清晨前往長門「元乃隅神社」與「萩城」車程最短、最順暢。"
+  },
+  {
+    "id": "shin_yamaguchi_lodging",
+    "name": "新山口站前飯店 (住宿建議)",
+    "prefecture": "山口",
+    "type": "lodging",
+    "lat": 34.0934,
+    "lng": 131.3986,
+    "stayDuration": "夜宿放鬆",
+    "climbLevel": "lodging",
+    "climbLevelText": "🏨 新幹線樞紐住宿 (建議：新山口康福飯店 / 燦路都新山口)",
+    "nearestStation": "新山口駅",
+    "stampLocation": "飯店櫃檯",
+    "closedDay": "None",
+    "closedDayText": "住宿推薦點",
+    "backupStamp": "",
+    "openHours": "15:00 Check-in",
+    "transitInfo": "萩市搭防長巴士直達新山口站北口；出站即進飯店",
+    "reservationUrl": "",
+    "notes": "【住宿建議地點：JR 新山口駅 新幹線口】\\n• 推薦飯店：新山口康福飯店 (Comfort Hotel，出站1分)、燦路都新山口飯店 (Hotel Sunroute，站前即達)。\\n• 順路理由：防長巴士下車即抵站前飯店；新山口為山陽新幹線大站，隔天清晨極速搭新幹線直奔新岩國/宮島，零行李負擔。"
+  },
+  {
+    "id": "hiroshima_lodging_d8",
+    "name": "廣島站前飯店 (D8 住宿建議)",
+    "prefecture": "廣島",
+    "type": "lodging",
+    "lat": 34.398,
+    "lng": 132.476,
+    "stayDuration": "夜宿放鬆",
+    "climbLevel": "lodging",
+    "climbLevelText": "🏨 廣島市區直通住宿 (建議：廣島格蘭比亞 / 喜來登 / ANA)",
+    "nearestStation": "広島駅",
+    "stampLocation": "飯店櫃檯",
+    "closedDay": "None",
+    "closedDayText": "住宿推薦點",
+    "backupStamp": "",
+    "openHours": "15:00 Check-in",
+    "transitInfo": "宮島口搭 JR 山陽本線 25 分直達廣島站，北口直通飯店",
+    "reservationUrl": "",
+    "notes": "【住宿建議地點：JR 廣島駅周邊 或 八丁堀商圈】\\n• 推薦飯店：廣島格蘭比亞大飯店 (廣島站北口直通)、廣島喜來登大飯店 (站旁直結)、廣島ANA皇冠假日酒店。\\n• 順路理由：宮島口搭 JR 直達廣島站，直接進駐市中心大飯店，次日參觀廣島城與和平公園完全免換飯店。"
+  },
+  {
+    "id": "hiroshima_lodging_d9",
+    "name": "廣島站前飯店 (D9 連住第2晚)",
+    "prefecture": "廣島",
+    "type": "lodging",
+    "lat": 34.398,
+    "lng": 132.476,
+    "stayDuration": "夜宿放鬆",
+    "climbLevel": "lodging",
+    "climbLevelText": "🏨 廣島市區連住 (同 D8 飯店，零行李負擔)",
+    "nearestStation": "広島駅",
+    "stampLocation": "飯店櫃檯",
+    "closedDay": "None",
+    "closedDayText": "住宿推薦點",
+    "backupStamp": "",
+    "openHours": "全天連住",
+    "transitInfo": "市區徒步或搭路面電車即達",
+    "reservationUrl": "",
+    "notes": "【住宿建議地點：JR 廣島駅周邊 (連住免搬行李)】\\n• 推薦飯店：同 Day 8 飯店 (連住 2 晚，徹底擺脫換飯店與拖行李疲累)。\\n• 順路理由：全日市區輕鬆漫步，晚間在廣島站 21F 享用神石和牛鐵板燒，步行或電車即刻回房休息。"
+  },
+  {
+    "id": "okayama_hotel_d11",
+    "name": "岡山站前飯店 (D11 住宿建議)",
+    "prefecture": "岡山",
+    "type": "lodging",
+    "lat": 34.6655,
+    "lng": 133.9185,
+    "stayDuration": "夜宿放鬆",
+    "climbLevel": "lodging",
+    "climbLevelText": "🏨 岡山站前市區住宿 (建議：格蘭比亞 / 大和Roynet / 三井花園)",
+    "nearestStation": "岡山駅",
+    "stampLocation": "飯店櫃檯",
+    "closedDay": "None",
+    "closedDayText": "住宿推薦點",
+    "backupStamp": "",
+    "openHours": "15:00 Check-in",
+    "transitInfo": "福山搭新幹線 16 分直達岡山站；站前徒步 1~3 分即達",
+    "reservationUrl": "",
+    "notes": "【住宿建議地點：JR 岡山駅東口 (岡山市區)】\\n• 推薦飯店：岡山格蘭比亞大飯店 (直結)、大和Roynet飯店岡山站前、三井花園飯店岡山。\\n• 順路理由：福山搭新幹線僅 16 分鐘極速返抵岡山寄放大行李，轉吉備線參拜桃太郎兩大社極順路，傍晚在站前一番街採買免稅伴手禮。"
+  },
+  {
+    "id": "okayama_aeon",
+    "name": "AEON Mall Okayama (西日本最大級・逛街採買)",
+    "prefecture": "岡山",
+    "type": "custom",
+    "lat": 34.6628,
+    "lng": 133.9189,
+    "stayDuration": "1.5 ~ 2 小時",
+    "climbLevel": "shopping",
+    "climbLevelText": "🛍️ 大型購物商場 (室內平坦好走)",
+    "nearestStation": "岡山駅",
+    "stampLocation": "",
+    "closedDay": "None",
+    "closedDayText": "無休",
+    "backupStamp": "",
+    "openHours": "10:00 - 21:00",
+    "transitInfo": "JR 岡山站地下街直結，徒步約 5 分鐘即達",
+    "reservationUrl": "https://aeonmall-okayama.com/",
+    "notes": "西日本最大規模都市型 AEON，地下 2 層地上 8 層，進駐 350 家店鋪，涵蓋大規模超市、Bic Camera 電器、各類日系服飾、生活雜貨與免稅店，補給旅行物資首選。"
+  },
   {
     "id": "kinojo",
     "name": "鬼ノ城",
@@ -680,27 +800,7 @@ const DEFAULT_SPOTS = [
     "reservationUrl": "http://www.kibitsuhiko.or.jp/",
     "notes": "備前國一之宮，主祀大吉備津日子命（桃太郎傳說原型主神）。夏至清晨朝陽正對鳥居與本殿升起，被尊為『朝日之宮』。境內千年平安杉、神池龜島與隨神門仙氣環繞，必求超人氣立體白桃陶籤與桃太郎御守！"
   },
-  {
-    "id": "kurashiki_bikan",
-    "name": "倉敷美觀地區 (Kurashiki Bikan)",
-    "prefecture": "岡山",
-    "type": "custom",
-    "lat": 34.5954,
-    "lng": 133.7716,
-    "stayDuration": "2 ~ 3 小時",
-    "climbLevel": "scenic",
-    "climbLevelText": "🏞️ 江戶天領白壁土藏・倉敷川搖櫓遊船與大原美術館",
-    "nearestStation": "倉敷駅",
-    "stampLocation": "倉敷館觀光案內所",
-    "closedDay": "None",
-    "closedDayText": "店家多於週一公休，街區全天開放",
-    "backupStamp": "",
-    "openHours": "街區全天開放 (店家與展館約 10:00~17:00)",
-    "transitInfo": "JR 岡山站搭山陽本線/伯備線 17 分鐘抵「倉敷站」，南口出站徒步 10 分鐘即達 (高梁備中松山城往返岡山必經！)",
-    "reservationUrl": "https://www.kurashiki-tabi.jp/see-kurashiki/",
-    "notes": "米其林二星評價歷史街區。白壁宅邸、黑瓦菱形格櫺磚牆倒映於楊柳搖曳的倉敷川，乘木造川舟穿梭江戶時光。大原美術館收藏莫內、艾爾葛雷柯名畫，亦有帆布與紙膠帶文創本店。"
-  },
-  {
+    {
     "id": "tottori_sakyu",
     "name": "鳥取砂丘 & 砂之美術館 (Tottori Sand Dunes)",
     "prefecture": "鳥取",
@@ -740,27 +840,7 @@ const DEFAULT_SPOTS = [
     "reservationUrl": "https://www.adachi-museum.or.jp/",
     "notes": "被美國權威庭園雜誌連續 21 年評選為全日本第一名庭園。借景遠方勝山山脈，白砂青松庭、苔庭枯山水如一幅活生生的日本畫。館內收藏多達 1,500 件以橫山大觀為首的現代日本畫巨作。"
   },
-  {
-    "id": "onomichi_senkoji",
-    "name": "尾道千光寺公園 & 貓之細道",
-    "prefecture": "廣島",
-    "type": "custom",
-    "lat": 34.4098,
-    "lng": 133.1947,
-    "stayDuration": "2 ~ 3 小時",
-    "climbLevel": "scenic",
-    "climbLevelText": "🏞️ 瀨戶內海尾道水道絕景・千光寺纜車與貓之細道散策",
-    "nearestStation": "尾道駅",
-    "stampLocation": "千光寺山頂纜車站 / 觀光案內所",
-    "closedDay": "None",
-    "closedDayText": "全年無休",
-    "backupStamp": "",
-    "openHours": "公園全天開放 / 千光寺纜車 09:00~17:15",
-    "transitInfo": "JR 尾道站搭市內巴士 5 分至「長江口」，搭千光寺纜車 3 分鐘攻頂 (位於廣島與福山之間！)",
-    "reservationUrl": "https://www.ononavi.jp/",
-    "notes": "瀨戶內海坡道小鎮。搭乘纜車登頂眺望尾道水道、向島與島波海道諸島；下山漫步穿梭於『文學小路』與『貓之細道』，沿途坡道老屋咖啡廳與慵懶親人貓咪，文藝氣息滿溢。"
-  },
-  {
+    {
     "id": "matsue_horikawa",
     "name": "松江城 堀川遊覽船",
     "prefecture": "島根",
@@ -839,6 +919,46 @@ const DEFAULT_SPOTS = [
     "transitInfo": "廣島電鐵至「原爆ドーム前」徒步 5 分；從 SOGO 寶可夢中心往南穿過和平公園徒步約 5~7 分鐘即達",
     "reservationUrl": "https://hpmmuseum.jp/",
     "notes": "米其林三星評鑑。丹下健三設計之和平紀念公園核心，陳列原爆歷史見證、被爆者遺物與祈念和平鐘。館前慰靈碑正對原爆圓頂軸線。門票 200 円，建議預留 1.5 小時莊嚴參觀。"
+  },
+  {
+    "id": "hiroshima_gokoku_jinja",
+    "name": "廣島護國神社 (Hiroshima Gokoku Jinja)",
+    "prefecture": "廣島",
+    "type": "jinja",
+    "lat": 34.4025,
+    "lng": 132.4592,
+    "stayDuration": "30 分鐘",
+    "climbLevel": "jinja",
+    "climbLevelText": "⛩️ 廣島城郭內・初詣第一大社・鯉魚必勝祈願",
+    "nearestStation": "縣廳前站 / 廣島城",
+    "stampLocation": "神社社務所 (御朱印處)",
+    "closedDay": "None",
+    "closedDayText": "境內自由參拜無休",
+    "backupStamp": "",
+    "openHours": "08:30 - 16:30 (境內全天開放)",
+    "transitInfo": "廣島城天守閣出口步行 2 分鐘即達境內；廣電電車至「紙屋町東」或「縣廳前」徒步 8 分",
+    "reservationUrl": "https://www.h-gokoku.or.jp/",
+    "notes": "位於廣島城郭內核心，為廣島市民新年參拜 (初詣) 超過 50 萬人的第一大社。職棒廣島東洋鯉魚隊每年球季前必來此祈求必勝。境內有代表祈願厄除的「昇鯉の像」與「雙鯉の像」，摸雙鯉可祈求家內安全與良緣，參拜廣島城時順路必訪！"
+  },
+  {
+    "id": "atomic_bomb_dome",
+    "name": "原子彈爆炸圓頂屋 (原爆圓頂 / 原爆ドーム)",
+    "prefecture": "廣島",
+    "type": "custom",
+    "lat": 34.3955,
+    "lng": 132.4536,
+    "stayDuration": "30 分鐘",
+    "climbLevel": "museum",
+    "climbLevelText": "🕊️ 負的世界文化遺產・原爆殘存鋼骨見證",
+    "nearestStation": "原爆ドーム前駅",
+    "stampLocation": "和平紀念公園案內所 / 資料館",
+    "closedDay": "None",
+    "closedDayText": "外觀全天開放見學 (世界遺產)",
+    "backupStamp": "",
+    "openHours": "全天 (夜間莊嚴點燈)",
+    "transitInfo": "廣電路面電車「原爆ドーム前」站出站即達；自廣島城/護國神社徒步約 10 分鐘南行即達",
+    "reservationUrl": "https://visithiroshima.net/world_heritage/dome.html",
+    "notes": "1996 年登錄為 UNESCO 世界文化遺產。1945 年 8 月 6 日原子彈於其上空 600 公尺處爆炸，為距離爆心最近且奇蹟未倒塌的歷史建築。矗立於元安川畔，殘存的鏤空綠色銅頂與龜裂磚牆無言訴說戰爭殘酷與恆久和平的珍貴。夜間有莊嚴點燈。"
   }
 ];
 
@@ -849,8 +969,11 @@ const DEFAULT_ITINERARY = [
     "title": "Day 1：抵達岡山・機場 ➔ 住宿 ➔ 和牛 ➔ 逛街",
     "date": "2027-01-13",
     "baseStation": "岡山桃太郎機場 / 岡山駅",
-    "lodging": "岡山站前飯店 (大和Roynet / 格蘭比亞 / 三井花園)",
-    "notes": "• 【機場抵達】：搭乘台灣虎航下午抵達岡山桃太郎機場 (OKJ)。出關後於 2 號乘車處搭乘利木津巴士約 30 分鐘直達岡山站西口 (單程 780 円，可刷 IC 卡)。\n• 【住宿 Check-in】：進駐岡山站前飯店 (格蘭比亞 / 大和Roynet / 三井花園) 辦理入住手續並放下大件行李。\n• 【和牛晚餐 (岡山千屋牛)】：前往岡山格蘭比亞 2F 直結之「鉄板焼 備彩」，零距離品嚐日本最古老血統和牛——岡山千屋牛頂級鐵板燒。\n• 【商圈漫遊 & 逛街】：餐後漫步西日本最大級「AEON Mall Okayama」(營業至 21:00，350間店鋪) 逛街採買藥妝物資，無其他多餘奔波行程，早點休息為明日 12 名城巡禮儲備體力！",
+    "lodging": "岡山站前飯店 (格蘭比亞 / 大和Roynet / 三井花園)",
+    "lodgingLocation": "JR 岡山駅東口 / 站前商圈",
+    "recommendedHotels": "岡山格蘭比亞大飯店 (車站直結) / 大和Roynet飯店岡山站前 (徒步2分) / 三井花園飯店岡山",
+    "lodgingReason": "機場利木津巴士直達西口；千屋牛備彩在格蘭比亞2F；站前直通 AEON 商圈；次日往總社攻鬼ノ城起點極方便。",
+    "notes": "• 【班機抵達】：台灣虎航 IT214 於 15:05 準時降落岡山桃太郎機場 (OKJ)。出關搭利木津巴士約 30 分鐘直達岡山站西口。\n• 【住宿 Check-in】：進駐岡山站前飯店辦理入住手續並放下大件行李。\n• 【和牛晚餐 (岡山千屋牛)】：前往岡山格蘭比亞 2F 直結之「鉄板焼 備彩」，零距離品嚐日本最古老血統和牛——岡山千屋牛頂級鐵板燒。\n• 【商圈漫遊 & 逛街】：餐後漫步西日本最大級「AEON Mall Okayama」(營業至 21:00，350間店鋪) 採買藥妝物資，無其他多餘奔波行程，早點休息為明日名城漫遊儲備體力！",
     "spotIds": [
       "okayama_airport",
       "chiyagyu_bisai",
@@ -860,11 +983,14 @@ const DEFAULT_ITINERARY = [
   },
   {
     "dayNumber": 2,
-    "title": "Day 2：吉備古國與美作名湯",
+    "title": "Day 2：吉備古國名城 ➔ 湯郷名湯早到夜宿",
     "date": "2027-01-14",
-    "baseStation": "岡山駅 / 津山駅",
+    "baseStation": "岡山駅 / 津山駅 / 林野駅",
     "lodging": "湯郷溫泉 和風旅館 (美作市)",
-    "notes": "• 【鬼ノ城・登山步道 (建議預留 1.5~2h)】：晨間自岡山搭 JR 吉備線至總社站，搭計程車約 30 分攻登古代神秘山城鬼ノ城。山頂西門石垣與步道巡禮視野極佳，下車時務必先與司機約定下山回程時間！\n• 【津山城・平山城 (基本預留 1h)】：午後搭 JR 津山線至津山站，步行 10 分攻登津山城（鶴山公園備中櫓，園區平緩好走）。\n• 【前往湯郷溫泉宿】：津山城參觀後，搭乘 JR 姫新線至「林野站」(約 18 分，JR Pass 包含)，出站由旅館專車免費接送 (約 8 分) 或搭計程車 (約 8 分，1,200 円)；亦可自津山站直接搭計程車 (約 30 分)。入住和風旅館，享受千年美肌白鷺古湯與老街散策。",
+    "lodgingLocation": "湯郷溫泉街 (美作市)",
+    "recommendedHotels": "季譜之里 (Kifu no Sato) / 竹亭溫泉旅館 (Chikutei) / 湯鄉 Grand Hotel",
+    "lodgingReason": "美作三湯千年名湯，津山搭 JR 姫新線至林野站享旅館專車免費接駁（8分），15:30 早到泡夕之湯，享用會席料理。",
+    "notes": "• 【♨️ 溫泉早到模式 (建議 15:20~15:30 抵達湯郷溫泉)】：\n  - 溫泉旅館精髓在於早到泡第一道「夕之湯」、換浴衣放鬆並準時享用 18:00 會席料理。\n  - 【關鍵早到時刻表】：08:30 岡山搭車攻鬼ノ城 (09:00~10:30，預留 1.5h) ➔ 11:15 快速列車至津山 (12:20 抵) ➔ 津山牛骨炒烏龍午餐＋攻津山城 (12:30~13:50，預留 1h) ➔ 津山站搭 14:32 發車之 JR 姫新線 (18分，Pass包) ➔ 14:50 抵林野站 ➔ 旅館免費專車接駁 ➔ 15:15 順利進駐湯郷溫泉旅館！\n• 【鬼ノ城・登山步道 (建議預留 1.5~2h)】：晨間自岡山搭 JR 吉備線至總社站，搭計程車約 30 分攻登古代神秘山城鬼ノ城。山頂西門石垣與步道巡禮視野極佳，下車時務必先與司機約定下山回程時間！\n• 【津山城・平山城 (基本預留 1h)】：午後搭 JR 津山線至津山站，步行 10 分攻登津山城（鶴山公園備中櫓，園區平緩好走）。\n• 【前往湯郷溫泉宿】：津山城參觀後，搭乘 JR 姫新線至「林野站」(約 18 分，JR Pass 包含)，出站由旅館專車免費接送 (約 8 分) 或搭計程車 (約 8 分，1,200 円)；亦可自津山站直接搭計程車 (約 30 分)。入住和風旅館，享受千年美肌白鷺古湯與老街散策。",
     "spotIds": [
       "kinojo",
       "tsuyama",
@@ -873,65 +999,131 @@ const DEFAULT_ITINERARY = [
   },
   {
     "dayNumber": 3,
-    "title": "Day 3：湯郷名湯晨出 ➔ 因幡鳥取與海濱皆生名湯",
+    "title": "Day 3：晨登名城鳥取城 (確保蓋章) ➔ 鳥取和牛元祖午餐 ➔ 鳥取砂丘 ➔ 皆生溫泉 (估算晚餐)",
     "date": "2027-01-15",
     "baseStation": "林野駅 / 鳥取駅 / 米子駅",
     "lodging": "皆生溫泉 海濱旅館 (米子市)",
-    "notes": "• 【🌅 晨間出發地：湯郷溫泉】：昨夜宿美作湯郷名湯，晨間自溫泉旅館出發啟程！\n• 【🚌 實戰交通與接駁時間確認 (前往鳥取最佳路徑)】：\n  1. 【推薦王道路徑 A (JR Pass 全包・特急超級因幡號首選)】：\n     - 湯郷旅館專車免費接駁 (約 08:40) 或計程車 (8分) 前往「JR 林野站」。\n     - 林野站搭乘 JR 姫新線至「佐用站」(約 35 分，JR Pass 全包)。\n     - 佐用站同站轉乘 智頭急行 特急「スーパーいなば (超級因幡號)」直達「鳥取站」(約 48 分，JR Pass 100% 包含且可免費劃指定席！)。\n     - 車程順暢舒適，不用在津山苦等ローカル線，約 10:45~11:00 充裕抵達鳥取！\n  2. 【路徑 B (經津山站因美線)】：搭乘接駁至林野站搭 JR 姫新線 (09:07 發 ➔ 09:27 抵津山)。津山往智頭因美線上午僅 06:47 與 11:33 兩班車，若搭 11:33 班次抵達鳥取已約 13:20。\n  3. 【計程車特急捷徑】：湯郷溫泉直接叫計程車直攻智頭急行「大原站」(約 25 分)，大原站直接搭特急超級因幡號直達鳥取 (僅 43 分)！\n• 【和牛午餐神級推薦 (鳥取和牛元祖)】：出鳥取站北口步行僅 4 分鐘，前往日本牛肉涮涮鍋起源發祥店「たくみ割烹店」享用鳥取和牛元祖涮涮鍋 (すすぎ鍋) 或味噌牛肉鍋！\n• 【鳥取城・天球丸石垣 (建議預留 1.5h)】：午後搭百圓公車至仁風閣與鳥取城跡，參觀特殊圓形天球丸石垣與歷史館。\n• 【寶可夢人孔蓋巡禮 (穿山鼠)】：\n  1. 鳥取市 (鳥取城/砂丘)：鳥取砂丘會館前 / 仁風閣旁有鳥取限定「穿山鼠、皮卡丘」寶可夢彩繪人孔蓋！\n  2. 米子市 (皆生溫泉)：皆生海濱公園（溫泉街旁海濱步道）設有「享受溫泉泡湯的穿山鼠」特色人孔蓋，抵達溫泉旅館散步時必拍！\n• 【山陰海岸特急】：午後搭乘特急超級松風號橫越山陰海岸直達米子站。\n• 【皆生溫泉・海濱夜宿】：米子站搭公車 15 分進駐皆生溫泉，眺望日本海白沙日落，享用海鮮會席與高濃度海濱鹽湯。",
+    "lodgingLocation": "皆生溫泉海濱 (米子市)",
+    "recommendedHotels": "皆生菊乃家 / 皆生海色湯宿海心 (Umi to Kokoro) / 華水亭 (Kasuiten)",
+    "lodgingReason": "鳥取特急直達米子轉公車15分抵海濱；17:35 早到入宿，18:00~18:30 悠閒享用日本海松葉蟹晚餐與露天鹽湯，隔天往安來月山富田城僅8分。",
+    "notes": "• 【08:15~09:45 晨間移動 (約 1.5h)】：湯郷溫泉旅館專車至林野站 ➔ 搭車經姬新線/智頭急行 ➔ 09:45 抵達「鳥取駅」，站內置物櫃寄放大件行李。\n• 【10:05~11:15 晨登名城・鳥取城參觀與確保蓋章 (停留 1h10m)】：\n  - 車站搭 100 円循環公車「くる梨綠線」9 分鐘（或計程車 5 分）直達「仁風閣・縣立博物館」下車。\n  - 【蓋章時間確保 (09:00~17:00)】：10:10 即可於鳥取縣立博物館（或仁風閣寶隆院案內所）順利蓋取 100名城第 63 號章，早晨時段完全避開傍晚打烊閉館風險！漫步天球丸特殊圓形石垣與久松山麓。\n• 【11:30~12:45 中午午餐・日本涮涮鍋元祖「たくみ割烹店」(預留 1h15m)】：\n  - 鳥取城搭公車/計程車 5 分鐘返回鳥取站北口，11:30 準時第一輪入座「たくみ割烹店」（營業時間 11:30~14:00）。\n  - 零排隊享用日本和牛涮涮鍋發祥店之「元祖鳥取和牛すすぎ鍋」或牛肉味噌鍋，搭配鳥取民藝陶器。\n• 【13:00~15:15 午後絕景・鳥取砂丘 & 砂之美術館 (停留 2h15m)】：\n  - 鳥取站 0 號月台搭路線巴士 20 分鐘直達砂丘會館。\n  - 漫步馬背頂峰眺望日本海壯闊海天一色、拍穿山鼠人孔蓋，參觀世界級室內砂雕展。\n• 【15:25~17:10 特急鐵道移動至米子】：\n  - 搭巴士於 15:45 返抵鳥取站取行李。\n  - 搭乘 16:11 發車之 JR 特急「スーパーまつかぜ 9號」(全車指定/自由席，車程 55 分，JR Pass全包) ➔ 17:06 抵達米子站。\n• 【17:15~17:35 進駐皆生溫泉】：米子站搭路線公車 15 分直達皆生溫泉海濱，17:35 順利 Check-in。\n• 【18:00~20:00 晚餐時間估算與推薦地點 (預留 1.5~2 小時)】：\n  - 【晚餐時間估算】：建議安排在 18:00 或 18:30 開始享用（預留 1.5~2 小時從容品嚐）。\n  - 【推薦地點 A (溫泉旅館一泊二食會席，首選)】：18:00~18:30 於皆生溫泉旅館房內或料亭，品嚐冬季極品「日本海松葉蟹海鮮會席」或鳥取和牛壽喜燒。\n  - 【推薦地點 B (皆生溫泉街海鮮名店)】：若訂純住宿，推薦徒步 3 分鐘之活魚名店「活魚割烹 荒磯」(Araiso) 或「海鮮居酒屋 磯太郎」，享用境港直送松葉蟹、猛者蝦刺身與地酒（營業至 22:00）。\n  - 【推薦地點 C (米子頂級和牛)】：米子角盤町「鉄板焼 つぼみ (大山黑牛特選鐵板燒)」，營業至 22:00，自皆生搭計程車約 10 分鐘。",
     "spotIds": [
-      "yunogo_onsen",
       "tottori",
+      "tottori_takumi",
+      "tottori_sakyu",
       "kaike_onsen"
     ]
   },
   {
     "dayNumber": 4,
-    "title": "Day 4：出雲雙雄與神話美肌名湯",
+    "title": "Day 4：戰國月山富田城 ➔ 足立美術館 ➔ 國寶松江城",
     "date": "2027-01-16",
-    "baseStation": "米子駅 / 安來駅 / 松江駅 / 出雲市駅",
-    "lodging": "玉造溫泉 和風旅館 (松江市)",
-    "notes": "• 【月山富田城・戰國五大山城 (建議預留 2~2.5h)】：清晨自米子搭 JR 山陰本線至安來站，轉搭安來市營黃色巴士攻登戰國名城月山富田城，巡禮山中御殿與本丸天險。\n• 【松江城・國寶天守 (基本預留 1h)】：午後搭特急八雲號至松江站，登上國寶現存五天守之一的松江城千鳥破風。\n• 【出雲大社・日本神話之巔 (建議預留 1.5h)】：搭乘一畑電車沿宍道湖北岸至出雲大社前站，朝拜神樂殿 5.2 噸巨型注連繩與國寶本殿，祈求良緣。\n• 【玉作湯神社・願之石御守 (停留 40分)】：傍晚抵達玉造溫泉街最深處，參拜溫泉守護神，觸摸靈驗「願之石」並求取「葉之石」製作專屬奇蹟御守。\n• 【玉造溫泉・美肌神湯夜宿】：入住玉造溫泉街和風旅館，享受《出雲國風土記》記載「一濯則形容端正，兩洗則百病皆除」的千年神湯與豐盛會席料理。",
+    "baseStation": "米子駅 / 安來駅 / 松江駅",
+    "lodging": "松江市區飯店 / 宍道湖畔飯店",
+    "lodgingLocation": "JR 松江駅周邊 或 宍道湖畔 (松江市)",
+    "recommendedHotels": "松江東急REI飯店 (車站步行3分) / Dormy Inn Express 松江 (近車站含天然溫泉) / 一畑飯店 (Hotel Ichibata 湖景)",
+    "lodgingReason": "安來搭特急八雲號14分直達松江，傍晚散步宍道湖看日本第一夕陽；隔日前往出雲大社（一畑電車/JR）極為順暢。",
+    "notes": "• 【安來雙雄順路串聯】：月山富田城與足立美術館同在安來站！安來市營黃色公車直通串聯，完全不走回頭路！\n• 【月山富田城・戰國五大山城 (建議預留 2~2.5h)】：清晨自米子搭 JR 山陰本線至安來站，轉搭安來市營黃色巴士攻登戰國名城月山富田城，巡禮山中御殿與本丸天險。\n• 【足立美術館・連續21年日本第一庭園 (停留 1.5h)】：山麓搭黃色公車 8 分鐘直達足立美術館，透過借景枯山水庭園與橫山大觀名畫感受極致美學。\n• 【國寶松江城・現存天守 (預留 1h)】：搭足立免費接駁車至安來站，搭特急八雲號 14 分至松江站，登國寶松江城千鳥破風天守。傍晚欣賞全日本著名的「宍道湖夕陽」。",
     "spotIds": [
       "gassan_toda",
+      "adachi_museum",
       "matsue",
+      "matsue_lodging"
+    ]
+  },
+  {
+    "dayNumber": 5,
+    "title": "Day 5：出雲大社神話結緣 ➔ 玉作湯神社 ➔ 玉造溫泉美肌早到夜宿",
+    "date": "2027-01-17",
+    "baseStation": "松江駅 / 出雲市駅 / 玉造溫泉駅",
+    "lodging": "玉造溫泉 和風旅館 (松江市)",
+    "lodgingLocation": "玉造溫泉街 (松江市)",
+    "recommendedHotels": "長樂園 (日本最大混浴露天神湯) / 佳翠苑 皆美 (米其林名宿) / 白石家 (創業300年花之宿)",
+    "lodgingReason": "出雲大社參拜完後 15:30 早早進駐玉造溫泉，漫步溫泉川至玉作湯神社祈求願之石，享受千年美肌神湯與豐盛會席。",
+    "notes": "• 【♨️ 溫泉早到模式 (強烈建議 15:30~16:00 抵達玉造溫泉)】：\n  - 出雲大社參拜完後早早進駐玉造溫泉，漫步溫泉川至「玉作湯神社」祈求靈驗「願之石」御守，16:30 泡首道千年美肌神湯，18:00 悠閒享用溫泉會席晚宴。\n• 【出雲大社・日本神話之巔 (建議預留 2h)】：日本最古神宮，神樂殿 5.2 噸巨型注連繩與國寶本殿，祈求良緣，城下享用出雲割子蕎麥麵。\n• 【玉作湯神社・願之石御守 (停留 40分)】：抵達玉造溫泉街後，步行參拜溫泉守護神，觸摸靈驗願之石製作專屬御守。\n• 【玉造溫泉・美肌神湯夜宿】：入住玉造溫泉街和風旅館，享受《出雲國風土記》記載的千年美肌神湯與豐盛會席料理。",
+    "spotIds": [
       "izumo_taisha",
       "tamatsukuri_yu_jinja",
       "tamatsukuri_onsen"
     ]
   },
   {
-    "dayNumber": 5,
-    "title": "Day 5：山陰小京都與長州維新城下町",
-    "date": "2027-01-17",
-    "baseStation": "松江駅 / 津和野駅 / 東萩駅",
-    "lodging": "萩溫泉鄉 / 新山口飯店",
-    "notes": "• 【津和野城・纜車加登山 (建議預留 1.5h)】：晨間搭特急超級隱岐號南下津和野，搭乘觀光登山纜車後再步行 15 分石垣稜線攻登津和野城跡，順遊殿町通錦鯉老街。\n• 【萩城・指月公園 (基本預留 1h)】：午後搭防長巴士前往萩城跡（指月公園平坦寬闊，漫步輕鬆），漫步世界遺產萩城下町菊濱海岸。\n• 【夜宿安排】：今晚夜宿萩溫泉鄉旅館或轉往新山口站前商務飯店。",
+    "dayNumber": 6,
+    "title": "Day 6：山陰小京都津和野・城下町與纜車山城 ➔ 宿萩市",
+    "date": "2027-01-18",
+    "baseStation": "玉造溫泉駅 / 益田駅 / 津和野駅 / 東萩駅",
+    "lodging": "萩市區飯店 / 萩溫泉旅館",
+    "lodgingLocation": "萩市區 / 萩溫泉鄉 或 津和野 (山口縣)",
+    "recommendedHotels": "萩之宿 常茂惠 (米其林頂級純日式) / 萩本陣 (高台海景展望露天池) / 萩之鶴 北門屋敷",
+    "lodgingReason": "津和野搭巴士/JR約1小時直達萩市入住，次日清晨前往長門「元乃隅神社」與「萩城」車程最短、最順暢。",
+    "notes": "• 【放緩節奏・小京都漫步】：晨間自玉造溫泉搭乘特急「スーパーおき」直達津和野。專注漫步津和野，告別急行軍。\n• 【津和野城・觀光纜車加登山 (建議預留 1.5h)】：搭乘觀光登山纜車後再步行 15 分石垣稜線攻登津和野城跡，鳥瞰紅色石州瓦與盆地全景。\n• 【殿町通錦鯉老街】：漫步江戶武家屋敷水渠，觀賞成群色彩繽紛的巨型錦鯉悠游。傍晚前往萩市入住。",
     "spotIds": [
       "tsuwano",
-      "hagi"
-    ]
-  },
-  {
-    "dayNumber": 6,
-    "title": "Day 6：周防岩國錦帶橋與廣島和平鯉城",
-    "date": "2027-01-18",
-    "baseStation": "新山口駅 / 廣島駅",
-    "lodging": "廣島市區飯店 (八丁堀 / 廣島站前)",
-    "notes": "• 【岩國城・空中纜車 (基本預留 1h)】：晨間前往岩國漫步錦帶橋，搭空中纜車登頂岩國城俯瞰錦川與瀨戶內海（天守出站平路 5 分，輕鬆好走）。\n• 【廣島城・市區平城 (基本預留 1h)】：午後前往廣島城（平地天守參觀武士文化）。\n• 【寶可夢中心 廣島 (SOGO 6F，預留 1h)】：廣島城往南步行 8 分鐘直達そごう廣島店本館 6F「寶可夢中心廣島」（全中國地區唯一官方旗艦直營店！），朝聖鎮店巨型『紅色暴鯉龍』雕像與廣島限定紅色暴鯉龍皮卡丘！\n• 【廣島和平紀念資料館 & 原爆圓頂 (預留 1.5h)】：自 SOGO 往南步行 5 分鐘進入和平紀念公園，參觀世界遺產原爆圓頂與「廣島和平紀念資料館」（丹下健三設計、米其林三星評鑑，門票 200 円，莊嚴震撼）。\n• 【和牛晚餐首選 (廣島和牛)】：晚餐強烈推薦二選一：\n  1. 鉄板焼「愛宕」(和平公園旁步行 5 分鐘，參觀完直接入座享用特選廣島牛/比婆牛)\n  2. 鉄板焼「神石」(廣島站直結 Granvia 頂樓 21F，坐擁市區高空百萬夜景，住站前首選)。\n• 【住宿】：廣島市區飯店 (八丁堀 / 廣島站前)。",
-    "spotIds": [
-      "iwakuni",
-      "hiroshima",
-      "pokemon_center_hiroshima",
-      "hiroshima_peace_museum"
+      "hagi_lodging"
     ]
   },
   {
     "dayNumber": 7,
-    "title": "Day 7：毛利元就大本營與波妞古港海景溫泉",
+    "title": "Day 7：長門斷崖絕景元乃隅神社 ➔ 長州維新世界遺產萩城 ➔ 宿新山口",
     "date": "2027-01-19",
-    "baseStation": "廣島巴士中心 / 福山駅",
+    "baseStation": "東萩駅 / 長門市駅 / 新山口駅",
+    "lodging": "新山口站前飯店 (新幹線口)",
+    "lodgingLocation": "JR 新山口駅 新幹線口 (山口市)",
+    "recommendedHotels": "新山口康福飯店 (Comfort Hotel，出站1分) / 燦路都新山口飯店 (Hotel Sunroute，站前即達)",
+    "lodgingReason": "防長巴士下車即抵站前飯店；新山口為山陽新幹線大站，隔天清晨極速搭新幹線直奔新岩國/宮島，零行李負擔。",
+    "notes": "• 【元乃隅神社・CNN評選日本最美31景 (停留 1h)】：山口縣長門市海岸壯麗奇景！123 座斷崖朱紅鳥居沿山坡綿延面朝日本海，潮吹岩噴起白色浪花，必拍大鳥居高處功德箱！\n• 【萩城・指月公園 (基本預留 1h)】：前往世界遺產萩城跡（指月公園平坦寬闊，內堀天守台散步輕鬆），漫步世界遺產萩城下町白壁土藏與菊濱海岸。\n• 【夜宿新山口】：傍晚搭乘防長巴士直達新山口站前商務飯店入住，為明日山陽新幹線與周防行程做好準備。",
+    "spotIds": [
+      "motonosumi_jinja",
+      "hagi",
+      "shin_yamaguchi_lodging"
+    ]
+  },
+  {
+    "dayNumber": 8,
+    "title": "Day 8：周防名橋岩國城 ➔ 宮島世界遺產嚴島神社 ➔ 宿廣島",
+    "date": "2027-01-20",
+    "baseStation": "新山口駅 / 新岩國駅 / 宮島口 / 廣島駅",
+    "lodging": "廣島市區飯店 (格蘭比亞 / 喜來登 / ANA)",
+    "lodgingLocation": "JR 廣島駅周邊 或 八丁堀商圈 (廣島市)",
+    "recommendedHotels": "廣島格蘭比亞大飯店 (廣島站北口直通) / 廣島喜來登大飯店 (站旁直結) / 廣島ANA皇冠假日酒店",
+    "lodgingReason": "宮島口搭 JR 25 分鐘直達廣島站，直接進駐市中心大飯店，次日參觀廣島城與和平公園完全免換飯店。",
+    "notes": "• 【絕不上機場！本日行程直達廣島核心】：新山口搭新幹線至新岩國，岩國至宮島口僅 20 分鐘，100% 完美順路！\n• 【錦帶橋 & 岩國城・空中纜車 (預留 1.5h)】：搭公車遊覽日本三名橋五連木拱「錦帶橋」，搭乘吉香公園空中纜車直達山頂岩國城天守，山頂遠眺瀨戶內海群島。\n• 【嚴島神社 (宮島)・海上大鳥居 (預留 2h)】：岩國搭 JR 山陽本線至宮島口，轉乘 JR 宮島渡輪 (JR Pass 全包！) 航向宮島，朝拜世界文化遺產海上朱紅大鳥居與寢殿造迴廊。\n• 【傍晚進駐廣島】：搭 JR 山陽本線直達廣島站前飯店入住，晚上漫步八丁堀商圈。",
+    "spotIds": [
+      "iwakuni",
+      "itsukushima_jinja",
+      "hiroshima_lodging_d8"
+    ]
+  },
+  {
+    "dayNumber": 9,
+    "title": "Day 9：廣島和平文化・鯉城與護國神社 ➔ 原爆圓頂 ➔ 廣島和牛晚宴",
+    "date": "2027-01-21",
+    "baseStation": "廣島駅 / 原爆圓頂前",
+    "lodging": "廣島市區飯店 (連住第2晚)",
+    "lodgingLocation": "JR 廣島駅周邊 (連住免搬行李)",
+    "recommendedHotels": "同 Day 8 (連住 2 晚，徹底擺脫換飯店與拖行李疲累)",
+    "lodgingReason": "全日廣島市區輕鬆漫步，晚間在廣島站 21F 享用神石和牛鐵板燒，步行或路面電車即刻回房休息。",
+    "notes": "• 【廣島城・平地名城 (基本預留 1h)】：市中心完全平地，參觀武士文化天守閣與毛利輝元築城歷史。\n• 【廣島護國神社・鯉魚必勝祈願 (停留 30分)】：位於廣島城郭內！參拜廣島初詣第一大社，摸雙鯉之像祈願厄除開運、良緣與必勝。\n• 【寶可夢中心廣島】：前往 SOGO 本館 6F 探訪特色周邊。\n• 【原子彈爆炸圓頂屋 (停留 30分)】：SOGO 旁步行 2 分即達元安川畔世界遺產原爆圓頂，近距離凝視戰後奇蹟殘存的綠色鋼骨圓頂。\n• 【和平紀念資料館】：穿過和平公園綠意軸線，參觀世界遺產和平紀念資料館，感受深厚和平祈願。\n• 【廣島和牛晚餐】：晚上前往站前 21F 高空夜景之「鉄板焼 神石」享用特選廣島牛鐵板燒！",
+    "spotIds": [
+      "hiroshima",
+      "hiroshima_gokoku_jinja",
+      "pokemon_center_hiroshima",
+      "atomic_bomb_dome",
+      "hiroshima_peace_museum",
+      "hiroshima_jinseki",
+      "hiroshima_lodging_d9"
+    ]
+  },
+  {
+    "dayNumber": 10,
+    "title": "Day 10：毛利要塞吉田郡山城 ➔ 福山城 ➔ 鞆之浦夕陽溫泉",
+    "date": "2027-01-22",
+    "baseStation": "廣島巴士中心 / 福山駅 / 鞆之浦",
     "lodging": "鞆之浦溫泉 海景旅館 (福山市)",
-    "notes": "• 【吉田郡山城・全山要塞 (建議預留 2h)】：由廣島巴士中心搭客運直達安藝高田，登山健行探訪毛利元就墓所與廣大郡山城山頂本丸。\n• 【福山城・鐵板張天守 (基本預留 1h)】：午後搭新幹線至福山站，北口直達福山城（新裝修鐵板張天守，0距離平坦好走）。\n• 【鞆之浦溫泉・波妞舞台夜宿】：福山站搭巴士 30 分抵達宮崎駿《崖上的波妞》舞台「鞆之浦溫泉」，入住海景溫泉旅館對望仙醉島。",
+    "lodgingLocation": "鞆之浦溫泉海灣 (福山市)",
+    "recommendedHotels": "汀邸 遠音近音 (全室海景露天風呂) / 景勝館 漣亭 / 鷗風亭 (Ofutei)",
+    "lodgingReason": "福山站南口搭鞆鐵巴士30分直達；15:45 早到 Check-in 欣賞仙醉島海景夕陽，黃昏散步常夜燈古港，品嚐瀨戶內鯛魚。",
+    "notes": "• 【♨️ 溫泉早到模式 (強烈建議 15:40~16:00 抵達鞆之浦溫泉)】：\n  - 鞆之浦坐擁瀨戶內海仙醉島絕景，早到進駐可一邊在露天風呂眺望瀨戶內海平靜波光與金色夕陽，黃昏散步至象徵江戶港町之「常夜燈」打卡拍照，18:00 準時享用瀨戶內鯛魚盛宴。\n• 【吉田郡山城・全山大型山城 (建議預留 2h)】：清晨自廣島巴士中心搭客運至安芸高田，攻登毛利元就百萬一心之全山大型要塞。\n• 【福山城・鐵板張天守 (基本預留 1h)】：新幹線極速至福山，出站 0 距離登上全國唯一北面鐵板張天守。\n• 【鞆之浦溫泉夜宿】：福山站南口搭 15:10 發車之鞆鐵巴士 (車程 30 分) ➔ 15:45 準時進駐鞆之浦溫泉海景旅館 Check-in！",
     "spotIds": [
       "yoshida_koriyama",
       "fukuyama",
@@ -939,12 +1131,31 @@ const DEFAULT_ITINERARY = [
     ]
   },
   {
-    "dayNumber": 8,
-    "title": "Day 8：天空之城備中松山城 ➔ 岡山機場返台 (虎航 IT215)",
-    "date": "2027-01-20",
-    "baseStation": "福山駅 / 備中高梁駅 / 岡山機場",
-    "lodging": "溫暖的家 (搭乘台灣虎航 IT215 返程)",
-    "notes": "• 【備中松山城・天空之城 (建議預留 1.5h)】：清晨 07:30 由鞆之浦搭巴士至福山，搭山陽新幹線轉特急八雲號於 09:05 抵備中高梁站。09:20 搭預約乘合計程車至鞴峠，登山探訪現存唯一山城天守與貓城主三十郎。\n• 【特急八雲號直達岡山】：11:15 搭乘合計程車返回備中高梁站，搭乘 11:42 特急やくも 12號 (全車指定席，車程 34 分)，於 12:18 抵達岡山站。可在站內外帶岡山便當或特色伴手禮。\n• 【台灣虎航 IT215 返台班機 (提早 2.5~3 小時到機場)】：\n  - 航班資訊：台灣虎航 IT215 (岡山 OKJ ➔ 台北桃園 TPE)，15:55 準時起飛 (13:25 開櫃報到、15:10 關櫃)。\n  - 機場利木津巴士：岡山站西口 2 號乘車處搭乘 12:40 發車之利木津直達巴士 (車程 30 分，單程 780 円)。\n  - 機場報到安檢：約 13:10 抵達岡山桃太郎機場，起飛前 2 小時 45 分鐘充裕抵達！悠閒完成行李托運、安檢出境與免稅店採買，滿載 12 座名城回憶平安返台！",
+    "dayNumber": 11,
+    "title": "Day 11：桃太郎吉備路傳說 ➔ 岡山市區採買與備用彈性日",
+    "date": "2027-01-23",
+    "baseStation": "鞆之浦 / 福山駅 / 岡山駅 / 備前一宮駅",
+    "lodging": "岡山站前飯店 (格蘭比亞 / 大和Roynet / 三井花園)",
+    "lodgingLocation": "JR 岡山駅東口 (岡山市區)",
+    "recommendedHotels": "岡山格蘭比亞大飯店 (直結) / 大和Roynet飯店岡山站前 / 三井花園飯店岡山",
+    "lodgingReason": "福山搭新幹線僅16分極速返抵岡山寄放大行李，轉吉備線參拜桃太郎兩大社極順路，傍晚在站前一番街採買免稅伴手禮。",
+    "notes": "• 【吉備津彥神社 & 吉備津神社】：鞆之浦搭巴士回福山，新幹線16分直達岡山！行李寄放站前飯店後，搭 JR 吉備線至備前一宮站與吉備津站，參拜桃太郎原型大社，欣賞國寶吉備津造本殿與 398 公尺木造大迴廊。\n• 【岡山市區伴手禮採買】：下午漫步岡山一番街、SUN STATION TERRACE 與 BicCamera 採買岡山白桃果凍、晴王麝香葡萄點心與藥妝，整理回程行李。",
+    "spotIds": [
+      "kibitsuhiko_jinja",
+      "kibitsu_jinja",
+      "okayama_hotel_d11"
+    ]
+  },
+  {
+    "dayNumber": 12,
+    "title": "Day 12：天空之城備中松山城 ➔ 岡山桃太郎機場搭機返台 (虎航 IT215)",
+    "date": "2027-01-24",
+    "baseStation": "岡山駅 / 備中高梁駅 / 岡山桃太郎機場",
+    "lodging": "溫暖的家 (台灣)",
+    "lodgingLocation": "溫暖的家 (搭機返台，若延後行程可連住岡山站前)",
+    "recommendedHotels": "當日搭機返台；若延後回程天數則建議連住岡山站前飯店",
+    "lodgingReason": "備中高梁搭特急八雲號直達岡山站，西口2號乘車處搭利木津直達巴士30分鐘抵達岡山桃太郎機場出境返台。",
+    "notes": "• 【備中松山城・天空之城 (建議預留 1.5h)】：清晨 08:15 岡山搭特急八雲號於 08:50 抵備中高梁站。09:20 搭乘合計程車至鞴峠，登山探訪現存唯一山城天守與貓城主三十郎。\n• 【特急八雲號直達岡山】：11:15 搭乘合計程車返回備中高梁站，搭乘 11:42 特急やくも 12號 (全車指定席，車程 34 分)，於 12:18 抵達岡山站。站內外帶岡山便當。\n• 【搭機返台 (提早 2.5~3 小時到機場)】：岡山站西口 2 號乘車處搭乘利木津直達巴士 (車程 30 分，單程 780 円) 直達岡山桃太郎機場，辦理出境登機，平安返台！",
     "spotIds": [
       "bitchu_matsuyama",
       "okayama_airport"
@@ -952,6 +1163,228 @@ const DEFAULT_ITINERARY = [
   }
 ];
 
+// ==========================================
+// 飛往山陰山陽周邊航線機票比價資料庫 (精準指定日期與含行李報價)
+// 包含：岡山 (OKJ)、廣島 (HIJ)、米子 (YGJ)、高松 (TAK)、關西 (KIX)
+// ==========================================
+const FLIGHT_COMPARISON_DATA = [
+  {
+    id: "okayama_tiger",
+    destination: "岡山 (OKJ)",
+    destCity: "岡山桃太郎機場 (台北桃園 TPE 直飛)",
+    airline: "台灣虎航 (Tigerair Taiwan)",
+    airlineCode: "IT",
+    flightType: "LCC廉價航空",
+    aircraft: "A320 / A320neo",
+    frequency: "每天 1 班天天直飛 (1/13 去 ➔ 1/26 回，0天移動完美吻合)",
+    travelDates: "1/13 (三) ~ 1/26 (二) [共 14 天 13 晚]",
+    exactPrice: "NT$ 13,537",
+    priceRangeWithBaggage: "NT$ 13,537",
+    pricePeakWithBaggage: "含加購 20kg 托運行李直客價",
+    outbound: {
+      flightNo: "IT214",
+      departure: "11:30 台北桃園 (TPE)",
+      arrival: "15:05 岡山 (OKJ)",
+      duration: "2 小時 35 分鐘",
+      timingType: "午去 (1/13 出發・舒適免天未亮出門)"
+    },
+    inbound: {
+      flightNo: "IT215",
+      departure: "15:55 岡山 (OKJ)",
+      arrival: "18:05 台北桃園 (TPE)",
+      duration: "3 小時 10 分鐘",
+      timingType: "下午回 (1/26 返台・早晨還能攻備中松山城)"
+    },
+    baggageIncluded: "已包含來回 20kg 托運行李 (約 NT$1,900，已計入票價)",
+    carryOn: "1件手提 + 1件隨身物品，合計 10kg",
+    jrPassLink: "機場搭乘利木津巴士 30 分 (780円) 直達岡山站，立即開通山陽&山陰 Pass！",
+    pros: [
+      "山陰山陽大環線地理幾何中心，南北進出最順暢",
+      "天天直飛不卡班表，回程 15:55 起飛，最後一天早晨還能從容攻登備中松山城",
+      "機場小而美，通關與行李提領極速 (15~20分鐘出關)"
+    ],
+    cons: [
+      "票價隨日期浮動，熱門賞楓/雪季需提早開票",
+      "機上餐飲與選位需額外加購"
+    ],
+    officialUrl: "https://www.tigerairtw.com/",
+    googleFlightsUrl: "https://www.google.com/travel/flights?q=Flights%20to%20OKJ%20from%20TPE",
+    skyscannerUrl: "https://www.skyscanner.com.tw/transport/flights/tpe/okj/"
+  },
+  {
+    id: "hiroshima_cal",
+    destination: "廣島 (HIJ)",
+    destCity: "廣島機場 (台北桃園 TPE 直飛)",
+    airline: "中華航空 (China Airlines)",
+    airlineCode: "CI",
+    flightType: "傳統全服務航空 (FSC)",
+    aircraft: "A321neo (全機4K娛樂系統)",
+    frequency: "每週 6 班 (週二至日皆飛，1/13 去 ➔ 1/26 回完美吻合)",
+    travelDates: "1/13 (三) ~ 1/26 (二) [共 14 天 13 晚]",
+    exactPrice: "NT$ 15,038",
+    priceRangeWithBaggage: "NT$ 15,038",
+    pricePeakWithBaggage: "傳統航空免費含 23kg 托運行李與餐飲",
+    outbound: {
+      flightNo: "CI112",
+      departure: "07:15 台北桃園 (TPE)",
+      arrival: "10:35 廣島 (HIJ)",
+      duration: "2 小時 20 分鐘",
+      timingType: "早去 (1/13 出發・10:35 即達！第一天直玩廣島)"
+    },
+    inbound: {
+      flightNo: "CI113",
+      departure: "11:35 廣島 (HIJ)",
+      arrival: "13:15 台北桃園 (TPE)",
+      duration: "2 小時 40 分鐘",
+      timingType: "午回 (1/26 返台・下午返抵國門好收心)"
+    },
+    baggageIncluded: "免費內含 1 件 23kg 托運行李 (傳統全服務航空標配，免加價)",
+    carryOn: "1件手提 7kg + 1件隨身包",
+    jrPassLink: "機場搭利木津巴士約 45 分 (1,450円) 直達廣島站，直接啟用 Pass 搭新幹線！",
+    pros: [
+      "早去優勢巨大！10:35 即抵達廣島，第 1 天下午能直接跑廣島城、原爆圓頂與護國神社",
+      "全服務航空規格：免費含 23kg 行李、熱熱飛機餐飲、個人 4K 影音娛樂系統",
+      "適合廣島起點直接切入山口與島根大環線"
+    ],
+    cons: [
+      "回程是上午 11:35，最後一天早上需較早前往機場 (約 09:30 到廣島機場)",
+      "週一無班機 (去程 1/13 週三、回程 1/26 週二皆有航班)"
+    ],
+    officialUrl: "https://www.china-airlines.com/",
+    googleFlightsUrl: "https://www.google.com/travel/flights?q=Flights%20to%20HIJ%20from%20TPE",
+    skyscannerUrl: "https://www.skyscanner.com.tw/transport/flights/tpe/hij/"
+  },
+  {
+    id: "yonago_tiger",
+    destination: "米子 (YGJ)",
+    destCity: "米子鬼太郎機場 (台北桃園 TPE 直飛)",
+    airline: "台灣虎航 (Tigerair Taiwan)",
+    airlineCode: "IT",
+    flightType: "LCC廉價航空",
+    aircraft: "A320 / A320neo",
+    frequency: "每週 2 班 (僅每週一、五飛航・±2天最佳調度方案)",
+    travelDates: "1/15 (五) ~ 1/25 (一) [共 11 天 10 晚]",
+    exactPrice: "NT$ 11,537",
+    priceRangeWithBaggage: "NT$ 11,537",
+    pricePeakWithBaggage: "含加購 20kg 托運行李直客價",
+    outbound: {
+      flightNo: "IT724",
+      departure: "13:30 台北桃園 (TPE)",
+      arrival: "17:00 米子 (YGJ)",
+      duration: "2 小時 30 分鐘",
+      timingType: "午去 (1/15 週五出發・去程+2天調度)"
+    },
+    inbound: {
+      flightNo: "IT725",
+      departure: "13:00 米子 (YGJ)",
+      arrival: "15:15 台北桃園 (TPE)",
+      duration: "3 小時 15 分鐘",
+      timingType: "午回 (1/25 週一返台・回程-1天調度)"
+    },
+    baggageIncluded: "已包含來回 20kg 托運行李 (約 NT$1,900，已計入票價)",
+    carryOn: "1件手提 + 1件隨身物品，合計 10kg",
+    jrPassLink: "機場直結 JR 米子空港站，搭 JR 境線 30 分到米子站或 15 分到皆生溫泉！",
+    pros: [
+      "票價最親民！含行李僅 NT$ 11,537，性價比極高",
+      "直搗山陰核心腹地！下機即是皆生溫泉、出雲大社、松江城門戶",
+      "鬼太郎彩繪候機室與妖怪雕像拍照極具特色"
+    ],
+    cons: [
+      "受每週僅一、五飛航限制，需由 14 天縮短為 11 天 (1/15~1/25)",
+      "若遇冬季山陰暴雪，航班調度彈性較主要樞紐機場略小"
+    ],
+    officialUrl: "https://www.tigerairtw.com/",
+    googleFlightsUrl: "https://www.google.com/travel/flights?q=Flights%20to%20YGJ%20from%20TPE",
+    skyscannerUrl: "https://www.skyscanner.com.tw/transport/flights/tpe/ygj/"
+  },
+  {
+    id: "takamatsu_starlux",
+    destination: "高松 (TAK)",
+    destCity: "香川高松機場 (台中清泉崗 RMQ 直飛)",
+    airline: "星宇航空 (STARLUX Airlines)",
+    airlineCode: "JX",
+    flightType: "精品全服務航空 (FSC)",
+    aircraft: "A321neo (精品客艙・個人娛樂)",
+    frequency: "固定每週航班 (台中直飛高松・中部首選)",
+    travelDates: "1/13 (三) ~ 1/25 (一) [共 13 天 12 晚]",
+    exactPrice: "NT$ 15,126",
+    priceRangeWithBaggage: "NT$ 15,126",
+    pricePeakWithBaggage: "精品航空免費含 23kg 托運行李與特調餐飲",
+    outbound: {
+      flightNo: "JX300",
+      departure: "08:50 台中清泉崗 (RMQ)",
+      arrival: "12:20 香川高松 (TAK)",
+      duration: "2 小時 30 分鐘",
+      timingType: "早去 (1/13 出發・中午抵四國門戶高松)"
+    },
+    inbound: {
+      flightNo: "JX301",
+      departure: "13:20 香川高松 (TAK)",
+      arrival: "15:40 台中清泉崗 (RMQ)",
+      duration: "3 小時 20 分鐘",
+      timingType: "午回 (1/25 返台・下午返抵台中清泉崗)"
+    },
+    baggageIncluded: "免費包含 1 件 23kg 托運行李 ＋ 7kg 手提 ＋ 星宇精緻餐飲與特調",
+    carryOn: "1件手提 7kg + 1件隨身包",
+    jrPassLink: "【四國➔山陽 53分神速通】：高松站搭乘 JR 瀨戶大橋線「特急 Marine Liner (マリンライナー)」跨海直達岡山站僅 53 分鐘！JR 山陽&山陰 Pass / 瀨戶內 Pass 免費全包！",
+    pros: [
+      "台中清泉崗 (RMQ) 直飛！中部出發免奔波桃園機場，大幅省下高鐵車資與交通時間",
+      "星宇精品航空：全機 4K 影音娛樂、免費 WiFi、精緻餐飲與特調、23kg 托運",
+      "高松搭 Marine Liner 特急跨海 53 分直達岡山站，無縫切入山陽山陰大閉環路線"
+    ],
+    cons: [
+      "回程是 13:20，最後一天上午需自岡山搭特急過瀨戶大橋回高松機場 (約 09:30 前往)",
+      "需自高松站搭 53 分特急跨越瀨戶大橋前往岡山"
+    ],
+    officialUrl: "https://www.starlux-airlines.com/",
+    googleFlightsUrl: "https://www.google.com/travel/flights?q=Flights%20to%20TAK%20from%20RMQ",
+    skyscannerUrl: "https://www.skyscanner.com.tw/transport/flights/rmq/tak/"
+  },
+  {
+    id: "kansai_fsc_lcc",
+    destination: "關西 (KIX)",
+    destCity: "大阪關西國際機場 (台北桃園 TPE 直飛)",
+    airline: "長榮 / 星宇 / 華航 / 樂桃 / 捷星",
+    airlineCode: "BR / JX / CI / MM / GK",
+    flightType: "傳統航空 ＆ 廉價航空 多家可選",
+    aircraft: "A350 / B787 / B777 / A321neo 等",
+    frequency: "每天 25+ 班密集起降 (1/13 去 ➔ 1/26 回全時段任選)",
+    travelDates: "1/13 (三) ~ 1/26 (二) [共 14 天 13 晚]",
+    exactPrice: "廉航 NT$ 9,000 起 / 傳航 NT$ 14,000 起",
+    priceRangeWithBaggage: "NT$ 9,000 ~ 15,500",
+    pricePeakWithBaggage: "視各家航空淡旺季與行李促銷而定",
+    outbound: {
+      flightNo: "多航班 (例 BR178 / JX820 / MM022)",
+      departure: "06:30 ~ 14:00 多班自桃園起飛",
+      arrival: "10:00 ~ 17:30 抵達關西 (KIX)",
+      duration: "2 小時 20 分鐘 ~ 2 小時 40 分鐘",
+      timingType: "極早到極晚任選，早去晚回性價比最高"
+    },
+    inbound: {
+      flightNo: "多航班 (例 BR129 / JX823 / MM027)",
+      departure: "14:00 ~ 22:30 多班自關西起飛",
+      arrival: "16:00 ~ 00:40 抵達台北 (TPE)",
+      duration: "3 小時 00 分鐘",
+      timingType: "晚班機多，玩滿最後一天整天"
+    },
+    baggageIncluded: "傳航含 23kg 托運；廉航加購 20kg 後計算",
+    carryOn: "7kg ~ 10kg (依各航空規定)",
+    jrPassLink: "【神級對接】：關西機場憑「JR 山陽&山陰 Pass」搭特急 HARUKA 至新大阪 (50分)，同站轉新幹線至岡山 (45分)，全程 0 元免額外花費！",
+    pros: [
+      "班次全日本最多，票價促銷最常有，時間選擇完全自由",
+      "「JR 山陽&山陰地區 7 日券」全額免費包含關西機場特急 HARUKA 與新幹線！",
+      "回程若想在心齋橋/難波大血拼或採買伴手禮極其方便"
+    ],
+    cons: [
+      "關西機場出入境人潮極多，安檢與通關常需排隊 40~60 分鐘",
+      "抵達後需額外搭 1.5 ~ 2 小時特急＋新幹線才能進入岡山/廣島核心景點"
+    ],
+    officialUrl: "https://www.google.com/travel/flights",
+    googleFlightsUrl: "https://www.google.com/travel/flights?q=Flights%20to%20KIX%20from%20TPE",
+    skyscannerUrl: "https://www.skyscanner.com.tw/transport/flights/tpe/kix/"
+  }
+];
+
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { DEFAULT_SPOTS, DEFAULT_ITINERARY };
+  module.exports = { DEFAULT_SPOTS, DEFAULT_ITINERARY, FLIGHT_COMPARISON_DATA };
 }
