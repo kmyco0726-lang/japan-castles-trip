@@ -111,16 +111,16 @@
     </div>
 
     <!-- 右側地圖面板 -->
-    <div class="w-full md:w-5/12 lg:w-1/2 flex flex-col relative">
+    <div class="w-full md:w-5/12 lg:w-1/2 flex flex-col relative overflow-hidden">
       <!-- 地圖過濾工具列 -->
-      <div class="absolute top-3 right-3 z-[1000] bg-white/95 backdrop-blur shadow-md rounded-lg p-2 flex items-center gap-2 text-xs">
-        <span class="font-bold text-slate-700">地圖顯示：</span>
-        <select id="mapFilterSelect" onchange="onMapFilterChange()" class="border border-slate-300 rounded px-2 py-1 text-slate-700 bg-white font-medium">
+      <div class="absolute top-2.5 right-2.5 z-[1000] bg-white/95 backdrop-blur-md shadow-md rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 text-xs max-w-[calc(100%-20px)] border border-slate-200/90">
+        <span class="font-bold text-slate-700 whitespace-nowrap text-[11px] sm:text-xs">地圖顯示：</span>
+        <select id="mapFilterSelect" onchange="onMapFilterChange()" class="border border-slate-300 rounded px-1.5 py-1 text-slate-700 bg-white font-medium text-[11px] sm:text-xs max-w-[120px] sm:max-w-[170px] md:max-w-[210px] truncate outline-none">
           <option value="all">🗺️ 全部天數與景點</option>
           <!-- 動態填入 Day 1, Day 2 等 -->
         </select>
-        <button onclick="fitMapBounds()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-1 rounded border border-slate-300">
-          🎯 置中縮放
+        <button onclick="fitMapBounds()" title="置中縮放視野" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-1 rounded border border-slate-300 whitespace-nowrap text-[11px] font-medium shrink-0 transition">
+          🎯 置中
         </button>
       </div>
 
@@ -315,6 +315,26 @@
 
       <div class="flex justify-end pt-2 border-t">
         <button onclick="closeSmartPlanModal()" class="px-4 py-2 border rounded text-xs text-slate-600 hover:bg-slate-100">關閉</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 彈窗：時刻表縮圖 / 交通附件大圖檢視 Modal -->
+  <div id="imageViewerModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[3000] hidden flex flex-col items-center justify-center p-3 sm:p-6" onclick="if(event.target===this) closeImageViewer()">
+    <div class="bg-slate-900 border border-slate-700 rounded-xl max-w-4xl w-full max-h-[92vh] flex flex-col overflow-hidden shadow-2xl">
+      <div class="px-4 py-2.5 bg-slate-800 border-b border-slate-700 flex items-center justify-between text-white text-xs">
+        <span class="font-bold flex items-center gap-1.5" id="imageViewerTitle">
+          <span>🕒</span><span>時刻表詳細檢視</span>
+        </span>
+        <div class="flex items-center gap-2">
+          <a id="imageViewerDownload" href="#" download class="bg-slate-700 hover:bg-slate-600 text-white px-2.5 py-1 rounded text-xs transition flex items-center gap-1">
+            <span>💾</span><span>下載</span>
+          </a>
+          <button onclick="closeImageViewer()" class="text-slate-400 hover:text-white text-xl font-bold p-1 leading-none">&times;</button>
+        </div>
+      </div>
+      <div class="flex-1 overflow-auto p-3 flex items-center justify-center bg-slate-950/90">
+        <img id="imageViewerImg" src="" alt="時刻表放大檢視" class="max-w-full max-h-[78vh] object-contain rounded shadow-lg">
       </div>
     </div>
   </div>
@@ -3252,7 +3272,9 @@
       let html = `<option value="all">🗺️ 全部天數與景點</option>`;
       state.itinerary.forEach((d, i) => {
         const th = getDayTheme(i);
-        html += `<option value="${d.dayNumber}">📅 Day ${d.dayNumber} [${th.name.split('·')[0]}]：${escapeHtml(d.title)}</option>`;
+        const rawTitle = (d.title || '').trim();
+        const shortTitle = rawTitle.length > 15 ? rawTitle.substring(0, 15) + '...' : rawTitle;
+        html += `<option value="${d.dayNumber}">Day ${d.dayNumber} [${th.name.split('·')[0]}] ${escapeHtml(shortTitle)}</option>`;
       });
       select.innerHTML = html;
       select.value = state.selectedDayFilter;
@@ -3931,32 +3953,32 @@
       const assignedIds = new Set();
       state.itinerary.forEach(d => (d.spotIds || []).forEach(id => assignedIds.add(id)));
 
-      // 頂部天數速跳膠囊導航列 (快速直達特定天，帶有當天專屬色票)
+      // 頂部天數速跳膠囊導航列 (支援自動折行換行排版，所有天數一覽無遺直接點選)
       let dayNavPills = "";
       if (state.itinerary.length > 0) {
         dayNavPills = `
-          <div class="sticky -top-4 z-10 bg-white/95 backdrop-blur-md pt-1 pb-2 border-b border-slate-200/90 -mx-4 px-4 mb-4 shadow-2xs">
-            <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">
+          <div class="sticky -top-4 z-10 bg-white/95 backdrop-blur-md pt-1.5 pb-2.5 border-b border-slate-200/90 -mx-4 px-4 mb-4 shadow-2xs space-y-1.5">
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <div class="flex items-center gap-1.5 text-[11px] font-bold text-slate-700">
+                <span>⚡</span>
+                <span>天數速跳 (點選直達)：</span>
+                <span class="text-[10px] text-slate-400 font-normal">共 ${state.itinerary.length} 天</span>
+              </div>
               <button onclick="sortAllDaysSpots()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-bold px-2.5 py-1 rounded-full shadow-2xs transition flex items-center gap-1 shrink-0">
                 <span>✨</span>
                 <span>一鍵自動排序所有天數</span>
               </button>
-              <div class="h-4 w-px bg-slate-300 shrink-0"></div>
-              <span class="text-[11px] font-bold text-slate-500 shrink-0 flex items-center gap-1">
-                <span>⚡</span>
-                <span>天數速跳：</span>
-              </span>
-              <div class="flex items-center gap-1.5 shrink-0">
-                ${state.itinerary.map((d, i) => {
-                  const th = getDayTheme(i);
-                  return `
-                    <button onclick="scrollToDay(${d.dayNumber})" class="text-xs font-bold px-2.5 py-1 rounded-full border transition shrink-0 flex items-center gap-1.5 ${th.pillBg}">
-                      <span class="w-2.5 h-2.5 rounded-full shadow-2xs" style="background-color: ${th.hex};"></span>
-                      <span>D${d.dayNumber} ${th.name.split('·')[0]}</span>
-                    </button>
-                  `;
-                }).join('')}
-              </div>
+            </div>
+            <div class="flex flex-wrap items-center gap-1.5 py-0.5">
+              ${state.itinerary.map((d, i) => {
+                const th = getDayTheme(i);
+                return `
+                  <button onclick="scrollToDay(${d.dayNumber})" title="直達 Day ${d.dayNumber}：${escapeHtml(d.title || '')}" class="text-xs font-bold px-2.5 py-1 rounded-full border transition flex items-center gap-1.5 hover:shadow-xs active:scale-95 cursor-pointer ${th.pillBg}">
+                    <span class="w-2.5 h-2.5 rounded-full shadow-2xs" style="background-color: ${th.hex};"></span>
+                    <span>D${d.dayNumber} ${th.name.split('·')[0]}</span>
+                  </button>
+                `;
+              }).join('')}
             </div>
           </div>
         `;
@@ -4707,6 +4729,82 @@
       };
     }
 
+    // 渲染交通卡片內的時刻表縮圖、附件與保留空間
+    function renderTransitAttachmentsBlock(dayNumber, transitKey, transitAtt, labelText) {
+      const att = transitAtt || { notes: '', images: [], link: '' };
+      const images = att.images || [];
+      const title = labelText || 'JR / 巴士時刻表縮圖與乘車附件';
+
+      return `
+        <div class="mt-2 pt-2 border-t border-slate-200/80 space-y-1.5 bg-slate-50/80 -mx-1 px-2.5 py-2 rounded-lg border border-slate-200/70">
+          <div class="flex items-center justify-between gap-1.5 flex-wrap">
+            <span class="font-bold text-slate-800 text-[11px] flex items-center gap-1">
+              <span>🕒</span>
+              <span>${escapeHtml(title)}：</span>
+              ${images.length > 0 ? `<span class="bg-indigo-100 text-indigo-800 font-bold px-1.5 py-0.2 rounded-full text-[10px]">${images.length} 份資料</span>` : ''}
+            </span>
+            <div class="flex items-center gap-1.5">
+              <label class="cursor-pointer bg-white hover:bg-slate-50 text-indigo-700 hover:text-indigo-800 border border-indigo-200 hover:border-indigo-300 px-2 py-0.5 rounded text-[11px] font-bold flex items-center gap-1 shadow-3xs transition">
+                <span>📎</span>
+                <span>上傳時刻表縮圖</span>
+                <input type="file" accept="image/*,application/pdf" class="hidden" onchange="handleUploadTransitTimetable(event, ${dayNumber}, '${transitKey}')">
+              </label>
+              <button type="button" onclick="promptTransitTimetableLink(${dayNumber}, '${transitKey}')" class="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 px-1.5 py-0.5 rounded text-[11px] font-medium flex items-center gap-0.5 shadow-3xs transition" title="輸入時刻表官網/PDF檔案連結">
+                <span>🔗</span><span>網址</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 班次備忘輸入框與外部時刻表連結 -->
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <div class="flex-1 min-w-[200px] flex items-center gap-1.5 bg-white border border-slate-300 rounded px-2 py-1 shadow-3xs focus-within:border-indigo-500">
+              <span class="text-slate-400 text-xs">📝</span>
+              <input type="text" value="${escapeHtml(att.notes || '')}" 
+                onchange="updateTransitNotes(${dayNumber}, '${transitKey}', this.value)" 
+                placeholder="預定搭乘班次/時刻備忘 (例如: 09:12 特急やくも / 14:35 くる梨巴士)..." 
+                class="w-full text-[11px] text-slate-800 placeholder-slate-400 bg-transparent outline-none">
+            </div>
+            ${att.link ? `
+              <a href="${escapeHtml(att.link)}" target="_blank" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 px-2 py-1 rounded text-[11px] font-bold flex items-center gap-1 shrink-0">
+                <span>📄</span><span>查看時刻表 ↗</span>
+              </a>
+              <button type="button" onclick="clearTransitLink(${dayNumber}, '${transitKey}')" class="text-slate-400 hover:text-red-600 text-xs p-1" title="清除連結">✕</button>
+            ` : ''}
+          </div>
+
+          <!-- 時刻表縮圖卡片群 / 保留空間 -->
+          ${images.length > 0 ? `
+            <div class="flex flex-wrap items-start gap-2 pt-1">
+              ${images.map((img, imgIdx) => `
+                <div class="relative group border border-slate-300 bg-white rounded-lg p-1 shadow-3xs flex flex-col items-center">
+                  <div class="w-20 h-16 bg-slate-100 rounded overflow-hidden cursor-pointer relative" onclick="openImageViewer('${escapeHtml(img.url)}', '${escapeHtml(img.name || '時刻表縮圖')}')">
+                    <img src="${img.url}" class="w-full h-full object-cover transition group-hover:scale-105" alt="${escapeHtml(img.name || '時刻表')}">
+                    <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-[10px] font-bold">
+                      🔍 放大
+                    </div>
+                  </div>
+                  <div class="w-20 text-[9px] text-slate-600 truncate mt-1 text-center font-mono" title="${escapeHtml(img.name)}">${escapeHtml(img.name)}</div>
+                  <button type="button" onclick="removeTransitImage(${dayNumber}, '${transitKey}', ${imgIdx})" class="absolute -top-1.5 -right-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-full w-4 h-4 text-[10px] font-bold flex items-center justify-center shadow-xs" title="刪除此縮圖">✕</button>
+                </div>
+              `).join('')}
+              <label class="cursor-pointer border border-dashed border-indigo-200 hover:border-indigo-400 bg-indigo-50/40 hover:bg-indigo-50 rounded-lg w-20 h-16 flex flex-col items-center justify-center text-indigo-600 transition text-[10px]" title="上傳更多時刻表縮圖">
+                <span>➕</span>
+                <span>加縮圖</span>
+                <input type="file" accept="image/*,application/pdf" class="hidden" onchange="handleUploadTransitTimetable(event, ${dayNumber}, '${transitKey}')">
+              </label>
+            </div>
+          ` : `
+            <!-- 保留空間上傳提示 -->
+            <label class="cursor-pointer border border-dashed border-slate-300 hover:border-indigo-400 bg-white/80 hover:bg-indigo-50/60 rounded-lg py-2 px-3 flex items-center justify-center gap-2 text-slate-500 hover:text-indigo-600 transition">
+              <span class="text-sm">📷</span>
+              <span class="text-[11px] font-medium">保留空間：點此上傳 JR / 巴士時刻表縮圖截圖或 PDF 附件</span>
+              <input type="file" accept="image/*,application/pdf" class="hidden" onchange="handleUploadTransitTimetable(event, ${dayNumber}, '${transitKey}')">
+            </label>
+          `}
+        </div>
+      `;
+    }
+
     function renderDaySpotsList(day, theme) {
       if (!theme) {
         theme = getDayTheme(day.dayNumber - 1);
@@ -4735,10 +4833,15 @@
         if (idx === 0 && (spot.id === 'okayama_airport' || isLodging)) {
           // 當第 0 個點是機場或晨間出發住宿點時 (如 Day 3 湯郷溫泉)，顯示晨間出發起點，不顯示反向區間
           if (spot.id === 'okayama_airport') {
+            const airportTransitKey = `okayama_airport_${day.dayNumber}`;
+            const airportTransitAtt = (day.transitAttachments && day.transitAttachments[airportTransitKey]) || { notes: '', images: [], link: '' };
             transitCardHeaderHtml = `
-              <div class="bg-sky-50 border border-sky-300 rounded-xl p-2.5 text-xs text-sky-950 flex items-center justify-between shadow-2xs">
-                <span class="font-bold flex items-center gap-1.5"><span>✈️</span><span>旅程起點：抵達岡山桃太郎機場 (OKJ)</span></span>
-                <span class="text-[11px] bg-sky-100 text-sky-800 font-bold px-2 py-0.5 rounded border border-sky-300">搭乘台灣虎航 IT214 抵達</span>
+              <div class="bg-sky-50 border border-sky-300 rounded-xl p-2.5 text-xs text-sky-950 space-y-2 shadow-2xs">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold flex items-center gap-1.5"><span>✈️</span><span>旅程起點：抵達岡山桃太郎機場 (OKJ)</span></span>
+                  <span class="text-[11px] bg-sky-100 text-sky-800 font-bold px-2 py-0.5 rounded border border-sky-300">搭乘台灣虎航 IT214 抵達</span>
+                </div>
+                ${renderTransitAttachmentsBlock(day.dayNumber, airportTransitKey, airportTransitAtt, '航班與利木津巴士時刻表')}
               </div>
             `;
           } else {
@@ -4767,6 +4870,9 @@
                  <span class="hidden sm:inline text-[10px] text-amber-800 font-normal">(${escapeHtml(transitInfo.passNote)})</span>
                </span>`;
 
+          const transitKey = `${prevSpot ? prevSpot.id : 'start'}_to_${spot.id}`;
+          const transitAtt = (day.transitAttachments && day.transitAttachments[transitKey]) || { notes: '', images: [], link: '' };
+
           transitCardHeaderHtml = `
             <div class="${transitBoxBg} rounded-xl p-2.5 text-xs space-y-2 shadow-2xs border">
               <div class="flex items-center justify-between gap-1.5 flex-wrap">
@@ -4794,6 +4900,7 @@
                 </div>
               </div>
               ${transitInfo.tips ? `<div class="text-[10px] text-slate-500 bg-slate-100/80 px-2 py-0.5 rounded flex items-center gap-1"><span>💡</span><span>${escapeHtml(transitInfo.tips)}</span></div>` : ''}
+              ${renderTransitAttachmentsBlock(day.dayNumber, transitKey, transitAtt, 'JR / 巴士時刻表與乘車附件')}
             </div>
           `;
         }
@@ -4847,6 +4954,12 @@
                   <p class="text-[11px] text-slate-500 line-clamp-1 mt-0.5">
                     📮 ${escapeHtml(spot.stampLocation || '見官網')} | ⏰ ${escapeHtml(spot.openHours || '見官網')}
                   </p>
+                  ${spot.transitInfo ? `
+                    <div class="text-[11px] text-indigo-900 bg-indigo-50/60 border border-indigo-100 rounded px-2 py-1 mt-1 flex items-center gap-1.5">
+                      <span class="text-indigo-600 font-bold shrink-0">🚌 接駁交通：</span>
+                      <span class="line-clamp-2">${escapeHtml(spot.transitInfo)}</span>
+                    </div>
+                  ` : ''}
                 </div>
               </div>
               
@@ -5673,6 +5786,167 @@
     }
 
     // ==========================================
+    // 交通區間時刻表縮圖、附件與資料上傳管理
+    // ==========================================
+    function getOrCreateTransitAttachment(dayNumber, transitKey) {
+      const day = state.itinerary.find(d => d.dayNumber === dayNumber);
+      if (!day) return null;
+      if (!day.transitAttachments) {
+        day.transitAttachments = {};
+      }
+      if (!day.transitAttachments[transitKey]) {
+        day.transitAttachments[transitKey] = {
+          notes: '',
+          images: [],
+          link: ''
+        };
+      }
+      return day.transitAttachments[transitKey];
+    }
+
+    function compressAndReadImage(file, callback) {
+      if (!file) return;
+      if (!file.type || !file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = (e) => callback({
+          name: file.name,
+          url: e.target.result,
+          type: file.type || 'application/octet-stream',
+          isPdf: (file.type === 'application/pdf' || (file.name && file.name.toLowerCase().endsWith('.pdf'))),
+          uploadedAt: new Date().toLocaleDateString('zh-TW')
+        });
+        reader.readAsDataURL(file);
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const maxWidth = 1600;
+          const maxHeight = 1600;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > maxWidth || height > maxHeight) {
+            if (width > height) {
+              height = Math.round((height * maxWidth) / width);
+              width = maxWidth;
+            } else {
+              width = Math.round((width * maxHeight) / height);
+              height = maxHeight;
+            }
+          }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // JPEG 0.82 壓縮，既保留時刻表文字高清晰度，又大幅縮減體積至 100KB 左右
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.82);
+          callback({
+            name: file.name,
+            url: dataUrl,
+            type: 'image/jpeg',
+            isPdf: false,
+            uploadedAt: new Date().toLocaleDateString('zh-TW')
+          });
+        };
+        img.onerror = function() {
+          callback({
+            name: file.name,
+            url: e.target.result,
+            type: file.type,
+            isPdf: false,
+            uploadedAt: new Date().toLocaleDateString('zh-TW')
+          });
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function handleUploadTransitTimetable(event, dayNumber, transitKey) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      const att = getOrCreateTransitAttachment(dayNumber, transitKey);
+      if (!att) return;
+
+      compressAndReadImage(file, (imgObj) => {
+        if (!att.images) att.images = [];
+        att.images.push(imgObj);
+        saveState();
+        renderMainPanel();
+      });
+    }
+
+    function removeTransitImage(dayNumber, transitKey, imgIdx) {
+      const att = getOrCreateTransitAttachment(dayNumber, transitKey);
+      if (!att || !att.images) return;
+      att.images.splice(imgIdx, 1);
+      saveState();
+      renderMainPanel();
+    }
+
+    function updateTransitNotes(dayNumber, transitKey, notes) {
+      const att = getOrCreateTransitAttachment(dayNumber, transitKey);
+      if (!att) return;
+      att.notes = notes;
+      saveState();
+    }
+
+    function promptTransitTimetableLink(dayNumber, transitKey) {
+      const att = getOrCreateTransitAttachment(dayNumber, transitKey);
+      if (!att) return;
+      const current = att.link || '';
+      const url = prompt('請輸入時刻表官方網址或 PDF 檔案連結：', current);
+      if (url !== null) {
+        att.link = url.trim();
+        saveState();
+        renderMainPanel();
+      }
+    }
+
+    function clearTransitLink(dayNumber, transitKey) {
+      const att = getOrCreateTransitAttachment(dayNumber, transitKey);
+      if (!att) return;
+      att.link = '';
+      saveState();
+      renderMainPanel();
+    }
+
+    function openImageViewer(imageUrl, title) {
+      const modal = document.getElementById('imageViewerModal');
+      const img = document.getElementById('imageViewerImg');
+      const titleEl = document.getElementById('imageViewerTitle');
+      const downloadEl = document.getElementById('imageViewerDownload');
+
+      if (!modal || !img) return;
+
+      img.src = imageUrl;
+      if (titleEl) titleEl.innerHTML = `<span>🕒</span><span>${escapeHtml(title || '時刻表檢視')}</span>`;
+      if (downloadEl) {
+        downloadEl.href = imageUrl;
+        downloadEl.download = (title || 'timetable') + '.jpg';
+      }
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeImageViewer() {
+      const modal = document.getElementById('imageViewerModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    // 全域 ESC 快捷鍵關閉大圖預覽
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeImageViewer();
+    });
+
+    // ==========================================
     // 行程操作 (CRUD)
     // ==========================================
     function updateDayField(dayNumber, field, value) {
@@ -6483,6 +6757,13 @@
             md += `   - 蓋章地點：${sp.stampLocation || '無'}\n`;
             md += `   - 開放時間：${sp.openHours || '見官網'} (公休：${sp.closedDayText || '無'})\n`;
             md += `   - 接駁交通：${sp.transitInfo || '無'}\n`;
+            const transitKey = `${prevSp ? prevSp.id : 'start'}_to_${sp.id}`;
+            const att = day.transitAttachments && day.transitAttachments[transitKey];
+            if (att) {
+              if (att.notes) md += `   - 班次備忘：${att.notes}\n`;
+              if (att.link) md += `   - 時刻表連結：${att.link}\n`;
+              if (att.images && att.images.length > 0) md += `   - 時刻表附件：已附加 ${att.images.length} 份時刻表縮圖資料\n`;
+            }
             if (sp.reservationUrl) md += `   - 預約連結：${sp.reservationUrl}\n`;
             if (sp.notes) md += `   - 攻略筆記：${sp.notes}\n`;
             md += `\n`;
