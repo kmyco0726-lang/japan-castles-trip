@@ -87,20 +87,20 @@
   <div class="flex flex-1 overflow-hidden">
     
     <!-- 左側面板 (Tabs: 行程規劃 / 景點清單 / 快速查車次) -->
-    <div class="w-full md:w-7/12 lg:w-1/2 flex flex-col border-r border-slate-200 bg-white z-20 shadow-lg overflow-hidden">
-      <!-- 標籤切換 -->
-      <div class="flex border-b border-slate-200 bg-slate-100 text-sm font-medium">
-        <button id="tabBtnItinerary" onclick="switchTab('itinerary')" class="flex-1 py-3 px-4 text-center border-b-2 border-red-600 font-bold text-red-600 bg-white">
-          📅 每日行程與車次 (<span id="totalDaysBadge">7</span> 天)
+    <div class="w-full md:w-3/5 lg:w-[60%] xl:w-[62%] flex flex-col border-r border-slate-200 bg-white z-20 shadow-lg overflow-hidden">
+      <!-- 標籤切換 (行程總表 / 景點清單 / 快速查車次 / 兩人記帳分帳) -->
+      <div class="flex border-b border-slate-200 bg-slate-100 text-xs sm:text-sm font-medium overflow-x-auto no-scrollbar">
+        <button id="tabBtnItinerary" onclick="switchTab('itinerary')" class="py-3 px-3 sm:px-4 text-center border-b-2 border-red-600 font-bold text-red-600 bg-white shrink-0 flex items-center justify-center gap-1 transition">
+          <span>🍑</span><span>行程規劃 (<span id="totalDaysBadge">14</span>天)</span>
         </button>
-        <button id="tabBtnSpots" onclick="switchTab('spots')" class="flex-1 py-3 px-4 text-center text-slate-600 hover:text-slate-900">
-          📍 全部景點庫 (<span id="totalSpotsBadge">13</span> 處)
+        <button id="tabBtnSpots" onclick="switchTab('spots')" class="py-3 px-3 sm:px-4 text-center text-slate-600 hover:text-slate-900 shrink-0 flex items-center justify-center gap-1 border-b-2 border-transparent transition">
+          <span>📍</span><span>景點庫 (<span id="totalSpotsBadge">50</span>)</span>
         </button>
-        <button id="tabBtnTransit" onclick="switchTab('transit')" class="flex-1 py-3 px-3 text-center text-slate-600 hover:text-slate-900 text-xs sm:text-sm">
-          🚅 車次速查
+        <button id="tabBtnTransit" onclick="switchTab('transit')" class="py-3 px-3 sm:px-4 text-center text-slate-600 hover:text-slate-900 shrink-0 flex items-center justify-center gap-1 border-b-2 border-transparent transition">
+          <span>🚅</span><span>車次速查</span>
         </button>
-        <button id="tabBtnFlights" onclick="switchTab('flights')" class="flex-1 py-3 px-3 text-center text-slate-600 hover:text-slate-900 text-xs sm:text-sm font-semibold flex items-center justify-center gap-1">
-          <span>✈️</span> 機票比價
+        <button id="tabBtnExpenses" onclick="switchTab('expenses')" class="py-3 px-3 sm:px-4 text-center text-slate-600 hover:text-slate-900 shrink-0 flex items-center justify-center gap-1 border-b-2 border-transparent transition">
+          <span>💰</span><span>兩人記帳分帳</span>
         </button>
       </div>
 
@@ -111,7 +111,7 @@
     </div>
 
     <!-- 右側地圖面板 -->
-    <div class="w-full md:w-5/12 lg:w-1/2 flex flex-col relative overflow-hidden">
+    <div class="w-full md:w-2/5 lg:w-[40%] xl:w-[38%] flex flex-col relative overflow-hidden">
       <!-- 地圖過濾工具列 -->
       <div class="absolute top-2.5 right-2.5 z-[1000] bg-white/95 backdrop-blur-md shadow-md rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 text-xs max-w-[calc(100%-20px)] border border-slate-200/90">
         <span class="font-bold text-slate-700 whitespace-nowrap text-[11px] sm:text-xs">地圖顯示：</span>
@@ -339,6 +339,182 @@
     </div>
   </div>
 
+  <!-- 彈窗：新增 / 編輯 記帳花費 Modal -->
+  <div id="expenseModal" class="fixed inset-0 bg-black/50 z-[2000] hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full p-5 space-y-3.5 max-h-[92vh] overflow-y-auto">
+      <div class="flex justify-between items-center border-b pb-2">
+        <h3 class="font-bold text-slate-900 text-base flex items-center gap-2" id="expenseModalTitle">
+          <span>💰</span><span>新增花費項目</span>
+        </h3>
+        <button onclick="closeExpenseModal()" class="text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+      </div>
+
+      <!-- 快速套用常用類別範本 -->
+      <div class="bg-amber-50/80 border border-amber-200/80 rounded-lg p-2.5 text-xs">
+        <div class="text-[11px] font-bold text-amber-900 mb-1.5 flex items-center gap-1">
+          <span>⚡ 快速套用常見旅費範本：</span>
+        </div>
+        <div class="flex flex-wrap gap-1.5">
+          <button type="button" onclick="applyExpenseTemplate('food_beef')" class="px-2 py-0.5 bg-white hover:bg-amber-100 border border-amber-300 rounded text-[11px] font-medium text-amber-950 transition cursor-pointer">🥩 千屋牛和牛晚餐</button>
+          <button type="button" onclick="applyExpenseTemplate('food_ramen')" class="px-2 py-0.5 bg-white hover:bg-amber-100 border border-amber-300 rounded text-[11px] font-medium text-amber-950 transition cursor-pointer">🍜 拉麵/居酒屋</button>
+          <button type="button" onclick="applyExpenseTemplate('transit_pass')" class="px-2 py-0.5 bg-white hover:bg-amber-100 border border-amber-300 rounded text-[11px] font-medium text-amber-950 transition cursor-pointer">🚅 JR Pass 周遊券</button>
+          <button type="button" onclick="applyExpenseTemplate('ticket_castle')" class="px-2 py-0.5 bg-white hover:bg-amber-100 border border-amber-300 rounded text-[11px] font-medium text-amber-950 transition cursor-pointer">🏯 100名城登閣門票</button>
+          <button type="button" onclick="applyExpenseTemplate('lodging_hotel')" class="px-2 py-0.5 bg-white hover:bg-amber-100 border border-amber-300 rounded text-[11px] font-medium text-amber-950 transition cursor-pointer">♨️ 飯店/溫泉住宿</button>
+          <button type="button" onclick="applyExpenseTemplate('conv_store')" class="px-2 py-0.5 bg-white hover:bg-amber-100 border border-amber-300 rounded text-[11px] font-medium text-amber-950 transition cursor-pointer">🏪 超商採買點心</button>
+        </div>
+      </div>
+
+      <input type="hidden" id="modalExpenseId" value="">
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">花費品項名稱 *</label>
+          <input type="text" id="modalExpenseTitle" class="w-full border rounded p-2 text-sm font-medium focus:ring-1 focus:ring-amber-500 outline-none" placeholder="例如：鉄板焼備彩 和牛雙人套餐 / JR車票 / 岡山格蘭比亞住宿">
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">金額 *</label>
+            <input type="number" id="modalExpenseAmount" step="any" min="0" oninput="onExpenseAmountOrCurrencyChange()" class="w-full border rounded p-2 text-sm font-mono font-bold text-slate-900 focus:ring-1 focus:ring-amber-500 outline-none" placeholder="0">
+          </div>
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">幣別</label>
+            <select id="modalExpenseCurrency" onchange="onExpenseAmountOrCurrencyChange()" class="w-full border rounded p-2 bg-white font-bold text-slate-800">
+              <option value="JPY">¥ JPY (日圓)</option>
+              <option value="TWD">NT$ TWD (新台幣)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 即時折算提示 -->
+        <div id="modalExpenseConvertedHint" class="text-[11px] text-slate-600 bg-amber-50/60 p-2 rounded border border-amber-200/80 flex items-center justify-between">
+          <span class="flex items-center gap-1.5 font-bold text-amber-950">
+            <span>💰</span><span>日幣／台幣分開記帳，原幣精確結算</span>
+          </span>
+          <span class="text-[10px] text-slate-500">不做匯率折算・無差額干擾</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">支出類別</label>
+            <select id="modalExpenseCategory" class="w-full border rounded p-2 bg-white">
+              <option value="food">🍜 餐飲美食</option>
+              <option value="transit">🚅 交通車票</option>
+              <option value="tickets">🏯 門票景點</option>
+              <option value="lodging">♨️ 住宿飯店</option>
+              <option value="shopping">🛍️ 購物採買</option>
+              <option value="other">💡 其他雜支</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">關聯天數</label>
+            <select id="modalExpenseDay" class="w-full border rounded p-2 bg-white">
+              <option value="0">公費 / 不限天數</option>
+              <option value="1">Day 1：台北(T1) ➔ 岡山 (虎航 IT 214)</option>
+              <option value="2">Day 2：吉備名城・津山城・湯鄉溫泉</option>
+              <option value="3">Day 3：鳥取城・砂丘・城崎溫泉七大外湯</option>
+              <option value="4">Day 4：天橋立・伊根舟屋 ➔ 宿城崎溫泉</option>
+              <option value="5">Day 5：京都丹後特急・境港妖怪街・皆生溫泉</option>
+              <option value="6">Day 6：月山富田城・足立美術館・松江城</option>
+              <option value="7">Day 7：出雲大社結緣・玉作湯神社・玉造溫泉</option>
+              <option value="8">Day 8：津和野小京都・殿町通錦鯉・宿萩市</option>
+              <option value="9">Day 9：元乃隅神社海上鳥居・萩城・新山口</option>
+              <option value="10">Day 10：錦帶橋・岩國城・宮島嚴島神社・宿廣島</option>
+              <option value="11">Day 11：廣島城・原爆圓頂・和平公園・神石和牛</option>
+              <option value="12">Day 12：吉田郡山城・福山城・鞆之浦夕陽溫泉</option>
+              <option value="13">Day 13：備中松山城天空之城・吉備津神社・宿岡山</option>
+              <option value="14">Day 14：岡山市區採買 ➔ 岡山機場(IT 215) ➔ 台北(T1)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">付款人</label>
+            <select id="modalExpensePaidBy" class="w-full border rounded p-2 bg-white font-bold text-slate-800">
+              <option value="a" id="modalExpensePaidByOptA">成員 A</option>
+              <option value="b" id="modalExpensePaidByOptB">成員 B</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">付款方式</label>
+            <select id="modalExpensePaymentMethod" class="w-full border rounded p-2 bg-white">
+              <option value="cash">💵 現金 (Cash)</option>
+              <option value="card">💳 信用卡 / Apple Pay</option>
+              <option value="ic">📱 IC卡 (ICOCA/Suica)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">分帳方式 (拆帳規則)</label>
+          <select id="modalExpenseSplitType" onchange="onExpenseSplitTypeChange()" class="w-full border rounded p-2 bg-white font-medium text-slate-800">
+            <option value="equal">🤝 兩人平分 (50% / 50%)</option>
+            <option value="a_for_b" id="modalSplitOptAforB">代墊：由 成員 A 幫 成員 B 全額墊付 (B 欠 A 100%)</option>
+            <option value="b_for_a" id="modalSplitOptBforA">代墊：由 成員 B 幫 成員 A 全額墊付 (A 欠 B 100%)</option>
+            <option value="a_full" id="modalSplitOptAFull">個人自費：成員 A 全額自行負擔 (不列入分帳)</option>
+            <option value="b_full" id="modalSplitOptBFull">個人自費：成員 B 全額自行負擔 (不列入分帳)</option>
+            <option value="custom">✏️ 自訂負擔金額</option>
+          </select>
+        </div>
+
+        <!-- 自訂負擔金額欄位 (僅在 custom 時出現) -->
+        <div id="modalExpenseCustomSplitBox" class="hidden grid grid-cols-2 gap-2 bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+          <div>
+            <label class="block font-medium text-slate-600 mb-1" id="modalCustomLabelA">成員 A 負擔額</label>
+            <input type="number" id="modalExpenseCustomA" step="any" min="0" class="w-full border rounded p-1.5 font-mono" placeholder="0">
+          </div>
+          <div>
+            <label class="block font-medium text-slate-600 mb-1" id="modalCustomLabelB">成員 B 負擔額</label>
+            <input type="number" id="modalExpenseCustomB" step="any" min="0" class="w-full border rounded p-1.5 font-mono" placeholder="0">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">備註說明 (選填)</label>
+          <input type="text" id="modalExpenseNotes" class="w-full border rounded p-2 text-xs" placeholder="例如：含收據、含消費稅、特定套餐品名">
+        </div>
+      </div>
+
+      <div class="flex justify-between items-center pt-2 border-t">
+        <button type="button" id="btnDeleteExpense" onclick="deleteCurrentModalExpense()" class="text-xs text-rose-600 hover:text-rose-800 font-medium px-2 py-1 rounded hover:bg-rose-50 transition hidden cursor-pointer">
+          🗑️ 刪除此筆
+        </button>
+        <div class="flex gap-2 ml-auto">
+          <button type="button" onclick="closeExpenseModal()" class="px-4 py-2 border rounded text-xs text-slate-600 hover:bg-slate-100 cursor-pointer">取消</button>
+          <button type="button" onclick="saveExpenseModal()" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded text-xs font-bold shadow-sm transition cursor-pointer">儲存花費</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 彈窗：設定旅伴成員名稱 Modal (不寫死人名) -->
+  <div id="membersModal" class="fixed inset-0 bg-black/50 z-[2000] hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl max-w-sm w-full p-5 space-y-3.5">
+      <div class="flex justify-between items-center border-b pb-2">
+        <h3 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+          <span>👥</span><span>設定旅伴名稱</span>
+        </h3>
+        <button onclick="closeMembersModal()" class="text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+      </div>
+      <p class="text-xs text-slate-500">可自訂兩人稱呼（如旅伴姓名或暱稱），系統會立即更新分帳看板與所有明細標籤。</p>
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">成員 A 名稱 *</label>
+          <input type="text" id="modalMemberNameA" class="w-full border rounded p-2 text-sm font-bold text-slate-800" placeholder="例如：獅子">
+        </div>
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">成員 B 名稱 *</label>
+          <input type="text" id="modalMemberNameB" class="w-full border rounded p-2 text-sm font-bold text-slate-800" placeholder="例如：方">
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-2 border-t">
+        <button type="button" onclick="closeMembersModal()" class="px-3 py-1.5 border rounded text-xs text-slate-600 hover:bg-slate-100 cursor-pointer">取消</button>
+        <button type="button" onclick="saveMembersModal()" class="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-xs font-bold shadow-sm transition cursor-pointer">儲存名稱</button>
+      </div>
+    </div>
+  </div>
+
   <!-- 載入原始景點資料庫 -->
   <script src="spots_data.js?v=2027_01_13_26_SHRINE_AUTOSYNC_V33"></script>
 
@@ -351,13 +527,113 @@
     const STORAGE_KEY_ITINERARY = "jp_castles_itinerary_v1";
     const STORAGE_KEY_ITINERARY_VER = "jp_castles_itinerary_ver";
     const STORAGE_KEY_DELETED_SPOTS = "jp_castles_deleted_spots_v1";
-    const CURRENT_ITINERARY_VER = "2027_01_13_26_SHRINE_AUTOSYNC_V33";
+    const CURRENT_ITINERARY_VER = "2027_01_12_25_14DAYS_TPE_T1_START_V38";
 
     // ==========================================
     // 雙重自包含備援資料庫 (Fallback Database)
     // 防止 GitHub CDN 快取延遲、404 或使用者僅單獨上傳 index.html 時資料脫節
     // ==========================================
     const BUILTIN_DEFAULT_SPOTS = [
+  {
+  "id": "taoyuan_airport",
+  "name": "台灣桃園國際機場 第一航廈 (TPE T1 虎航出發)",
+  "prefecture": "台灣桃園",
+  "type": "custom",
+  "lat": 25.0797,
+  "lng": 121.2342,
+  "stayDuration": "2.5 小時 (報到候機)",
+  "climbLevel": "easy",
+  "climbLevelText": "🛫 桃園機場第一航廈 (虎航 IT 214 專屬櫃檯)",
+  "nearestStation": "機捷 A12 機場第一航廈站",
+  "stampLocation": "出境大廳服務台 / 觀光局旅客服務中心",
+  "closedDay": "None",
+  "closedDayText": "24 小時營運",
+  "backupStamp": "",
+  "openHours": "虎航櫃檯 09:00 開櫃 (起飛前2.5小時)",
+  "transitInfo": "台北車站搭乘桃園機場捷運直達車約 35 分鐘直達 A12 第一航廈站 (或國光客運 1819 直達)",
+  "reservationUrl": "https://www.tigerairtw.com/zh-tw/",
+  "notes": "• 【✈️ 台灣虎航 IT 214 航班】：台北桃園 (TPE) ➔ 岡山桃太郎 (OKJ)，11:30 起飛，15:05 抵達岡山。\\n• 【第一航廈 (T1) 報到手續】：起飛前 2.5 小時 (09:00) 於 1 樓出境大廳虎航櫃檯開櫃辦理登機證與行李託運；起飛前 45 分鐘 (10:45) 準時嚴格關櫃！\\n• 【行李須知】：手提行李每人合計最多 2 件總重不超過 10kg；行動電源請隨身攜帶嚴禁託運。\\n• 【通關登機】：安檢與證照查驗後，建議起飛前 30 分鐘 (11:00) 抵達第一航廈候機室準備登機。"
+},
+  {
+    "id": "kinosaki_onsen",
+    "name": "城崎溫泉 和風旅館 (七大外湯巡禮住宿推薦)",
+    "prefecture": "兵庫",
+    "type": "lodging",
+    "lat": 35.6268,
+    "lng": 134.8115,
+    "stayDuration": "夜宿放鬆",
+    "climbLevel": "lodging",
+    "climbLevelText": "🏨 溫泉街和風住宿 (外湯巡禮/松葉蟹晚宴)",
+    "nearestStation": "城崎溫泉駅",
+    "stampLocation": "城崎溫泉觀光案內所 (車站旁)",
+    "closedDay": "None",
+    "closedDayText": "住宿推薦點",
+    "backupStamp": "",
+    "openHours": "15:00 Check-in",
+    "transitInfo": "JR 鳥取站搭乘山陰本線特急約 1 小時直達城崎溫泉駅 (JR Pass 全包！出站步行 3~8 分進各溫泉旅館)",
+    "reservationUrl": "https://kinosaki-spa.gr.jp/",
+    "notes": "【住宿推薦地點：大谿川柳樹河畔 或 城崎溫泉站周邊】\\n• 推薦飯店：西村屋本館 (米其林純日式名宿)、城崎山名央館 (Yamanaokan，面柳樹景觀)、旅館 川口屋本館 (家庭高評分)。\\n• 順路理由：砂丘參觀後搭 JR 特急 1 小時直達城崎溫泉，換穿浴衣木屐漫步外湯街，品嚐冬季極品松葉蟹；隔日晨間搭京都丹後鐵道前往天橋立僅需 50 分鐘！"
+},
+  {
+    "id": "amanohashidate_lodging",
+    "name": "天橋立運河飯店 / 宮津海景溫泉旅館 (住宿推薦)",
+    "prefecture": "京都",
+    "type": "lodging",
+    "lat": 35.5583,
+    "lng": 135.1833,
+    "stayDuration": "夜宿放鬆",
+    "climbLevel": "lodging",
+    "climbLevelText": "🏨 運河畔/海景溫泉住宿 (天橋立駅前/宮津灣)",
+    "nearestStation": "天橋立駅",
+    "stampLocation": "天橋立觀光協會 (天橋立站內)",
+    "closedDay": "None",
+    "closedDayText": "住宿推薦點",
+    "backupStamp": "",
+    "openHours": "15:00 Check-in",
+    "transitInfo": "伊根舟屋搭乘丹海巴士約 55 分鐘返抵天橋立站，出站徒步 1~4 分進飯店 (或宮津灣旅館專車接駁 8 分鐘)",
+    "reservationUrl": "https://www.amanohashidate.jp/stay/",
+    "notes": "【住宿推薦地點：京都丹後鐵道 天橋立駅旁 或 宮津灣海景】\\n• 推薦飯店：文珠莊 (Monjusou，吉村順三設計，臨運河面天橋立松林)、天橋立飯店 (車站正對面徒步1分，含露天展望大浴場)、玄妙庵 (高台鳥瞰天橋立全景)。\\n• 順路理由：伊根舟屋遊覽結束後搭公車直達天橋立站前入住，傍晚欣賞迴旋橋夕陽與智恩寺漫步，晚間品嚐若狹灣海鮮盛宴；隔天清晨自天橋立站搭乘特急前往米子/松江無縫銜接。"
+},
+    {
+    "id": "amanohashidate",
+    "name": "日本三景 天橋立 (飛龍觀/傘松公園)",
+    "prefecture": "京都",
+    "type": "scenic",
+    "lat": 35.5694,
+    "lng": 135.1917,
+    "stayDuration": "2.5~3小時",
+    "climbLevel": "easy",
+    "climbLevelText": "🌊 日本三景之一 (松樹沙洲絕景)",
+    "nearestStation": "天橋立駅 (京都丹後鐵道)",
+    "stampLocation": "天橋立觀光案內所 / 纜車站",
+    "closedDay": "None",
+    "closedDayText": "全年無休 (纜車定期點檢除外)",
+    "backupStamp": "",
+    "openHours": "展望台 09:00-17:00 (依季節變動)",
+    "transitInfo": "JR 特急「橋立號 (Hashidate)」直達天橋立站，或自豐岡/城崎溫泉搭乘京都丹後鐵道直達 (JR PASS 全線免費搭乘！)",
+    "reservationUrl": "https://www.amanohashidate.jp/",
+    "notes": "• 【日本三景】：與宮島、松島齊名之國寶級自然絕景，全長約 3.6 公里的白砂青松沙洲宛如橫跨宮津灣的天梯。\n• 【倒立觀 (股のぞき)】：登上傘松公園或天橋立 Viewland 展望台，從兩腿之間倒過來看，沙洲宛如昇天的青龍。\n• 【智恩寺文殊堂 & 迴旋橋】：智恩寺為日本三大文殊之一（求學業智慧），渡船經過時會旋轉 90 度的迴旋橋極具特色。"
+  },
+  {
+    "id": "ine_funaya",
+    "name": "伊根舟屋聚落 (海上午餐與遊覽船)",
+    "prefecture": "京都",
+    "type": "scenic",
+    "lat": 35.6740,
+    "lng": 135.2915,
+    "stayDuration": "2~2.5小時",
+    "climbLevel": "easy",
+    "climbLevelText": "⛵ 重要傳統建造物群保存地區 (水上船屋)",
+    "nearestStation": "天橋立駅 (轉搭丹海巴士約55分)",
+    "stampLocation": "伊根町觀光協會 (舟屋日和旁)",
+    "closedDay": "None",
+    "closedDayText": "全年無休 (遊覽船視風浪營運)",
+    "backupStamp": "",
+    "openHours": "伊根灣遊覽船 09:00-16:00 每整點與半點發船",
+    "transitInfo": "天橋立站前搭乘丹海巴士 (伊根線/蒲入線) 至「伊根灣めぐり・日出」或「伊根」站下車 (約 55 分鐘)",
+    "reservationUrl": "https://www.ine-kankou.jp/",
+    "notes": "• 【日本最美村莊】：伊根灣沿岸約 230 棟緊臨海水的舟屋群，一樓停泊船隻、二樓為生活起居，如漂浮在海上的童話漁村。\n• 【伊根灣遊覽船】：航程約 25 分鐘，從海上近距離眺望舟屋建築群，還可在甲板上餵食海鷗與老鷹。\n• 【舟屋日和海景咖啡】：在面海的木造露台享用伊根在地海鮮丼、地酒（向井酒造「伊根滿開」赤米酒）與手沖咖啡。"
+  },
   {
     "id": "okayama_hotel",
     "name": "岡山站前飯店 (住宿 Check-in)",
@@ -859,6 +1135,46 @@
     "notes": "台灣虎航直飛起降機場。入境後搭乘直達巴士直奔岡山站前商圈，展開壯遊！"
   },
   {
+    "id": "yonago_airport",
+    "name": "米子鬼太郎機場 (YGJ)",
+    "prefecture": "鳥取",
+    "type": "custom",
+    "lat": 35.4950,
+    "lng": 133.2386,
+    "stayDuration": "30分 ~ 1 小時",
+    "climbLevel": "transit",
+    "climbLevelText": "✈️ 機場入境／直通JR境線電車",
+    "nearestStation": "米子空港駅",
+    "stampLocation": "機場觀光案內所 / 國際線大廳",
+    "closedDay": "None",
+    "closedDayText": "虎航班機起降",
+    "backupStamp": "",
+    "openHours": "全天 (配合航班營運)",
+    "transitInfo": "機場步行連通道直達 JR「米子空港站」，搭乘境線妖怪列車 30 分抵米子站、15 分抵境港水木茂大道！",
+    "reservationUrl": "https://www.yonago-air.com/",
+    "notes": "台灣虎航 IT724/IT725 航點。入境直搗山陰心臟地帶，轉乘電車極速前往皆生溫泉與境港！"
+  },
+  {
+    "id": "hiroshima_airport",
+    "name": "廣島機場 (HIJ)",
+    "prefecture": "廣島",
+    "type": "custom",
+    "lat": 34.4361,
+    "lng": 132.9194,
+    "stayDuration": "40分 ~ 1 小時",
+    "climbLevel": "transit",
+    "climbLevelText": "✈️ 機場入境／利木津巴士直達廣島站",
+    "nearestStation": "広島駅",
+    "stampLocation": "機場觀光案內所",
+    "closedDay": "None",
+    "closedDayText": "華航班機起降",
+    "backupStamp": "",
+    "openHours": "全天 (配合航班營運)",
+    "transitInfo": "出關後於 2 號乘車處搭乘利木津巴士約 45~50 分鐘直達廣島站新幹線口 (單程 1,450 円)",
+    "reservationUrl": "https://www.hij.airport.jp/access/bus/",
+    "notes": "中華航空 CI112/CI113 航點。直航進出廣島市區，山陽新幹線大樞紐，銜接瀨戶內海與宮島世界遺產！"
+  },
+  {
     "id": "chiyagyu_bisai",
     "name": "鉄板焼 備彩 (千屋牛)",
     "prefecture": "岡山",
@@ -1320,18 +1636,19 @@
   }
 ];
 
-    const BUILTIN_DEFAULT_ITINERARY = [
+    const BUILTIN_ITINERARY_OKAYAMA = [
   {
     "dayNumber": 1,
-    "title": "Day 1：抵達岡山・機場 ➔ 住宿 ➔ 和牛 ➔ 逛街",
-    "date": "2027-01-13",
-    "baseStation": "岡山桃太郎機場 / 岡山駅",
+    "title": "Day 1：台北桃園(T1) ➔ 岡山桃太郎機場 (虎航 IT 214) ➔ 住宿 Check-in ➔ 和牛晚餐 ➔ 站前商圈",
+    "date": "2027-01-12",
+    "baseStation": "桃園國際機場 (T1) / 岡山桃太郎機場 (OKJ) / 岡山駅",
     "lodging": "岡山站前飯店 (格蘭比亞 / 大和Roynet / 三井花園)",
     "lodgingLocation": "JR 岡山駅東口 / 站前商圈",
     "recommendedHotels": "岡山格蘭比亞大飯店 (車站直結) / 大和Roynet飯店岡山站前 (徒步2分) / 三井花園飯店岡山",
     "lodgingReason": "機場利木津巴士直達西口；千屋牛備彩在格蘭比亞2F；站前直通 AEON 商圈；次日往總社攻鬼ノ城起點極方便。",
-    "notes": "• 【班機抵達】：台灣虎航 IT214 於 15:05 準時降落岡山桃太郎機場 (OKJ)。出關搭利木津巴士約 30 分鐘直達岡山站西口。\n• 【住宿 Check-in】：進駐岡山站前飯店辦理入住手續並放下大件行李。\n• 【和牛晚餐 (岡山千屋牛)】：前往岡山格蘭比亞 2F 直結之「鉄板焼 備彩」，零距離品嚐日本最古老血統和牛——岡山千屋牛頂級鐵板燒。\n• 【商圈漫遊 & 逛街】：餐後漫步西日本最大級「AEON Mall Okayama」(營業至 21:00，350間店鋪) 採買藥妝物資，無其他多餘奔波行程，早點休息為明日名城漫遊儲備體力！",
+    "notes": "• 【🛫 旅程啟程：台灣桃園國際機場 第一航廈 (T1)】：09:00 抵達桃機第一航廈 1 樓出境大廳台灣虎航櫃檯，辦理登機報到與行李託運（起飛前 45 分鐘 10:45 準時關櫃！）。搭乘 11:30 起飛之台灣虎航 IT 214 直飛岡山。\\n• 【🛬 抵達岡山桃太郎機場 (OKJ)】：日本時間 15:05 準時降落，入境通關領行李。於國際線 2 號乘車處搭乘岡山利木津直達巴士（約 30 分鐘，單程 780 円）直達 JR 岡山站西口。\\n• 【🏨 住宿 Check-in】：進駐岡山站前飯店辦理入住手續並放下大件行李。\\n• 【🥩 和牛晚餐 (岡山千屋牛)】：前往岡山格蘭比亞 2F 直結之「鉄板焼 備彩」，品嚐日本最古老血統和牛——岡山千屋牛頂級鐵板燒。\\n• 【🛍️ 站前商圈漫遊 & 逛街】：餐後漫步西日本最大級「AEON Mall Okayama」(營業至 21:00，350間店鋪) 採買藥妝物資，早點休息為明日名城漫遊儲備體力！",
     "spotIds": [
+      "taoyuan_airport",
       "okayama_airport",
       "chiyagyu_bisai",
       "okayama_aeon",
@@ -1341,13 +1658,13 @@
   {
     "dayNumber": 2,
     "title": "Day 2：吉備古國名城 ➔ 湯郷名湯早到夜宿",
-    "date": "2027-01-14",
+    "date": "2027-01-13",
     "baseStation": "岡山駅 / 津山駅 / 林野駅",
     "lodging": "湯郷溫泉 和風旅館 (美作市)",
     "lodgingLocation": "湯郷溫泉街 (美作市)",
     "recommendedHotels": "季譜之里 (Kifu no Sato) / 竹亭溫泉旅館 (Chikutei) / 湯鄉 Grand Hotel",
     "lodgingReason": "美作三湯千年名湯，津山搭 JR 姫新線至林野站享旅館專車免費接駁（8分），15:30 早到泡夕之湯，享用會席料理。",
-    "notes": "• 【♨️ 溫泉早到模式 (建議 15:20~15:30 抵達湯郷溫泉)】：\n  - 溫泉旅館精髓在於早到泡第一道「夕之湯」、換浴衣放鬆並準時享用 18:00 會席料理。\n  - 【關鍵早到時刻表】：08:30 岡山搭車攻鬼ノ城 (09:00~10:30，預留 1.5h) ➔ 11:15 快速列車至津山 (12:20 抵) ➔ 津山牛骨炒烏龍午餐＋攻津山城 (12:30~13:50，預留 1h) ➔ 津山站搭 14:32 發車之 JR 姫新線 (18分，Pass包) ➔ 14:50 抵林野站 ➔ 旅館免費專車接駁 ➔ 15:15 順利進駐湯郷溫泉旅館！\n• 【鬼ノ城・登山步道 (建議預留 1.5~2h)】：晨間自岡山搭 JR 吉備線至總社站，搭計程車約 30 分攻登古代神秘山城鬼ノ城。山頂西門石垣與步道巡禮視野極佳，下車時務必先與司機約定下山回程時間！\n• 【津山城・平山城 (基本預留 1h)】：午後搭 JR 津山線至津山站，步行 10 分攻登津山城（鶴山公園備中櫓，園區平緩好走）。\n• 【前往湯郷溫泉宿】：津山城參觀後，搭乘 JR 姫新線至「林野站」(約 18 分，JR Pass 包含)，出站由旅館專車免費接送 (約 8 分) 或搭計程車 (約 8 分，1,200 円)；亦可自津山站直接搭計程車 (約 30 分)。入住和風旅館，享受千年美肌白鷺古湯與老街散策。",
+    "notes": "• 【♨️ 溫泉早到模式 (建議 15:20~15:30 抵達湯郷溫泉)】：\\n  - 溫泉旅館精髓在於早到泡第一道「夕之湯」、換浴衣放鬆並準時享用 18:00 會席料理。\\n  - 【關鍵早到時刻表】：08:30 岡山搭車攻鬼ノ城 (09:00~10:30，預留 1.5h) ➔ 11:15 快速列車至津山 (12:20 抵) ➔ 津山牛骨炒烏龍午餐＋攻津山城 (12:30~13:50，預留 1h) ➔ 津山站搭 14:32 發車之 JR 姫新線 (18分，Pass包) ➔ 14:50 抵林野站 ➔ 旅館免費專車接駁 ➔ 15:15 順利進駐湯郷溫泉旅館！\\n• 【鬼ノ城・登山步道 (建議預留 1.5~2h)】：晨間自岡山搭 JR 吉備線至總社站，搭計程車約 30 分攻登古代神秘山城鬼ノ城。山頂西門石垣與步道巡禮視野極佳，下車時務必先與司機約定下山回程時間！\\n• 【津山城・平山城 (基本預留 1h)】：午後搭 JR 津山線至津山站，步行 10 分攻登津山城（鶴山公園備中櫓，園區平緩好走）。\\n• 【前往湯郷溫泉宿】：津山城參觀後，搭乘 JR 姫新線至「林野站」(約 18 分，JR Pass 包含)，出站由旅館專車免費接送 (約 8 分) 或搭計程車；入住和風旅館享受千年美肌白鷺古湯。",
     "spotIds": [
       "kinojo",
       "tsuyama",
@@ -1356,31 +1673,62 @@
   },
   {
     "dayNumber": 3,
-    "title": "Day 3：晨登名城鳥取城 (確保蓋章) ➔ 鳥取和牛元祖午餐 ➔ 鳥取砂丘 ➔ 皆生溫泉 (估算晚餐)",
-    "date": "2027-01-15",
-    "baseStation": "林野駅 / 鳥取駅 / 米子駅",
-    "lodging": "皆生溫泉 海濱旅館 (米子市)",
-    "lodgingLocation": "皆生溫泉海濱 (米子市)",
-    "recommendedHotels": "皆生菊乃家 / 皆生海色湯宿海心 (Umi to Kokoro) / 華水亭 (Kasuiten)",
-    "lodgingReason": "鳥取特急直達米子轉公車15分抵海濱；17:35 早到入宿，18:00~18:30 悠閒享用日本海松葉蟹晚餐與露天鹽湯，隔天往安來月山富田城僅8分。",
-    "notes": "• 【08:15~09:45 晨間移動 (約 1.5h)】：湯郷溫泉旅館專車至林野站 ➔ 搭車經姬新線/智頭急行 ➔ 09:45 抵達「鳥取駅」，站內置物櫃寄放大件行李。\n• 【10:05~11:15 晨登名城・鳥取城參觀與確保蓋章 (停留 1h10m)】：\n  - 車站搭 100 円循環公車「くる梨綠線」9 分鐘（或計程車 5 分）直達「仁風閣・縣立博物館」下車。\n  - 【蓋章時間確保 (09:00~17:00)】：10:10 即可於鳥取縣立博物館（或仁風閣寶隆院案內所）順利蓋取 100名城第 63 號章，早晨時段完全避開傍晚打烊閉館風險！漫步天球丸特殊圓形石垣與久松山麓。\n• 【11:30~12:45 中午午餐・日本涮涮鍋元祖「たくみ割烹店」(預留 1h15m)】：\n  - 鳥取城搭公車/計程車 5 分鐘返回鳥取站北口，11:30 準時第一輪入座「たくみ割烹店」（營業時間 11:30~14:00）。\n  - 零排隊享用日本和牛涮涮鍋發祥店之「元祖鳥取和牛すすぎ鍋」或牛肉味噌鍋，搭配鳥取民藝陶器。\n• 【13:00~15:15 午後絕景・鳥取砂丘 & 砂之美術館 (停留 2h15m)】：\n  - 鳥取站 0 號月台搭路線巴士 20 分鐘直達砂丘會館。\n  - 漫步馬背頂峰眺望日本海壯闊海天一色、拍穿山鼠人孔蓋，參觀世界級室內砂雕展。\n• 【15:25~17:10 特急鐵道移動至米子】：\n  - 搭巴士於 15:45 返抵鳥取站取行李。\n  - 搭乘 16:11 發車之 JR 特急「スーパーまつかぜ 9號」(全車指定/自由席，車程 55 分，JR Pass全包) ➔ 17:06 抵達米子站。\n• 【17:15~17:35 進駐皆生溫泉】：米子站搭路線公車 15 分直達皆生溫泉海濱，17:35 順利 Check-in。\n• 【18:00~20:00 晚餐時間估算與推薦地點 (預留 1.5~2 小時)】：\n  - 【晚餐時間估算】：建議安排在 18:00 或 18:30 開始享用（預留 1.5~2 小時從容品嚐）。\n  - 【推薦地點 A (溫泉旅館一泊二食會席，首選)】：18:00~18:30 於皆生溫泉旅館房內或料亭，品嚐冬季極品「日本海松葉蟹海鮮會席」或鳥取和牛壽喜燒。\n  - 【推薦地點 B (皆生溫泉街海鮮名店)】：若訂純住宿，推薦徒步 3 分鐘之活魚名店「活魚割烹 荒磯」(Araiso) 或「海鮮居酒屋 磯太郎」，享用境港直送松葉蟹、猛者蝦刺身與地酒（營業至 22:00）。\n  - 【推薦地點 C (米子頂級和牛)】：米子角盤町「鉄板焼 つぼみ (大山黑牛特選鐵板燒)」，營業至 22:00，自皆生搭計程車約 10 分鐘。",
+    "title": "Day 3：晨登名城鳥取城 ➔ 鳥取和牛元祖午餐 ➔ 鳥取砂丘 ➔ 城崎溫泉 (七大外湯巡禮)",
+    "date": "2027-01-14",
+    "baseStation": "林野駅 / 鳥取駅 / 城崎溫泉駅",
+    "lodging": "城崎溫泉 和風旅館 (七大外湯巡禮)",
+    "lodgingLocation": "城崎溫泉街 (兵庫縣豐岡市)",
+    "recommendedHotels": "西村屋本館 / 城崎山名央館 (Yamanaokan) / 旅館 川口屋本館",
+    "lodgingReason": "鳥取搭特急濱風號或山陰本線直達城崎溫泉；入住換浴衣木屐，享受七大外湯巡禮與冬季日本海松葉蟹。",
+    "notes": "• 【08:15~09:45 晨間移動】：湯郷溫泉旅館專車至林野站 ➔ 搭車經姬新線/智頭急行 ➔ 09:45 抵達「鳥取駅」，站內置物櫃寄放大行李。\\n• 【10:05~11:15 晨登名城・鳥取城 (停留 1h10m)】：車站搭公車至仁風閣・縣立博物館，蓋取 100名城第 63 號章，漫步天球丸特殊圓形石垣。\\n• 【11:30~12:45 日本涮涮鍋元祖「たくみ割烹店」】：鳥取站北口，品嚐和牛涮涮鍋發祥店之「元祖鳥取和牛すすぎ鍋」。\\n• 【13:00~15:15 鳥取砂丘 & 砂之美術館】：巴士 20 分抵砂丘會館，漫步馬背頂峰眺望日本海海天一色。\\n• 【15:35~17:00 移動至城崎溫泉】：鳥取站搭乘山陰特急直達「城崎溫泉駅」(車程約 1 小時，JR Pass 全包！)。\\n• 【♨️ 城崎溫泉七大外湯巡禮 & 松葉蟹晚餐】：換穿浴衣踏著木屐漫步大谿川柳樹下，手持外湯 Pass 暢泡御所之湯、一之湯，享用松葉蟹盛宴！",
     "spotIds": [
       "tottori",
       "tottori_takumi",
       "tottori_sakyu",
-      "kaike_onsen"
+      "kinosaki_onsen"
     ]
   },
   {
     "dayNumber": 4,
-    "title": "Day 4：戰國月山富田城 ➔ 足立美術館 ➔ 國寶松江城",
+    "title": "Day 4：日本三景天橋立 (飛龍觀/傘松公園) ➔ 伊根舟屋 (海上午餐與遊覽船) ➔ 宿城崎溫泉 (七大外湯巡禮 & 松葉蟹)",
+    "date": "2027-01-15",
+    "baseStation": "城崎溫泉駅 / 天橋立駅 / 伊根灣",
+    "lodging": "城崎溫泉 和風旅館 (七大外湯巡禮)",
+    "lodgingLocation": "城崎溫泉街 / 大谿川柳樹河畔 (兵庫縣豐岡市)",
+    "recommendedHotels": "西村屋本館 (米其林純日式名宿) / 城崎山名央館 (Yamanaokan，面柳樹景觀) / 旅館 川口屋本館 (家庭高評分)",
+    "lodgingReason": "伊根舟屋漫步後搭車進駐城崎溫泉；換穿浴衣踏木屐漫步大谿川柳樹街，暢泡御所之湯/一之湯等七大外湯，享用冬季極品日本海松葉蟹盛宴。",
+    "notes": "• 【🎫 JR PASS 京都丹後鐵道全線免費搭乘】：晨間出發搭車經豐岡轉乘「京都丹後鐵道」特急直達「天橋立駅」(山陽&山陰地區周遊券完全免費！)。天橋立站寄放大行李。\\n• 【🌊 日本三景・天橋立 (停留 2.5h)】：搭登山吊椅或單軌電車登上天橋立 Viewland 或傘松公園，兩腿倒立做「股のぞき(倒立觀)」，欣賞沙洲如昇天青龍絕景！參拜智恩寺文殊堂與欣賞旋轉90度的迴旋橋。\\n• 【⛵ 伊根舟屋聚落・日本最美村莊 (停留 2~2.5h)】：\\n  - 天橋立站前搭乘丹海巴士約 55 分鐘直達伊根灣。\\n  - 【伊根灣遊覽船】：搭乘觀光船巡航伊根灣(25分)，在甲板上餵食海鷗，近距離欣賞 230 棟浮於海上的獨特水上船屋。\\n  - 【舟屋日和海景午餐】：在「舟屋日和」享用丹後海鮮丼與向井酒造地酒。\\n• 【傍晚前往城崎溫泉 Check-in 入住】：搭乘丹海巴士返抵天橋立站取行李，搭乘京都丹後鐵道特急至豐岡轉乘 JR 山陰本線直達城崎溫泉駅 (約 55 分鐘，JR Pass 全包！出站步行進和風旅館)。\\n• 【♨️ 城崎溫泉七大外湯巡禮 & 松葉蟹晚宴】：入住和風溫泉旅館，換穿浴衣踏著木屐漫步大谿川柳樹河畔，手持外湯 Pass 暢泡御所之湯、一之湯，在暖意中品嚐冬季日本海極品松葉蟹會席料理！",
+    "spotIds": [
+      "amanohashidate",
+      "ine_funaya",
+      "kinosaki_onsen"
+    ]
+  },
+  {
+    "dayNumber": 5,
+    "title": "Day 5：京都丹後特急 ➔ 米子 ➔ 境港妖怪大道 ➔ 皆生溫泉 (海濱夕陽)",
     "date": "2027-01-16",
+    "baseStation": "城崎溫泉駅 / 鳥取駅 / 米子駅 / 境港駅",
+    "lodging": "皆生溫泉 海濱旅館 (米子市)",
+    "lodgingLocation": "皆生溫泉海濱 (米子市)",
+    "recommendedHotels": "皆生菊乃家 / 皆生海色湯宿海心 / 華水亭",
+    "lodgingReason": "丹後特急直達鳥取/米子轉公車15分抵海濱；享受日本海海底湧出之鹽湯溫泉與海鮮晚餐。",
+    "notes": "• 【晨間特急自城崎溫泉出發移動至米子】：晨間自城崎溫泉搭 JR 特急經鳥取直奔米子 (特急スーパーまつかぜ，Pass全包)，行李寄放米子站。\\n• 【境港水木茂妖怪大道】：米子搭 JR 境線妖怪彩繪列車至境港，走訪 800 公尺街道與 170 座妖怪青銅像、水木茂紀念館，品嚐境港海鮮。\\n• 【進駐皆生溫泉】：米子站搭公車 15 分直達皆生溫泉海濱 Check-in，邊泡露天海景溫泉邊賞日本海夕陽與白砂青松。",
+    "spotIds": [
+      "sakaiminato_mizuki",
+      "kaike_onsen"
+    ]
+  },
+  {
+    "dayNumber": 6,
+    "title": "Day 6：戰國月山富田城 ➔ 足立美術館 ➔ 國寶松江城 ➔ 宿松江",
+    "date": "2027-01-17",
     "baseStation": "米子駅 / 安來駅 / 松江駅",
     "lodging": "松江市區飯店 / 宍道湖畔飯店",
     "lodgingLocation": "JR 松江駅周邊 或 宍道湖畔 (松江市)",
-    "recommendedHotels": "松江東急REI飯店 (車站步行3分) / Dormy Inn Express 松江 (近車站含天然溫泉) / 一畑飯店 (Hotel Ichibata 湖景)",
-    "lodgingReason": "安來搭特急八雲號14分直達松江，傍晚散步宍道湖看日本第一夕陽；隔日前往出雲大社（一畑電車/JR）極為順暢。",
-    "notes": "• 【安來雙雄順路串聯】：月山富田城與足立美術館同在安來站！安來市營黃色公車直通串聯，完全不走回頭路！\n• 【月山富田城・戰國五大山城 (建議預留 2~2.5h)】：清晨自米子搭 JR 山陰本線至安來站，轉搭安來市營黃色巴士攻登戰國名城月山富田城，巡禮山中御殿與本丸天險。\n• 【足立美術館・連續21年日本第一庭園 (停留 1.5h)】：山麓搭黃色公車 8 分鐘直達足立美術館，透過借景枯山水庭園與橫山大觀名畫感受極致美學。\n• 【國寶松江城・現存天守 (預留 1h)】：搭足立免費接駁車至安來站，搭特急八雲號 14 分至松江站，登國寶松江城千鳥破風天守。傍晚欣賞全日本著名的「宍道湖夕陽」。",
+    "recommendedHotels": "松江東急REI飯店 / Dormy Inn Express 松江 / 一畑飯店",
+    "lodgingReason": "安來搭特急八雲號14分直達松江，傍晚散步宍道湖看日本第一夕陽；隔日前往出雲大社極為順暢。",
+    "notes": "• 【安來雙雄順路串聯】：清晨米子搭山陰本線至安來站，搭安來市營黃色公車攻登戰國名城月山富田城，巡禮山中御殿與本丸天險。\\n• 【足立美術館・連續21年日本第一庭園】：山麓搭黃色公車直達足立美術館，借景枯山水與橫山大觀名畫。\\n• 【國寶松江城・現存天守】：搭八雲號特急至松江站，登國寶松江城千鳥破風天守。傍晚欣賞全日本著名的「宍道湖夕陽」。",
     "spotIds": [
       "gassan_toda",
       "adachi_museum",
@@ -1389,15 +1737,15 @@
     ]
   },
   {
-    "dayNumber": 5,
-    "title": "Day 5：出雲大社神話結緣 ➔ 玉作湯神社 ➔ 玉造溫泉美肌早到夜宿",
-    "date": "2027-01-17",
+    "dayNumber": 7,
+    "title": "Day 7：出雲大社神話結緣 ➔ 玉作湯神社 ➔ 玉造溫泉美肌早到夜宿",
+    "date": "2027-01-18",
     "baseStation": "松江駅 / 出雲市駅 / 玉造溫泉駅",
     "lodging": "玉造溫泉 和風旅館 (松江市)",
     "lodgingLocation": "玉造溫泉街 (松江市)",
-    "recommendedHotels": "長樂園 (日本最大混浴露天神湯) / 佳翠苑 皆美 (米其林名宿) / 白石家 (創業300年花之宿)",
-    "lodgingReason": "出雲大社參拜完後 15:30 早早進駐玉造溫泉，漫步溫泉川至玉作湯神社祈求願之石，享受千年美肌神湯與豐盛會席。",
-    "notes": "• 【♨️ 溫泉早到模式 (強烈建議 15:30~16:00 抵達玉造溫泉)】：\n  - 出雲大社參拜完後早早進駐玉造溫泉，漫步溫泉川至「玉作湯神社」祈求靈驗「願之石」御守，16:30 泡首道千年美肌神湯，18:00 悠閒享用溫泉會席晚宴。\n• 【出雲大社・日本神話之巔 (建議預留 2h)】：日本最古神宮，神樂殿 5.2 噸巨型注連繩與國寶本殿，祈求良緣，城下享用出雲割子蕎麥麵。\n• 【玉作湯神社・願之石御守 (停留 40分)】：抵達玉造溫泉街後，步行參拜溫泉守護神，觸摸靈驗願之石製作專屬御守。\n• 【玉造溫泉・美肌神湯夜宿】：入住玉造溫泉街和風旅館，享受《出雲國風土記》記載的千年美肌神湯與豐盛會席料理。",
+    "recommendedHotels": "長樂園 (日本最大混浴露天神湯) / 佳翠苑 皆美 / 白石家",
+    "lodgingReason": "出雲大社參拜完後 15:30 早早進駐玉造溫泉，漫步溫泉川至玉作湯神社祈求願之石，享受千年美肌神湯。",
+    "notes": "• 【出雲大社・日本神話之巔】：神樂殿 5.2 噸巨型注連繩與國寶本殿，祈求良緣，城下享用出雲割子蕎麥麵。\\n• 【玉作湯神社・願之石御守】：參拜溫泉守護神，觸摸靈驗願之石製作專屬御守。\\n• 【玉造溫泉・美肌神湯夜宿】：入住玉造溫泉和風旅館，享受《出雲國風土記》千年美肌名湯與會席晚餐。",
     "spotIds": [
       "izumo_taisha",
       "tamatsukuri_yu_jinja",
@@ -1405,30 +1753,30 @@
     ]
   },
   {
-    "dayNumber": 6,
-    "title": "Day 6：山陰小京都津和野・城下町與纜車山城 ➔ 宿萩市",
-    "date": "2027-01-18",
+    "dayNumber": 8,
+    "title": "Day 8：山陰小京都津和野・城下町與纜車山城 ➔ 宿萩市",
+    "date": "2027-01-19",
     "baseStation": "玉造溫泉駅 / 益田駅 / 津和野駅 / 東萩駅",
     "lodging": "萩市區飯店 / 萩溫泉旅館",
     "lodgingLocation": "萩市區 / 萩溫泉鄉 或 津和野 (山口縣)",
-    "recommendedHotels": "萩之宿 常茂惠 (米其林頂級純日式) / 萩本陣 (高台海景展望露天池) / 萩之鶴 北門屋敷",
-    "lodgingReason": "津和野搭巴士/JR約1小時直達萩市入住，次日清晨前往長門「元乃隅神社」與「萩城」車程最短、最順暢。",
-    "notes": "• 【放緩節奏・小京都漫步】：晨間自玉造溫泉搭乘特急「スーパーおき」直達津和野。專注漫步津和野，告別急行軍。\n• 【津和野城・觀光纜車加登山 (建議預留 1.5h)】：搭乘觀光登山纜車後再步行 15 分石垣稜線攻登津和野城跡，鳥瞰紅色石州瓦與盆地全景。\n• 【殿町通錦鯉老街】：漫步江戶武家屋敷水渠，觀賞成群色彩繽紛的巨型錦鯉悠游。傍晚前往萩市入住。",
+    "recommendedHotels": "萩之宿 常茂惠 / 萩本陣 / 萩之鶴 北門屋敷",
+    "lodgingReason": "津和野搭巴士直達萩市入住，次日清晨前往長門「元乃隅神社」與「萩城」車程最短、最順暢。",
+    "notes": "• 【津和野城・觀光纜車加登山】：搭觀光纜車後再走 15 分石垣稜線攻登津和野城跡，鳥瞰紅色石州瓦與盆地。\\n• 【殿町通錦鯉老街】：漫步江戶武家屋敷水渠，觀賞成群巨型錦鯉悠游。傍晚前往萩市入住。",
     "spotIds": [
       "tsuwano",
       "hagi_lodging"
     ]
   },
   {
-    "dayNumber": 7,
-    "title": "Day 7：長門斷崖絕景元乃隅神社 ➔ 長州維新世界遺產萩城 ➔ 宿新山口",
-    "date": "2027-01-19",
+    "dayNumber": 9,
+    "title": "Day 9：長門斷崖絕景元乃隅神社 ➔ 長州維新世界遺產萩城 ➔ 宿新山口",
+    "date": "2027-01-20",
     "baseStation": "東萩駅 / 長門市駅 / 新山口駅",
     "lodging": "新山口站前飯店 (新幹線口)",
     "lodgingLocation": "JR 新山口駅 新幹線口 (山口市)",
-    "recommendedHotels": "新山口康福飯店 (Comfort Hotel，出站1分) / 燦路都新山口飯店 (Hotel Sunroute，站前即達)",
-    "lodgingReason": "防長巴士下車即抵站前飯店；新山口為山陽新幹線大站，隔天清晨極速搭新幹線直奔新岩國/宮島，零行李負擔。",
-    "notes": "• 【元乃隅神社・CNN評選日本最美31景 (停留 1h)】：山口縣長門市海岸壯麗奇景！123 座斷崖朱紅鳥居沿山坡綿延面朝日本海，潮吹岩噴起白色浪花，必拍大鳥居高處功德箱！\n• 【萩城・指月公園 (基本預留 1h)】：前往世界遺產萩城跡（指月公園平坦寬闊，內堀天守台散步輕鬆），漫步世界遺產萩城下町白壁土藏與菊濱海岸。\n• 【夜宿新山口】：傍晚搭乘防長巴士直達新山口站前商務飯店入住，為明日山陽新幹線與周防行程做好準備。",
+    "recommendedHotels": "新山口康福飯店 / 燦路都新山口飯店",
+    "lodgingReason": "防長巴士下車即抵站前飯店；新山口為新幹線大站，隔天清晨極速直奔新岩國/宮島。",
+    "notes": "• 【元乃隅神社・日本最美31景】：123 座斷崖朱紅鳥居沿山坡綿延面朝日本海，潮吹岩噴起白色浪花，必拍高處功德箱！\\n• 【萩城・指月公園】：漫步世界遺產萩城跡與萩城下町白壁土藏。\\n• 【夜宿新山口】：傍晚搭防長巴士直達新山口站前商務飯店入住。",
     "spotIds": [
       "motonosumi_jinja",
       "hagi",
@@ -1436,15 +1784,15 @@
     ]
   },
   {
-    "dayNumber": 8,
-    "title": "Day 8：周防名橋岩國城 ➔ 宮島世界遺產嚴島神社 ➔ 宿廣島",
-    "date": "2027-01-20",
+    "dayNumber": 10,
+    "title": "Day 10：周防名橋岩國城 ➔ 宮島世界遺產嚴島神社 ➔ 宿廣島",
+    "date": "2027-01-21",
     "baseStation": "新山口駅 / 新岩國駅 / 宮島口 / 廣島駅",
     "lodging": "廣島市區飯店 (格蘭比亞 / 喜來登 / ANA)",
     "lodgingLocation": "JR 廣島駅周邊 或 八丁堀商圈 (廣島市)",
-    "recommendedHotels": "廣島格蘭比亞大飯店 (廣島站北口直通) / 廣島喜來登大飯店 (站旁直結) / 廣島ANA皇冠假日酒店",
-    "lodgingReason": "宮島口搭 JR 25 分鐘直達廣島站，直接進駐市中心大飯店，次日參觀廣島城與和平公園完全免換飯店。",
-    "notes": "• 【絕不上機場！本日行程直達廣島核心】：新山口搭新幹線至新岩國，岩國至宮島口僅 20 分鐘，100% 完美順路！\n• 【錦帶橋 & 岩國城・空中纜車 (預留 1.5h)】：搭公車遊覽日本三名橋五連木拱「錦帶橋」，搭乘吉香公園空中纜車直達山頂岩國城天守，山頂遠眺瀨戶內海群島。\n• 【嚴島神社 (宮島)・海上大鳥居 (預留 2h)】：岩國搭 JR 山陽本線至宮島口，轉乘 JR 宮島渡輪 (JR Pass 全包！) 航向宮島，朝拜世界文化遺產海上朱紅大鳥居與寢殿造迴廊。\n• 【傍晚進駐廣島】：搭 JR 山陽本線直達廣島站前飯店入住，晚上漫步八丁堀商圈。",
+    "recommendedHotels": "廣島格蘭比亞大飯店 / 廣島喜來登大飯店 / 廣島ANA皇冠假日酒店",
+    "lodgingReason": "宮島口搭 JR 25 分直達廣島站，進駐市中心大飯店，次日參觀廣島城完全免換飯店。",
+    "notes": "• 【錦帶橋 & 岩國城空中纜車】：遊覽日本三名橋五連木拱錦帶橋，搭空中纜車直達山頂岩國城天守遠眺瀨戶內海。\\n• 【嚴島神社 (宮島)・海上大鳥居】：搭 JR 宮島渡輪(Pass全包) 朝拜世界文化遺產海上朱紅大鳥居與寢殿造迴廊。\\n• 【傍晚進駐廣島】：搭 JR 直達廣島站前飯店入住。",
     "spotIds": [
       "iwakuni",
       "itsukushima_jinja",
@@ -1452,15 +1800,15 @@
     ]
   },
   {
-    "dayNumber": 9,
-    "title": "Day 9：廣島和平文化・鯉城與護國神社 ➔ 原爆圓頂 ➔ 廣島和牛晚宴",
-    "date": "2027-01-21",
+    "dayNumber": 11,
+    "title": "Day 11：廣島和平文化・鯉城與護國神社 ➔ 原爆圓頂 ➔ 廣島和牛晚宴",
+    "date": "2027-01-22",
     "baseStation": "廣島駅 / 原爆圓頂前",
     "lodging": "廣島市區飯店 (連住第2晚)",
     "lodgingLocation": "JR 廣島駅周邊 (連住免搬行李)",
-    "recommendedHotels": "同 Day 8 (連住 2 晚，徹底擺脫換飯店與拖行李疲累)",
-    "lodgingReason": "全日廣島市區輕鬆漫步，晚間在廣島站 21F 享用神石和牛鐵板燒，步行或路面電車即刻回房休息。",
-    "notes": "• 【廣島城・平地名城 (基本預留 1h)】：市中心完全平地，參觀武士文化天守閣與毛利輝元築城歷史。\n• 【廣島護國神社・鯉魚必勝祈願 (停留 30分)】：位於廣島城郭內！參拜廣島初詣第一大社，摸雙鯉之像祈願厄除開運、良緣與必勝。\n• 【寶可夢中心廣島】：前往 SOGO 本館 6F 探訪特色周邊。\n• 【原子彈爆炸圓頂屋 (停留 30分)】：SOGO 旁步行 2 分即達元安川畔世界遺產原爆圓頂，近距離凝視戰後奇蹟殘存的綠色鋼骨圓頂。\n• 【和平紀念資料館】：穿過和平公園綠意軸線，參觀世界遺產和平紀念資料館，感受深厚和平祈願。\n• 【廣島和牛晚餐】：晚上前往站前 21F 高空夜景之「鉄板焼 神石」享用特選廣島牛鐵板燒！",
+    "recommendedHotels": "同 Day 10 (連住 2 晚，徹底擺脫換飯店與拖行李疲累)",
+    "lodgingReason": "全日廣島市區輕鬆漫步，晚間在廣島站 21F 享用神石和牛鐵板燒，路面電車即刻回房休息。",
+    "notes": "• 【廣島城・平地名城】：參觀武士文化天守閣與毛利輝元築城歷史。\\n• 【廣島護國神社】：參拜摸雙鯉之像祈願厄除開運與必勝。\\n• 【原子彈爆炸圓頂屋 & 資料館】：元安川畔世界遺產原爆圓頂與和平紀念資料館。\\n• 【廣島和牛晚餐】：站前 21F 高空夜景「鉄板焼 神石」享用特選廣島牛鐵板燒！",
     "spotIds": [
       "hiroshima",
       "hiroshima_gokoku_jinja",
@@ -1472,15 +1820,15 @@
     ]
   },
   {
-    "dayNumber": 10,
-    "title": "Day 10：毛利要塞吉田郡山城 ➔ 福山城 ➔ 鞆之浦夕陽溫泉",
-    "date": "2027-01-22",
+    "dayNumber": 12,
+    "title": "Day 12：毛利要塞吉田郡山城 ➔ 福山城 ➔ 鞆之浦夕陽溫泉",
+    "date": "2027-01-23",
     "baseStation": "廣島巴士中心 / 福山駅 / 鞆之浦",
     "lodging": "鞆之浦溫泉 海景旅館 (福山市)",
     "lodgingLocation": "鞆之浦溫泉海灣 (福山市)",
-    "recommendedHotels": "汀邸 遠音近音 (全室海景露天風呂) / 景勝館 漣亭 / 鷗風亭 (Ofutei)",
-    "lodgingReason": "福山站南口搭鞆鐵巴士30分直達；15:45 早到 Check-in 欣賞仙醉島海景夕陽，黃昏散步常夜燈古港，品嚐瀨戶內鯛魚。",
-    "notes": "• 【♨️ 溫泉早到模式 (強烈建議 15:40~16:00 抵達鞆之浦溫泉)】：\n  - 鞆之浦坐擁瀨戶內海仙醉島絕景，早到進駐可一邊在露天風呂眺望瀨戶內海平靜波光與金色夕陽，黃昏散步至象徵江戶港町之「常夜燈」打卡拍照，18:00 準時享用瀨戶內鯛魚盛宴。\n• 【吉田郡山城・全山大型山城 (建議預留 2h)】：清晨自廣島巴士中心搭客運至安芸高田，攻登毛利元就百萬一心之全山大型要塞。\n• 【福山城・鐵板張天守 (基本預留 1h)】：新幹線極速至福山，出站 0 距離登上全國唯一北面鐵板張天守。\n• 【鞆之浦溫泉夜宿】：福山站南口搭 15:10 發車之鞆鐵巴士 (車程 30 分) ➔ 15:45 準時進駐鞆之浦溫泉海景旅館 Check-in！",
+    "recommendedHotels": "汀邸 遠音近音 / 景勝館 漣亭 / 鷗風亭",
+    "lodgingReason": "福山站搭鞆鐵巴士30分直達；15:45 早到 Check-in 欣賞仙醉島海景夕陽，黃昏散步常夜燈古港。",
+    "notes": "• 【吉田郡山城・全山大型山城】：毛利元就百萬一心之要塞巡禮。\\n• 【福山城・鐵板張天守】：新幹線極速至福山，出站登上全國唯一北面鐵板張天守。\\n• 【鞆之浦溫泉夜宿】：搭巴士進駐鞆之浦溫泉，露天風呂眺望瀨戶內海平靜波光與夕陽，享用鯛魚盛宴。",
     "spotIds": [
       "yoshida_koriyama",
       "fukuyama",
@@ -1488,258 +1836,40 @@
     ]
   },
   {
-    "dayNumber": 11,
-    "title": "Day 11：桃太郎吉備路傳說 ➔ 岡山市區採買與備用彈性日",
-    "date": "2027-01-23",
-    "baseStation": "鞆之浦 / 福山駅 / 岡山駅 / 備前一宮駅",
+    "dayNumber": 13,
+    "title": "Day 13：天空之城備中松山城 ➔ 桃太郎吉備津神社 ➔ 岡山市區深度採買 ➔ 宿岡山",
+    "date": "2027-01-24",
+    "baseStation": "鞆之浦 / 福山駅 / 備中高梁駅 / 岡山駅",
     "lodging": "岡山站前飯店 (格蘭比亞 / 大和Roynet / 三井花園)",
     "lodgingLocation": "JR 岡山駅東口 (岡山市區)",
     "recommendedHotels": "岡山格蘭比亞大飯店 (直結) / 大和Roynet飯店岡山站前 / 三井花園飯店岡山",
-    "lodgingReason": "福山搭新幹線僅16分極速返抵岡山寄放大行李，轉吉備線參拜桃太郎兩大社極順路，傍晚在站前一番街採買免稅伴手禮。",
-    "notes": "• 【吉備津彥神社 & 吉備津神社】：鞆之浦搭巴士回福山，新幹線16分直達岡山！行李寄放站前飯店後，搭 JR 吉備線至備前一宮站與吉備津站，參拜桃太郎原型大社，欣賞國寶吉備津造本殿與 398 公尺木造大迴廊。\n• 【岡山市區伴手禮採買】：下午漫步岡山一番街、SUN STATION TERRACE 與 BicCamera 採買岡山白桃果凍、晴王麝香葡萄點心與藥妝，整理回程行李。",
+    "lodgingReason": "岡山站前核心，次日搭利木津巴士直達岡山機場返台最從容無壓力。",
+    "notes": "• 【備中松山城・天空之城】：清晨自岡山搭特急八雲號抵備中高梁，搭合計程車登山探訪現存唯一山城天守與貓城主三十郎。\\n• 【吉備津神社・桃太郎傳說】：搭 JR 吉備線參拜國寶吉備津造本殿與 398 公尺木造大迴廊。\\n• 【岡山市區伴手禮採買】：漫步一番街與 BicCamera 採買岡山白桃果凍、晴王麝香葡萄點心與藥妝，整理回程行李。",
     "spotIds": [
-      "kibitsuhiko_jinja",
+      "bitchu_matsuyama",
       "kibitsu_jinja",
       "okayama_hotel_d11"
     ]
   },
   {
-    "dayNumber": 12,
-    "title": "Day 12：天空之城備中松山城 ➔ 岡山桃太郎機場搭機返台 (虎航 IT215)",
-    "date": "2027-01-24",
-    "baseStation": "岡山駅 / 備中高梁駅 / 岡山桃太郎機場",
-    "lodging": "溫暖的家 (台灣)",
-    "lodgingLocation": "溫暖的家 (搭機返台，若延後行程可連住岡山站前)",
-    "recommendedHotels": "當日搭機返台；若延後回程天數則建議連住岡山站前飯店",
-    "lodgingReason": "備中高梁搭特急八雲號直達岡山站，西口2號乘車處搭利木津直達巴士30分鐘抵達岡山桃太郎機場出境返台。",
-    "notes": "• 【備中松山城・天空之城 (建議預留 1.5h)】：清晨 08:15 岡山搭特急八雲號於 08:50 抵備中高梁站。09:20 搭乘合計程車至鞴峠，登山探訪現存唯一山城天守與貓城主三十郎。\n• 【特急八雲號直達岡山】：11:15 搭乘合計程車返回備中高梁站，搭乘 11:42 特急やくも 12號 (全車指定席，車程 34 分)，於 12:18 抵達岡山站。站內外帶岡山便當。\n• 【搭機返台 (提早 2.5~3 小時到機場)】：岡山站西口 2 號乘車處搭乘利木津直達巴士 (車程 30 分，單程 780 円) 直達岡山桃太郎機場，辦理出境登機，平安返台！",
+    "dayNumber": 14,
+    "title": "Day 14：岡山市區最後採買 ➔ 岡山桃太郎機場 (虎航 IT 215) ➔ 台北桃園(T1) 平安返台",
+    "date": "2027-01-25",
+    "baseStation": "岡山駅 / 岡山桃太郎機場 (OKJ) / 桃園國際機場 (T1)",
+    "lodging": "溫暖的家 (台灣台北)",
+    "lodgingLocation": "桃園國際機場第一航廈 ➔ 返抵溫暖的家",
+    "recommendedHotels": "當日搭機返抵國門；滿載名城與丹後絕景回憶平安歸國！",
+    "lodgingReason": "岡山站西口搭利木津巴士直達機場出境返台。",
+    "notes": "• 【上午岡山市區漫遊與最後採買】：悠閒在飯店享用早餐後 Check-out（行李寄放飯店櫃檯）。漫步站前 SUN STATION TERRACE、BicCamera 岡山站前店或一番街採買最後免稅伴手禮（岡山白桃菓子、晴王葡萄夾心、備前燒小物與日本美妝）。\\n• 【前往岡山機場 (利木津巴士)】：12:30 返回飯店提領行李，前往岡山站西口巴士總站 2 號乘車處搭乘利木津巴士（車程約 30 分鐘，單程 780 円）直達岡山桃太郎機場 (OKJ) 國際線航廈。\\n• 【✈️ 台灣虎航 IT 215 回程航班資訊】：\\n  - 出發：岡山桃太郎機場 (OKJ) 國際線航廈，起飛時間 15:55。\\n  - 抵達：台北桃園國際機場 (TPE) 第一航廈 (Terminal 1)，降落時間 17:40。\\n  - 【岡山機場國際線出境須知】：虎航櫃檯於起飛前 2.5 小時 (13:25) 開始辦理登機與託運行李，起飛前 45 分鐘 (15:10) 截止關閉櫃檯！岡山機場國際線出境安檢與通關效率高，出關後免稅店可選購岡山名產與各大日本必買伴手禮。\\n  - 班機於台灣時間 17:40 準時降落桃園國際機場第一航廈 (T1)，提領行李後順利通關返家，圓滿結束 14 天山陽山陰與丹後名勝大閉環之行！",
     "spotIds": [
-      "bitchu_matsuyama",
       "okayama_airport"
     ]
   }
 ];
-
-    const BUILTIN_FLIGHT_COMPARISON_DATA = [
-  {
-    "id": "okayama_tiger",
-    "destination": "岡山 (OKJ)",
-    "destCity": "岡山桃太郎機場 (台北桃園 TPE 直飛)",
-    "airline": "台灣虎航 (Tigerair Taiwan)",
-    "airlineCode": "IT",
-    "flightType": "LCC廉價航空",
-    "aircraft": "A320 / A320neo",
-    "frequency": "每天 1 班天天直飛 (1/13 去 ➔ 1/26 回，0天移動完美吻合)",
-    "travelDates": "1/13 (三) ~ 1/26 (二) [共 14 天 13 晚]",
-    "exactPrice": "NT$ 13,537",
-    "priceRangeWithBaggage": "NT$ 13,537",
-    "pricePeakWithBaggage": "含加購 20kg 托運行李直客價",
-    "outbound": {
-      "flightNo": "IT214",
-      "departure": "11:30 台北桃園 (TPE)",
-      "arrival": "15:05 岡山 (OKJ)",
-      "duration": "2 小時 35 分鐘",
-      "timingType": "午去 (1/13 出發・舒適免天未亮出門)"
-    },
-    "inbound": {
-      "flightNo": "IT215",
-      "departure": "15:55 岡山 (OKJ)",
-      "arrival": "18:05 台北桃園 (TPE)",
-      "duration": "3 小時 10 分鐘",
-      "timingType": "下午回 (1/26 返台・早晨還能攻備中松山城)"
-    },
-    "baggageIncluded": "已包含來回 20kg 托運行李 (約 NT$1,900，已計入票價)",
-    "carryOn": "1件手提 + 1件隨身物品，合計 10kg",
-    "jrPassLink": "機場搭乘利木津巴士 30 分 (780円) 直達岡山站，立即開通山陽&山陰 Pass！",
-    "pros": [
-      "山陰山陽大環線地理幾何中心，南北進出最順暢",
-      "天天直飛不卡班表，回程 15:55 起飛，最後一天早晨還能從容攻登備中松山城",
-      "機場小而美，通關與行李提領極速 (15~20分鐘出關)"
-    ],
-    "cons": [
-      "票價隨日期浮動，熱門賞楓/雪季需提早開票",
-      "機上餐飲與選位需額外加購"
-    ],
-    "officialUrl": "https://www.tigerairtw.com/",
-    "googleFlightsUrl": "https://www.google.com/travel/flights?q=Flights%20to%20OKJ%20from%20TPE",
-    "skyscannerUrl": "https://www.skyscanner.com.tw/transport/flights/tpe/okj/"
-  },
-  {
-    "id": "hiroshima_cal",
-    "destination": "廣島 (HIJ)",
-    "destCity": "廣島機場 (台北桃園 TPE 直飛)",
-    "airline": "中華航空 (China Airlines)",
-    "airlineCode": "CI",
-    "flightType": "傳統全服務航空 (FSC)",
-    "aircraft": "A321neo (全機4K娛樂系統)",
-    "frequency": "每週 6 班 (週二至日皆飛，1/13 去 ➔ 1/26 回完美吻合)",
-    "travelDates": "1/13 (三) ~ 1/26 (二) [共 14 天 13 晚]",
-    "exactPrice": "NT$ 15,038",
-    "priceRangeWithBaggage": "NT$ 15,038",
-    "pricePeakWithBaggage": "傳統航空免費含 23kg 托運行李與餐飲",
-    "outbound": {
-      "flightNo": "CI112",
-      "departure": "07:15 台北桃園 (TPE)",
-      "arrival": "10:35 廣島 (HIJ)",
-      "duration": "2 小時 20 分鐘",
-      "timingType": "早去 (1/13 出發・10:35 即達！第一天直玩廣島)"
-    },
-    "inbound": {
-      "flightNo": "CI113",
-      "departure": "11:35 廣島 (HIJ)",
-      "arrival": "13:15 台北桃園 (TPE)",
-      "duration": "2 小時 40 分鐘",
-      "timingType": "午回 (1/26 返台・下午返抵國門好收心)"
-    },
-    "baggageIncluded": "免費內含 1 件 23kg 托運行李 (傳統全服務航空標配，免加價)",
-    "carryOn": "1件手提 7kg + 1件隨身包",
-    "jrPassLink": "機場搭利木津巴士約 45 分 (1,450円) 直達廣島站，直接啟用 Pass 搭新幹線！",
-    "pros": [
-      "早去優勢巨大！10:35 即抵達廣島，第 1 天下午能直接跑廣島城、原爆圓頂與護國神社",
-      "全服務航空規格：免費含 23kg 行李、熱熱飛機餐飲、個人 4K 影音娛樂系統",
-      "適合廣島起點直接切入山口與島根大環線"
-    ],
-    "cons": [
-      "回程是上午 11:35，最後一天早上需較早前往機場 (約 09:30 到廣島機場)",
-      "週一無班機 (去程 1/13 週三、回程 1/26 週二皆有航班)"
-    ],
-    "officialUrl": "https://www.china-airlines.com/",
-    "googleFlightsUrl": "https://www.google.com/travel/flights?q=Flights%20to%20HIJ%20from%20TPE",
-    "skyscannerUrl": "https://www.skyscanner.com.tw/transport/flights/tpe/hij/"
-  },
-  {
-    "id": "yonago_tiger",
-    "destination": "米子 (YGJ)",
-    "destCity": "米子鬼太郎機場 (台北桃園 TPE 直飛)",
-    "airline": "台灣虎航 (Tigerair Taiwan)",
-    "airlineCode": "IT",
-    "flightType": "LCC廉價航空",
-    "aircraft": "A320 / A320neo",
-    "frequency": "每週 2 班 (僅每週一、五飛航・±2天最佳調度方案)",
-    "travelDates": "1/15 (五) ~ 1/25 (一) [共 11 天 10 晚]",
-    "exactPrice": "NT$ 11,537",
-    "priceRangeWithBaggage": "NT$ 11,537",
-    "pricePeakWithBaggage": "含加購 20kg 托運行李直客價",
-    "outbound": {
-      "flightNo": "IT724",
-      "departure": "13:30 台北桃園 (TPE)",
-      "arrival": "17:00 米子 (YGJ)",
-      "duration": "2 小時 30 分鐘",
-      "timingType": "午去 (1/15 週五出發・去程+2天調度)"
-    },
-    "inbound": {
-      "flightNo": "IT725",
-      "departure": "13:00 米子 (YGJ)",
-      "arrival": "15:15 台北桃園 (TPE)",
-      "duration": "3 小時 15 分鐘",
-      "timingType": "午回 (1/25 週一返台・回程-1天調度)"
-    },
-    "baggageIncluded": "已包含來回 20kg 托運行李 (約 NT$1,900，已計入票價)",
-    "carryOn": "1件手提 + 1件隨身物品，合計 10kg",
-    "jrPassLink": "機場直結 JR 米子空港站，搭 JR 境線 30 分到米子站或 15 分到皆生溫泉！",
-    "pros": [
-      "票價最親民！含行李僅 NT$ 11,537，性價比極高",
-      "直搗山陰核心腹地！下機即是皆生溫泉、出雲大社、松江城門戶",
-      "鬼太郎彩繪候機室與妖怪雕像拍照極具特色"
-    ],
-    "cons": [
-      "受每週僅一、五飛航限制，需由 14 天縮短為 11 天 (1/15~1/25)",
-      "若遇冬季山陰暴雪，航班調度彈性較主要樞紐機場略小"
-    ],
-    "officialUrl": "https://www.tigerairtw.com/",
-    "googleFlightsUrl": "https://www.google.com/travel/flights?q=Flights%20to%20YGJ%20from%20TPE",
-    "skyscannerUrl": "https://www.skyscanner.com.tw/transport/flights/tpe/ygj/"
-  },
-  {
-    "id": "takamatsu_starlux",
-    "destination": "高松 (TAK)",
-    "destCity": "香川高松機場 (台中清泉崗 RMQ 直飛)",
-    "airline": "星宇航空 (STARLUX Airlines)",
-    "airlineCode": "JX",
-    "flightType": "精品全服務航空 (FSC)",
-    "aircraft": "A321neo (精品客艙・個人娛樂)",
-    "frequency": "固定每週航班 (台中直飛高松・中部首選)",
-    "travelDates": "1/13 (三) ~ 1/25 (一) [共 13 天 12 晚]",
-    "exactPrice": "NT$ 15,126",
-    "priceRangeWithBaggage": "NT$ 15,126",
-    "pricePeakWithBaggage": "精品航空免費含 23kg 托運行李與特調餐飲",
-    "outbound": {
-      "flightNo": "JX300",
-      "departure": "08:50 台中清泉崗 (RMQ)",
-      "arrival": "12:20 香川高松 (TAK)",
-      "duration": "2 小時 30 分鐘",
-      "timingType": "早去 (1/13 出發・中午抵四國門戶高松)"
-    },
-    "inbound": {
-      "flightNo": "JX301",
-      "departure": "13:20 香川高松 (TAK)",
-      "arrival": "15:40 台中清泉崗 (RMQ)",
-      "duration": "3 小時 20 分鐘",
-      "timingType": "午回 (1/25 返台・下午返抵台中清泉崗)"
-    },
-    "baggageIncluded": "免費包含 1 件 23kg 托運行李 ＋ 7kg 手提 ＋ 星宇精緻餐飲與特調",
-    "carryOn": "1件手提 7kg + 1件隨身包",
-    "jrPassLink": "【四國➔山陽 53分神速通】：高松站搭乘 JR 瀨戶大橋線「特急 Marine Liner (マリンライナー)」跨海直達岡山站僅 53 分鐘！JR 山陽&山陰 Pass / 瀨戶內 Pass 免費全包！",
-    "pros": [
-      "台中清泉崗 (RMQ) 直飛！中部出發免奔波桃園機場，大幅省下高鐵車資與交通時間",
-      "星宇精品航空：全機 4K 影音娛樂、免費 WiFi、精緻餐飲與特調、23kg 托運",
-      "高松搭 Marine Liner 特急跨海 53 分直達岡山站，無縫切入山陽山陰大閉環路線"
-    ],
-    "cons": [
-      "回程是 13:20，最後一天上午需自岡山搭特急過瀨戶大橋回高松機場 (約 09:30 前往)",
-      "需自高松站搭 53 分特急跨越瀨戶大橋前往岡山"
-    ],
-    "officialUrl": "https://www.starlux-airlines.com/",
-    "googleFlightsUrl": "https://www.google.com/travel/flights?q=Flights%20to%20TAK%20from%20RMQ",
-    "skyscannerUrl": "https://www.skyscanner.com.tw/transport/flights/rmq/tak/"
-  },
-  {
-    "id": "kansai_fsc_lcc",
-    "destination": "關西 (KIX)",
-    "destCity": "大阪關西國際機場 (台北桃園 TPE 直飛)",
-    "airline": "長榮 / 星宇 / 華航 / 樂桃 / 捷星",
-    "airlineCode": "BR / JX / CI / MM / GK",
-    "flightType": "傳統航空 ＆ 廉價航空 多家可選",
-    "aircraft": "A350 / B787 / B777 / A321neo 等",
-    "frequency": "每天 25+ 班密集起降 (1/13 去 ➔ 1/26 回全時段任選)",
-    "travelDates": "1/13 (三) ~ 1/26 (二) [共 14 天 13 晚]",
-    "exactPrice": "廉航 NT$ 9,000 起 / 傳航 NT$ 14,000 起",
-    "priceRangeWithBaggage": "NT$ 9,000 ~ 15,500",
-    "pricePeakWithBaggage": "視各家航空淡旺季與行李促銷而定",
-    "outbound": {
-      "flightNo": "多航班 (例 BR178 / JX820 / MM022)",
-      "departure": "06:30 ~ 14:00 多班自桃園起飛",
-      "arrival": "10:00 ~ 17:30 抵達關西 (KIX)",
-      "duration": "2 小時 20 分鐘 ~ 2 小時 40 分鐘",
-      "timingType": "極早到極晚任選，早去晚回性價比最高"
-    },
-    "inbound": {
-      "flightNo": "多航班 (例 BR129 / JX823 / MM027)",
-      "departure": "14:00 ~ 22:30 多班自關西起飛",
-      "arrival": "16:00 ~ 00:40 抵達台北 (TPE)",
-      "duration": "3 小時 00 分鐘",
-      "timingType": "晚班機多，玩滿最後一天整天"
-    },
-    "baggageIncluded": "傳航含 23kg 托運；廉航加購 20kg 後計算",
-    "carryOn": "7kg ~ 10kg (依各航空規定)",
-    "jrPassLink": "【神級對接】：關西機場憑「JR 山陽&山陰 Pass」搭特急 HARUKA 至新大阪 (50分)，同站轉新幹線至岡山 (45分)，全程 0 元免額外花費！",
-    "pros": [
-      "班次全日本最多，票價促銷最常有，時間選擇完全自由",
-      "「JR 山陽&山陰地區 7 日券」全額免費包含關西機場特急 HARUKA 與新幹線！",
-      "回程若想在心齋橋/難波大血拼或採買伴手禮極其方便"
-    ],
-    "cons": [
-      "關西機場出入境人潮極多，安檢與通關常需排隊 40~60 分鐘",
-      "抵達後需額外搭 1.5 ~ 2 小時特急＋新幹線才能進入岡山/廣島核心景點"
-    ],
-    "officialUrl": "https://www.google.com/travel/flights",
-    "googleFlightsUrl": "https://www.google.com/travel/flights?q=Flights%20to%20KIX%20from%20TPE",
-    "skyscannerUrl": "https://www.skyscanner.com.tw/transport/flights/tpe/kix/"
-  }
-];
+    const BUILTIN_DEFAULT_ITINERARY = BUILTIN_ITINERARY_OKAYAMA;
 
     function getEffectiveDefaultSpots() {
-      // 以內建最新 48 處景點為核心基石，相容外部 spots_data.js 自訂擴充
+      // 以內建最新 50 處景點為核心基石，相容外部 spots_data.js 自訂擴充
       const list = [...BUILTIN_DEFAULT_SPOTS];
       if (typeof DEFAULT_SPOTS !== 'undefined' && Array.isArray(DEFAULT_SPOTS)) {
         DEFAULT_SPOTS.forEach(s => {
@@ -1750,17 +1880,13 @@
     }
 
     function getEffectiveDefaultItinerary() {
-      // 內建權威之 12 天真實地理順路行程 (全面排入 7 大核心神社，100% 免疫 GitHub 快取與外部檔案脫節)
+      // 內建權威之岡山出發 12 天真實地理順路行程 (全面排入 12 座名城＋7 大核心神社，100% 免疫快取脫節)
       return BUILTIN_DEFAULT_ITINERARY;
     }
 
-    function getEffectiveFlightData() {
-      if (typeof FLIGHT_COMPARISON_DATA !== 'undefined' && Array.isArray(FLIGHT_COMPARISON_DATA) && FLIGHT_COMPARISON_DATA.length > 0) {
-        return FLIGHT_COMPARISON_DATA;
-      }
-      return BUILTIN_FLIGHT_COMPARISON_DATA;
-    }
-
+    const STORAGE_KEY_EXPENSES = "jp_trip_expenses_v1";
+    const STORAGE_KEY_MEMBERS = "jp_trip_members_v1";
+    const STORAGE_KEY_EXCHANGE_RATE = "jp_trip_exchange_rate_v1";
 
     let state = {
       spots: [],
@@ -1768,9 +1894,14 @@
       deletedSpotIds: [],
       activeTab: "itinerary",
       selectedDayFilter: "all",
-      editingSpotId: null
+      editingSpotId: null,
+      expenses: [],
+      members: { a: "成員 A", b: "成員 B" },
+      exchangeRate: 0.215, // 1 JPY = 0.215 TWD
+      expenseFilterCategory: "all",
+      expenseFilterDay: "all",
+      expenseFilterMember: "all"
     };
-
 
     // ==========================================
     // 預定義各天景點之真實地理最佳順序表 (Canonical Geographic Routing Sequence)
@@ -1915,6 +2046,10 @@
           const rawBase64 = window.location.hash.replace('#plan=', '');
           const decodedJson = decodeURIComponent(escape(atob(rawBase64)));
           const sharedData = JSON.parse(decodedJson);
+          if (sharedData.plan && ['okayama', 'yonago', 'hiroshima'].includes(sharedData.plan)) {
+            state.currentRoutePlan = sharedData.plan;
+            localStorage.setItem('jp_castle_current_route_plan', sharedData.plan);
+          }
           if (sharedData.itinerary && Array.isArray(sharedData.itinerary)) {
             state.itinerary = sharedData.itinerary;
           }
@@ -1926,6 +2061,26 @@
         }
       }
 
+      // 讀取兩人分帳與記帳資料
+      try {
+        const savedExpenses = localStorage.getItem(STORAGE_KEY_EXPENSES);
+        state.expenses = savedExpenses ? JSON.parse(savedExpenses) : [];
+      } catch (e) {
+        state.expenses = [];
+      }
+
+      try {
+        const savedMembers = localStorage.getItem(STORAGE_KEY_MEMBERS);
+        state.members = savedMembers ? JSON.parse(savedMembers) : { a: "獅子", b: "方" };
+        if (!state.members.a || state.members.a === "成員 A") state.members.a = "獅子";
+        if (!state.members.b || state.members.b === "成員 B") state.members.b = "方";
+      } catch (e) {
+        state.members = { a: "成員 A", b: "成員 B" };
+      }
+
+      const savedRate = localStorage.getItem(STORAGE_KEY_EXCHANGE_RATE);
+      state.exchangeRate = savedRate ? parseFloat(savedRate) || 0.215 : 0.215;
+
       // 讀取 LocalStorage，嚴格保護使用者已自訂的行程內容
       const savedSpots = localStorage.getItem(STORAGE_KEY_SPOTS);
       const savedItinerary = localStorage.getItem(STORAGE_KEY_ITINERARY);
@@ -1934,6 +2089,9 @@
       // V12 修復：清空先前可能誤刪的 deleted 列表，讓出雲大社與所有名勝完整重現在庫！
       if (savedVer !== CURRENT_ITINERARY_VER) {
         state.deletedSpotIds = [];
+        localStorage.removeItem('jp_castle_itinerary_okayama');
+        localStorage.removeItem(STORAGE_KEY_ITINERARY);
+        localStorage.removeItem(STORAGE_KEY_SPOTS);
         localStorage.removeItem(STORAGE_KEY_DELETED_SPOTS);
         localStorage.setItem(STORAGE_KEY_ITINERARY_VER, CURRENT_ITINERARY_VER);
       } else {
@@ -1941,22 +2099,29 @@
         state.deletedSpotIds = savedDeleted ? JSON.parse(savedDeleted) : [];
       }
 
-      // 行程保護原則：若使用者先前已有儲存排程，絕對以使用者的自訂行程為準！
-      const fallbackItinerary = getEffectiveDefaultItinerary();
+      // 行程一律固定為：🍑 岡山出發 12 天大閉環
+      state.currentRoutePlan = 'okayama';
+      const fallbackItinerary = JSON.parse(JSON.stringify(BUILTIN_DEFAULT_ITINERARY));
       const fallbackSpots = getEffectiveDefaultSpots();
 
-      if (savedVer !== CURRENT_ITINERARY_VER || !savedItinerary) {
-        // 版本升級至全新 12 天優雅步調行程
-        state.itinerary = JSON.parse(JSON.stringify(fallbackItinerary));
-      } else {
+      const savedOkayama = localStorage.getItem('jp_castle_itinerary_okayama');
+      if (savedOkayama && savedVer === CURRENT_ITINERARY_VER) {
+        try {
+          state.itinerary = JSON.parse(savedOkayama);
+        } catch (e) {
+          state.itinerary = fallbackItinerary;
+        }
+      } else if (savedItinerary && savedVer === CURRENT_ITINERARY_VER) {
         try {
           state.itinerary = JSON.parse(savedItinerary);
         } catch (e) {
-          state.itinerary = JSON.parse(JSON.stringify(fallbackItinerary));
+          state.itinerary = fallbackItinerary;
         }
+      } else {
+        state.itinerary = fallbackItinerary;
       }
 
-      // 景點庫合流：確保所有 48 處景點（包含出雲大社、嚴島神社、吉備津彥神社等）全數在庫
+      // 景點庫合流：確保所有 50 處景點全數在庫
       state.spots = savedSpots ? JSON.parse(savedSpots) : [];
       fallbackSpots.forEach(ds => {
         if (state.deletedSpotIds && state.deletedSpotIds.includes(ds.id)) return;
@@ -1971,67 +2136,18 @@
         if (!s.checklists) s.checklists = {};
       });
 
-      // 確保 Day 1 嚴格符合指定：「機場 ➔ 和牛 ➔ 逛街 ➔ 住宿，不要有其他行程」
+      // 岡山出發：確保 Day 1 嚴格符合指定：「機場 ➔ 和牛 ➔ 逛街 ➔ 住宿」
       const day1 = state.itinerary.find(d => d.dayNumber === 1);
-      if (day1) {
+      if (day1 && (!day1.spotIds || day1.spotIds.length === 0 || day1.spotIds.includes('okayama_airport'))) {
         day1.title = "Day 1：抵達岡山・機場 ➔ 住宿 ➔ 和牛 ➔ 逛街";
         day1.spotIds = ['okayama_airport', 'chiyagyu_bisai', 'okayama_aeon', 'okayama_hotel'];
-        day1.notes = "• 【機場抵達】：搭乘台灣虎航下午抵達岡山桃太郎機場 (OKJ)。出關後於 2 號乘車處搭乘利木津巴士約 30 分鐘直達岡山站西口 (單程 780 円，可刷 IC 卡)。\n• 【住宿 Check-in】：進駐岡山站前飯店 (格蘭比亞 / 大和Roynet / 三井花園) 辦理入住手續並放下大件行李。\n• 【和牛晚餐 (岡山千屋牛)】：前往岡山格蘭比亞 2F 直結之「鉄板焼 備彩」，零距離品嚐日本最古老血統和牛——岡山千屋牛頂級鐵板燒。\n• 【商圈漫遊 & 逛街】：餐後漫步西日本最大級「AEON Mall Okayama」(營業至 21:00，350間店鋪) 逛街採買藥妝物資，無其他多餘奔波行程，早點休息為明日 12 名城巡禮儲備體力！";
+        day1.notes = "• 【機場抵達】：搭乘台灣虎航下午抵達岡山桃太郎機場 (OKJ)。出關後於 2 號乘車處搭乘利木津巴士約 30 分鐘直達岡山站西口 (單程 780 円，可刷 IC 卡)。\n• 【住宿 Check-in】：進駐岡山站前飯店 (格蘭比比亞 / 大和Roynet / 三井花園) 辦理入住手續並放下大件行李。\n• 【和牛晚餐 (岡山千屋牛)】：前往岡山格蘭比亞 2F 直結之「鉄板焼 備彩」，零距離品嚐日本最古老血統和牛——岡山千屋牛頂級鐵板燒。\n• 【商圈漫遊 & 逛街】：餐後漫步西日本最大級「AEON Mall Okayama」(營業至 21:00，350間店鋪) 逛街採買藥妝物資，無其他多餘奔波行程，早點休息為明日 12 名城巡禮儲備體力！";
       }
 
-      // 確保徹底排除未指定之倉敷景點，並依使用者規則「若無景點自動將後面天數往前移動」
+      // 確保徹底排除未指定之倉敷景點
       state.spots = state.spots.filter(s => s.id !== 'kurashiki_bikan' && s.id !== 'onomichi_senkoji');
       state.itinerary.forEach(d => {
         if (d.spotIds) d.spotIds = d.spotIds.filter(id => id !== 'kurashiki_bikan' && id !== 'onomichi_senkoji');
-      });
-      // 往前遞補空天數並依序重編天數
-      const emptyDayFound = state.itinerary.some(d => !d.spotIds || d.spotIds.length === 0);
-      if (emptyDayFound) {
-        state.itinerary = state.itinerary.filter(d => d.spotIds && d.spotIds.length > 0);
-        state.itinerary.forEach((d, idx) => {
-          d.dayNumber = idx + 1;
-        });
-      }
-
-      // 清理任何歷史殘留跨天重複 (如舊版遺留之 Day 4 出雲大社、Day 3 湯郷溫泉)
-      const d3 = state.itinerary.find(d => d.dayNumber === 3);
-      if (d3 && d3.spotIds) {
-        d3.spotIds = d3.spotIds.filter(id => id !== 'yunogo_onsen');
-      }
-
-      const d4 = state.itinerary.find(d => d.dayNumber === 4);
-      if (d4 && d4.spotIds) {
-        d4.spotIds = d4.spotIds.filter(id => id !== 'izumo_taisha' && id !== 'tamatsukuri_yu_jinja');
-      }
-
-      const d2 = state.itinerary.find(d => d.dayNumber === 2);
-      if (d2 && d2.spotIds) {
-        d2.spotIds = d2.spotIds.filter(id => id !== 'kibitsuhiko_jinja' && id !== 'kibitsu_jinja');
-      }
-
-      // ==========================================
-      // ⛩️ 神社排入完整性守門機制 (Shrine Schedule Integrity Guard)
-      // 確保 7 大核心神社必在權威天數（徹底防止 GitHub 快取舊檔、404 或舊 LocalStorage 覆蓋）
-      // ==========================================
-      const canonicalShrineSchedule = [
-        { id: 'izumo_taisha', day: 5 },
-        { id: 'tamatsukuri_yu_jinja', day: 5 },
-        { id: 'motonosumi_jinja', day: 7 },
-        { id: 'itsukushima_jinja', day: 8 },
-        { id: 'hiroshima_gokoku_jinja', day: 9 },
-        { id: 'kibitsuhiko_jinja', day: 11 },
-        { id: 'kibitsu_jinja', day: 11 }
-      ];
-
-      canonicalShrineSchedule.forEach(item => {
-        const isScheduled = state.itinerary.some(d => d.spotIds && d.spotIds.includes(item.id));
-        if (!isScheduled) {
-          const targetDay = state.itinerary.find(d => d.dayNumber === item.day);
-          if (targetDay) {
-            if (!targetDay.spotIds) targetDay.spotIds = [];
-            targetDay.spotIds.push(item.id);
-          }
-        }
       });
 
       // 啟動時自動排序所有天數
@@ -2047,8 +2163,13 @@
     function saveState() {
       localStorage.setItem(STORAGE_KEY_SPOTS, JSON.stringify(state.spots));
       localStorage.setItem(STORAGE_KEY_ITINERARY, JSON.stringify(state.itinerary));
+      localStorage.setItem('jp_castle_itinerary_okayama', JSON.stringify(state.itinerary));
       localStorage.setItem(STORAGE_KEY_DELETED_SPOTS, JSON.stringify(state.deletedSpotIds || []));
+      localStorage.setItem(STORAGE_KEY_EXPENSES, JSON.stringify(state.expenses || []));
+      localStorage.setItem(STORAGE_KEY_MEMBERS, JSON.stringify(state.members || { a: "獅子", b: "方" }));
+      localStorage.setItem(STORAGE_KEY_EXCHANGE_RATE, String(state.exchangeRate || 0.215));
       updateBadges();
+      updateTabButtons();
     }
 
     function updateBadges() {
@@ -3335,22 +3456,32 @@
     // 畫面 Tab 切換與渲染
     // ==========================================
     
-    function switchTab(tab) {
-      state.activeTab = tab;
-      
+    function switchRoutePlan(planName) {
+      switchTab('itinerary');
+    }
+
+    function getRoutePlanDefault() {
+      return JSON.parse(JSON.stringify(BUILTIN_ITINERARY_OKAYAMA));
+    }
+
+    function updateTabButtons() {
       const btnItinerary = document.getElementById("tabBtnItinerary");
       const btnSpots = document.getElementById("tabBtnSpots");
       const btnTransit = document.getElementById("tabBtnTransit");
-      const btnFlights = document.getElementById("tabBtnFlights");
+      const btnExpenses = document.getElementById("tabBtnExpenses");
 
-      const activeClass = "border-b-2 border-red-600 font-bold text-red-600 bg-white shadow-2xs";
-      const inactiveClass = "text-slate-600 hover:text-slate-900 bg-transparent";
+      const activeClass = "py-3 px-3 sm:px-4 text-center border-b-2 border-red-600 font-bold text-red-600 bg-white shrink-0 shadow-2xs transition";
+      const inactiveClass = "py-3 px-3 sm:px-4 text-center text-slate-600 hover:text-slate-900 shrink-0 border-b-2 border-transparent transition";
 
-      if (btnItinerary) btnItinerary.className = `flex-1 py-3 px-3 text-center text-xs sm:text-sm ${tab === 'itinerary' ? activeClass : inactiveClass}`;
-      if (btnSpots) btnSpots.className = `flex-1 py-3 px-3 text-center text-xs sm:text-sm ${tab === 'spots' ? activeClass : inactiveClass}`;
-      if (btnTransit) btnTransit.className = `flex-1 py-3 px-3 text-center text-xs sm:text-sm ${tab === 'transit' ? activeClass : inactiveClass}`;
-      if (btnFlights) btnFlights.className = `flex-1 py-3 px-3 text-center text-xs sm:text-sm ${tab === 'flights' ? activeClass : inactiveClass}`;
+      if (btnItinerary) btnItinerary.className = (state.activeTab === 'itinerary') ? activeClass : inactiveClass;
+      if (btnSpots) btnSpots.className = (state.activeTab === 'spots') ? activeClass : inactiveClass;
+      if (btnTransit) btnTransit.className = (state.activeTab === 'transit') ? activeClass : inactiveClass;
+      if (btnExpenses) btnExpenses.className = (state.activeTab === 'expenses') ? activeClass : inactiveClass;
+    }
 
+    function switchTab(tab) {
+      state.activeTab = tab;
+      updateTabButtons();
       renderMainPanel();
     }
 
@@ -3365,8 +3496,8 @@
         renderSpotsTab(container);
       } else if (state.activeTab === "transit") {
         renderTransitTab(container);
-      } else if (state.activeTab === "flights") {
-        renderFlightsTab(container);
+      } else if (state.activeTab === "expenses") {
+        renderExpensesTab(container);
       }
 
       if (prevScroll > 0) {
@@ -3987,14 +4118,14 @@
       let html = `
         <div class="flex items-center justify-between pb-2 border-b border-slate-200 mb-3">
           <div>
-            <h2 class="font-bold text-slate-800 text-sm">📅 每日名城巡禮行程與交通排程</h2>
-            <p class="text-xs text-slate-500">各日分配專屬強烈色彩主題・自動避開公休日・交通直連</p>
+            <h2 class="font-bold text-slate-800 text-sm">📅 岡山出發・12日名城巡禮交通排程</h2>
+            <p class="text-xs text-slate-500">桃太郎機場出發大閉環・12座名城＋7大神社・交通時刻直接對接</p>
           </div>
-          <button onclick="addNewDay()" class="bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold px-3 py-1.5 rounded flex items-center gap-1 transition shadow-sm">
+          <button onclick="addNewDay()" class="bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold px-3 py-1.5 rounded flex items-center gap-1 transition shadow-sm cursor-pointer">
             ➕ 新增天數
           </button>
         </div>
-                ${dayNavPills}
+        ${dayNavPills}
         
         <!-- 景點分類搜尋速查列 -->
         <div class="mb-4 bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2.5 shadow-2xs">
@@ -4231,6 +4362,71 @@
     // 鐵路交通資料庫 (JR Pass 涵蓋/換乘與真實行車時間)
     // ==========================================
     const TRANSIT_KNOWLEDGE_BASE = {
+      // 國際航線航班 (桃園 T1 ➔ 岡山 OKJ)
+      "taoyuan_airport_to_okayama_airport": {
+        name: "台灣虎航 IT 214 國際直飛航班 (TPE T1 ➔ OKJ)",
+        time: "飛行時間約 2 小時 35 分鐘",
+        passCovered: false,
+        passNote: "國際航線 (虎航機票自費，預約代碼備查)",
+        tips: "台灣時間 11:30 桃園第一航廈起飛，日本時間 15:05 抵達岡山桃太郎機場，入境通關迅速"
+      },
+      "ine_funaya_to_kinosaki_onsen": {
+        name: "丹海巴士 (伊根 ➔ 天橋立 55分) ➔ 京都丹後鐵道特急 (天橋立 ➔ 豐岡 40分) ➔ JR 山陰本線 (豐岡 ➔ 城崎溫泉 11分)",
+        time: "合計約 1 小時 50 分鐘",
+        passCovered: true,
+        passNote: "丹後鐵道特急與 JR 山陰本線憑周遊券全額免費！(伊根至天橋立公車 400 円自費)",
+        tips: "自伊根搭巴士返天橋立站，轉乘京都丹後鐵道特急至豐岡，換乘 JR 11 分鐘直達城崎溫泉站，出站即進溫泉街入住泡七大外湯！"
+      },
+      "kinosaki_onsen_to_sakaiminato_mizuki": {
+        name: "JR 山陰本線特急 (城崎溫泉 ➔ 鳥取 1小時) ➔ JR 特急スーパーまつかぜ (鳥取 ➔ 米子 55分) ➔ JR 境線鬼太郎列車 (米子 ➔ 境港 45分)",
+        time: "鐵道特急合計約 2 小時 45 分鐘",
+        passCovered: true,
+        passNote: "JR Pass 全額包含！全段山陰特急與境線鬼太郎彩繪列車全部免費搭乘！",
+        tips: "晨間自城崎溫泉搭 JR 特急經鳥取直奔米子，米子站轉搭境線鬼太郎彩繪列車至境港水木茂大道"
+      },
+      // Day 3 ~ 5 丹後與山陰延伸車次
+      "tottori_sakyu_to_kinosaki_onsen": {
+        name: "鳥取砂丘公車返鳥取站 (20分) ➔ JR 山陰本線特急「濱風號」/ 普通車至城崎溫泉 (55分)",
+        time: "合計約 1 小時 20 分鐘",
+        passCovered: true,
+        passNote: "JR 山陰本線特急全額包含！(鳥取至砂丘公車 380 円自費)",
+        tips: "鳥取站搭特急直達城崎溫泉駅，出站換穿浴衣木屐漫步七大外湯街，享用松葉蟹晚餐"
+      },
+      "kinosaki_onsen_to_amanohashidate": {
+        name: "JR 山陰本線 (城崎溫泉 ➔ 豐岡 11分) ➔ 轉「京都丹後鐵道」特急 (豐岡 ➔ 天橋立 40分)",
+        time: "約 55 分鐘",
+        passCovered: true,
+        passNote: "山陽&山陰地區周遊券「京都丹後鐵道」全線普通與特急指定席全額免費包含！",
+        tips: "城崎溫泉搭車至豐岡轉乘京都丹後鐵道特急直達天橋立站，車站寄放大行李後即可展開日本三景巡禮"
+      },
+      "amanohashidate_to_ine_funaya": {
+        name: "丹後海陸交通巴士 (丹海巴士 伊根線 / 蒲入線)",
+        time: "約 55 分鐘",
+        passCovered: false,
+        passNote: "地方路線巴士，天橋立站前至伊根灣單程約 400 円自費",
+        tips: "天橋立站前公車月台搭乘丹海巴士直達伊根灣，下車即達伊根灣遊覽船乘船處與舟屋日和"
+      },
+      "ine_funaya_to_amanohashidate_lodging": {
+        name: "丹海巴士 (伊根 ➔ 天橋立站 55分) ➔ 徒步 1~4 分進飯店 (或宮津旅館專車接駁)",
+        time: "公車約 55 分 + 步行 2 分",
+        passCovered: false,
+        passNote: "丹海巴士 400 円自費；天橋立站出站步行即可進飯店",
+        tips: "黃昏搭巴士返回天橋立運河旁和風旅館入住，欣賞迴旋橋夕陽，享用丹後若狹灣海鮮會席"
+      },
+      "amanohashidate_lodging_to_sakaiminato_mizuki": {
+        name: "京都丹後鐵道特急 (天橋立 ➔ 鳥取) ➔ JR 特急スーパーまつかぜ (鳥取 ➔ 米子) ➔ JR 境線鬼太郎列車 (米子 ➔ 境港)",
+        time: "鐵道特急約 2 小時 50 分鐘",
+        passCovered: true,
+        passNote: "JR Pass 全額包含！京都丹後鐵道特急 + JR 在來線特急 + 境線彩繪列車全部免費！",
+        tips: "晨間自天橋立搭丹後特急經鳥取直奔米子，米子站轉搭境線鬼太郎彩繪列車至境港，漫步水木茂大道"
+      },
+      "sakaiminato_mizuki_to_kaike_onsen": {
+        name: "JR 境線 (境港 ➔ 米子 45分) ➔ 米子站轉乘路線公車往皆生溫泉 (15分)",
+        time: "合計約 1 小時 05 分鐘",
+        passCovered: true,
+        passNote: "JR 境線全額包含；米子至皆生公車約 300 円自費",
+        tips: "境港漫步後搭境線回米子站，轉公車直達皆生溫泉海濱 Check-in，泡露天海景夕之湯"
+      },
       // Day 1
       "okayama_airport_to_okayama_hotel": {
         name: "岡山機場利木津巴士 (岡電/中鐵巴士)",
@@ -4657,13 +4853,24 @@
     }
 
     function getTransitDetails(fromSpot, toSpot, dayNumber) {
-      const fromId = fromSpot ? fromSpot.id : (dayNumber === 1 ? 'okayama_airport' : '');
+      const fromId = fromSpot ? fromSpot.id : (dayNumber === 1 ? 'taoyuan_airport' : '');
       const toId = toSpot ? toSpot.id : '';
+
+      if (fromId === 'taoyuan_airport' && toId === 'okayama_airport') return TRANSIT_KNOWLEDGE_BASE["taoyuan_airport_to_okayama_airport"];
+      if (toId === 'okayama_airport' && fromId === 'taoyuan_airport') return TRANSIT_KNOWLEDGE_BASE["taoyuan_airport_to_okayama_airport"];
 
       const exactKey = `${fromId}_to_${toId}`;
       if (TRANSIT_KNOWLEDGE_BASE[exactKey]) {
         return TRANSIT_KNOWLEDGE_BASE[exactKey];
       }
+
+      if (toId === 'amanohashidate') return TRANSIT_KNOWLEDGE_BASE["kinosaki_onsen_to_amanohashidate"];
+      if (toId === 'ine_funaya') return TRANSIT_KNOWLEDGE_BASE["amanohashidate_to_ine_funaya"];
+      if (fromId === 'ine_funaya' && toId === 'kinosaki_onsen') return TRANSIT_KNOWLEDGE_BASE["ine_funaya_to_kinosaki_onsen"];
+      if (toId === 'kinosaki_onsen') return (fromId === 'ine_funaya' ? TRANSIT_KNOWLEDGE_BASE["ine_funaya_to_kinosaki_onsen"] : TRANSIT_KNOWLEDGE_BASE["tottori_sakyu_to_kinosaki_onsen"]);
+      if (fromId === 'kinosaki_onsen' && toId === 'sakaiminato_mizuki') return TRANSIT_KNOWLEDGE_BASE["kinosaki_onsen_to_sakaiminato_mizuki"];
+      if (toId === 'sakaiminato_mizuki') return TRANSIT_KNOWLEDGE_BASE["kinosaki_onsen_to_sakaiminato_mizuki"] || TRANSIT_KNOWLEDGE_BASE["amanohashidate_lodging_to_sakaiminato_mizuki"];
+      if (toId === 'kaike_onsen') return (fromId === 'sakaiminato_mizuki' ? TRANSIT_KNOWLEDGE_BASE["sakaiminato_mizuki_to_kaike_onsen"] : TRANSIT_KNOWLEDGE_BASE["tottori_to_kaike_onsen"]);
 
       // 依天數與動線上下文智能走廊配對 (防錯配與跨日銜接)
       if (dayNumber === 12 && toId === 'bitchu_matsuyama') return TRANSIT_KNOWLEDGE_BASE["okayama_hotel_d11_to_bitchu_matsuyama"];
@@ -4830,9 +5037,30 @@
 
         // 車次轉乘指示與詳細班次/時間/周遊券檢核
                 let transitCardHeaderHtml = "";
-        if (idx === 0 && (spot.id === 'okayama_airport' || isLodging)) {
-          // 當第 0 個點是機場或晨間出發住宿點時 (如 Day 3 湯郷溫泉)，顯示晨間出發起點，不顯示反向區間
-          if (spot.id === 'okayama_airport') {
+        if (idx === 0 && (spot.id === 'taoyuan_airport' || spot.id === 'okayama_airport' || isLodging)) {
+          // 當第 0 個點是桃園機場、岡山機場或晨間出發住宿點時，顯示旅程起點，不顯示反向區間
+          if (spot.id === 'taoyuan_airport') {
+            const tpeTransitKey = `taoyuan_airport_${day.dayNumber}`;
+            const tpeTransitAtt = (day.transitAttachments && day.transitAttachments[tpeTransitKey]) || { notes: '', images: [], link: '' };
+            transitCardHeaderHtml = `
+              <div class="bg-blue-50 border border-blue-300 rounded-xl p-3 text-xs text-blue-950 space-y-2 shadow-2xs">
+                <div class="flex items-center justify-between flex-wrap gap-2">
+                  <span class="font-bold flex items-center gap-1.5 text-sm text-blue-950">
+                    <span>🛫</span><span>旅程啟程出發地：台灣桃園國際機場 第一航廈 (T1)</span>
+                  </span>
+                  <span class="text-[11px] bg-blue-100 text-blue-900 font-bold px-2.5 py-0.5 rounded border border-blue-300 shadow-3xs">
+                    搭乘台灣虎航 IT 214 (11:30 起飛)
+                  </span>
+                </div>
+                <div class="text-[11px] text-blue-900 bg-white/80 p-2 rounded-lg border border-blue-200 leading-relaxed">
+                  • <strong>航廈位置</strong>：桃園機場第一航廈 (Terminal 1) 1 樓出境大廳台灣虎航專屬櫃檯。<br>
+                  • <strong>關鍵報到時間</strong>：<strong>09:00</strong> 開櫃報到託運 (起飛前 2.5 小時) ➔ <strong>10:45</strong> 準時嚴格關櫃 (起飛前 45 分鐘)！<br>
+                  • <strong>機場交通</strong>：台北車站搭乘桃園機場捷運直達車約 35 分鐘直達 A12 第一航廈站。
+                </div>
+                ${renderTransitAttachmentsBlock(day.dayNumber, tpeTransitKey, tpeTransitAtt, '虎航機票電子憑證 / 桃機報到登機證')}
+              </div>
+            `;
+          } else if (spot.id === 'okayama_airport') {
             const airportTransitKey = `okayama_airport_${day.dayNumber}`;
             const airportTransitAtt = (day.transitAttachments && day.transitAttachments[airportTransitKey]) || { notes: '', images: [], link: '' };
             transitCardHeaderHtml = `
@@ -5255,294 +5483,919 @@
     // ------------------------------------------
 
     // ==========================================
-    // 機票比價模組 (Flight Comparison Tab)
-    // 支援岡山 (OKJ)、廣島 (HIJ)、米子 (YGJ)、關西 (KIX)
-    // 包含托運行李價格、班次時刻、每週飛航日、JR Pass 銜接分析
+    // 兩人記帳與分帳模組 (2-Person Split Expense Tracker)
+    // 支援雙幣別 (JPY/TWD) 自動匯率折算、多種拆帳方式、即時分帳結算看板、CSV 匯出
     // ==========================================
-    let flightFilterCity = 'all';
+    const EXPENSE_CATEGORIES = {
+      food: { label: "餐飲美食", icon: "🍜", color: "bg-amber-100 text-amber-800 border-amber-300" },
+      transit: { label: "交通車票", icon: "🚅", color: "bg-blue-100 text-blue-800 border-blue-300" },
+      tickets: { label: "門票景點", icon: "🏯", color: "bg-emerald-100 text-emerald-800 border-emerald-300" },
+      lodging: { label: "住宿飯店", icon: "♨️", color: "bg-indigo-100 text-indigo-800 border-indigo-300" },
+      shopping: { label: "購物採買", icon: "🛍️", color: "bg-purple-100 text-purple-800 border-purple-300" },
+      other: { label: "其他雜支", icon: "💡", color: "bg-slate-100 text-slate-800 border-slate-300" }
+    };
 
-    function setFlightFilter(city) {
-      flightFilterCity = city;
-      const container = document.getElementById("mainPanelContent");
-      if (container) renderFlightsTab(container);
+    const PAYMENT_METHODS = {
+      cash: { label: "現金", icon: "💵" },
+      card: { label: "信用卡", icon: "💳" },
+      ic: { label: "IC卡", icon: "📱" }
+    };
+
+    function getExpenseCategoryBadge(cat) {
+      const c = EXPENSE_CATEGORIES[cat] || EXPENSE_CATEGORIES.other;
+      return `<span class="text-[10px] px-2 py-0.5 rounded-full border font-bold ${c.color}">${c.icon} ${c.label}</span>`;
     }
 
-    function renderFlightsTab(container) {
-      const flightsList = getEffectiveFlightData();
-      const filteredFlights = flightFilterCity === 'all' 
-        ? flightsList 
-        : flightsList.filter(f => f.destination.includes(flightFilterCity));
+    function getSplitTypeBadge(exp) {
+      const memA = escapeHtml(state.members.a || "成員 A");
+      const memB = escapeHtml(state.members.b || "成員 B");
+      switch (exp.splitType) {
+        case 'equal':
+          return '<span class="text-[10px] bg-sky-50 text-sky-700 border border-sky-200 px-1.5 py-0.5 rounded font-bold">🤝 兩人平分 (50/50)</span>';
+        case 'a_for_b':
+          return `<span class="text-[10px] bg-purple-50 text-purple-700 border border-purple-200 px-1.5 py-0.5 rounded font-bold">💳 ${memA} 幫 ${memB} 全墊</span>`;
+        case 'b_for_a':
+          return `<span class="text-[10px] bg-purple-50 text-purple-700 border border-purple-200 px-1.5 py-0.5 rounded font-bold">💳 ${memB} 幫 ${memA} 全墊</span>`;
+        case 'a_full':
+          return `<span class="text-[10px] bg-slate-100 text-slate-700 border border-slate-200 px-1.5 py-0.5 rounded font-bold">👤 ${memA} 個人自付</span>`;
+        case 'b_full':
+          return `<span class="text-[10px] bg-slate-100 text-slate-700 border border-slate-200 px-1.5 py-0.5 rounded font-bold">👤 ${memB} 個人自付</span>`;
+        case 'custom':
+          return '<span class="text-[10px] bg-amber-50 text-amber-700 border border-amber-200 px-1.5 py-0.5 rounded font-bold">✏️ 自訂分帳</span>';
+        default:
+          return '<span class="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded">兩人分攤</span>';
+      }
+    }
 
-      const filterButtonsHtml = [
-        { key: 'all', label: '全部航線 (5大航點)' },
-        { key: '岡山', label: '🍑 岡山 (OKJ)' },
-        { key: '廣島', label: '🍁 廣島 (HIJ)' },
-        { key: '米子', label: '👻 米子 (YGJ)' },
-        { key: '高松', label: '🌲 高松 (TAK・星宇台中)' },
-        { key: '關西', label: '🐙 關西 (KIX)' }
-      ].map(btn => {
-        const active = flightFilterCity === btn.key 
-          ? 'bg-red-600 text-white font-bold shadow-xs' 
-          : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-300 font-medium';
-        return `<button onclick="setFlightFilter('${btn.key}')" class="px-3 py-1.5 rounded-lg text-xs transition ${active}">${btn.label}</button>`;
-      }).join('');
+    function calculateExpensesSummary() {
+      // 日幣 (JPY) 帳目獨立精算
+      let totalJPY = 0;
+      let paidA_JPY = 0;
+      let paidB_JPY = 0;
+      let shareA_JPY = 0;
+      let shareB_JPY = 0;
+      const catStatsJPY = { food: 0, transit: 0, tickets: 0, lodging: 0, shopping: 0, other: 0 };
+      const payMethodStatsJPY = { cash: 0, card: 0, ic: 0 };
 
-      let cardsHtml = "";
-      filteredFlights.forEach(fl => {
-        const isFSC = fl.flightType.includes('傳統') || fl.flightType.includes('精品');
-        const badgeColor = isFSC ? 'bg-sky-100 text-sky-900 border-sky-300' : 'bg-amber-100 text-amber-900 border-amber-300';
-        
-        cardsHtml += `
-          <div class="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition overflow-hidden">
-            <!-- 機場與航空 Header -->
-            <div class="p-3.5 bg-gradient-to-r from-slate-800 to-slate-900 text-white flex flex-wrap items-center justify-between gap-2">
-              <div class="flex items-center gap-2">
-                <span class="text-xl">✈️</span>
-                <div>
-                  <h3 class="font-bold text-sm tracking-wide flex items-center gap-1.5">
-                    <span>${escapeHtml(fl.destination)}</span>
-                    <span class="text-slate-300 text-xs font-normal">(${escapeHtml(fl.destCity)})</span>
-                  </h3>
-                  <p class="text-xs text-amber-300 font-medium flex items-center gap-1 mt-0.5">
-                    <span>${escapeHtml(fl.airline)}</span>
-                    <span class="text-[10px] bg-white/20 px-1.5 py-0.2 rounded text-white font-mono">${escapeHtml(fl.airlineCode)}</span>
-                  </p>
-                </div>
+      // 台幣 (TWD) 帳目獨立精算
+      let totalTWD = 0;
+      let paidA_TWD = 0;
+      let paidB_TWD = 0;
+      let shareA_TWD = 0;
+      let shareB_TWD = 0;
+      const catStatsTWD = { food: 0, transit: 0, tickets: 0, lodging: 0, shopping: 0, other: 0 };
+      const payMethodStatsTWD = { cash: 0, card: 0, ic: 0 };
+
+      (state.expenses || []).forEach(exp => {
+        const amt = parseFloat(exp.amount) || 0;
+        const isJPY = (exp.currency === 'JPY');
+        const cat = exp.category || 'other';
+        const pm = exp.paymentMethod || 'cash';
+
+        let itemShareA = 0;
+        let itemShareB = 0;
+
+        if (exp.splitType === 'equal') {
+          itemShareA = amt / 2;
+          itemShareB = amt / 2;
+        } else if (exp.splitType === 'a_full') {
+          itemShareA = amt;
+          itemShareB = 0;
+        } else if (exp.splitType === 'b_full') {
+          itemShareA = 0;
+          itemShareB = amt;
+        } else if (exp.splitType === 'a_for_b') {
+          itemShareA = 0;
+          itemShareB = amt;
+        } else if (exp.splitType === 'b_for_a') {
+          itemShareA = amt;
+          itemShareB = 0;
+        } else if (exp.splitType === 'custom' && exp.splitDetails) {
+          itemShareA = parseFloat(exp.splitDetails.a) || 0;
+          itemShareB = parseFloat(exp.splitDetails.b) || 0;
+        } else {
+          itemShareA = amt / 2;
+          itemShareB = amt / 2;
+        }
+
+        if (isJPY) {
+          totalJPY += amt;
+          if (exp.paidBy === 'a') paidA_JPY += amt;
+          else if (exp.paidBy === 'b') paidB_JPY += amt;
+
+          shareA_JPY += itemShareA;
+          shareB_JPY += itemShareB;
+          catStatsJPY[cat] = (catStatsJPY[cat] || 0) + amt;
+          payMethodStatsJPY[pm] = (payMethodStatsJPY[pm] || 0) + amt;
+        } else {
+          totalTWD += amt;
+          if (exp.paidBy === 'a') paidA_TWD += amt;
+          else if (exp.paidBy === 'b') paidB_TWD += amt;
+
+          shareA_TWD += itemShareA;
+          shareB_TWD += itemShareB;
+          catStatsTWD[cat] = (catStatsTWD[cat] || 0) + amt;
+          payMethodStatsTWD[pm] = (payMethodStatsTWD[pm] || 0) + amt;
+        }
+      });
+
+      // JPY 調平與零和結餘 (消除浮點誤差)
+      const rawNetA_JPY = paidA_JPY - shareA_JPY;
+      const netA_JPY = Math.round(rawNetA_JPY);
+      const netB_JPY = -netA_JPY;
+      const roundedShareA_JPY = Math.round(shareA_JPY);
+      const roundedShareB_JPY = Math.round(totalJPY - roundedShareA_JPY);
+
+      // TWD 調平與零和結餘 (消除浮點誤差)
+      const rawNetA_TWD = paidA_TWD - shareA_TWD;
+      const netA_TWD = Math.round(rawNetA_TWD);
+      const netB_TWD = -netA_TWD;
+      const roundedShareA_TWD = Math.round(shareA_TWD);
+      const roundedShareB_TWD = Math.round(totalTWD - roundedShareA_TWD);
+
+      return {
+        jpy: {
+          total: Math.round(totalJPY),
+          paidA: Math.round(paidA_JPY),
+          paidB: Math.round(paidB_JPY),
+          shareA: roundedShareA_JPY,
+          shareB: roundedShareB_JPY,
+          netA: netA_JPY,
+          netB: netB_JPY,
+          catStats: catStatsJPY,
+          payMethodStats: payMethodStatsJPY
+        },
+        twd: {
+          total: Math.round(totalTWD),
+          paidA: Math.round(paidA_TWD),
+          paidB: Math.round(paidB_TWD),
+          shareA: roundedShareA_TWD,
+          shareB: roundedShareB_TWD,
+          netA: netA_TWD,
+          netB: netB_TWD,
+          catStats: catStatsTWD,
+          payMethodStats: payMethodStatsTWD
+        }
+      };
+    }
+
+    function renderExpensesTab(container) {
+      const summary = calculateExpensesSummary();
+      const memA = escapeHtml(state.members.a || "獅子");
+      const memB = escapeHtml(state.members.b || "方");
+
+      const filterCurrency = state.expenseFilterCurrency || 'all';
+      const filterCat = state.expenseFilterCategory || 'all';
+      const filterDay = state.expenseFilterDay || 'all';
+      const filterMem = state.expenseFilterMember || 'all';
+
+      // 篩選明細
+      let filteredExpenses = [...(state.expenses || [])];
+      if (filterCurrency !== 'all') {
+        filteredExpenses = filteredExpenses.filter(e => e.currency === filterCurrency);
+      }
+      if (filterCat !== 'all') {
+        filteredExpenses = filteredExpenses.filter(e => e.category === filterCat);
+      }
+      if (filterDay !== 'all') {
+        const dNum = parseInt(filterDay, 10);
+        filteredExpenses = filteredExpenses.filter(e => e.dayNumber === dNum);
+      }
+      if (filterMem !== 'all') {
+        filteredExpenses = filteredExpenses.filter(e => e.paidBy === filterMem);
+      }
+
+      // 產生日圓結算結論卡片
+      let jpySettlementHtml = "";
+      if (summary.jpy.netA > 0.5) {
+        jpySettlementHtml = `
+          <div class="bg-gradient-to-r from-red-950 via-slate-900 to-amber-950 border border-amber-500/40 rounded-xl p-3 text-white flex items-center justify-between flex-wrap gap-2 shadow-2xs">
+            <div>
+              <div class="text-[11px] font-bold text-amber-300 flex items-center gap-1.5">
+                <span>🇯🇵</span><span>日圓帳目清算：</span>
               </div>
-              <div class="flex items-center gap-2">
-                <span class="text-[11px] px-2 py-0.5 rounded-full border font-bold ${badgeColor}">
-                  ${escapeHtml(fl.flightType)}
-                </span>
-                <span class="text-[11px] bg-emerald-500/20 text-emerald-200 border border-emerald-500/40 px-2 py-0.5 rounded-full font-bold">
-                  ${escapeHtml(fl.frequency)}
-                </span>
+              <div class="text-sm sm:text-base font-black text-white flex items-center gap-1.5 mt-0.5">
+                <span>【<span class="text-amber-300">${memB}</span>】應支付給【<span class="text-emerald-300">${memA}</span>】：</span>
+                <span class="text-amber-400 font-mono font-bold text-base sm:text-lg">¥ ${summary.jpy.netA.toLocaleString()}</span>
               </div>
             </div>
-
-            <div class="p-4 space-y-3.5 text-xs">
-              <!-- 精準日期與價錢醒目標示區塊 -->
-              <div class="bg-amber-50 border-2 border-amber-400/80 rounded-xl p-3 flex flex-wrap items-center justify-between gap-2 shadow-xs">
-                <div class="space-y-0.5">
-                  <div class="text-[10px] font-bold text-amber-800 uppercase tracking-wider flex items-center gap-1">
-                    <span>📅</span> 指定執飛旅遊日期：
-                  </div>
-                  <div class="text-sm font-black text-slate-900 flex items-center gap-1.5">
-                    <span class="bg-amber-200 text-amber-950 px-2 py-0.5 rounded font-mono font-bold">${escapeHtml(fl.travelDates || '依各班次')}</span>
-                  </div>
-                </div>
-                <div class="text-right">
-                  <div class="text-[10px] font-bold text-slate-500 flex items-center justify-end gap-1">
-                    <span>💰</span> 來回含行李確定價格：
-                  </div>
-                  <div class="text-lg font-black text-red-600 tracking-tight">
-                    ${escapeHtml(fl.exactPrice || fl.priceRangeWithBaggage)}
-                  </div>
-                  <span class="text-[10px] text-slate-500 block">(${escapeHtml(fl.pricePeakWithBaggage)})</span>
-                </div>
+            <span class="text-[11px] bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold px-2.5 py-0.5 rounded-full">
+              日幣已墊付結清
+            </span>
+          </div>
+        `;
+      } else if (summary.jpy.netA < -0.5) {
+        jpySettlementHtml = `
+          <div class="bg-gradient-to-r from-red-950 via-slate-900 to-amber-950 border border-amber-500/40 rounded-xl p-3 text-white flex items-center justify-between flex-wrap gap-2 shadow-2xs">
+            <div>
+              <div class="text-[11px] font-bold text-amber-300 flex items-center gap-1.5">
+                <span>🇯🇵</span><span>日圓帳目清算：</span>
               </div>
-
-              <!-- 班機時刻 (去程 / 回程) -->
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 bg-slate-50 p-3 rounded-lg border border-slate-200">
-                <!-- 去程 -->
-                <div class="space-y-1">
-                  <div class="flex items-center justify-between text-slate-500 font-bold text-[11px]">
-                    <span class="flex items-center gap-1"><span class="text-red-500">🛫</span>去程班機 (${escapeHtml(fl.outbound.flightNo)})</span>
-                    <span class="text-slate-700 font-medium">${escapeHtml(fl.outbound.duration)}</span>
-                  </div>
-                  <div class="text-sm font-black text-slate-800 tracking-tight">
-                    ${escapeHtml(fl.outbound.departure)}
-                  </div>
-                  <div class="text-xs text-slate-600 flex items-center gap-1">
-                    <span>➔</span> <strong class="text-slate-900">${escapeHtml(fl.outbound.arrival)}</strong>
-                  </div>
-                  <div class="text-[10px] text-indigo-700 bg-indigo-50 px-1.5 py-0.5 rounded font-semibold inline-block">
-                    ${escapeHtml(fl.outbound.timingType)}
-                  </div>
-                </div>
-
-                <!-- 回程 -->
-                <div class="space-y-1 border-t sm:border-t-0 sm:border-l border-slate-200 pt-2 sm:pt-0 sm:pl-2.5">
-                  <div class="flex items-center justify-between text-slate-500 font-bold text-[11px]">
-                    <span class="flex items-center gap-1"><span class="text-blue-500">🛬</span>回程班機 (${escapeHtml(fl.inbound.flightNo)})</span>
-                    <span class="text-slate-700 font-medium">${escapeHtml(fl.inbound.duration)}</span>
-                  </div>
-                  <div class="text-sm font-black text-slate-800 tracking-tight">
-                    ${escapeHtml(fl.inbound.departure)}
-                  </div>
-                  <div class="text-xs text-slate-600 flex items-center gap-1">
-                    <span>➔</span> <strong class="text-slate-900">${escapeHtml(fl.inbound.arrival)}</strong>
-                  </div>
-                  <div class="text-[10px] text-indigo-700 bg-indigo-50 px-1.5 py-0.5 rounded font-semibold inline-block">
-                    ${escapeHtml(fl.inbound.timingType)}
-                  </div>
-                </div>
+              <div class="text-sm sm:text-base font-black text-white flex items-center gap-1.5 mt-0.5">
+                <span>【<span class="text-amber-300">${memA}</span>】應支付給【<span class="text-emerald-300">${memB}</span>】：</span>
+                <span class="text-amber-400 font-mono font-bold text-base sm:text-lg">¥ ${Math.abs(summary.jpy.netA).toLocaleString()}</span>
               </div>
+            </div>
+            <span class="text-[11px] bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold px-2.5 py-0.5 rounded-full">
+              日幣已墊付結清
+            </span>
+          </div>
+        `;
+      } else {
+        jpySettlementHtml = `
+          <div class="bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white flex items-center justify-between flex-wrap gap-2 text-xs">
+            <span class="font-medium text-slate-300 flex items-center gap-1.5">
+              <span>🇯🇵</span><span>日圓帳目：兩位已完全平帳 (¥0 差額)</span>
+            </span>
+            <span class="text-[11px] bg-white/10 text-slate-300 px-2 py-0.5 rounded font-mono">日幣已結平</span>
+          </div>
+        `;
+      }
 
-              <!-- 行李詳細規範 -->
-              <div class="bg-slate-50 border border-slate-200 rounded-lg p-2.5 grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
-                <div class="flex items-start gap-1.5 text-slate-800 font-medium">
-                  <span class="text-amber-800">🧳</span>
-                  <div>
-                    <strong class="text-slate-900">托運行李：</strong>${escapeHtml(fl.baggageIncluded)}
-                  </div>
-                </div>
-                <div class="flex items-start gap-1.5 text-slate-800 font-medium">
-                  <span class="text-amber-800">🎒</span>
-                  <div>
-                    <strong class="text-slate-900">隨身行李：</strong>${escapeHtml(fl.carryOn)}
-                  </div>
-                </div>
+      // 產生台幣結算結論卡片
+      let twdSettlementHtml = "";
+      if (summary.twd.netA > 0.5) {
+        twdSettlementHtml = `
+          <div class="bg-gradient-to-r from-emerald-950 via-slate-900 to-teal-950 border border-emerald-500/40 rounded-xl p-3 text-white flex items-center justify-between flex-wrap gap-2 shadow-2xs">
+            <div>
+              <div class="text-[11px] font-bold text-emerald-300 flex items-center gap-1.5">
+                <span>🇹🇼</span><span>台幣帳目清算：</span>
               </div>
+              <div class="text-sm sm:text-base font-black text-white flex items-center gap-1.5 mt-0.5">
+                <span>【<span class="text-amber-300">${memB}</span>】應支付給【<span class="text-emerald-300">${memA}</span>】：</span>
+                <span class="text-emerald-400 font-mono font-bold text-base sm:text-lg">NT$ ${summary.twd.netA.toLocaleString()}</span>
+              </div>
+            </div>
+            <span class="text-[11px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-bold px-2.5 py-0.5 rounded-full">
+              台幣轉帳即結清
+            </span>
+          </div>
+        `;
+      } else if (summary.twd.netA < -0.5) {
+        twdSettlementHtml = `
+          <div class="bg-gradient-to-r from-emerald-950 via-slate-900 to-teal-950 border border-emerald-500/40 rounded-xl p-3 text-white flex items-center justify-between flex-wrap gap-2 shadow-2xs">
+            <div>
+              <div class="text-[11px] font-bold text-emerald-300 flex items-center gap-1.5">
+                <span>🇹🇼</span><span>台幣帳目清算：</span>
+              </div>
+              <div class="text-sm sm:text-base font-black text-white flex items-center gap-1.5 mt-0.5">
+                <span>【<span class="text-amber-300">${memA}</span>】應支付給【<span class="text-emerald-300">${memB}</span>】：</span>
+                <span class="text-emerald-400 font-mono font-bold text-base sm:text-lg">NT$ ${Math.abs(summary.twd.netA).toLocaleString()}</span>
+              </div>
+            </div>
+            <span class="text-[11px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-bold px-2.5 py-0.5 rounded-full">
+              台幣轉帳即結清
+            </span>
+          </div>
+        `;
+      } else {
+        twdSettlementHtml = `
+          <div class="bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white flex items-center justify-between flex-wrap gap-2 text-xs">
+            <span class="font-medium text-slate-300 flex items-center gap-1.5">
+              <span>🇹🇼</span><span>台幣帳目：兩位已完全平帳 (NT$ 0 差額)</span>
+            </span>
+            <span class="text-[11px] bg-white/10 text-slate-300 px-2 py-0.5 rounded font-mono">台幣已結平</span>
+          </div>
+        `;
+      }
 
-              <!-- JR Pass 與行程搭配銜接評估 -->
-              <div class="space-y-1.5">
-                <div class="text-[11px] font-bold text-slate-800 flex items-center gap-1">
-                  <span>🚅</span> 機場交通與 JR 周遊券對接：
-                </div>
-                <p class="text-[11px] text-slate-700 bg-slate-100 p-2 rounded border border-slate-200">
-                  ${escapeHtml(fl.jrPassLink)}
-                </p>
-              </div>
-
-              <!-- 優劣勢分析 -->
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
-                <div class="bg-emerald-50/80 border border-emerald-200 rounded p-2 text-emerald-950">
-                  <span class="font-bold flex items-center gap-1 mb-1 text-emerald-800"><span>✅</span> 優勢亮點：</span>
-                  <ul class="list-disc list-inside space-y-0.5 text-[10px] text-emerald-900">
-                    ${fl.pros.map(p => `<li>${escapeHtml(p)}</li>`).join('')}
-                  </ul>
-                </div>
-                <div class="bg-rose-50/80 border border-rose-200 rounded p-2 text-rose-950">
-                  <span class="font-bold flex items-center gap-1 mb-1 text-rose-800"><span>⚠️</span> 注意考量：</span>
-                  <ul class="list-disc list-inside space-y-0.5 text-[10px] text-rose-900">
-                    ${fl.cons.map(c => `<li>${escapeHtml(c)}</li>`).join('')}
-                  </ul>
-                </div>
-              </div>
-
-              <!-- 外部查詢直達連結 -->
-              <div class="pt-2 border-t border-slate-100 flex items-center justify-between flex-wrap gap-2 text-[11px]">
-                <span class="text-slate-500">外部即時查價直達：</span>
-                <div class="flex items-center gap-1.5 flex-wrap">
-                  <a href="${fl.googleFlightsUrl}" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-2.5 py-1 rounded shadow-2xs transition flex items-center gap-1">
-                    <span>🔍</span> Google Flights ↗
-                  </a>
-                  <a href="${fl.skyscannerUrl}" target="_blank" class="bg-sky-500 hover:bg-sky-600 text-white font-bold px-2.5 py-1 rounded shadow-2xs transition flex items-center gap-1">
-                    <span>🌐</span> Skyscanner ↗
-                  </a>
-                  <a href="${fl.officialUrl}" target="_blank" class="bg-slate-700 hover:bg-slate-800 text-white px-2.5 py-1 rounded shadow-2xs transition">
-                    航空公司官網 ↗
-                  </a>
-                </div>
-              </div>
+      // 明細清單 HTML
+      let listHtml = "";
+      if (filteredExpenses.length === 0) {
+        listHtml = `
+          <div class="bg-white rounded-xl border border-slate-200 p-8 text-center space-y-3">
+            <div class="text-4xl">💰</div>
+            <h3 class="font-bold text-slate-700 text-sm">目前尚無符合條件的花費紀錄</h3>
+            <p class="text-xs text-slate-500 max-w-sm mx-auto">
+              支援日圓與台幣分開記帳、獨立結算！隨手記下一筆，系統即時為兩位自動精準分帳。
+            </p>
+            <div class="flex items-center justify-center gap-2 pt-2">
+              <button onclick="openAddExpenseModal()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-4 py-2 rounded-lg text-xs shadow-sm transition flex items-center gap-1.5 cursor-pointer">
+                <span>➕</span><span>新增第一筆記帳</span>
+              </button>
+              <button onclick="seedDemoExpenses()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-3 py-2 rounded-lg text-xs border border-slate-300 transition cursor-pointer">
+                <span>⚡</span><span>填入示範資料</span>
+              </button>
             </div>
           </div>
         `;
-      });
+      } else {
+        listHtml = filteredExpenses.map((exp) => {
+          const amt = parseFloat(exp.amount) || 0;
+          const isJPY = exp.currency === 'JPY';
+          const currencySymbol = isJPY ? '¥' : 'NT$';
+
+          const cat = EXPENSE_CATEGORIES[exp.category] || EXPENSE_CATEGORIES.other;
+          const pm = PAYMENT_METHODS[exp.paymentMethod] || PAYMENT_METHODS.cash;
+          const payerName = exp.paidBy === 'a' ? memA : memB;
+
+          const dayBadge = exp.dayNumber > 0 
+            ? `<span class="text-[10px] bg-slate-100 text-slate-700 border border-slate-200 px-1.5 py-0.5 rounded font-bold font-mono">Day ${exp.dayNumber}</span>`
+            : `<span class="text-[10px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded font-medium">公費/整趟</span>`;
+
+          // 計算此筆兩人各負擔
+          let shareA_val = 0, shareB_val = 0;
+          if (exp.splitType === 'equal') {
+            shareA_val = amt / 2;
+            shareB_val = amt / 2;
+          } else if (exp.splitType === 'a_full') {
+            shareA_val = amt;
+            shareB_val = 0;
+          } else if (exp.splitType === 'b_full') {
+            shareA_val = 0;
+            shareB_val = amt;
+          } else if (exp.splitType === 'a_for_b') {
+            shareA_val = 0;
+            shareB_val = amt;
+          } else if (exp.splitType === 'b_for_a') {
+            shareA_val = amt;
+            shareB_val = 0;
+          } else if (exp.splitType === 'custom' && exp.splitDetails) {
+            shareA_val = parseFloat(exp.splitDetails.a) || 0;
+            shareB_val = parseFloat(exp.splitDetails.b) || 0;
+          } else {
+            shareA_val = amt / 2;
+            shareB_val = amt / 2;
+          }
+
+          const currencyBadge = isJPY
+            ? `<span class="text-[10px] bg-red-50 text-red-700 border border-red-200 px-1.5 py-0.5 rounded font-bold">🇯🇵 日圓</span>`
+            : `<span class="text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-1.5 py-0.5 rounded font-bold">🇹🇼 台幣</span>`;
+
+          return `
+            <div class="bg-white rounded-xl border border-slate-200 p-3.5 shadow-2xs hover:shadow-xs transition space-y-2.5">
+              <div class="flex items-start justify-between gap-2 flex-wrap">
+                <div class="flex items-start gap-2.5">
+                  <span class="text-2xl p-1.5 bg-slate-50 rounded-lg border border-slate-200 shrink-0">${cat.icon}</span>
+                  <div>
+                    <h4 class="font-bold text-slate-900 text-sm flex items-center gap-1.5 flex-wrap">
+                      <span>${escapeHtml(exp.title)}</span>
+                    </h4>
+                    <div class="flex items-center gap-1.5 mt-1 flex-wrap">
+                      ${dayBadge}
+                      ${currencyBadge}
+                      ${getExpenseCategoryBadge(exp.category)}
+                      <span class="text-[10px] text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded font-medium">${pm.icon} ${pm.label}</span>
+                      <span class="text-[10px] text-slate-400 font-mono">${escapeHtml(exp.date || '')}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="text-right">
+                  <div class="text-base font-black ${isJPY ? 'text-slate-900' : 'text-emerald-700'} font-mono tracking-tight">
+                    ${currencySymbol} ${amt.toLocaleString()}
+                  </div>
+                </div>
+              </div>
+
+              <!-- 分帳與付款資訊欄 -->
+              <div class="bg-slate-50/80 rounded-lg p-2 border border-slate-200/80 flex items-center justify-between flex-wrap gap-2 text-xs">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="font-bold text-slate-700">由 <strong>${payerName}</strong> 支付</span>
+                  <span>➔</span>
+                  ${getSplitTypeBadge(exp)}
+                  <span class="text-[11px] text-slate-600 font-mono font-medium">
+                    (${memA}: ${currencySymbol}${Math.round(shareA_val).toLocaleString()} / ${memB}: ${currencySymbol}${Math.round(shareB_val).toLocaleString()})
+                  </span>
+                </div>
+
+                <div class="flex items-center gap-1.5 ml-auto">
+                  <button onclick="openEditExpenseModal('${exp.id}')" class="text-xs text-slate-600 hover:text-slate-900 px-2 py-0.5 rounded hover:bg-slate-200 transition font-medium cursor-pointer">
+                    ✏️ 編輯
+                  </button>
+                  <button onclick="deleteExpense('${exp.id}')" class="text-xs text-rose-600 hover:text-rose-800 px-2 py-0.5 rounded hover:bg-rose-50 transition font-medium cursor-pointer">
+                    🗑️ 刪除
+                  </button>
+                </div>
+              </div>
+
+              ${exp.notes ? `
+                <div class="text-xs text-slate-600 bg-amber-50/40 p-1.5 rounded border border-amber-200/50 flex items-start gap-1">
+                  <span>📝</span>
+                  <span>${escapeHtml(exp.notes)}</span>
+                </div>
+              ` : ''}
+            </div>
+          `;
+        }).join('');
+      }
 
       container.innerHTML = `
         <div class="space-y-4">
-          <!-- 核心航線：精確日期與含行李價格速查總表 -->
-          <div class="bg-slate-900 text-white rounded-xl p-4 shadow-md space-y-3">
-            <div class="flex items-center justify-between flex-wrap gap-2 border-b border-slate-700 pb-2.5">
-              <div>
-                <h3 class="font-black text-sm sm:text-base flex items-center gap-2 text-amber-400">
-                  <span>📊</span> 核心直飛航線・精確執飛日期與含行李總價對照表
-                </h3>
-                <p class="text-xs text-slate-300 mt-0.5">直客精準報價 (含托運行李)・時間連貫銜接</p>
-              </div>
-              <span class="text-[11px] bg-red-600 text-white font-bold px-2.5 py-0.5 rounded-full shadow-2xs">
-                2027年 1月 出發精確比對
-              </span>
+          <!-- 頂部標題與核心動作列 -->
+          <div class="flex items-center justify-between flex-wrap gap-2 pb-2 border-b border-slate-200">
+            <div>
+              <h2 class="font-bold text-slate-800 text-sm sm:text-base flex items-center gap-2">
+                <span>💰</span> 雙人分帳記帳管家 (獅子 ＆ 方)
+              </h2>
+              <p class="text-xs text-slate-500">
+                🇯🇵 日圓／🇹🇼 台幣獨立記帳結算・無匯率換算干擾・AA平分與代墊清算一目了然
+              </p>
             </div>
-
-            <!-- 4 大精準方案對照卡片 -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
-              <!-- 1. 虎航岡山 -->
-              <div class="bg-slate-800/90 border border-slate-700 rounded-lg p-3 space-y-1.5 hover:border-amber-400 transition">
-                <div class="flex items-center justify-between">
-                  <span class="font-bold text-xs text-slate-200 flex items-center gap-1">🍑 虎航岡山</span>
-                  <span class="text-[10px] bg-emerald-500/20 text-emerald-300 font-bold px-1.5 py-0.2 rounded border border-emerald-500/30">14天・0天移動</span>
-                </div>
-                <div class="text-[11px] text-amber-300 font-mono font-bold">
-                  📅 1/13 - 1/26 (14天)
-                </div>
-                <div class="text-lg font-black text-red-400">
-                  NT$ 13,537
-                </div>
-                <p class="text-[10px] text-slate-400 leading-tight">
-                  桃機直飛・IT214/IT215・含20kg行李・大閉環中心
-                </p>
-              </div>
-
-              <!-- 2. 華航廣島 -->
-              <div class="bg-slate-800/90 border border-slate-700 rounded-lg p-3 space-y-1.5 hover:border-amber-400 transition">
-                <div class="flex items-center justify-between">
-                  <span class="font-bold text-xs text-slate-200 flex items-center gap-1">🍁 華航廣島</span>
-                  <span class="text-[10px] bg-emerald-500/20 text-emerald-300 font-bold px-1.5 py-0.2 rounded border border-emerald-500/30">14天・0天移動</span>
-                </div>
-                <div class="text-[11px] text-amber-300 font-mono font-bold">
-                  📅 1/13 - 1/26 (14天)
-                </div>
-                <div class="text-lg font-black text-red-400">
-                  NT$ 15,038
-                </div>
-                <p class="text-[10px] text-slate-400 leading-tight">
-                  桃機直飛・CI112/CI113・含23kg行李與飛機餐・早到
-                </p>
-              </div>
-
-              <!-- 3. 虎航米子 -->
-              <div class="bg-slate-800/90 border border-slate-700 rounded-lg p-3 space-y-1.5 hover:border-amber-400 transition">
-                <div class="flex items-center justify-between">
-                  <span class="font-bold text-xs text-slate-200 flex items-center gap-1">👻 虎航米子</span>
-                  <span class="text-[10px] bg-amber-500/20 text-amber-300 font-bold px-1.5 py-0.2 rounded border border-amber-500/30">11天・±2天調度</span>
-                </div>
-                <div class="text-[11px] text-amber-300 font-mono font-bold">
-                  📅 1/15 - 1/25 (11天)
-                </div>
-                <div class="text-lg font-black text-red-400">
-                  NT$ 11,537
-                </div>
-                <p class="text-[10px] text-slate-400 leading-tight">
-                  桃機直飛・IT724/IT725・含20kg行李・直搗山陰
-                </p>
-              </div>
-
-              <!-- 4. 星宇台中高松 -->
-              <div class="bg-slate-800/90 border border-slate-700 rounded-lg p-3 space-y-1.5 hover:border-amber-400 transition">
-                <div class="flex items-center justify-between">
-                  <span class="font-bold text-xs text-slate-200 flex items-center gap-1">🌲 星宇台中高松</span>
-                  <span class="text-[10px] bg-sky-500/20 text-sky-300 font-bold px-1.5 py-0.2 rounded border border-sky-500/30">13天・中部直飛</span>
-                </div>
-                <div class="text-[11px] text-amber-300 font-mono font-bold">
-                  📅 1/13 - 1/25 (13天)
-                </div>
-                <div class="text-lg font-black text-red-400">
-                  NT$ 15,126
-                </div>
-                <p class="text-[10px] text-slate-400 leading-tight">
-                  台中直飛・JX300/JX301・含23kg行李・特急53分到岡山
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 航點動態篩選按鈕列 -->
-          <div class="flex items-center justify-between flex-wrap gap-2 pt-1">
             <div class="flex items-center gap-1.5 flex-wrap">
-              <span class="text-xs font-bold text-slate-600">航線篩選：</span>
-              ${filterButtonsHtml}
+              <button onclick="openMembersModal()" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold px-3 py-1.5 rounded-lg text-xs border border-indigo-200 transition flex items-center gap-1 cursor-pointer">
+                <span>👥</span><span>旅伴：${memA} ＆ ${memB}</span>
+              </button>
+              <button onclick="exportExpensesCSV()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-3 py-1.5 rounded-lg text-xs border border-slate-300 transition flex items-center gap-1 cursor-pointer">
+                <span>📊</span><span>匯出 CSV</span>
+              </button>
+              <button onclick="openAddExpenseModal()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-3.5 py-1.5 rounded-lg text-xs shadow-sm transition flex items-center gap-1 cursor-pointer">
+                <span>➕</span><span>記一筆</span>
+              </button>
             </div>
-            <span class="text-xs text-slate-500">共 ${filteredFlights.length} 個航線方案</span>
           </div>
 
-          <!-- 航線詳細清單卡片 -->
-          <div class="space-y-4">
-            ${cardsHtml}
+          <!-- 雙幣獨立結算核心大看板 -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+            <!-- 🇯🇵 日圓帳目卡片 -->
+            <div class="bg-white rounded-xl border border-red-200/80 shadow-2xs p-3.5 space-y-2.5">
+              <div class="flex items-center justify-between border-b border-red-100 pb-2">
+                <span class="font-bold text-slate-900 flex items-center gap-1.5 text-xs">
+                  <span class="text-base">🇯🇵</span><span>日圓帳目總覽 (JPY)</span>
+                </span>
+                <span class="text-base font-black text-slate-900 font-mono">¥ ${summary.jpy.total.toLocaleString()}</span>
+              </div>
+
+              ${jpySettlementHtml}
+
+              <div class="grid grid-cols-2 gap-2 text-xs pt-1">
+                <div class="bg-slate-50 p-2 rounded border border-slate-200">
+                  <div class="font-bold text-slate-700">${memA}</div>
+                  <div class="text-[11px] text-slate-500 mt-0.5">已付: <span class="font-mono text-slate-800 font-bold">¥${summary.jpy.paidA.toLocaleString()}</span></div>
+                  <div class="text-[11px] text-slate-500">應負擔: <span class="font-mono text-slate-800">¥${summary.jpy.shareA.toLocaleString()}</span></div>
+                  <div class="text-[11px] font-bold mt-1 ${summary.jpy.netA > 0 ? 'text-emerald-600' : (summary.jpy.netA < 0 ? 'text-rose-600' : 'text-slate-500')}">
+                    ${summary.jpy.netA > 0 ? `應收 ¥${summary.jpy.netA.toLocaleString()}` : (summary.jpy.netA < 0 ? `應付 ¥${Math.abs(summary.jpy.netA).toLocaleString()}` : '已結平')}
+                  </div>
+                </div>
+                <div class="bg-slate-50 p-2 rounded border border-slate-200">
+                  <div class="font-bold text-slate-700">${memB}</div>
+                  <div class="text-[11px] text-slate-500 mt-0.5">已付: <span class="font-mono text-slate-800 font-bold">¥${summary.jpy.paidB.toLocaleString()}</span></div>
+                  <div class="text-[11px] text-slate-500">應負擔: <span class="font-mono text-slate-800">¥${summary.jpy.shareB.toLocaleString()}</span></div>
+                  <div class="text-[11px] font-bold mt-1 ${summary.jpy.netB > 0 ? 'text-emerald-600' : (summary.jpy.netB < 0 ? 'text-rose-600' : 'text-slate-500')}">
+                    ${summary.jpy.netB > 0 ? `應收 ¥${summary.jpy.netB.toLocaleString()}` : (summary.jpy.netB < 0 ? `應付 ¥${Math.abs(summary.jpy.netB).toLocaleString()}` : '已結平')}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 🇹🇼 台幣帳目卡片 -->
+            <div class="bg-white rounded-xl border border-emerald-200/80 shadow-2xs p-3.5 space-y-2.5">
+              <div class="flex items-center justify-between border-b border-emerald-100 pb-2">
+                <span class="font-bold text-slate-900 flex items-center gap-1.5 text-xs">
+                  <span class="text-base">🇹🇼</span><span>台幣帳目總覽 (TWD)</span>
+                </span>
+                <span class="text-base font-black text-emerald-700 font-mono">NT$ ${summary.twd.total.toLocaleString()}</span>
+              </div>
+
+              ${twdSettlementHtml}
+
+              <div class="grid grid-cols-2 gap-2 text-xs pt-1">
+                <div class="bg-slate-50 p-2 rounded border border-slate-200">
+                  <div class="font-bold text-slate-700">${memA}</div>
+                  <div class="text-[11px] text-slate-500 mt-0.5">已付: <span class="font-mono text-slate-800 font-bold">NT$${summary.twd.paidA.toLocaleString()}</span></div>
+                  <div class="text-[11px] text-slate-500">應負擔: <span class="font-mono text-slate-800">NT$${summary.twd.shareA.toLocaleString()}</span></div>
+                  <div class="text-[11px] font-bold mt-1 ${summary.twd.netA > 0 ? 'text-emerald-600' : (summary.twd.netA < 0 ? 'text-rose-600' : 'text-slate-500')}">
+                    ${summary.twd.netA > 0 ? `應收 NT$${summary.twd.netA.toLocaleString()}` : (summary.twd.netA < 0 ? `應付 NT$${Math.abs(summary.twd.netA).toLocaleString()}` : '已結平')}
+                  </div>
+                </div>
+                <div class="bg-slate-50 p-2 rounded border border-slate-200">
+                  <div class="font-bold text-slate-700">${memB}</div>
+                  <div class="text-[11px] text-slate-500 mt-0.5">已付: <span class="font-mono text-slate-800 font-bold">NT$${summary.twd.paidB.toLocaleString()}</span></div>
+                  <div class="text-[11px] text-slate-500">應負擔: <span class="font-mono text-slate-800">NT$${summary.twd.shareB.toLocaleString()}</span></div>
+                  <div class="text-[11px] font-bold mt-1 ${summary.twd.netB > 0 ? 'text-emerald-600' : (summary.twd.netB < 0 ? 'text-rose-600' : 'text-slate-500')}">
+                    ${summary.twd.netB > 0 ? `應收 NT$${summary.twd.netB.toLocaleString()}` : (summary.twd.netB < 0 ? `應付 NT$${Math.abs(summary.twd.netB).toLocaleString()}` : '已結平')}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 篩選工具列 -->
+          <div class="bg-slate-50 border border-slate-200 rounded-xl p-2.5 flex items-center justify-between flex-wrap gap-2 text-xs">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="font-bold text-slate-600">篩選明細：</span>
+              
+              <!-- 幣別篩選 -->
+              <select onchange="setExpenseFilterCurrency(this.value)" class="border border-slate-300 rounded px-2 py-1 bg-white outline-none font-bold text-slate-700">
+                <option value="all" ${filterCurrency === 'all' ? 'selected' : ''}>全部幣別</option>
+                <option value="JPY" ${filterCurrency === 'JPY' ? 'selected' : ''}>🇯🇵 日圓 (JPY)</option>
+                <option value="TWD" ${filterCurrency === 'TWD' ? 'selected' : ''}>🇹🇼 台幣 (TWD)</option>
+              </select>
+
+              <!-- 天數篩選 -->
+              <select onchange="setExpenseFilterDay(this.value)" class="border border-slate-300 rounded px-2 py-1 bg-white outline-none">
+                <option value="all" ${filterDay === 'all' ? 'selected' : ''}>全部天數</option>
+                <option value="0" ${filterDay === '0' ? 'selected' : ''}>公費 / 不限天數</option>
+                ${Array.from({length: 14}, (_, i) => i + 1).map(d => `
+                  <option value="${d}" ${filterDay === String(d) ? 'selected' : ''}>Day ${d}</option>
+                `).join('')}
+              </select>
+
+              <!-- 類別篩選 -->
+              <select onchange="setExpenseFilterCategory(this.value)" class="border border-slate-300 rounded px-2 py-1 bg-white outline-none">
+                <option value="all" ${filterCat === 'all' ? 'selected' : ''}>全部分類</option>
+                <option value="food" ${filterCat === 'food' ? 'selected' : ''}>🍜 餐飲美食</option>
+                <option value="transit" ${filterCat === 'transit' ? 'selected' : ''}>🚅 交通車票</option>
+                <option value="tickets" ${filterCat === 'tickets' ? 'selected' : ''}>🏯 門票景點</option>
+                <option value="lodging" ${filterCat === 'lodging' ? 'selected' : ''}>♨️ 住宿飯店</option>
+                <option value="shopping" ${filterCat === 'shopping' ? 'selected' : ''}>🛍️ 購物採買</option>
+                <option value="other" ${filterCat === 'other' ? 'selected' : ''}>💡 其他雜支</option>
+              </select>
+
+              <!-- 付款人篩選 -->
+              <select onchange="setExpenseFilterMember(this.value)" class="border border-slate-300 rounded px-2 py-1 bg-white outline-none">
+                <option value="all" ${filterMem === 'all' ? 'selected' : ''}>全部付款人</option>
+                <option value="a" ${filterMem === 'a' ? 'selected' : ''}>由 ${memA} 付款</option>
+                <option value="b" ${filterMem === 'b' ? 'selected' : ''}>由 ${memB} 付款</option>
+              </select>
+            </div>
+
+            <span class="text-[11px] text-slate-500">
+              顯示 ${filteredExpenses.length} 筆
+            </span>
+          </div>
+
+          <!-- 明細清單列表 -->
+          <div class="space-y-2.5">
+            ${listHtml}
           </div>
         </div>
       `;
+    }
+
+    function setExpenseFilterCurrency(curr) {
+      state.expenseFilterCurrency = curr;
+      renderExpensesTab(document.getElementById("mainPanelContent"));
+    }
+
+    function openAddExpenseModal(defaultDay = 0) {
+      document.getElementById("modalExpenseId").value = "";
+      document.getElementById("expenseModalTitle").innerHTML = '<span>💰</span><span>新增花費項目</span>';
+      document.getElementById("modalExpenseTitle").value = "";
+      document.getElementById("modalExpenseAmount").value = "";
+      document.getElementById("modalExpenseCurrency").value = "JPY";
+      document.getElementById("modalExpenseCategory").value = "food";
+      document.getElementById("modalExpenseDay").value = defaultDay || 0;
+      document.getElementById("modalExpensePaidBy").value = "a";
+      document.getElementById("modalExpensePaymentMethod").value = "card";
+      document.getElementById("modalExpenseSplitType").value = "equal";
+      document.getElementById("modalExpenseCustomA").value = "";
+      document.getElementById("modalExpenseCustomB").value = "";
+      document.getElementById("modalExpenseNotes").value = "";
+      document.getElementById("btnDeleteExpense").classList.add("hidden");
+
+      updateExpenseModalLabels();
+      onExpenseSplitTypeChange();
+
+      document.getElementById("expenseModal").classList.remove("hidden");
+      setTimeout(() => document.getElementById("modalExpenseTitle").focus(), 50);
+    }
+
+    function openEditExpenseModal(id) {
+      const exp = (state.expenses || []).find(e => e.id === id);
+      if (!exp) return;
+
+      document.getElementById("modalExpenseId").value = exp.id;
+      document.getElementById("expenseModalTitle").innerHTML = '<span>✏️</span><span>編輯花費項目</span>';
+      document.getElementById("modalExpenseTitle").value = exp.title || "";
+      document.getElementById("modalExpenseAmount").value = exp.amount || "";
+      document.getElementById("modalExpenseCurrency").value = exp.currency || "JPY";
+      document.getElementById("modalExpenseCategory").value = exp.category || "other";
+      document.getElementById("modalExpenseDay").value = exp.dayNumber !== undefined ? exp.dayNumber : 0;
+      document.getElementById("modalExpensePaidBy").value = exp.paidBy || "a";
+      document.getElementById("modalExpensePaymentMethod").value = exp.paymentMethod || "cash";
+      document.getElementById("modalExpenseSplitType").value = exp.splitType || "equal";
+
+      if (exp.splitDetails) {
+        document.getElementById("modalExpenseCustomA").value = exp.splitDetails.a || "";
+        document.getElementById("modalExpenseCustomB").value = exp.splitDetails.b || "";
+      } else {
+        document.getElementById("modalExpenseCustomA").value = "";
+        document.getElementById("modalExpenseCustomB").value = "";
+      }
+
+      document.getElementById("modalExpenseNotes").value = exp.notes || "";
+      document.getElementById("btnDeleteExpense").classList.remove("hidden");
+
+      updateExpenseModalLabels();
+      onExpenseSplitTypeChange();
+
+      document.getElementById("expenseModal").classList.remove("hidden");
+    }
+
+    function closeExpenseModal() {
+      document.getElementById("expenseModal").classList.add("hidden");
+    }
+
+    function updateExpenseModalLabels() {
+      const memA = state.members.a || "獅子";
+      const memB = state.members.b || "方";
+
+      const optPaidA = document.getElementById("modalExpensePaidByOptA");
+      const optPaidB = document.getElementById("modalExpensePaidByOptB");
+      if (optPaidA) optPaidA.innerText = `${memA} 支付`;
+      if (optPaidB) optPaidB.innerText = `${memB} 支付`;
+
+      const optAforB = document.getElementById("modalSplitOptAforB");
+      const optBforA = document.getElementById("modalSplitOptBforA");
+      const optAFull = document.getElementById("modalSplitOptAFull");
+      const optBFull = document.getElementById("modalSplitOptBFull");
+
+      if (optAforB) optAforB.innerText = `💳 代墊：由 ${memA} 幫 ${memB} 全額墊付 (${memB} 欠 ${memA} 100%)`;
+      if (optBforA) optBforA.innerText = `💳 代墊：由 ${memB} 幫 ${memA} 全額墊付 (${memA} 欠 ${memB} 100%)`;
+      if (optAFull) optAFull.innerText = `👤 個人自費：${memA} 全額自行負擔 (不列入分帳)`;
+      if (optBFull) optBFull.innerText = `👤 個人自費：${memB} 全額自行負擔 (不列入分帳)`;
+
+      const lblCustomA = document.getElementById("modalCustomLabelA");
+      const lblCustomB = document.getElementById("modalCustomLabelB");
+      if (lblCustomA) lblCustomA.innerText = `${memA} 負擔額`;
+      if (lblCustomB) lblCustomB.innerText = `${memB} 負擔額`;
+    }
+
+    function onExpenseAmountOrCurrencyChange() {
+      // 保持函數簽章避免報錯
+    }
+
+    function onExpenseSplitTypeChange() {
+      const splitType = document.getElementById("modalExpenseSplitType").value;
+      const customBox = document.getElementById("modalExpenseCustomSplitBox");
+      if (customBox) {
+        if (splitType === 'custom') {
+          customBox.classList.remove('hidden');
+        } else {
+          customBox.classList.add('hidden');
+        }
+      }
+    }
+
+    function applyExpenseTemplate(tpl) {
+      const titleEl = document.getElementById("modalExpenseTitle");
+      const amtEl = document.getElementById("modalExpenseAmount");
+      const currEl = document.getElementById("modalExpenseCurrency");
+      const catEl = document.getElementById("modalExpenseCategory");
+      const pmEl = document.getElementById("modalExpensePaymentMethod");
+      const splitEl = document.getElementById("modalExpenseSplitType");
+
+      switch(tpl) {
+        case 'food_beef':
+          titleEl.value = "岡山千屋牛和牛鐵板燒晚餐";
+          amtEl.value = "16000";
+          currEl.value = "JPY";
+          catEl.value = "food";
+          pmEl.value = "card";
+          splitEl.value = "equal";
+          break;
+        case 'food_ramen':
+          titleEl.value = "在地拉麵 / 居酒屋宵夜";
+          amtEl.value = "3200";
+          currEl.value = "JPY";
+          catEl.value = "food";
+          pmEl.value = "cash";
+          splitEl.value = "equal";
+          break;
+        case 'transit_pass':
+          titleEl.value = "JR 山陽&山陰地區鐵路周遊券 7日券 (2人份)";
+          amtEl.value = "46000";
+          currEl.value = "JPY";
+          catEl.value = "transit";
+          pmEl.value = "card";
+          splitEl.value = "equal";
+          break;
+        case 'ticket_castle':
+          titleEl.value = "100名城天守登閣門票 (2人份)";
+          amtEl.value = "1200";
+          currEl.value = "JPY";
+          catEl.value = "tickets";
+          pmEl.value = "cash";
+          splitEl.value = "equal";
+          break;
+        case 'lodging_hotel':
+          titleEl.value = "岡山站前飯店雙人房住宿 (1晚)";
+          amtEl.value = "18000";
+          currEl.value = "JPY";
+          catEl.value = "lodging";
+          pmEl.value = "card";
+          splitEl.value = "equal";
+          break;
+        case 'conv_store':
+          titleEl.value = "7-11 / Lawson 超商飲料零食採買";
+          amtEl.value = "1500";
+          currEl.value = "JPY";
+          catEl.value = "food";
+          pmEl.value = "ic";
+          splitEl.value = "equal";
+          break;
+      }
+      onExpenseSplitTypeChange();
+    }
+
+    function saveExpenseModal() {
+      const title = document.getElementById("modalExpenseTitle").value.trim();
+      const amountStr = document.getElementById("modalExpenseAmount").value;
+      const amount = parseFloat(amountStr);
+
+      if (!title) {
+        alert("請輸入花費品項名稱！");
+        document.getElementById("modalExpenseTitle").focus();
+        return;
+      }
+      if (isNaN(amount) || amount <= 0) {
+        alert("請輸入有效的花費金額（大於 0）！");
+        document.getElementById("modalExpenseAmount").focus();
+        return;
+      }
+
+      const id = document.getElementById("modalExpenseId").value;
+      const currency = document.getElementById("modalExpenseCurrency").value;
+      const category = document.getElementById("modalExpenseCategory").value;
+      const dayNumber = parseInt(document.getElementById("modalExpenseDay").value, 10) || 0;
+      const paidBy = document.getElementById("modalExpensePaidBy").value;
+      const paymentMethod = document.getElementById("modalExpensePaymentMethod").value;
+      const splitType = document.getElementById("modalExpenseSplitType").value;
+      const notes = document.getElementById("modalExpenseNotes").value.trim();
+
+      let splitDetails = null;
+      if (splitType === 'custom') {
+        const cA = parseFloat(document.getElementById("modalExpenseCustomA").value) || 0;
+        const cB = parseFloat(document.getElementById("modalExpenseCustomB").value) || 0;
+        splitDetails = { a: cA, b: cB };
+      }
+
+      if (id) {
+        const existing = (state.expenses || []).find(e => e.id === id);
+        if (existing) {
+          existing.title = title;
+          existing.amount = amount;
+          existing.currency = currency;
+          existing.category = category;
+          existing.dayNumber = dayNumber;
+          existing.paidBy = paidBy;
+          existing.paymentMethod = paymentMethod;
+          existing.splitType = splitType;
+          existing.splitDetails = splitDetails;
+          existing.notes = notes;
+        }
+      } else {
+        if (!state.expenses) state.expenses = [];
+        state.expenses.unshift({
+          id: "exp_" + Date.now() + "_" + Math.random().toString(36).substring(2, 6),
+          date: new Date().toISOString().split('T')[0],
+          title,
+          amount,
+          currency,
+          category,
+          dayNumber,
+          paidBy,
+          paymentMethod,
+          splitType,
+          splitDetails,
+          notes
+        });
+      }
+
+      saveState();
+      closeExpenseModal();
+      renderExpensesTab(document.getElementById("mainPanelContent"));
+    }
+
+    function deleteExpense(id) {
+      if (!confirm("確定要刪除這筆花費紀錄嗎？")) return;
+      state.expenses = (state.expenses || []).filter(e => e.id !== id);
+      saveState();
+      renderExpensesTab(document.getElementById("mainPanelContent"));
+    }
+
+    function deleteCurrentModalExpense() {
+      const id = document.getElementById("modalExpenseId").value;
+      if (!id) return;
+      deleteExpense(id);
+      closeExpenseModal();
+    }
+
+    function openMembersModal() {
+      document.getElementById("modalMemberNameA").value = state.members.a || "獅子";
+      document.getElementById("modalMemberNameB").value = state.members.b || "方";
+      document.getElementById("membersModal").classList.remove("hidden");
+    }
+
+    function closeMembersModal() {
+      document.getElementById("membersModal").classList.add("hidden");
+    }
+
+    function saveMembersModal() {
+      const nameA = document.getElementById("modalMemberNameA").value.trim() || "獅子";
+      const nameB = document.getElementById("modalMemberNameB").value.trim() || "方";
+      state.members.a = nameA;
+      state.members.b = nameB;
+      saveState();
+      closeMembersModal();
+      renderExpensesTab(document.getElementById("mainPanelContent"));
+    }
+
+    function seedDemoExpenses() {
+      const memA = state.members.a || "獅子";
+      const memB = state.members.b || "方";
+      state.expenses = [
+        {
+          id: "exp_demo_1",
+          date: "2027-01-12",
+          dayNumber: 1,
+          title: "岡山格蘭比亞 鉄板焼 備彩 (千屋牛和牛套餐 2人份)",
+          amount: 16800,
+          currency: "JPY",
+          category: "food",
+          paidBy: "a",
+          splitType: "equal",
+          paymentMethod: "card",
+          notes: "晚餐 2 人份套餐，由 " + memA + " 刷卡，兩人平分"
+        },
+        {
+          id: "exp_demo_2",
+          date: "2027-01-12",
+          dayNumber: 0,
+          title: "JR 山陽&山陰地區鐵路周遊券 7日券 (2人份)",
+          amount: 46000,
+          currency: "JPY",
+          category: "transit",
+          paidBy: "b",
+          splitType: "equal",
+          paymentMethod: "card",
+          notes: "新幹線/特急/京都丹後鐵道全包，由 " + memB + " 刷卡，兩人平分"
+        },
+        {
+          id: "exp_demo_3",
+          date: "2027-01-15",
+          dayNumber: 4,
+          title: "天橋立 傘松公園纜車來回票 + 智恩寺 (2人份)",
+          amount: 1700,
+          currency: "JPY",
+          category: "tickets",
+          paidBy: "a",
+          splitType: "equal",
+          paymentMethod: "cash",
+          notes: "倒立觀飛龍絕景，由 " + memA + " 付現，兩人平分"
+        },
+        {
+          id: "exp_demo_4",
+          date: "2027-01-11",
+          dayNumber: 0,
+          title: "日本上網漫遊 eSIM 吃到飽卡 (2人份)",
+          amount: 1200,
+          currency: "TWD",
+          category: "transit",
+          paidBy: "b",
+          splitType: "equal",
+          paymentMethod: "card",
+          notes: "台灣出發前線上購買，由 " + memB + " 刷卡，兩人台幣平分"
+        }
+      ];
+      saveState();
+      renderMainPanel();
+    }
+
+    function exportExpensesCSV() {
+      if (!state.expenses || state.expenses.length === 0) {
+        alert("目前尚無記帳資料可匯出！");
+        return;
+      }
+      const memA = state.members.a || "獅子";
+      const memB = state.members.b || "方";
+
+      let csv = "\uFEFF序號,日期/天數,品項名稱,支出類別,幣別,金額,付款人,分帳模式,付款方式," + memA + "負擔(原幣)," + memB + "負擔(原幣),備註\n";
+
+      state.expenses.forEach((exp, idx) => {
+        const amt = parseFloat(exp.amount) || 0;
+        const dayLabel = exp.dayNumber > 0 ? `Day ${exp.dayNumber}` : '公費/不限天數';
+        const catLabel = (EXPENSE_CATEGORIES[exp.category] || {}).label || exp.category;
+        const payLabel = exp.paidBy === 'a' ? memA : memB;
+        const methodLabel = (PAYMENT_METHODS[exp.paymentMethod] || {}).label || exp.paymentMethod;
+
+        let shareA = 0, shareB = 0;
+        if (exp.splitType === 'equal') { shareA = amt / 2; shareB = amt / 2; }
+        else if (exp.splitType === 'a_full') { shareA = amt; shareB = 0; }
+        else if (exp.splitType === 'b_full') { shareA = 0; shareB = amt; }
+        else if (exp.splitType === 'a_for_b') { shareA = 0; shareB = amt; }
+        else if (exp.splitType === 'b_for_a') { shareA = amt; shareB = 0; }
+        else if (exp.splitType === 'custom' && exp.splitDetails) {
+          shareA = parseFloat(exp.splitDetails.a) || 0;
+          shareB = parseFloat(exp.splitDetails.b) || 0;
+        } else {
+          shareA = amt / 2; shareB = amt / 2;
+        }
+
+        const cleanNotes = (exp.notes || '').replace(/"/g, '""');
+        const cleanTitle = (exp.title || '').replace(/"/g, '""');
+
+        csv += `"${idx + 1}","${dayLabel}","${cleanTitle}","${catLabel}","${exp.currency}","${amt}","${payLabel}","${exp.splitType}","${methodLabel}","${Math.round(shareA)}","${Math.round(shareB)}","${cleanNotes}"\n`;
+      });
+
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Japan_Trip_Expenses_${new Date().toISOString().split('T')[0]}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
     }
 
     function renderTransitTab(container) {
@@ -5558,6 +6411,53 @@
             <span class="text-xs bg-emerald-100 text-emerald-800 font-black px-2.5 py-1 rounded-full border border-emerald-300">
               票價 ¥23,000 / 省下 ¥25,000+
             </span>
+          </div>
+
+          <!-- JR PASS 官方路線適用範圍圖 (支援點擊全螢幕放大) -->
+          <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white rounded-2xl p-4 shadow-md border border-indigo-500/40 space-y-3">
+            <div class="flex items-center justify-between flex-wrap gap-2 border-b border-indigo-500/30 pb-2.5">
+              <div class="flex items-center gap-2">
+                <span class="text-2xl">🗺️</span>
+                <div>
+                  <h3 class="font-bold text-sm text-white flex items-center gap-2">
+                    JR PASS 可使用區域與交通工具路線圖 (官方範圍)
+                    <span class="text-[10px] bg-amber-400 text-slate-950 font-black px-1.5 py-0.5 rounded">全區適用</span>
+                  </h3>
+                  <p class="text-xs text-indigo-200 mt-0.5">山陽新幹線・特急指定席・京都丹後鐵道(天橋立)・JR西日本宮島渡輪全線包含！</p>
+                </div>
+              </div>
+              <button type="button" onclick="openImageViewer('jrpass_map.jpg', 'JR 山陽&山陰地區鐵路周遊券 適用路線範圍圖 (含京都丹後鐵道)')" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-xs shadow-sm transition flex items-center gap-1.5 cursor-pointer">
+                <span>🔍</span><span>點擊查看完整高畫質大地圖</span>
+              </button>
+            </div>
+
+            <div class="relative group cursor-pointer overflow-hidden rounded-xl border border-indigo-400/30 bg-slate-950 flex items-center justify-center max-h-72" onclick="openImageViewer('jrpass_map.jpg', 'JR 山陽&山陰地區鐵路周遊券 適用路線範圍圖 (含京都丹後鐵道)')">
+              <img src="jrpass_map.jpg" alt="JR 山陽&山陰地區鐵路周遊券 適用路線範圍圖" class="w-full h-auto max-h-72 object-contain group-hover:scale-[1.01] transition duration-300">
+              <div class="absolute inset-0 bg-black/20 group-hover:bg-black/5 transition flex items-center justify-center pointer-events-none">
+                <span class="bg-slate-900/85 text-white font-bold px-3 py-1.5 rounded-full text-xs shadow-lg backdrop-blur-xs border border-white/20 flex items-center gap-1.5">
+                  <span>🔍</span> 點擊檢視全圖 / 支援縮放下載
+                </span>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] text-slate-200 pt-1">
+              <div class="bg-indigo-900/40 p-2 rounded-lg border border-indigo-400/20">
+                <strong class="text-amber-300 block font-bold">🚅 山陽新幹線</strong>
+                <span class="text-slate-300">新大阪～博多 (含 NOZOMI、MIZUHO)</span>
+              </div>
+              <div class="bg-indigo-900/40 p-2 rounded-lg border border-indigo-400/20">
+                <strong class="text-amber-300 block font-bold">🚄 特急指定席</strong>
+                <span class="text-slate-300">普通車指定席無限次免費劃位搭乘</span>
+              </div>
+              <div class="bg-indigo-900/40 p-2 rounded-lg border border-indigo-400/20">
+                <strong class="text-amber-300 block font-bold">🌊 京都丹後鐵道</strong>
+                <span class="text-slate-300">天橋立・宮津全線完全免費搭乘！</span>
+              </div>
+              <div class="bg-indigo-900/40 p-2 rounded-lg border border-indigo-400/20">
+                <strong class="text-amber-300 block font-bold">🚢 宮島渡輪 & 巴士</strong>
+                <span class="text-slate-300">JR宮島渡輪全包、西日本/中國JR巴士全包</span>
+              </div>
+            </div>
           </div>
 
           <!-- 山陽&山陰地區鐵路周遊券 7日券 實戰全解析卡片 -->
@@ -6236,6 +7136,8 @@
 
     // 山陰山陽沿線熱門常見點位快選 (含溫泉住宿)
     const PRESET_SPOTS = [
+      { name: "日本三景 天橋立 (飛龍觀)", type: "custom", prefecture: "京都", nearestStation: "天橋立駅", lat: 35.5694, lng: 135.1917, stayDuration: "2.5 小時", climbLevelText: "日本三景・白砂青松", openHours: "09:00~17:00", transitInfo: "京都丹後鐵道天橋立站 (JR PASS 全包！)", notes: "倒立觀如昇天青龍，文殊堂與迴旋橋。", closedDay: "None", reservationUrl: "https://www.amanohashidate.jp/" },
+      { name: "伊根舟屋聚落 (遊覽船)", type: "custom", prefecture: "京都", nearestStation: "天橋立駅", lat: 35.6740, lng: 135.2915, stayDuration: "2 小時", climbLevelText: "海中浮屋與日本最美漁村", openHours: "09:00~16:00", transitInfo: "天橋立站轉搭丹海公車約55分", notes: "搭遊覽船近距離看230棟水上舟屋與餵海鷗。", closedDay: "None", reservationUrl: "https://www.ine-kankou.jp/" },
       { name: "寶可夢中心 廣島 (SOGO 6F)", type: "custom", prefecture: "廣島", nearestStation: "紙屋町西駅", lat: 34.3962, lng: 132.4571, stayDuration: "1 小時", climbLevelText: "中國地區唯一官方店", openHours: "10:00~19:30", transitInfo: "SOGO廣島本館6F直結", notes: "紅色暴鯉龍與皮卡丘！排在D6廣島城後步行順遊。", closedDay: "None", reservationUrl: "https://www.pokemon.co.jp/shop/pokecen/hiroshima/" },
       { name: "廣島和平紀念資料館", type: "custom", prefecture: "廣島", nearestStation: "原爆ドーム前駅", lat: 34.3916, lng: 132.4526, stayDuration: "1.5 小時", climbLevelText: "米其林三星歷史見證", openHours: "08:30~18:00", transitInfo: "和平公園內徒步即達", notes: "丹下健三設計，原爆歷史見證。排在D6下午參觀。", closedDay: "None", reservationUrl: "https://hpmmuseum.jp/" },
       { name: "鉄板焼 備彩 (千屋牛)", type: "custom", prefecture: "岡山", nearestStation: "岡山駅", lat: 34.6648, lng: 133.9185, stayDuration: "1.5 小時", climbLevelText: "岡山站直結2F", openHours: "11:30~14:30 / 17:30~21:30", transitInfo: "岡山格蘭比亞飯店2F直結", notes: "岡山夢幻和牛「千屋牛」鐵板燒。推薦D1晚餐！", closedDay: "None", reservationUrl: "https://jrwest-hotels.jp/tw/granvia-okayama/restaurant/bisai/" },
@@ -6671,6 +7573,7 @@
     function generateShareUrl() {
       try {
         const payload = {
+          plan: state.currentRoutePlan || 'okayama',
           itinerary: state.itinerary,
           deleted: state.deletedSpotIds || []
         };
@@ -6680,7 +7583,7 @@
         
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(shareUrl).then(() => {
-            alert("✅ 已成功複製「專屬行程分享網址」至剪貼簿！\\n\\n發給朋友打開，即可直接瀏覽您客製好的所有天數、車次、備忘與選定景點！");
+            alert("✅ 已成功複製「專屬行程分享網址」至剪貼簿！\n\n發給朋友打開，即可直接瀏覽您客製好的所有天數、車次、備忘與選定景點！");
           }).catch(() => {
             prompt("請手動按 Ctrl+C 複製以下專屬分享網址：", shareUrl);
           });
@@ -6693,7 +7596,9 @@
     }
 
     function exportJSON() {
+      const planName = state.currentRoutePlan || 'okayama';
       const exportData = {
+        currentRoutePlan: planName,
         spots: state.spots,
         itinerary: state.itinerary,
         exportAt: new Date().toISOString()
@@ -6702,7 +7607,7 @@
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `Japan_100Castles_Trip_${new Date().toISOString().split('T')[0]}.json`;
+      a.download = `Japan_100Castles_Trip_${planName}_${new Date().toISOString().split('T')[0]}.json`;
       a.click();
       URL.revokeObjectURL(url);
     }
@@ -6715,6 +7620,10 @@
         try {
           const data = JSON.parse(evt.target.result);
           if (data.spots && data.itinerary) {
+            if (data.currentRoutePlan && ['okayama', 'yonago', 'hiroshima'].includes(data.currentRoutePlan)) {
+              state.currentRoutePlan = data.currentRoutePlan;
+              localStorage.setItem('jp_castle_current_route_plan', data.currentRoutePlan);
+            }
             state.spots = data.spots;
             state.itinerary = data.itinerary;
             saveState();
@@ -6733,7 +7642,9 @@
     }
 
     function exportMarkdown() {
-      let md = `# 山陰山陽 100名城巡禮旅行計畫表\n\n`;
+      const planName = state.currentRoutePlan || 'okayama';
+      const planLabel = planName === 'yonago' ? '米子出發 (11天)' : (planName === 'hiroshima' ? '廣島出發 (12天)' : '岡山出發 (12天)');
+      let md = `# 山陰山陽 100名城巡禮旅行計畫表【${planLabel}】\n\n`;
       md += `*產出時間：${new Date().toLocaleString()}*\n\n---\n\n`;
 
       state.itinerary.forEach(day => {
@@ -6776,21 +7687,26 @@
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `Japan_100Castles_Itinerary_${new Date().toISOString().split('T')[0]}.md`;
+      a.download = `Japan_100Castles_Itinerary_${planName}_${new Date().toISOString().split('T')[0]}.md`;
       a.click();
       URL.revokeObjectURL(url);
     }
 
     function resetToDefault() {
-      if (!confirm("確定要重設為初始的 12 座名城推薦行程嗎？此操作將覆蓋現有修改。")) return;
+      const planName = state.currentRoutePlan || 'okayama';
+      const planLabel = planName === 'yonago' ? '米子出發 (11天)' : (planName === 'hiroshima' ? '廣島出發 (12天)' : '岡山出發 (12天)');
+      if (!confirm(`確定要將【${planLabel}】重設為預設推薦行程嗎？此操作將覆蓋現有修改。`)) return;
       localStorage.removeItem(STORAGE_KEY_SPOTS);
-      localStorage.removeItem(STORAGE_KEY_ITINERARY);
+      localStorage.removeItem(`jp_castle_itinerary_${planName}`);
+      if (planName === 'okayama') {
+        localStorage.removeItem(STORAGE_KEY_ITINERARY);
+      }
       localStorage.removeItem(STORAGE_KEY_DELETED_SPOTS);
       initState();
       renderMainPanel();
       renderMapElements();
       updateMapFilterDropdown();
-      alert("已重設為預設名城資料！");
+      alert(`已將【${planLabel}】重設為預設名城行程！`);
     }
 
     function escapeHtml(str) {
