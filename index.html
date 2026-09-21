@@ -64,6 +64,10 @@
       </div>
     </div>
     <div class="flex items-center gap-2 text-sm">
+      <button id="cloudSyncStatusBtn" onclick="openCloudSyncModal()" class="bg-indigo-700 hover:bg-indigo-600 text-white font-bold px-3 py-1.5 rounded flex items-center gap-1.5 transition shadow-sm text-xs cursor-pointer border border-indigo-400/50 shrink-0" title="點擊設定雙人即時雲端同步 (Firebase)">
+        <span id="cloudSyncDot" class="w-2 h-2 rounded-full bg-slate-400"></span>
+        <span id="cloudSyncStatusText">☁️ 雲端同步</span>
+      </button>
       <button onclick="generateShareUrl()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded flex items-center gap-1.5 transition shadow-sm text-xs">
         🔗 複製分享連結
       </button>
@@ -1887,6 +1891,17 @@
     const STORAGE_KEY_EXPENSES = "jp_trip_expenses_v1";
     const STORAGE_KEY_MEMBERS = "jp_trip_members_v1";
     const STORAGE_KEY_EXCHANGE_RATE = "jp_trip_exchange_rate_v1";
+    const STORAGE_KEY_CLOUD_CONFIG = "jp_trip_cloud_sync_config_v1";
+    const DEFAULT_CLOUD_DB_URL = "https://fang-jp2027-default-rtdb.firebaseio.com";
+
+    let cloudConfig = {
+      enabled: false,
+      roomId: "lion-fang-jp2027",
+      customDbUrl: "",
+      autoSync: true,
+      lastSyncedAt: 0,
+      syncStatus: "idle" // 'idle' | 'syncing' | 'synced' | 'error' | 'offline'
+    };
 
     let state = {
       spots: [],
@@ -2040,6 +2055,36 @@
     }
 
     function initState() {
+      // 讀取雲端即時同步設定
+      try {
+        const savedCloud = localStorage.getItem(STORAGE_KEY_CLOUD_CONFIG);
+        if (savedCloud) {
+          const parsed = JSON.parse(savedCloud);
+          cloudConfig = { ...cloudConfig, ...parsed };
+        }
+      } catch (e) {
+        console.warn('讀取雲端同步設定失敗:', e);
+      }
+
+      // 支援網址房間參數綁定：若網址含 #room= 或 ?room=，自動啟用雲端並綁定房間
+      if (typeof window !== 'undefined' && window.location) {
+        let urlRoom = null;
+        if (window.location.hash && window.location.hash.includes('room=')) {
+          const match = window.location.hash.match(/room=([^&]+)/);
+          if (match) urlRoom = decodeURIComponent(match[1]);
+        } else if (window.location.search && window.location.search.includes('room=')) {
+          const params = new URLSearchParams(window.location.search);
+          urlRoom = params.get('room');
+        }
+        if (urlRoom && urlRoom.trim()) {
+          cloudConfig.enabled = true;
+          cloudConfig.roomId = urlRoom.trim();
+          try {
+            localStorage.setItem(STORAGE_KEY_CLOUD_CONFIG, JSON.stringify(cloudConfig));
+          } catch (_) {}
+        }
+      }
+
       // 支援網址分享還原：若網址含 #plan= 參數，自動優先載入朋友或自己分享的客製行程
       if (typeof window !== 'undefined' && window.location && window.location.hash && window.location.hash.startsWith('#plan=')) {
         try {
@@ -2160,7 +2205,8 @@
       saveState();
     }
 
-    function saveState() {
+    function saveState(options = {}) {
+      const { skipCloudPush = false } = options || {};
       localStorage.setItem(STORAGE_KEY_SPOTS, JSON.stringify(state.spots));
       localStorage.setItem(STORAGE_KEY_ITINERARY, JSON.stringify(state.itinerary));
       localStorage.setItem('jp_castle_itinerary_okayama', JSON.stringify(state.itinerary));
@@ -2170,6 +2216,11 @@
       localStorage.setItem(STORAGE_KEY_EXCHANGE_RATE, String(state.exchangeRate || 0.215));
       updateBadges();
       updateTabButtons();
+
+      // 當雲端同步已開啟時，自動排程低延遲防抖上傳至雲端資料庫
+      if (!skipCloudPush && typeof scheduleCloudPush === 'function' && cloudConfig && cloudConfig.enabled && cloudConfig.autoSync) {
+        scheduleCloudPush();
+      }
     }
 
     function updateBadges() {
@@ -4079,12 +4130,111 @@
       `;
     }
 
+    // 取得每天的大綱簡稱 (精煉景點縮寫動線，如 "D2 鬼ノ城 ➔ 津山城 ➔ 湯郷溫泉")
+    function getDaySummaryBrief(day) {
+      if (!day) return '';
+
+      // 精煉景點縮寫庫 (針對核心名城、絕景、神社與住宿)
+      const SPOT_BRIEFS = {
+        'taoyuan_airport': '桃機',
+        'okayama_airport': '岡山機場',
+        'chiyagyu_bisai': '千屋牛',
+        'chiyagyu_kuya': '千屋牛',
+        'okayama_aeon': 'AEON採買',
+        'okayama_hotel': '宿岡山',
+        'okayama_hotel_d11': '宿岡山',
+        'kinojo': '鬼ノ城',
+        'tsuyama': '津山城',
+        'yunogo_onsen': '湯郷溫泉',
+        'tottori': '鳥取城',
+        'tottori_takumi': '和牛たくみ',
+        'tottori_sakyu': '鳥取砂丘',
+        'kinosaki_onsen': '城崎溫泉',
+        'amanohashidate': '天橋立',
+        'ine_funaya': '伊根舟屋',
+        'sakaiminato_mizuki': '境港妖怪街',
+        'kaike_onsen': '皆生溫泉',
+        'gassan_toda': '月山富田城',
+        'adachi_museum': '足立美術館',
+        'matsue': '松江城',
+        'matsue_horikawa': '堀川遊船',
+        'matsue_lodging': '宿松江',
+        'izumo_taisha': '出雲大社',
+        'yaegaki_jinja': '八重垣神社',
+        'tamatsukuri_yu_jinja': '玉作湯神社',
+        'tamatsukuri_onsen': '玉造溫泉',
+        'tsuwano': '津和野城',
+        'taikodani_inari': '太鼓谷稻成',
+        'hagi_lodging': '宿萩市',
+        'motonosumi_jinja': '元乃隅神社',
+        'hagi': '萩城',
+        'shin_yamaguchi_lodging': '宿新山口',
+        'iwakuni': '錦帶橋·岩國城',
+        'itsukushima_jinja': '嚴島神社',
+        'hiroshima_lodging_d8': '宿廣島',
+        'hiroshima_lodging_d9': '宿廣島',
+        'hiroshima': '廣島城',
+        'hiroshima_gokoku_jinja': '廣島護國神社',
+        'pokemon_center_hiroshima': '寶可夢中心',
+        'atomic_bomb_dome': '原爆圓頂',
+        'hiroshima_peace_museum': '和平紀念館',
+        'hiroshima_jinseki': '神石和牛',
+        'hiroshima_atago': '愛宕和牛',
+        'yoshida_koriyama': '吉田郡山城',
+        'fukuyama': '福山城',
+        'tomonoura_onsen': '鞆之浦溫泉',
+        'bitchu_matsuyama': '備中松山城',
+        'kibitsu_jinja': '吉備津神社'
+      };
+
+      // 特殊多點天數之最佳代表性精簡動線
+      if (day.dayNumber === 1) return '桃機 ➔ 岡山 ➔ 千屋牛 ➔ 宿岡山';
+      if (day.dayNumber === 3) return '鳥取城 ➔ 鳥取砂丘 ➔ 城崎溫泉';
+      if (day.dayNumber === 6) return '月山富田城 ➔ 足立美術館 ➔ 松江城';
+      if (day.dayNumber === 11) return '廣島城 ➔ 原爆圓頂 ➔ 神石和牛';
+      if (day.dayNumber === 14) return '岡山採買 ➔ 岡山機場 ➔ 桃機';
+
+      // 自景點清單中動態提取
+      if (day.spotIds && day.spotIds.length > 0) {
+        const names = [];
+        day.spotIds.forEach(id => {
+          if (SPOT_BRIEFS[id]) {
+            names.push(SPOT_BRIEFS[id]);
+          } else {
+            const s = (state.spots || []).find(x => x.id === id);
+            if (s && s.name) {
+              const clean = s.name.replace(/（.*?）|\(.*?\)/g, '').replace(/[\s・·]+/g, '').trim().slice(0, 6);
+              if (clean) names.push(clean);
+            }
+          }
+        });
+
+        const dedup = names.filter((val, idx) => idx === 0 || val !== names[idx - 1]);
+        if (dedup.length > 0) {
+          return dedup.join(' ➔ ');
+        }
+      }
+
+      // 若當天無景點但有 title，自 title 擷取
+      if (day.title) {
+        let t = day.title.replace(/^Day\s*\d+[\s:：]*/i, '').trim();
+        t = t.replace(/->/g, ' ➔ ').replace(/➔/g, ' ➔ ');
+        const parts = t.split('➔').map(p => p.trim().replace(/（.*?）|\(.*?\)/g, '')).filter(Boolean);
+        if (parts.length > 0) {
+          return parts.slice(0, 3).join(' ➔ ');
+        }
+        return t.slice(0, 20);
+      }
+
+      return `第 ${day.dayNumber} 天行程`;
+    }
+
     function renderItineraryTab(container) {
       // 依使用者需求：已關閉最上方「一鍵自動排入最佳天數」提示，改由使用者完全自主掌控加入與刪除
       const assignedIds = new Set();
       state.itinerary.forEach(d => (d.spotIds || []).forEach(id => assignedIds.add(id)));
 
-      // 頂部天數速跳膠囊導航列 (支援自動折行換行排版，所有天數一覽無遺直接點選)
+      // 頂部天數速跳膠囊導航列 (顯示每日景點動線大綱，點擊直達該天)
       let dayNavPills = "";
       if (state.itinerary.length > 0) {
         dayNavPills = `
@@ -4093,7 +4243,7 @@
               <div class="flex items-center gap-1.5 text-[11px] font-bold text-slate-700">
                 <span>⚡</span>
                 <span>天數速跳 (點選直達)：</span>
-                <span class="text-[10px] text-slate-400 font-normal">共 ${state.itinerary.length} 天</span>
+                <span class="text-[10px] text-slate-400 font-normal">共 ${state.itinerary.length} 天・點擊直達該日</span>
               </div>
               <button onclick="sortAllDaysSpots()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-bold px-2.5 py-1 rounded-full shadow-2xs transition flex items-center gap-1 shrink-0">
                 <span>✨</span>
@@ -4103,10 +4253,11 @@
             <div class="flex flex-wrap items-center gap-1.5 py-0.5">
               ${state.itinerary.map((d, i) => {
                 const th = getDayTheme(i);
+                const summaryBrief = getDaySummaryBrief(d);
                 return `
-                  <button onclick="scrollToDay(${d.dayNumber})" title="直達 Day ${d.dayNumber}：${escapeHtml(d.title || '')}" class="text-xs font-bold px-2.5 py-1 rounded-full border transition flex items-center gap-1.5 hover:shadow-xs active:scale-95 cursor-pointer ${th.pillBg}">
-                    <span class="w-2.5 h-2.5 rounded-full shadow-2xs" style="background-color: ${th.hex};"></span>
-                    <span>D${d.dayNumber} ${th.name.split('·')[0]}</span>
+                  <button onclick="scrollToDay(${d.dayNumber})" title="直達 Day ${d.dayNumber}：${escapeHtml(d.title || '')}" class="text-[11px] sm:text-xs font-medium px-2.5 py-1 rounded-lg border transition flex items-center gap-1.5 hover:shadow-xs active:scale-95 cursor-pointer text-slate-700 bg-white hover:bg-slate-50 border-slate-200 hover:border-slate-300 shrink-0">
+                    <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold text-white shadow-2xs shrink-0" style="background-color: ${th.hex};">D${d.dayNumber}</span>
+                    <span class="font-medium text-slate-800">${escapeHtml(summaryBrief)}</span>
                   </button>
                 `;
               }).join('')}
@@ -4118,8 +4269,8 @@
       let html = `
         <div class="flex items-center justify-between pb-2 border-b border-slate-200 mb-3">
           <div>
-            <h2 class="font-bold text-slate-800 text-sm">📅 岡山出發・12日名城巡禮交通排程</h2>
-            <p class="text-xs text-slate-500">桃太郎機場出發大閉環・12座名城＋7大神社・交通時刻直接對接</p>
+            <h2 class="font-bold text-slate-800 text-sm">📅 岡山出發・14日名城與丹後絕景大閉環</h2>
+            <p class="text-xs text-slate-500">桃太郎機場出發大閉環・12座名城＋丹後天橋立伊根＋7大神社・交通時刻直接對接</p>
           </div>
           <button onclick="addNewDay()" class="bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold px-3 py-1.5 rounded flex items-center gap-1 transition shadow-sm cursor-pointer">
             ➕ 新增天數
@@ -7720,13 +7871,411 @@
     }
 
     // ==========================================
+    // 雲端即時資料庫同步模組 (Cloud Realtime Sync)
+    // 基於 Firebase Realtime Database REST API
+    // ==========================================
+    let cloudPushTimer = null;
+    let cloudPollTimer = null;
+
+    function saveCloudConfig() {
+      try {
+        localStorage.setItem(STORAGE_KEY_CLOUD_CONFIG, JSON.stringify(cloudConfig));
+      } catch (e) {
+        console.warn("無法儲存雲端設定:", e);
+      }
+    }
+
+    function getEffectiveDbUrl() {
+      const url = (cloudConfig.customDbUrl || "").trim() || DEFAULT_CLOUD_DB_URL;
+      return url.replace(/\/+$/, "");
+    }
+
+    function formatSyncTime(ts) {
+      if (!ts) return "從未";
+      const d = new Date(ts);
+      const h = String(d.getHours()).padStart(2, "0");
+      const m = String(d.getMinutes()).padStart(2, "0");
+      const s = String(d.getSeconds()).padStart(2, "0");
+      return `${h}:${m}:${s}`;
+    }
+
+    function updateCloudStatusUI(status, label) {
+      if (status) cloudConfig.syncStatus = status;
+      const dot = document.getElementById("cloudSyncDot");
+      const text = document.getElementById("cloudSyncStatusText");
+      const btn = document.getElementById("cloudSyncStatusBtn");
+      if (!dot || !text) return;
+
+      if (!cloudConfig.enabled) {
+        dot.className = "w-2 h-2 rounded-full bg-slate-400";
+        text.innerText = "☁️ 雲端同步 (未啟用)";
+        if (btn) btn.className = "bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold px-3 py-1.5 rounded flex items-center gap-1.5 transition shadow-sm text-xs cursor-pointer border border-slate-600 shrink-0";
+        return;
+      }
+
+      if (btn) btn.className = "bg-indigo-700 hover:bg-indigo-600 text-white font-bold px-3 py-1.5 rounded flex items-center gap-1.5 transition shadow-sm text-xs cursor-pointer border border-indigo-400/50 shrink-0";
+
+      const currentStatus = status || cloudConfig.syncStatus || 'synced';
+      if (currentStatus === "syncing") {
+        dot.className = "w-2 h-2 rounded-full bg-amber-400 animate-ping";
+        text.innerText = label || "🟡 雲端同步中...";
+      } else if (currentStatus === "synced") {
+        dot.className = "w-2 h-2 rounded-full bg-emerald-400";
+        text.innerText = label || `🟢 ${cloudConfig.roomId}`;
+      } else if (currentStatus === "error") {
+        dot.className = "w-2 h-2 rounded-full bg-rose-400";
+        text.innerText = label || "🔴 離線 (本地已存)";
+      } else {
+        dot.className = "w-2 h-2 rounded-full bg-emerald-400";
+        text.innerText = `🟢 ${cloudConfig.roomId}`;
+      }
+    }
+
+    function getSyncPayload() {
+      return {
+        version: 1,
+        roomId: cloudConfig.roomId,
+        updatedAt: Date.now(),
+        updatedBy: (state.members && state.members.a) ? state.members.a : "獅子",
+        itinerary: state.itinerary,
+        spots: state.spots,
+        expenses: state.expenses,
+        members: state.members,
+        exchangeRate: state.exchangeRate,
+        deletedSpotIds: state.deletedSpotIds
+      };
+    }
+
+    function scheduleCloudPush() {
+      if (!cloudConfig.enabled || !cloudConfig.autoSync) return;
+      if (cloudPushTimer) clearTimeout(cloudPushTimer);
+      updateCloudStatusUI("syncing", "準備儲存至雲端...");
+      cloudPushTimer = setTimeout(() => {
+        pushToCloud({ silent: true });
+      }, 1200); // 1.2 秒防抖
+    }
+
+    async function pushToCloud(options = {}) {
+      const { silent = false } = options;
+      if (!cloudConfig.enabled) {
+        if (!silent) alert("尚未啟用雲端同步，請先開啟連線！");
+        return;
+      }
+      if (!cloudConfig.roomId || !cloudConfig.roomId.trim()) {
+        if (!silent) alert("請先填寫雲端房間代碼！");
+        return;
+      }
+
+      try {
+        updateCloudStatusUI("syncing", "正在上傳到雲端...");
+        const roomKey = encodeURIComponent(cloudConfig.roomId.trim());
+        const url = `${getEffectiveDbUrl()}/rooms/${roomKey}.json`;
+        const payload = getSyncPayload();
+
+        const res = await fetch(url, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status} ${res.statusText}`);
+        }
+
+        cloudConfig.lastSyncedAt = payload.updatedAt;
+        saveCloudConfig();
+        updateCloudStatusUI("synced", `已同步 (${formatSyncTime(payload.updatedAt)})`);
+
+        if (!silent) {
+          alert(`✅ 成功強制上傳至雲端資料庫！\n\n房間代碼：${cloudConfig.roomId}\n已同步項目：14天行程動線、景點清單、兩人分帳記帳清單！`);
+        }
+      } catch (err) {
+        console.error("雲端上傳失敗:", err);
+        updateCloudStatusUI("error", "雲端上傳失敗 (本地已留存)");
+        if (!silent) {
+          alert(`❌ 雲端上傳失敗：\n${err.message}\n\n（您的最新資料已完整安全保存在本機 LocalStorage 中，待網路正常時可再次嘗試）`);
+        }
+      }
+    }
+
+    async function pullFromCloud(options = {}) {
+      const { silent = false, initial = false } = options;
+      if (!cloudConfig.enabled || !cloudConfig.roomId || !cloudConfig.roomId.trim()) return;
+
+      try {
+        if (!silent) updateCloudStatusUI("syncing", "正在同步雲端資料...");
+        const roomKey = encodeURIComponent(cloudConfig.roomId.trim());
+        const url = `${getEffectiveDbUrl()}/rooms/${roomKey}.json`;
+
+        const res = await fetch(url);
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status} ${res.statusText}`);
+        }
+
+        const data = await res.json();
+        if (!data) {
+          if (initial) {
+            console.log("雲端房間尚無資料，自動以本地資料進行初次上傳");
+            await pushToCloud({ silent: true });
+            return;
+          }
+          updateCloudStatusUI("synced", `已連線 (${cloudConfig.roomId})`);
+          if (!silent) alert(`ℹ️ 雲端房間【${cloudConfig.roomId}】目前尚無資料。\n您可以點擊「立即強制上傳」將目前行程記帳送上雲端！`);
+          return;
+        }
+
+        let hasChanges = false;
+        if (data.itinerary && Array.isArray(data.itinerary)) {
+          state.itinerary = data.itinerary;
+          hasChanges = true;
+        }
+        if (data.spots && Array.isArray(data.spots)) {
+          state.spots = data.spots;
+          hasChanges = true;
+        }
+        if (data.expenses && Array.isArray(data.expenses)) {
+          state.expenses = data.expenses;
+          hasChanges = true;
+        }
+        if (data.members && typeof data.members === 'object') {
+          state.members = data.members;
+          hasChanges = true;
+        }
+        if (data.exchangeRate) {
+          state.exchangeRate = data.exchangeRate;
+        }
+        if (data.deletedSpotIds && Array.isArray(data.deletedSpotIds)) {
+          state.deletedSpotIds = data.deletedSpotIds;
+        }
+
+        if (hasChanges) {
+          saveState({ skipCloudPush: true });
+          renderMainPanel();
+          renderMapElements();
+          updateMapFilterDropdown();
+        }
+
+        cloudConfig.lastSyncedAt = data.updatedAt || Date.now();
+        saveCloudConfig();
+        updateCloudStatusUI("synced", `已同步 (${formatSyncTime(cloudConfig.lastSyncedAt)})`);
+
+        if (!silent) {
+          alert(`✅ 已成功從雲端同步最新行程與記帳！\n\n房間代碼：${cloudConfig.roomId}\n最後更新時間：${new Date(cloudConfig.lastSyncedAt).toLocaleString()}\n更新者：${data.updatedBy || '旅伴'}`);
+        }
+      } catch (err) {
+        console.error("雲端拉取失敗:", err);
+        updateCloudStatusUI("error", "雲端連線失敗 (使用本地資料)");
+        if (!silent) {
+          alert(`❌ 雲端同步失敗：\n${err.message}\n\n（目前正常呈現本機已儲存的行程與記帳）`);
+        }
+      }
+    }
+
+    function startCloudPolling() {
+      if (cloudPollTimer) clearInterval(cloudPollTimer);
+      if (!cloudConfig.enabled) return;
+      cloudPollTimer = setInterval(() => {
+        if (typeof document !== 'undefined' && document.visibilityState === 'visible' && cloudConfig.enabled) {
+          pullFromCloud({ silent: true });
+        }
+      }, 20000);
+    }
+
+    function initCloudSync() {
+      updateCloudStatusUI();
+      if (cloudConfig.enabled) {
+        pullFromCloud({ silent: true, initial: true });
+        startCloudPolling();
+      }
+    }
+
+    function openCloudSyncModal() {
+      const modal = document.getElementById("cloudSyncModal");
+      if (!modal) return;
+      document.getElementById("modalRoomIdInput").value = cloudConfig.roomId || "lion-fang-jp2027";
+      document.getElementById("modalDbUrlInput").value = cloudConfig.customDbUrl || "";
+      document.getElementById("modalAutoSyncToggle").checked = cloudConfig.autoSync !== false;
+      document.getElementById("modalCloudEnabledToggle").checked = !!cloudConfig.enabled;
+      
+      const statusSpan = document.getElementById("modalStatusDisplay");
+      if (statusSpan) {
+        statusSpan.innerHTML = cloudConfig.enabled 
+          ? `<span class="text-emerald-600 font-bold">🟢 已啟用雲端同步</span>（房間：<code class="bg-slate-100 px-1.5 py-0.5 rounded text-indigo-700 font-bold font-mono">${escapeHtml(cloudConfig.roomId)}</code>，最後同步：${formatSyncTime(cloudConfig.lastSyncedAt)}）`
+          : `<span class="text-slate-500 font-bold">⚪ 目前未啟用</span>（所有資料仍自動儲存於本機 LocalStorage）`;
+      }
+
+      modal.classList.remove("hidden");
+    }
+
+    function closeCloudSyncModal() {
+      const modal = document.getElementById("cloudSyncModal");
+      if (modal) modal.classList.add("hidden");
+    }
+
+    function saveCloudSettingsFromModal() {
+      const enabled = document.getElementById("modalCloudEnabledToggle").checked;
+      const roomId = document.getElementById("modalRoomIdInput").value.trim();
+      const customDbUrl = document.getElementById("modalDbUrlInput").value.trim();
+      const autoSync = document.getElementById("modalAutoSyncToggle").checked;
+
+      if (enabled && !roomId) {
+        alert("請輸入房間代碼（例如：lion-fang-jp2027）！");
+        return;
+      }
+
+      cloudConfig.enabled = enabled;
+      cloudConfig.roomId = roomId || "lion-fang-jp2027";
+      cloudConfig.customDbUrl = customDbUrl;
+      cloudConfig.autoSync = autoSync;
+      saveCloudConfig();
+      updateCloudStatusUI();
+
+      if (cloudConfig.enabled) {
+        startCloudPolling();
+        pullFromCloud({ silent: false, initial: true });
+      } else {
+        if (cloudPollTimer) clearInterval(cloudPollTimer);
+        alert("已關閉雲端即時同步，系統將僅在本地瀏覽器進行 LocalStorage 儲存。");
+      }
+      closeCloudSyncModal();
+    }
+
+    function copyRoomShareUrl() {
+      const baseUrl = window.location.origin + window.location.pathname;
+      const room = (cloudConfig.roomId || "lion-fang-jp2027").trim();
+      const shareUrl = baseUrl + '#room=' + encodeURIComponent(room);
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(shareUrl).then(() => {
+          alert(`✅ 已複製雙人即時同步專屬網址！\n\n【專屬網址】\n${shareUrl}\n\n📲 傳給旅伴打開，對方的瀏覽器就會自動綁定同一個房間「${room}」，兩人隨時新增行程或記帳，雲端全自動即時同步！`);
+        }).catch(() => {
+          prompt("請手動按 Ctrl+C 複製以下雙人同步網址：", shareUrl);
+        });
+      } else {
+        prompt("請手動按 Ctrl+C 複製以下雙人同步網址：", shareUrl);
+      }
+    }
+
+    // ==========================================
     // 啟動程式
     // ==========================================
     window.addEventListener("DOMContentLoaded", () => {
       initState();
       initMap();
       renderMainPanel();
+      initCloudSync(); // 啟動雲端即時同步機制
     });
   </script>
+
+  <!-- ☁️ 雙人即時雲端同步設定 Modal -->
+  <div id="cloudSyncModal" class="hidden fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh]">
+      <!-- 彈窗頂部 Header -->
+      <div class="bg-gradient-to-r from-indigo-700 via-indigo-800 to-slate-900 text-white px-5 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <span class="text-2xl">☁️</span>
+          <div>
+            <h3 class="font-black text-sm sm:text-base">雙人即時雲端同步 (Firebase 資料庫)</h3>
+            <p class="text-[11px] text-indigo-200">兩人多手機同時打開・行程與記帳雙向即時同步</p>
+          </div>
+        </div>
+        <button onclick="closeCloudSyncModal()" class="text-slate-300 hover:text-white text-xl font-bold p-1 cursor-pointer">✕</button>
+      </div>
+
+      <!-- 彈窗主體內容 -->
+      <div class="p-5 space-y-4 text-xs overflow-y-auto">
+        <!-- 當前狀態卡片 -->
+        <div class="bg-indigo-50/80 border border-indigo-200 rounded-xl p-3.5 space-y-1.5 shadow-2xs">
+          <div class="font-bold text-slate-700 flex items-center justify-between">
+            <span class="flex items-center gap-1.5"><span>📡</span> 雲端連線狀態：</span>
+          </div>
+          <div id="modalStatusDisplay" class="text-xs text-slate-700"></div>
+        </div>
+
+        <!-- 啟用開關 -->
+        <div class="flex items-center justify-between p-3 bg-slate-50 border border-slate-200 rounded-xl">
+          <div>
+            <div class="font-bold text-slate-800 text-xs">啟用雙人即時雲端同步</div>
+            <div class="text-[11px] text-slate-500">開啟後將自動與雲端房間保持最新資料連線</div>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="modalCloudEnabledToggle" class="sr-only peer">
+            <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+          </label>
+        </div>
+
+        <!-- 房間代碼 -->
+        <div class="space-y-1">
+          <label class="font-black text-slate-700 flex items-center justify-between">
+            <span>🔑 雙人專屬同步房間代碼 (Room ID)：</span>
+            <span class="text-[10px] text-indigo-600 font-normal">兩人填相同代碼即可互通</span>
+          </label>
+          <input type="text" id="modalRoomIdInput" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs font-mono text-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="例如：lion-fang-jp2027">
+          <p class="text-[11px] text-slate-500">建議使用兩人的名字組合（如 <code>lion-fang-jp2027</code>），英數字或底線皆可。</p>
+        </div>
+
+        <!-- 複製專屬同步網址快捷按鈕 -->
+        <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-emerald-900 text-xs flex items-center gap-1">
+              <span>📲</span> 快速邀請旅伴 (免手動設定)：
+            </span>
+            <button onclick="copyRoomShareUrl()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-lg shadow-xs transition flex items-center gap-1 cursor-pointer text-xs">
+              <span>🔗</span> 複製專屬同步網址
+            </button>
+          </div>
+          <p class="text-[11px] text-emerald-800 leading-relaxed">
+            把產生的網址直接發到 LINE 給旅伴，對方在手機點開即可直接連入同一個房間，行程與記帳即刻雙向同步！
+          </p>
+        </div>
+
+        <!-- 自動同步開關 -->
+        <div class="flex items-center justify-between p-3 bg-slate-50 border border-slate-200 rounded-xl">
+          <div>
+            <div class="font-bold text-slate-800 text-xs">自動防抖即時推播</div>
+            <div class="text-[11px] text-slate-500">只要記帳或調整行程，1.2秒內自動上傳至雲端</div>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="modalAutoSyncToggle" class="sr-only peer" checked>
+            <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+          </label>
+        </div>
+
+        <!-- 手動強制操作按鈕區 -->
+        <div class="pt-2 border-t border-slate-200 grid grid-cols-2 gap-2">
+          <button onclick="pushToCloud({ silent: false })" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-3 rounded-lg shadow-2xs transition flex items-center justify-center gap-1.5 cursor-pointer">
+            <span>📤</span> 立即強制上傳到雲端
+          </button>
+          <button onclick="pullFromCloud({ silent: false })" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-2 px-3 rounded-lg shadow-2xs transition flex items-center justify-center gap-1.5 cursor-pointer">
+            <span>📥</span> 立即強制從雲端拉取
+          </button>
+        </div>
+
+        <!-- 高級設定：自訂私有 Firebase 資料庫 URL (折疊/選填) -->
+        <details class="border border-slate-200 rounded-xl p-2.5 bg-slate-50 text-[11px]">
+          <summary class="font-bold text-slate-700 cursor-pointer flex items-center justify-between">
+            <span>⚙️ 高級自訂：個人私有 Firebase Realtime Database URL (選填)</span>
+            <span class="text-slate-400 font-normal">展開 ▼</span>
+          </summary>
+          <div class="mt-2.5 space-y-2 text-slate-600">
+            <input type="text" id="modalDbUrlInput" class="w-full border border-slate-300 rounded px-2.5 py-1.5 font-mono text-xs bg-white text-slate-800" placeholder="留空則使用預設專屬端點 (https://fang-jp2027-default-rtdb.firebaseio.com)">
+            <p class="leading-relaxed">
+              預設已提供開箱即用之雲端同步通道。若您想要擁有 100% 獨立的 Firebase 資料庫：前往 <a href="https://console.firebase.google.com" target="_blank" class="text-indigo-600 underline font-bold">Firebase Console</a> 免費建立 Realtime Database，將資料庫網址貼至此處即可。
+            </p>
+          </div>
+        </details>
+      </div>
+
+      <!-- 彈窗底端按鈕 -->
+      <div class="p-4 bg-slate-100 border-t border-slate-200 flex items-center justify-end gap-2 shrink-0">
+        <button onclick="closeCloudSyncModal()" class="px-4 py-2 text-slate-600 hover:text-slate-900 font-bold transition cursor-pointer text-xs">
+          取消
+        </button>
+        <button onclick="saveCloudSettingsFromModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-xl font-bold shadow-sm transition cursor-pointer text-xs flex items-center gap-1">
+          <span>💾</span> 儲存設定並立即連線
+        </button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
