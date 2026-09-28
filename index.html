@@ -59,14 +59,14 @@
         <h1 class="text-lg font-bold tracking-wide flex items-center gap-2">
           山陰山陽 100名城巡禮路線規劃器
           <span class="text-xs bg-red-600 px-2 py-0.5 rounded font-mono font-normal">12名城+溫泉</span>
-          <span class="text-xs bg-amber-400 text-slate-950 font-black px-2.5 py-0.5 rounded shadow-sm">⚡ V50 最新版 (11天閉環)</span>
+          <span class="text-xs bg-amber-400 text-slate-950 font-black px-2.5 py-0.5 rounded shadow-sm">⚡ V56 最新版 (OpenStreetMap 日本開源街景)</span>
         </h1>
-        <p class="text-xs text-slate-400">含休館日智能檢核・Yahoo乘換案內直連・住宿筆記・白兔神社已加入・無秋芳洞</p>
+        <p class="text-xs text-slate-400">含休館日智能檢核・Yahoo乘換案內直連・三朝/湯原溫泉入庫・地圖依排定天數精確過濾</p>
       </div>
     </div>
     <div class="flex items-center gap-2 text-sm">
       <button onclick="resetToDefault()" class="bg-red-600 hover:bg-red-500 text-white font-bold px-3 py-1.5 rounded flex items-center gap-1.5 transition shadow-md text-xs cursor-pointer border border-red-400 shrink-0" title="若看到舊版行程，點擊此按鈕立即清空瀏覽器快取並載入最新版！">
-        🔄 強制載入最新行程 (清空舊快取)
+        🔄 強制載入最新行程 (清空舊快取 V56)
       </button>
       <button id="cloudSyncStatusBtn" onclick="openCloudSyncModal()" class="bg-indigo-700 hover:bg-indigo-600 text-white font-bold px-3 py-1.5 rounded flex items-center gap-1.5 transition shadow-sm text-xs cursor-pointer border border-indigo-400/50 shrink-0" title="點擊設定雙人即時雲端同步 (Firebase)">
         <span id="cloudSyncDot" class="w-2 h-2 rounded-full bg-slate-400"></span>
@@ -89,14 +89,14 @@
   </header>
 
   <!-- 主工作區：左側排程/車次/筆記，右側互動地圖 -->
-  <div class="flex flex-1 overflow-hidden">
+  <div class="flex flex-col md:flex-row flex-1 overflow-hidden min-h-0">
     
     <!-- 左側面板 (Tabs: 行程規劃 / 景點清單 / 快速查車次) -->
-    <div class="w-full md:w-3/5 lg:w-[60%] xl:w-[62%] flex flex-col border-r border-slate-200 bg-white z-20 shadow-lg overflow-hidden">
+    <div class="w-full md:w-3/5 lg:w-[60%] xl:w-[62%] flex flex-col border-r border-slate-200 bg-white z-20 shadow-lg overflow-hidden shrink-0 h-[50vh] md:h-full">
       <!-- 標籤切換 (行程總表 / 景點清單 / 快速查車次 / 兩人記帳分帳) -->
       <div class="flex border-b border-slate-200 bg-slate-100 text-xs sm:text-sm font-medium overflow-x-auto no-scrollbar">
         <button id="tabBtnItinerary" onclick="switchTab('itinerary')" class="py-3 px-3 sm:px-4 text-center border-b-2 border-red-600 font-bold text-red-600 bg-white shrink-0 flex items-center justify-center gap-1 transition">
-          <span>🍑</span><span>行程規劃 (<span id="totalDaysBadge">14</span>天)</span>
+          <span>🍑</span><span>行程規劃 (<span id="totalDaysBadge">12</span>天)</span>
         </button>
         <button id="tabBtnSpots" onclick="switchTab('spots')" class="py-3 px-3 sm:px-4 text-center text-slate-600 hover:text-slate-900 shrink-0 flex items-center justify-center gap-1 border-b-2 border-transparent transition">
           <span>📍</span><span>景點庫 (<span id="totalSpotsBadge">50</span>)</span>
@@ -116,7 +116,7 @@
     </div>
 
     <!-- 右側地圖面板 -->
-    <div class="w-full md:w-2/5 lg:w-[40%] xl:w-[38%] flex flex-col relative overflow-hidden">
+    <div class="w-full md:w-2/5 lg:w-[40%] xl:w-[38%] flex flex-col relative overflow-hidden h-[50vh] md:h-full flex-1">
       <!-- 地圖過濾工具列 -->
       <div class="absolute top-2.5 right-2.5 z-[1000] bg-white/95 backdrop-blur-md shadow-md rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 text-xs max-w-[calc(100%-20px)] border border-slate-200/90">
         <span class="font-bold text-slate-700 whitespace-nowrap text-[11px] sm:text-xs">地圖顯示：</span>
@@ -124,13 +124,13 @@
           <option value="all">🗺️ 全部天數與景點</option>
           <!-- 動態填入 Day 1, Day 2 等 -->
         </select>
-        <button onclick="fitMapBounds()" title="置中縮放視野" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-1 rounded border border-slate-300 whitespace-nowrap text-[11px] font-medium shrink-0 transition">
+        <button onclick="fitMapBounds()" title="置中縮放視野" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-1 rounded border border-slate-300 whitespace-nowrap text-[11px] font-medium shrink-0 transition cursor-pointer">
           🎯 置中
         </button>
       </div>
 
       <!-- 地圖容器 -->
-      <div id="map"></div>
+      <div id="map" class="w-full flex-1 h-full min-h-[300px]"></div>
 
       <!-- 地圖圖例 -->
       <div class="bg-white border-t border-slate-200 px-4 py-2 flex items-center justify-between text-xs text-slate-600 z-10 shrink-0">
@@ -518,7 +518,7 @@
   </div>
 
   <!-- 載入原始景點資料庫 -->
-  <script src="spots_data.js?v=2027_01_13_ROUTE_OPTIMIZE_V50"></script>
+  <script src="spots_data.js?v=2027_01_13_ROUTE_OPTIMIZE_V56_OSM_JP"></script>
 
   <!-- 應用程式主邏輯 -->
   <script>
@@ -529,7 +529,7 @@
     const STORAGE_KEY_ITINERARY = "jp_castles_itinerary_v1";
     const STORAGE_KEY_ITINERARY_VER = "jp_castles_itinerary_ver";
     const STORAGE_KEY_DELETED_SPOTS = "jp_castles_deleted_spots_v1";
-    const CURRENT_ITINERARY_VER = "2027_01_13_ROUTE_OPTIMIZE_V50";
+    const CURRENT_ITINERARY_VER = "2027_01_13_ROUTE_OPTIMIZE_V56_OSM_JP";
 
     // ==========================================
     // 雙重自包含備援資料庫 (Fallback Database)
@@ -1115,6 +1115,46 @@
     "transitInfo": "JR 福山駅南口 5 號月台搭乘「鞆鐵道巴士」往鞆港方向約30分直達溫泉街",
     "reservationUrl": "https://tomonoura.np-inc.jp/",
     "notes": "宮崎駿《崖上的波妞》取景舞台、江戶常夜燈古港，對望仙醉島絕景海景露天風呂與瀨戶內海海鮮。"
+  },
+  {
+    "id": "misasa_onsen",
+    "name": "三朝溫泉 (鳥取縣)",
+    "prefecture": "鳥取",
+    "type": "lodging",
+    "lat": 35.4108,
+    "lng": 133.8931,
+    "stayDuration": "夜宿放鬆 / 2-3小時泡湯",
+    "climbLevel": "lodging",
+    "climbLevelText": "♨️ 世界屈指鐳氡名湯 (三朝川和風古湯)",
+    "nearestStation": "倉吉駅",
+    "stampLocation": "三朝溫泉觀光案內所 / 各溫泉旅館",
+    "closedDay": "None",
+    "closedDayText": "溫泉街全年無休",
+    "backupStamp": "",
+    "openHours": "全天 (外湯株湯、河原風呂等約 08:00~21:45)",
+    "transitInfo": "JR 倉吉駅搭乘日之丸路線巴士約 20~25 分鐘直達三朝溫泉街",
+    "reservationUrl": "https://misasaonsen.jp/",
+    "notes": "• 【世界級放射能泉】：鳥取縣代表性古湯，以高濃度鐳（Radium）與氡氣泉質聞名全日本，三朝川兩側和風溫泉街石疊小徑極具情調。\\n• 【名物體驗】：河原風呂（河畔免費天然露天混浴）、株湯（飲泉與元湯）、木造三朝橋足湯。\\n• 【順路銜接】：JR 山陰本線倉吉站下車轉搭巴士直達，非常適合搭配倉吉白壁土藏群或由良柯南小鎮順遊。"
+  },
+  {
+    "id": "yubara_onsen",
+    "name": "湯原溫泉 (岡山縣)",
+    "prefecture": "岡山",
+    "type": "lodging",
+    "lat": 35.2011,
+    "lng": 133.7324,
+    "stayDuration": "夜宿放鬆 / 2-3小時泡湯",
+    "climbLevel": "lodging",
+    "climbLevelText": "♨️ 美作三湯・西之橫綱 (砂湯天然巨石露天風呂)",
+    "nearestStation": "中國勝山駅",
+    "stampLocation": "湯原溫泉觀光案內所 / 湯本溫泉館",
+    "closedDay": "None",
+    "closedDayText": "溫泉街全年無休",
+    "backupStamp": "",
+    "openHours": "全天 (砂湯為24小時免費開放露天混浴)",
+    "transitInfo": "JR 姬新線中國勝山駅搭乘真庭市社區巴士(まにわくん)約 35 分鐘抵達湯原溫泉；或自岡山站搭乘高速巴士直達",
+    "reservationUrl": "https://www.yubara-onsen.com/",
+    "notes": "• 【西日本露天溫泉橫綱】：岡山縣真庭市「美作三湯」之首，以湯原水壩下方的天然露天巨石混浴『砂湯』名揚全國（24小時免費開放，男士著專用短褲、女士著專用浴袍安心入浴）。\\n• 【弱鹼性單純名泉】：自旭川河床天然湧出，被譽為美肌與不老名湯。\\n• 【和風溫泉街】：溪流散策步道、射靶懷舊店、湯本溫泉館足湯，深山溫泉鄉氛圍濃郁。"
   },
   {
     "id": "okayama_airport",
@@ -1764,7 +1804,7 @@
     "lodgingLocation": "湯郷溫泉街 (美作市)",
     "recommendedHotels": "季譜之里 (Kifu no Sato) / 竹亭溫泉旅館 (Chikutei) / 湯鄉 Grand Hotel",
     "lodgingReason": "美作三湯千年名湯，津山搭 JR 姫新線至林野站享旅館專車免費接駁（8分），15:30 早到泡夕之湯，享用會席料理。",
-    "notes": "• 【♨️ 溫泉早到模式 (建議 15:20~15:30 抵達湯郷溫泉)】：\\n  - 溫泉旅館精髓在於早到泡第一道「夕之湯」、換浴衣放鬆並準時享用 18:00 會席料理。\\n  - 【關鍵早到時刻表】：08:30 岡山搭車攻鬼ノ城 (09:00~10:30，預留 1.5h) ➔ 11:15 快速列車至津山 (12:20 抵) ➔ 津山牛骨炒烏龍午餐＋攻津山城 (12:30~13:50，預留 1h) ➔ 津山站搭 14:32 發車之 JR 姫新線 (18分，Pass包) ➔ 14:50 抵林野站 ➔ 旅館免費專車接駁 ➔ 15:15 順利進駐湯郷溫泉旅館！\\n• 【鬼ノ城・登山步道 (建議預留 1.5~2h)】：晨間自岡山搭 JR 吉備線至總社站，搭計程車約 30 分攻登古代神秘山城鬼ノ城。山頂西門石垣與步道巡禮視野極佳，下車時務必先與司機約定下山回程時間！\\n• 【津山城・平山城 (基本預留 1h)】：午後搭 JR 津山線至津山站，步行 10 分攻登津山城（鶴山公園備中櫓，園區平緩好走）。\\n• 【前往湯郷溫泉宿】：津山城參觀後，搭乘 JR 姫新線至「林野站」(約 18 分，JR Pass 包含)，出站由旅館專車免費接送 (約 8 分) 或搭計程車 (約 8 分，1,200 円)；亦可自津山站直接搭計程車 (約 30 分)。入住和風旅館，享受千年美肌白鷺古湯與老街散策。",
+    "notes": "• 【♨️ 溫泉早到模式 (建議 15:20~15:30 抵達湯郷溫泉)】：溫泉旅館精髓在於早到泡第一道「夕之湯」、換浴衣放鬆並準時享用 18:00 會席料理。\\n• 【鬼ノ城・登山步道 (建議預留 1.5~2h)】：晨間自岡山搭 JR 吉備線至總社站，搭計程車約 30 分攻登古代神秘山城鬼ノ城。山頂西門石垣與步道巡禮視野極佳，下車時務必先與司機約定下山回程時間！\\n• 【津山城・平山城 (基本預留 1h)】：午後搭 JR 津山線至津山站，步行 10 分攻登津山城（鶴山公園備中櫓，園區平緩好走）。\\n• 【前往湯郷溫泉宿】：津山城參觀後，搭乘 JR 姫新線至「林野站」(約 18 分，JR Pass 包含)，出站由旅館專車免費接送 (約 8 分) 或搭計程車 (約 8 分，1,200 円)；入住和風旅館，享受千年美肌白鷺古湯與老街散策。",
     "spotIds": [
       "kinojo",
       "tsuyama",
@@ -1773,26 +1813,42 @@
   },
   {
     "dayNumber": 3,
-    "title": "Day 3：晨登名城鳥取城 (確保蓋章) ➔ 鳥取和牛元祖午餐 ➔ 鳥取砂丘 ➔ 皆生溫泉 (估算晚餐)",
+    "title": "Day 3：晨登名城鳥取城 ➔ 鳥取和牛元祖午餐 ➔ 鳥取砂丘 ➔ 白兔神社 ➔ 宿城崎溫泉",
     "date": "2027-01-15",
-    "baseStation": "林野駅 / 鳥取駅 / 米子駅",
-    "lodging": "皆生溫泉 海濱旅館 (米子市)",
-    "lodgingLocation": "皆生溫泉海濱 (米子市)",
-    "recommendedHotels": "皆生菊乃家 / 皆生海色湯宿海心 (Umi to Kokoro) / 華水亭 (Kasuiten)",
-    "lodgingReason": "鳥取特急直達米子轉公車15分抵海濱；17:35 早到入宿，18:00~18:30 悠閒享用日本海松葉蟹晚餐與露天鹽湯，隔天往安來月山富田城僅8分。",
-    "notes": "• 【08:15~09:45 晨間移動 (約 1.5h)】：湯郷溫泉旅館專車至林野站 ➔ 搭車經姬新線/智頭急行 ➔ 09:45 抵達「鳥取駅」，站內置物櫃寄放大件行李。\\n• 【10:05~11:15 晨登名城・鳥取城參觀與確保蓋章 (停留 1h10m)】：車站搭 100 円循環公車「くる梨綠線」9 分鐘直達「仁風閣・縣立博物館」下車，蓋取 100名城第 63 號章，漫步天球丸特殊圓形石垣與久松山麓。\\n• 【11:30~12:45 中午午餐・日本涮涮鍋元祖「たくみ割烹店」(預留 1h15m)】：返回鳥取站北口，享用日本和牛涮涮鍋發祥店之「元祖鳥取和牛すすぎ鍋」。\\n• 【13:00~15:15 午後絕景・鳥取砂丘 & 砂之美術館 (停留 2h15m)】：巴士 20 分直達砂丘會館，漫步馬背頂峰眺望日本海壯闊海天一色。\\n• 【15:25~17:35 特急移動至米子 ➔ 進駐皆生溫泉】：搭特急スーパーまつかぜ 55 分抵米子，轉公車 15 分直達皆生溫泉，17:35 順利 Check-in。",
+    "baseStation": "林野駅 / 鳥取駅 / 城崎溫泉駅",
+    "lodging": "城崎溫泉 和風旅館 (七大外湯巡禮/松葉蟹)",
+    "lodgingLocation": "城崎溫泉街 (兵庫縣豐岡市)",
+    "recommendedHotels": "西村屋本館 / 城崎山名央館 (Yamanaokan) / 旅館 川口屋本館",
+    "lodgingReason": "砂丘與白兔神社參觀後搭特急直達城崎溫泉；入住換穿浴衣木屐，享受七大外湯巡禮與冬季極品日本海松葉蟹盛宴；隔天晨間搭京都丹後鐵道前往天橋立僅需 50 分鐘！",
+    "notes": "• 【08:15~09:45 晨間移動 (約 1.5h)】：湯郷溫泉旅館專車至林野站 ➔ 搭車經姬新線/智頭急行 ➔ 09:45 抵達「鳥取駅」，站內置物櫃寄放大件行李。\\n• 【10:05~11:15 晨登名城・鳥取城 (停留 1h10m)】：車站搭 100 円循環公車「くる梨綠線」9 分鐘直達「仁風閣・縣立博物館」下車，蓋取 100名城第 63 號章，漫步天球丸特殊圓形石垣。\\n• 【11:30~12:45 日本涮涮鍋元祖「たくみ割烹店」(預留 1h15m)】：返回鳥取站北口，享用日本和牛涮涮鍋發祥店之「元祖鳥取和牛すすぎ鍋」。\\n• 【13:00~14:40 午後絕景・鳥取砂丘 & 砂之美術館 (停留 1h40m)】：巴士 20 分直達砂丘會館，漫步馬背頂峰眺望日本海壯闊海天一色。\\n• 【14:55~15:45 白兔神社・因幡之白兔神話縁結び (停留 50分)】：砂丘搭乘路線巴士 15 分鐘於「白兎」站下車，徒步 5 分抵白兔神社，參拜《古事記》神話發祥地與神話白兔雕像，祈求結緣良緣。\\n• 【16:00~17:20 前往城崎溫泉 ➔ Check-in】：返回鳥取站搭乘山陰本線特急約 1 小時直達「城崎溫泉駅」(JR Pass 全包！出站步行 3~8 分進溫泉旅館)，換穿浴衣木屐漫步外湯街，品嚐冬季極品松葉蟹晚餐！",
     "spotIds": [
       "tottori",
       "tottori_takumi",
       "tottori_sakyu",
       "hakuto_jinja",
-      "kaike_onsen"
+      "kinosaki_onsen"
     ]
   },
   {
     "dayNumber": 4,
-    "title": "Day 4：戰國月山富田城 ➔ 足立美術館 ➔ 國寶松江城",
+    "title": "Day 4：日本三景天橋立 (飛龍觀/傘松公園) ➔ 伊根舟屋 (海上午餐與遊覽船) ➔ 宿皆生溫泉 (海濱夕陽)",
     "date": "2027-01-16",
+    "baseStation": "城崎溫泉駅 / 天橋立駅 / 伊根灣 / 米子駅",
+    "lodging": "皆生溫泉 海濱旅館 (米子市)",
+    "lodgingLocation": "皆生溫泉海濱 (米子市)",
+    "recommendedHotels": "皆生菊乃家 / 皆生海色湯宿海心 (Umi to Kokoro) / 華水亭 (Kasuiten)",
+    "lodgingReason": "伊根舟屋遊覽結束後搭山陰特急直達米子，公車15分直達海濱溫泉；傍晚入住泡日本海海底湧出之海濱夕之湯，享用海鮮晚餐；隔日往安來月山富田城僅8分！",
+    "notes": "• 【🎫 JR PASS 京都丹後鐵道全線免費搭乘】：晨間自城崎溫泉搭車經豐岡轉乘「京都丹後鐵道」特急直達「天橋立駅」(山陽&山陰地區周遊券完全免費！)。天橋立站寄放大行李。\\n• 【🌊 日本三景・天橋立 (停留 2.5h)】：搭登山吊椅或單軌電車登上天橋立 Viewland 或傘松公園，兩腿倒立做「股のぞき(倒立觀)」，欣賞沙洲如昇天青龍絕景！參拜智恩寺文殊堂與欣賞旋轉90度的迴旋橋。\\n• 【⛵ 伊根舟屋聚落・日本最美村莊 (停留 2~2.5h)】：\\n  - 天橋立站前搭乘丹海巴士約 55 分鐘直達伊根灣。\\n  - 【伊根灣遊覽船】：搭乘觀光船巡航伊根灣(25分)，在甲板上餵食海鷗，近距離欣賞 230 棟浮於海上的獨特船屋。\\n  - 【舟屋日和海景午餐】：在「舟屋日和」享用丹後海鮮丼與向井酒造地酒。\\n• 【傍晚特急西行至皆生溫泉】：搭公車返回天橋立站，搭乘山陰本線特急經鳥取直奔米子，轉公車 15 分進駐皆生溫泉海濱溫泉旅館，邊泡露天海景溫泉邊賞夕陽。",
+    "spotIds": [
+      "amanohashidate",
+      "ine_funaya",
+      "kaike_onsen"
+    ]
+  },
+  {
+    "dayNumber": 5,
+    "title": "Day 5：戰國月山富田城 ➔ 足立美術館 ➔ 國寶松江城",
+    "date": "2027-01-17",
     "baseStation": "米子駅 / 安來駅 / 松江駅",
     "lodging": "松江市區飯店 / 宍道湖畔飯店",
     "lodgingLocation": "JR 松江駅周邊 或 宍道湖畔 (松江市)",
@@ -1807,30 +1863,30 @@
     ]
   },
   {
-    "dayNumber": 5,
-    "title": "Day 5：山陰小京都津和野・城下町與纜車山城 ➔ 宿萩市",
-    "date": "2027-01-17",
+    "dayNumber": 6,
+    "title": "Day 6：山陰小京都津和野・城下町與纜車山城 ➔ 宿萩市",
+    "date": "2027-01-18",
     "baseStation": "松江駅 / 益田駅 / 津和野駅 / 東萩駅",
     "lodging": "萩市區飯店 / 萩溫泉旅館",
-    "lodgingLocation": "萩市區 / 萩溫泉鄉 或 津和野 (山口縣)",
-    "recommendedHotels": "萩之宿 常茂惠 (米其林頂級純日式) / 萩本陣 (高台海景展望露天池) / 萩之鶴 北門屋敷",
-    "lodgingReason": "津和野搭巴士/JR約1小時直達萩市入住，次日清晨前往長門「元乃隅神社」與「萩城」車程最短、最順暢。",
-    "notes": "• 【放緩節奏・小京都漫步】：晨間自松江搭乘特急「スーパーおき」直達津和野。專注漫步津和野，告別急行軍。\\n• 【津和野城・觀光纜車加登山 (建議預留 1.5h)】：搭乘觀光登山纜車後再步行 15 分石垣稜線攻登津和野城跡，鳥瞰紅色石州瓦與盆地全景。\\n• 【殿町通錦鯉老街】：漫步江戶武家屋敷水渠，觀賞成群色彩繽紛的巨型錦鯉悠游。傍晚前往萩市入住。",
+    "lodgingLocation": "JR 東萩駅周邊 / 萩城下町 / 菊濱溫泉",
+    "recommendedHotels": "萩本陣 (Hagi Honjin 展望露天溫泉) / 萩之宿 常茂惠 (米其林頂級和風旅館) / 萩 Royal Intelligent Hotel (東萩站前徒步1分)",
+    "lodgingReason": "晨間特急直達津和野，傍晚搭防長巴士/JR抵萩市溫泉；享受長州毛利氏300年城下町夜景與和風溫泉。",
+    "notes": "• 【晨間山陰特急巡航】：08:00 松江站搭乘 JR 特急スーパーまつかぜ號直達益田 (約1.5小時)，轉山口線直達津和野站 (約30分)。站內寄放大行李。\\n• 【津和野城・天空山城 (停留 1.5h)】：搭觀光吊椅纜車登山，登頂俯瞰「山陰小京都」盆地全景與太皷谷稻成神社千本鳥居。\\n• 【太皷谷稻成神社 & 殿町通 (停留 1h)】：日本五大稻荷之一，參拜連綿朱紅鳥居隧道；隨後漫步殿町通武家屋敷白壁土藏與鯉魚悠游的水渠。\\n• 【傍晚前往長州萩市】：自津和野搭乘防長巴士或 JR 列車約 1 小時 20 分抵達東萩站，進駐萩市溫泉旅館，享用見蘭牛與日本海鮮晚餐。",
     "spotIds": [
       "tsuwano",
       "hagi_lodging"
     ]
   },
   {
-    "dayNumber": 6,
-    "title": "Day 6：長門斷崖絕景元乃隅神社 ➔ 長州維新世界遺產萩城 ➔ 宿新山口",
-    "date": "2027-01-18",
+    "dayNumber": 7,
+    "title": "Day 7：長門斷崖絕景元乃隅神社 ➔ 長州維新世界遺產萩城 ➔ 宿新山口",
+    "date": "2027-01-19",
     "baseStation": "東萩駅 / 長門市駅 / 新山口駅",
-    "lodging": "新山口站前飯店 (新幹線口)",
-    "lodgingLocation": "JR 新山口駅 新幹線口 (山口市)",
-    "recommendedHotels": "新山口康福飯店 (Comfort Hotel，出站1分) / 燦路都新山口飯店 (Hotel Sunroute，站前即達)",
-    "lodgingReason": "防長巴士下車即抵站前飯店；新山口為山陽新幹線大站，隔天清晨極速搭新幹線直奔新岩國/宮島，零行李負擔。",
-    "notes": "• 【元乃隅神社・CNN評選日本最美31景 (停留 1h)】：山口縣長門市海岸壯麗奇景！123 座斷崖朱紅鳥居沿山坡綿延面朝日本海，潮吹岩噴起白色浪花，必拍大鳥居高處功德箱！\\n• 【萩城・指月公園 (基本預留 1h)】：前往世界遺產萩城跡（指月公園平坦寬闊，內堀天守台散步輕鬆），漫步世界遺產萩城下町白壁土藏與菊濱海岸。\\n• 【夜宿新山口】：傍晚搭乘防長巴士直達新山口站前商務飯店入住，為明日山陽新幹線與周防行程做好準備。",
+    "lodging": "新山口站前飯店 (住宿建議)",
+    "lodgingLocation": "JR 新山口駅新幹線口 (南口) 站前",
+    "recommendedHotels": "JR西日本VIA INN Prime新山口 (車站直結) / 康福飯店新山口 (Comfort Hotel) / 露櫻飯店新山口 (Route Inn)",
+    "lodgingReason": "新幹線與特急樞紐核心，放行李空手輕鬆，次日早晨搭新幹線往廣島/岩國僅需30分鐘極為順暢。",
+    "notes": "• 【CNN絕景・元乃隅神社 (停留 1.5h)】：晨間自東萩包計程車或自長門市搭車前往元乃隅神社，走訪面朝日本海怒濤的 123 座朱紅鳥居龍宮之潮吹，向高懸於鳥居頂端的功德箱挑戰投幣祈福！\\n• 【世界遺產名城・萩城跡・指月城 (停留 1h)】：返回萩市，走訪指月公園指月山麓之毛利氏居城萩城，欣賞天守台石垣與護城河倒影。隨後漫步被列為世界遺產的萩城下町菊屋家住宅與木戶孝允故居。\\n• 【傍晚移動至新山口】：自東萩搭乘特急巴士「萩號 (Hagi-go)」約 60 分鐘直達新山口站新幹線口。進駐站前飯店 Check-in，晚上在站前居酒屋品嚐山口黑毛和牛與瓦片蕎麥麵。",
     "spotIds": [
       "motonosumi_jinja",
       "hagi",
@@ -1838,31 +1894,32 @@
     ]
   },
   {
-    "dayNumber": 7,
-    "title": "Day 7：周防名橋岩國城 ➔ 宮島世界遺產嚴島神社 ➔ 宿廣島",
-    "date": "2027-01-19",
-    "baseStation": "新山口駅 / 新岩國駅 / 宮島口 / 廣島駅",
-    "lodging": "廣島市區飯店 (格蘭比亞 / 喜來登 / ANA)",
-    "lodgingLocation": "JR 廣島駅周邊 或 八丁堀商圈 (廣島市)",
-    "recommendedHotels": "廣島格蘭比亞大飯店 (廣島站北口直通) / 廣島喜來登大飯店 (站旁直結) / 廣島ANA皇冠假日酒店",
-    "lodgingReason": "宮島口搭 JR 25 分鐘直達廣島站，直接進駐市中心大飯店，次日參觀廣島城與和平公園完全免換飯店。",
-    "notes": "• 【新山口搭新幹線至新岩國，岩國至宮島口僅 20 分鐘，100% 完美順路！】\\n• 【錦帶橋 & 岩國城・空中纜車 (預留 1.5h)】：搭公車遊覽日本三名橋五連木拱「錦帶橋」，搭乘吉香公園空中纜車直達山頂岩國城天守，山頂遠眺瀨戶內海群島。\\n• 【嚴島神社 (宮島)・海上大鳥居 (預留 2h)】：岩國搭 JR 山陽本線至宮島口，轉乘 JR 宮島渡輪 (JR Pass 全包！) 航向宮島，朝拜世界文化遺產海上朱紅大鳥居與寢殿造迴廊。\\n• 【傍晚進駐廣島】：搭 JR 山陽本線直達廣島站前飯店入住，晚上漫步八丁堀商圈。",
+    "dayNumber": 8,
+    "title": "Day 8：周防名橋錦帶橋・岩國城 ➔ 宮島世界遺產嚴島神社 ➔ 宿廣島",
+    "date": "2027-01-20",
+    "baseStation": "新山口駅 / 新岩國駅 / 岩國駅 / 宮島口駅 / 廣島駅",
+    "lodging": "廣島站前飯店 (D8 住宿建議)",
+    "lodgingLocation": "JR 廣島駅南口 / 北口 (新幹線口)",
+    "recommendedHotels": "廣島格蘭比亞大飯店 (Hotel Granvia Hiroshima，新幹線直結) / 廣島喜來登大飯店 / 大和Roynet廣島站前",
+    "lodgingReason": "宮島口搭山陽本線25分直達廣島站，出站直結飯店放下大件行李；連住兩晚免搬行李，周邊廣島燒與和牛名店林立。",
+    "notes": "• 【周防五連拱橋・錦帶橋 (停留 1h)】：晨間新山口搭山陽新幹線 15 分直達新岩國站，搭公車 12 分抵日本三名橋「錦帶橋」，漫步木造五連拱橋精湛建築。\\n• 【岩國城・空中纜車山頂天守 (停留 1h)】：穿過吉香公園搭乘岩國城登山纜車登上橫山山頂，參觀天守閣並遠眺錦帶橋與瀨戶內海絕景。\\n• 【日本三景・宮島嚴島神社 (停留 2.5~3h)】：岩國搭 JR 山陽本線 20 分抵宮島口，轉搭 JR西日本宮島渡輪 (JR Pass 免費搭乘！) 10 分抵宮島。參拜海上朱紅大鳥居、迴廊建築與嚴島神社國寶本殿，沿表參道商店街品嚐現烤牡蠣、紅葉饅頭與宮島啤酒。\\n• 【前進廣島入住】：宮島口搭 JR 山陽本線 28 分直達廣島站，進駐站前飯店辦理 Check-in，晚上前往廣島站「ekie」美食街品嚐正宗廣島燒！",
     "spotIds": [
+      "kintaikyo",
       "iwakuni",
       "itsukushima_jinja",
       "hiroshima_lodging_d8"
     ]
   },
   {
-    "dayNumber": 8,
-    "title": "Day 8：廣島和平文化・鯉城與護國神社 ➔ 原爆圓頂 ➔ 廣島和牛晚宴",
-    "date": "2027-01-20",
-    "baseStation": "廣島駅 / 原爆圓頂前",
-    "lodging": "廣島市區飯店 (連住第2晚)",
-    "lodgingLocation": "JR 廣島駅周邊 (連住免搬行李)",
-    "recommendedHotels": "同 Day 7 (連住 2 晚，徹底擺脫換飯店與拖行李疲累)",
-    "lodgingReason": "全日廣島市區輕鬆漫步，晚間在廣島站 21F 享用神石和牛鐵板燒，步行或路面電車即刻回房休息。",
-    "notes": "• 【廣島城・平地名城 (基本預留 1h)】：市中心完全平地，參觀武士文化天守閣與毛利輝元築城歷史。\\n• 【廣島護國神社・鯉魚必勝祈願 (停留 30分)】：位於廣島城郭內！參拜廣島初詣第一大社，摸雙鯉之像祈願厄除開運、良緣與必勝。\\n• 【寶可夢中心廣島 (停留 1h)】：前往 SOGO 本館 6F 探訪中國地區唯一官方直營，購入廣島限定紅色暴鯉龍周邊。\\n• 【原子彈爆炸圓頂屋 (停留 30分)】：SOGO 旁步行 2 分即達元安川畔世界遺產原爆圓頂，近距離凝視戰後奇蹟殘存的綠色鋼骨圓頂。\\n• 【和平紀念資料館 (停留 1.5h)】：穿過和平公園綠意軸線，參觀世界遺產和平紀念資料館，感受深厚和平祈願。\\n• 【廣島和牛晚餐】：晚上前往站前 21F 高空夜景之「鉄板焼 神石」享用特選廣島牛鐵板燒！",
+    "dayNumber": 9,
+    "title": "Day 9：廣島和平文化・鯉城與護國神社 ➔ 原爆圓頂 ➔ 廣島和牛晚宴 (宿廣島)",
+    "date": "2027-01-21",
+    "baseStation": "廣島駅 / 原爆圓頂前 / 本通商圈",
+    "lodging": "廣島站前飯店 (D9 連住第2晚)",
+    "lodgingLocation": "JR 廣島駅周邊 (免搬行李)",
+    "recommendedHotels": "同 Day 8 (連住 2 晚徹底擺脫天天換飯店收拾行李之疲累)",
+    "lodgingReason": "全日廣島市區輕裝漫步，晚間在廣島站21F享用神石和牛鐵板燒，步行或路面電車即可返回飯店。",
+    "notes": "• 【廣島城・平城天守 (基本預留 1h)】：市中心名城「鯉城」，武士文物與天守閣展示毛利輝元築城歷史。\\n• 【廣島護國神社・鯉魚必勝祈願 (預留 30分)】：位於廣島城外郭境內，為廣島初詣第一大社，摸鯉魚之像祈求除厄開運與良緣必勝。\\n• 【寶可夢中心廣島 (預留 1h)】：前往 SOGO 本館 6F 參訪中四國地區唯一官方中心，購買廣島限定暴鯉龍紀念品。\\n• 【原子彈爆炸圓頂屋 (預留 30分)】：SOGO 步行約 2 分即達世界遺產圓頂屋，近距離凝視戰後遺跡保存之綠色骨架遺構。\\n• 【和平紀念資料館 (預留 1.5h)】：穿越和平公園綠色軸線，參觀世界遺產和平紀念資料館，感受深切和平祈願。\\n• 【廣島和牛名店晚餐】：前往廣島站前 21F 高空夜景之「鉄板焼 神石」享用特選廣島牛鐵板燒！",
     "spotIds": [
       "hiroshima",
       "hiroshima_gokoku_jinja",
@@ -1874,15 +1931,15 @@
     ]
   },
   {
-    "dayNumber": 9,
-    "title": "Day 9：毛利要塞吉田郡山城 ➔ 福山城 ➔ 鞆之浦夕陽溫泉",
-    "date": "2027-01-21",
-    "baseStation": "廣島巴士中心 / 福山駅 / 鞆之浦",
+    "dayNumber": 10,
+    "title": "Day 10：毛利要塞吉田郡山城 ➔ 福山城 ➔ 鞆之浦夕陽溫泉",
+    "date": "2027-01-22",
+    "baseStation": "廣島駅 / 廣島巴士中心 / 福山駅 / 鞆之浦",
     "lodging": "鞆之浦溫泉 海景旅館 (福山市)",
-    "lodgingLocation": "鞆之浦溫泉海灣 (福山市)",
-    "recommendedHotels": "汀邸 遠音近音 (全室海景露天風呂) / 景勝館 漣亭 / 鷗風亭 (Ofutei)",
-    "lodgingReason": "福山站南口搭鞆鐵巴士30分直達；15:45 早到 Check-in 欣賞仙醉島海景夕陽，黃昏散步常夜燈古港，品嚐瀨戶內鯛魚。",
-    "notes": "• 【♨️ 溫泉早到模式 (強烈建議 15:40~16:00 抵達鞆之浦溫泉)】：\\n  - 鞆之浦坐擁瀨戶內海仙醉島絕景，早到進駐可一邊在露天風呂眺望瀨戶內海平靜波光與金色夕陽，黃昏散步至象徵江戶港町之「常夜燈」打卡拍照，18:00 準時享用瀨戶內鯛魚盛宴。\\n• 【吉田郡山城・全山大型山城 (建議預留 2h)】：清晨自廣島巴士中心搭客運至安芸高田，攻登毛利元就百萬一心之全山大型要塞。\\n• 【福山城・鐵板張天守 (基本預留 1h)】：新幹線極速至福山，出站 0 距離登上全國唯一北面鐵板張天守。\\n• 【鞆之浦溫泉夜宿】：福山站南口搭 15:10 發車之鞆鐵巴士 (車程 30 分) ➔ 15:45 準時進駐鞆之浦溫泉海景旅館 Check-in！",
+    "lodgingLocation": "鞆之浦古港 / 仙醉島海景露天風呂",
+    "recommendedHotels": "景勝館 漣亭 / 汀邸 遠音近音 (Ofutei) / 鷗風亭 (Hotel Osource)",
+    "lodgingReason": "福山站搭巴士30分直達鞆之浦古港；傍晚在海景露天溫泉賞瀨戶內海仙醉島絕景，享用鯛魚海鮮料理。",
+    "notes": "• 【吉田郡山城・全山要塞 (建議預留 2h)】：晨間自廣島巴士中心搭客運往安藝高田，走訪戰國謀將毛利元就百萬一心之居城吉田郡山城。\\n• 【福山城・鐵板張天守 (預留 1h)】：午後搭乘山陽新幹線 23 分直達福山站，北口出站 1 分直達福山城，欣賞全日本唯一背面覆蓋黑鐵板之天守。\\n• 【鞆之浦古港散策 & 溫泉海景夜宿】：福山站南口搭巴士 30 分直達宮崎駿《崖上的波妞》取景舞台鞆之浦，欣賞江戶時代常夜燈古港，入住海景溫泉飯店享受露天風呂與瀨戶內海海鮮盛宴。",
     "spotIds": [
       "yoshida_koriyama",
       "fukuyama",
@@ -1890,15 +1947,15 @@
     ]
   },
   {
-    "dayNumber": 10,
-    "title": "Day 10：天空之城備中松山城 ➔ 桃太郎吉備路傳說 ➔ 岡山市區採買",
-    "date": "2027-01-22",
-    "baseStation": "鞆之浦 / 福山駅 / 岡山駅 / 備中高梁駅 / 備前一宮駅",
-    "lodging": "岡山站前飯店 (格蘭比亞 / 大和Roynet / 三井花園)",
-    "lodgingLocation": "JR 岡山駅東口 (岡山市區)",
-    "recommendedHotels": "岡山格蘭比亞大飯店 (直結) / 大和Roynet飯店岡山站前 / 三井花園飯店岡山",
-    "lodgingReason": "福山新幹線16分返抵岡山寄放行李，早上搭特急八雲號攻備中松山城，午後轉吉備線參拜桃太郎兩大社，傍晚採買伴手禮。",
-    "notes": "• 【鞆之浦搭巴士返福山，新幹線16分極速抵岡山，行李寄放站前飯店】\\n• 【備中松山城・天空之城 (建議預留 1.5h)】：搭特急八雲號至備中高梁站（約34分），乘合計程車至鞴峠後再步行20分攻頂，探訪現存唯一高山天守與貓城主三十郎，充分感受雲霧繚繞天空之城。\\n• 【吉備津彥神社 & 吉備津神社 (建議預留 1.5~2h)】：午後返岡山搭 JR 吉備線至備前一宮站與吉備津站，參拜桃太郎原型大社，欣賞國寶吉備津造本殿與 398 公尺木造大迴廊。\\n• 【岡山市區伴手禮採買】：傍晚漫步岡山一番街、SUN STATION TERRACE 與 BicCamera 採買岡山白桃果凍、晴王麝香葡萄點心與藥妝，整理回程行李。",
+    "dayNumber": 11,
+    "title": "Day 11：天空之城備中松山城 ➔ 桃太郎吉備路傳說 ➔ 岡山市區採買",
+    "date": "2027-01-23",
+    "baseStation": "福山駅 / 備中高梁駅 / 備前一宮駅 / 岡山駅",
+    "lodging": "岡山站前飯店 (D11 住宿建議)",
+    "lodgingLocation": "JR 岡山駅東口 / 站前商圈 (格蘭比亞 / 大和Roynet)",
+    "recommendedHotels": "岡山格蘭比亞大飯店 (車站直結) / 大和Roynet飯店岡山站前",
+    "lodgingReason": "最後一晚進駐岡山樞紐，放下戰利品，次日搭乘利木津巴士30分直達機場返台最穩妥。",
+    "notes": "• 【天空之城・備中松山城 (停留 2~2.5h)】：清晨自鞆之浦返福山搭新幹線至岡山，轉特急八雲號至備中高梁站。搭乘合乘計程車登上海拔 430 公尺之現存最高天守備中松山城，有機會巧遇貓城主「三十郎」！\\n• 【吉備路桃太郎傳說・吉備津彥神社 & 吉備津神社 (停留 1.5h)】：下午搭 JR 吉備線至備前一宮與吉備津站，走訪桃太郎原型神話之吉備津彥神社與擁有 398 公尺木造壯觀大迴廊之國寶吉備津神社。\\n• 【傍晚返岡山最後採買】：返回岡山站，前往唐吉訶德、AEON Mall 與車站百貨全面採購伴手禮、藥妝與名產，打包行李！",
     "spotIds": [
       "bitchu_matsuyama",
       "kibitsuhiko_jinja",
@@ -1907,15 +1964,15 @@
     ]
   },
   {
-    "dayNumber": 11,
-    "title": "Day 11：岡山桃太郎機場搭機返台 (虎航 IT215)",
-    "date": "2027-01-23",
-    "baseStation": "岡山駅 / 岡山桃太郎機場",
-    "lodging": "溫暖的家 (台灣)",
-    "lodgingLocation": "溫暖的家 (搭機返台)",
-    "recommendedHotels": "當日搭機返台",
-    "lodgingReason": "岡山站西口搭利木津直達巴士30分鐘抵達岡山桃太郎機場出境返台。",
-    "notes": "• 【早晨整理行李 & 退房】：岡山站前飯店辦理退房，於飯店或周邊享用最後一頓日式早餐。\\n• 【機場移動】：岡山站西口 2 號乘車處搭乘利木津直達巴士 (車程 30 分，單程 780 円) 直達岡山桃太郎機場。\\n• 【搭機返台 (提早 2.5~3 小時到機場)】：虎航 IT215 於 15:55 自岡山 (OKJ) 起飛，18:05 返抵台北桃園。辦理出境登機，滿載美好山陽山陰回憶平安返台！",
+    "dayNumber": 12,
+    "title": "Day 12：岡山桃太郎機場搭機返台 (虎航 IT215)",
+    "date": "2027-01-24",
+    "baseStation": "岡山駅 / 岡山桃太郎機場 (OKJ)",
+    "lodging": "返抵台灣溫暖的家",
+    "lodgingLocation": "台北桃園國際機場 (TPE)",
+    "recommendedHotels": "無 (返抵國門)",
+    "lodgingReason": "搭乘台灣虎航 IT 215 班機，15:55 起飛，17:40 抵達台北桃園第一航廈。",
+    "notes": "• 【晨間岡山市區最後漫步】：享用飯店悠閒早餐，退房寄放大件行李，至岡山站一番街或後樂園周邊最後採買白桃果凍、吉備糰子伴手禮。\\n• 【13:00 利木津巴士直達機場】：岡山站西口巴士乘車處搭乘機場巴士 (約30分鐘，780円) 直達岡山桃太郎機場 (OKJ)。\\n• 【13:45 虎航櫃檯報到手續】：起飛前 2 小時抵達國際線出境大廳虎航櫃檯辦理登機與行李託運，檢查免稅品伴手禮。\\n• 【✈️ 台灣虎航 IT 215 返台航班】：15:55 岡山起飛，17:40 順利返抵台北桃園第一航廈 (TPE)，為 12 天 100名城、日本三景、伊根舟屋與秘湯巡禮劃下完美句點！",
     "spotIds": [
       "okayama_airport"
     ]
@@ -2216,9 +2273,9 @@
         state.itinerary = fallbackItinerary;
       }
 
-      // 景點庫合流：確保所有 61 處景點全數在庫，且嚴格過濾已刪除景點
+      // 景點庫合流：確保所有景點全數在庫，且嚴格過濾已刪除景點
       let initialSpots = (savedSpots && savedVer === CURRENT_ITINERARY_VER) ? JSON.parse(savedSpots) : [];
-      initialSpots = initialSpots.filter(s => s.id !== 'sakaiminato_mizuki' && s.id !== 'misasa_onsen');
+      initialSpots = initialSpots.filter(s => s.id !== 'sakaiminato_mizuki');
       state.spots = initialSpots;
       fallbackSpots.forEach(ds => {
         if (state.deletedSpotIds && state.deletedSpotIds.includes(ds.id)) return;
@@ -2288,6 +2345,7 @@
     let map = null;
     let markersLayer = null;
     let linesLayer = null;
+    let spotHighlightLayer = null;
 
     // ==========================================
     // 每日主題色系配置 (強烈對比視覺層級)
@@ -2417,42 +2475,17 @@
       // 中國地方 (山陰山陽) 中心點約為 35.0, 133.0
       map = L.map('map').setView([34.9, 133.2], 8);
 
-      // 圖資配置：預設採用 CARTO Voyager (不限制 Referer，本機 file:// 可正常使用)
-      const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>'
-      });
-
-      const gsiStdLayer = L.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png', {
+      // 圖資配置：專用 OpenStreetMap 日本 (開源街景)
+      // 免金鑰、零浮水印、無 403 阻擋，單一極簡高效
+      const osmJpLayer = L.tileLayer('https://tile.openstreetmap.jp/{z}/{x}/{y}.png', {
         maxZoom: 18,
-        attribution: '&copy; <a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank">日本國土地理院</a> (官方鐵道站名)'
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors, OSM Japan'
       });
-
-      const cartoLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-        subdomains: 'abcd',
-        maxZoom: 19,
-        attribution: '&copy; <a href="https://carto.com/" target="_blank">CARTO</a> &copy; OpenStreetMap'
-      });
-
-      const gsiReliefLayer = L.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png', {
-        maxZoom: 15,
-        attribution: '&copy; <a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank">國土地理院 (山城高程)</a>'
-      });
-
-      // 預設使用 CARTO (不限 Referer，file:// 本機開啟不 403)
-      cartoLayer.addTo(map);
-
-      // 右下角提供底圖切換器
-      L.control.layers({
-        "🗺️ CARTO 清晰街景 (預設/本機友好)": cartoLayer,
-        "🗺️ OpenStreetMap (全球高速)": osmLayer,
-        "🇯🇵 日本國土地理院 (官方清晰鐵道/站名)": gsiStdLayer,
-        "⛰️ 山城地勢高程 (標高差)": gsiReliefLayer
-      }, null, { position: 'bottomright' }).addTo(map);
-
+      osmJpLayer.addTo(map);
 
       markersLayer = L.layerGroup().addTo(map);
       linesLayer = L.layerGroup().addTo(map);
+      spotHighlightLayer = L.layerGroup().addTo(map);
 
       renderMapElements();
       updateMapFilterDropdown();
@@ -3292,6 +3325,7 @@
       if (!map) return;
       markersLayer.clearLayers();
       linesLayer.clearLayers();
+      if (spotHighlightLayer) spotHighlightLayer.clearLayers();
 
       const filter = state.selectedDayFilter;
       const bounds = L.latLngBounds();
@@ -3304,16 +3338,14 @@
         if (day) {
           const dayColor = DAY_COLORS[(day.dayNumber - 1) % DAY_COLORS.length];
 
-          // 1. 標記晨間出發起點 (若起點為前夜住宿點且未包含於當日景點清單中)
+          // 1. 標記晨間出發起點 (若起點為前夜住宿點且未包含於當日景點清單中，嚴格排除桃園機場與台灣座標)
           const transitSeq = getDayTransitSequence(day);
           const originSpot = (transitSeq.length > 0 && transitSeq[0].id !== (day.spotIds || [])[0]) ? transitSeq[0] : null;
 
-          if (originSpot && originSpot.lat && originSpot.lng) {
+          if (originSpot && originSpot.lat && originSpot.lng && originSpot.id !== 'taoyuan_airport' && originSpot.lat > 30) {
             const pos = [originSpot.lat, originSpot.lng];
-            if (originSpot.id !== 'taoyuan_airport' && originSpot.lat > 30) {
-              bounds.extend(pos);
-              hasPoints = true;
-            }
+            bounds.extend(pos);
+            hasPoints = true;
             const originMarker = createCustomMarker(originSpot, "起點", "#0284c7");
             originMarker.bindPopup(`
               <div class="p-1">
@@ -3328,26 +3360,29 @@
             originMarker.addTo(markersLayer);
           }
 
-          // 標記各景點 Marker
+          // 標記各景點 Marker (嚴格排除台灣桃園機場與非日本座標)
           (day.spotIds || []).forEach((id, idx) => {
+            if (id === 'taoyuan_airport') return; // 桃園機場不出現在地圖上
             const spot = state.spots.find(s => s.id === id);
-            if (spot && spot.lat && spot.lng) {
+            if (spot && spot.lat && spot.lng && spot.id !== 'taoyuan_airport' && spot.lat > 30) {
               const pos = [spot.lat, spot.lng];
-              if (spot.id !== 'taoyuan_airport' && spot.lat > 30) {
-                bounds.extend(pos);
-                hasPoints = true;
-              }
+              bounds.extend(pos);
+              hasPoints = true;
 
               const marker = createCustomMarker(spot, idx + 1, dayColor);
               marker.addTo(markersLayer);
             }
           });
 
-          // 2. 繪製順著鐵路/公路的真實蜿蜒軌跡 (含每日起訖車站/利木津巴士接駁)
+          // 2. 繪製順著鐵路/公路的真實蜿蜒軌跡 (含每日起訖車站/利木津巴士接駁，排除跨海航線)
           for (let i = 0; i < transitSeq.length - 1; i++) {
             const sp1 = transitSeq[i];
             const sp2 = transitSeq[i + 1];
             if (sp1 && sp2 && sp1.lat && sp2.lat) {
+              // 排除跨海至台灣桃園機場的航線，只在地圖繪製日本境內交通軌跡
+              if (sp1.id === 'taoyuan_airport' || sp2.id === 'taoyuan_airport' || sp1.lat < 30 || sp2.lat < 30) {
+                continue;
+              }
               const trackPoints = getRealisticTransitTrack(sp1, sp2, day.dayNumber);
               trackPoints.forEach(p => {
                 if (p[0] > 30) {
@@ -3397,14 +3432,23 @@
           }
         }
       } else {
-        // 全部天數模式：顯示所有景點，並依每日路線畫上真實軌跡
+        // 全部天數模式：依使用者要求，沒有安排進天數的景點不要出現在地圖上，且嚴格排除台灣桃園機場
+        const scheduledSpotIds = new Set();
+        state.itinerary.forEach(day => {
+          (day.spotIds || []).forEach(id => scheduledSpotIds.add(id));
+          const seq = getDayTransitSequence(day);
+          seq.forEach(s => { if (s && s.id) scheduledSpotIds.add(s.id); });
+        });
+
         state.spots.forEach(spot => {
+          // 嚴格過濾：未排入天數者不顯示於地圖上，且排除台灣桃園機場
+          if (!scheduledSpotIds.has(spot.id)) return;
+          if (spot.id === 'taoyuan_airport' || spot.lat < 30) return;
+
           if (spot.lat && spot.lng) {
             const pos = [spot.lat, spot.lng];
-            if (spot.id !== 'taoyuan_airport' && spot.lat > 30) {
-              bounds.extend(pos);
-              hasPoints = true;
-            }
+            bounds.extend(pos);
+            hasPoints = true;
 
             const marker = createCustomMarker(spot, null, null);
             marker.addTo(markersLayer);
@@ -3420,6 +3464,9 @@
             const sp1 = transitSeq[i];
             const sp2 = transitSeq[i + 1];
             if (sp1 && sp2 && sp1.lat && sp2.lat) {
+              if (sp1.id === 'taoyuan_airport' || sp2.id === 'taoyuan_airport' || sp1.lat < 30 || sp2.lat < 30) {
+                continue;
+              }
               const trackPoints = getRealisticTransitTrack(sp1, sp2, day.dayNumber);
               trackPoints.forEach(p => {
                 if (p[0] > 30) bounds.extend(p);
@@ -3538,16 +3585,50 @@
     }
 
     function fitMapBounds() {
+      if (!map) return;
+      map.invalidateSize();
       const bounds = L.latLngBounds();
       let has = false;
-      state.spots.forEach(s => {
-        if (s.lat && s.lng) {
-          bounds.extend([s.lat, s.lng]);
-          has = true;
+
+      const filter = state.selectedDayFilter;
+      if (filter !== "all") {
+        const dayNum = parseInt(filter, 10);
+        const day = state.itinerary.find(d => d.dayNumber === dayNum);
+        if (day) {
+          (day.spotIds || []).forEach(id => {
+            const s = state.spots.find(sp => sp.id === id);
+            if (s && s.lat && s.lng && s.lat > 30 && s.id !== 'taoyuan_airport') {
+              bounds.extend([s.lat, s.lng]);
+              has = true;
+            }
+          });
+          const seq = getDayTransitSequence(day);
+          seq.forEach(s => {
+            if (s && s.lat && s.lng && s.lat > 30 && s.id !== 'taoyuan_airport') {
+              bounds.extend([s.lat, s.lng]);
+              has = true;
+            }
+          });
         }
-      });
-      if (has && map) {
-        map.fitBounds(bounds, { padding: [30, 30] });
+      } else {
+        // 全部天數模式：只計算排入天數的日本景點 (排除台灣桃園機場，杜絕拉遠至東海大洋的問題)
+        const scheduledSpotIds = new Set();
+        state.itinerary.forEach(day => {
+          (day.spotIds || []).forEach(id => scheduledSpotIds.add(id));
+        });
+        state.spots.forEach(s => {
+          if (scheduledSpotIds.has(s.id) && s.lat && s.lng && s.lat > 30 && s.id !== 'taoyuan_airport') {
+            bounds.extend([s.lat, s.lng]);
+            has = true;
+          }
+        });
+      }
+
+      if (has && bounds.isValid()) {
+        map.fitBounds(bounds, { padding: [35, 35], maxZoom: 13 });
+      } else {
+        // 安全 Fallback：山陰山陽核心區域
+        map.setView([35.1, 133.5], 8);
       }
     }
 
@@ -3572,16 +3653,105 @@
       renderMapElements();
     }
 
-    function focusSpotOnMap(spotId) {
+    function showSpotOnMap(spotId) {
       const spot = state.spots.find(s => s.id === spotId);
-      if (spot && spot.lat && spot.lng && map) {
-        map.setView([spot.lat, spot.lng], 14, { animate: true });
+      if (!spot || !spot.lat || !spot.lng || !map) return;
+
+      if (spotId === 'taoyuan_airport' || spot.lat < 30) {
+        alert("🛫 台灣桃園國際機場 (T1) 為出發/返台航點，地圖專注呈現日本山陰山陽旅遊景點。");
+        return;
+      }
+
+      map.invalidateSize();
+
+      // 小螢幕自動平滑捲動至地圖容器
+      const mapEl = document.getElementById("map");
+      if (mapEl && window.innerWidth < 768) {
+        mapEl.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+
+      // 檢查當前 markersLayer 是否已有該 marker
+      let foundMarker = null;
+      if (markersLayer) {
         markersLayer.eachLayer(layer => {
-          if (layer.getLatLng && Math.abs(layer.getLatLng().lat - spot.lat) < 0.0001) {
-            layer.openPopup();
+          if (layer.getLatLng) {
+            const ll = layer.getLatLng();
+            if (Math.abs(ll.lat - spot.lat) < 0.0005 && Math.abs(ll.lng - spot.lng) < 0.0005) {
+              foundMarker = layer;
+            }
           }
         });
       }
+
+      if (foundMarker) {
+        map.flyTo([spot.lat, spot.lng], 13, { duration: 0.8 });
+        setTimeout(() => {
+          foundMarker.openPopup();
+        }, 850);
+      } else {
+        // 該景點未排入當前天數（地圖預設不顯示）：動態建立高亮專屬 Marker
+        if (spotHighlightLayer) {
+          spotHighlightLayer.clearLayers();
+        }
+        const cat = getSpotCategory(spot);
+        const badge = getCategoryBadge(cat);
+
+        const highlightIcon = L.divIcon({
+          className: '',
+          html: `
+            <div style="position:relative; display:flex; align-items:center; justify-content:center; width:44px; height:44px;">
+              <div style="position:absolute; width:44px; height:44px; border-radius:50%; background:rgba(239,68,68,0.35); animation:ping 1.5s cubic-bezier(0,0,0.2,1) infinite;"></div>
+              <div style="position:relative; width:36px; height:36px; border-radius:50%; background:#dc2626; border:3px solid white; box-shadow:0 4px 12px rgba(0,0,0,0.4); display:flex; align-items:center; justify-content:center; color:white; font-size:18px;">
+                ${spot.type === 'lodging' ? '♨️' : (spot.type === 'castle' ? '🏯' : '📍')}
+              </div>
+            </div>
+          `,
+          iconSize: [44, 44],
+          iconAnchor: [22, 22],
+          popupAnchor: [0, -22]
+        });
+
+        const tempMarker = L.marker([spot.lat, spot.lng], { icon: highlightIcon });
+
+        const popupHtml = `
+          <div class="p-1 min-w-[250px]">
+            <div class="flex items-center justify-between border-b pb-1.5">
+              <div class="flex items-center gap-1.5">
+                <span class="text-xs bg-red-600 text-white font-bold px-1.5 py-0.5 rounded">📍 庫存景點位置</span>
+                <h4 class="font-bold text-sm text-slate-900">${escapeHtml(spot.name)}</h4>
+              </div>
+              <span class="text-[11px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded">${escapeHtml(spot.prefecture || '')}</span>
+            </div>
+            <div class="text-xs text-slate-600 mt-2 space-y-1">
+              <div><strong>🏷️ 分類：</strong>${badge}</div>
+              <div><strong>🚉 最近車站：</strong>${escapeHtml(spot.nearestStation || '無')}</div>
+              ${spot.stayDuration ? `<div><strong>⏱️ 建議停留：</strong><span class="font-bold text-slate-900">${escapeHtml(spot.stayDuration)}</span></div>` : ''}
+              <div><strong>⏰ 開放/營業：</strong>${escapeHtml(spot.openHours || '見官網')}</div>
+              <div><strong>🚌 接駁交通：</strong>${escapeHtml(spot.transitInfo || '無')}</div>
+              ${spot.notes ? `<div class="bg-amber-50 text-amber-900 p-1.5 rounded text-[11px] border border-amber-200 mt-1">📝 ${escapeHtml(spot.notes.substring(0, 95))}...</div>` : ''}
+              <div class="pt-2 border-t mt-2 flex items-center justify-between gap-1">
+                <button onclick="quickAddToDayPrompt('${spot.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-2.5 py-1 rounded text-xs shadow-xs">
+                  ➕ 排入行程天數
+                </button>
+                <button onclick="if(spotHighlightLayer) spotHighlightLayer.clearLayers();" class="text-slate-400 hover:text-slate-600 text-xs">
+                  關閉標記
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+        tempMarker.bindPopup(popupHtml);
+        if (spotHighlightLayer) tempMarker.addTo(spotHighlightLayer);
+
+        map.flyTo([spot.lat, spot.lng], 13, { duration: 0.8 });
+        setTimeout(() => {
+          tempMarker.openPopup();
+        }, 850);
+      }
+    }
+
+    function focusSpotOnMap(spotId) {
+      showSpotOnMap(spotId);
     }
 
     // ==========================================
@@ -3647,6 +3817,11 @@
       state.activeTab = tab;
       updateTabButtons();
       renderMainPanel();
+      if (map) {
+        setTimeout(() => {
+          map.invalidateSize();
+        }, 150);
+      }
     }
 
     function renderMainPanel() {
@@ -4273,7 +4448,6 @@
         'kinosaki_onsen': '城崎溫泉',
         'amanohashidate': '天橋立',
         'ine_funaya': '伊根舟屋',
-        
         'kaike_onsen': '皆生溫泉',
         'gassan_toda': '月山富田城',
         'adachi_museum': '足立美術館',
@@ -4305,20 +4479,17 @@
         'fukuyama': '福山城',
         'tomonoura_onsen': '鞆之浦溫泉',
         'bitchu_matsuyama': '備中松山城',
-        'kibitsu_jinja': '吉備津神社'
+        'kibitsuhiko_jinja': '吉備津彥',
+        'kibitsu_jinja': '吉備津神社',
+        'misasa_onsen': '三朝溫泉',
+        'yubara_onsen': '湯原溫泉'
       };
 
-      // 特殊多點天數之最佳代表性精簡動線
-      if (day.dayNumber === 1) return '岡山機場 ➔ 千屋牛 ➔ 宿岡山';
-      if (day.dayNumber === 3) return '鳥取城 ➔ 鳥取砂丘 ➔ 皆生溫泉';
-      if (day.dayNumber === 4) return '月山富田城 ➔ 足立美術館 ➔ 松江城';
-      if (day.dayNumber === 8) return '廣島城 ➔ 原爆圓頂 ➔ 廣島和牛';
-      if (day.dayNumber === 11) return '岡山機場 ➔ 虎航 IT215 ➔ 桃機';
-
-      // 自景點清單中動態提取
+      // 自景點清單中動態提取代表性精簡動線 (絕不寫死天數編號，完全動態自適應)
       if (day.spotIds && day.spotIds.length > 0) {
         const names = [];
         day.spotIds.forEach(id => {
+          if (id === 'taoyuan_airport') return; // 桃園機場不出現在日本天數速跳中
           if (SPOT_BRIEFS[id]) {
             names.push(SPOT_BRIEFS[id]);
           } else {
@@ -4332,6 +4503,18 @@
 
         const dedup = names.filter((val, idx) => idx === 0 || val !== names[idx - 1]);
         if (dedup.length > 0) {
+          // 最後一天若只有岡山機場，顯示為返台
+          if (dedup.length === 1 && dedup[0] === '岡山機場') {
+            return '岡山機場 ➔ 返台';
+          }
+          // 若景點超過 3 個，取「第一站 ➔ 核心代表名勝 ➔ 當日最終宿點/景點」，保持按鈕精煉不換行破版
+          if (dedup.length > 3) {
+            const first = dedup[0];
+            const last = dedup[dedup.length - 1];
+            const middleCandidates = dedup.slice(1, -1).filter(n => !n.startsWith('宿') && !n.includes('採買'));
+            const mid = middleCandidates.length > 0 ? middleCandidates[Math.floor(middleCandidates.length / 2)] : dedup[1];
+            return `${first} ➔ ${mid} ➔ ${last}`;
+          }
           return dedup.join(' ➔ ');
         }
       }
@@ -4347,7 +4530,7 @@
         return t.slice(0, 20);
       }
 
-      return `第 ${day.dayNumber} 天行程`;
+      return `第 ${day.dayNumber} 天`;
     }
 
     function renderItineraryTab(container) {
@@ -5662,7 +5845,10 @@
             <div class="flex items-start justify-between">
               <div>
                 <div class="flex items-center gap-2 flex-wrap">
-                  <h3 class="font-bold text-slate-800 text-sm">${escapeHtml(spot.name)}</h3>
+                  <h3 class="font-bold text-slate-800 text-sm cursor-pointer hover:text-blue-600 flex items-center gap-1.5 transition" onclick="showSpotOnMap('${spot.id}')" title="點擊立即在地圖上查看此景點位置">
+                    <span>${escapeHtml(spot.name)}</span>
+                    <span class="text-[10px] text-blue-600 bg-blue-50 hover:bg-blue-100 border border-blue-200 px-1.5 py-0.5 rounded font-bold">🗺️ 看地圖</span>
+                  </h3>
                   ${catBadge}
                   <span class="text-xs text-slate-500">(${escapeHtml(spot.prefecture || '')})</span>
                 </div>
@@ -5677,8 +5863,8 @@
                 </div>
               </div>
               <div class="flex flex-col gap-1 items-end shrink-0">
-                <button onclick="focusSpotOnMap('${spot.id}')" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-1 rounded">
-                  🎯 定位
+                <button onclick="showSpotOnMap('${spot.id}')" class="text-xs bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 font-bold px-2 py-1 rounded flex items-center gap-1 transition shadow-2xs cursor-pointer" title="在地圖上查看此景點位置">
+                  🗺️ 看位置
                 </button>
                 <button onclick="openSpotModal('${spot.id}')" class="text-xs text-blue-600 hover:underline">
                   ✏️ 編輯
@@ -5696,6 +5882,9 @@
 
             <div class="flex items-center justify-between pt-1 border-t border-slate-100 text-xs">
               <div class="flex items-center gap-1.5">
+                <button onclick="showSpotOnMap('${spot.id}')" class="text-indigo-600 hover:text-indigo-800 font-bold flex items-center gap-1 text-xs cursor-pointer">
+                  📍 在地圖查看
+                </button>
                 ${spot.reservationUrl ? `<a href="${spot.reservationUrl}" target="_blank" class="text-emerald-700 font-bold hover:underline">外部官網/預約 ↗</a>` : ''}
                 <button onclick="openSmartPlanModal('${spot.id}')" class="bg-red-50 hover:bg-red-100 text-red-700 px-2 py-0.5 rounded font-bold border border-red-200 flex items-center gap-1 transition shadow-xs">
                   ✨ 推薦排哪天？
@@ -8250,7 +8439,6 @@
               if (d.spotIds) {
                 d.spotIds = d.spotIds.filter(id =>
                   id !== 'sakaiminato_mizuki' &&
-                  id !== 'misasa_onsen' &&
                   !mergedDeletedIds.includes(id)
                 );
               }
@@ -8264,7 +8452,6 @@
             // 移除已被刪除之景點（含本機刪除 + 雲端刪除）
             let cloudSpots = data.spots.filter(s =>
               s.id !== 'sakaiminato_mizuki' &&
-              s.id !== 'misasa_onsen' &&
               !mergedDeletedIds.includes(s.id)
             );
             // 自動將最新預設景點庫合流補入，但過濾掉已刪除的
