@@ -1337,6 +1337,46 @@
     "notes": "廣島名店，主打廣島牛、比婆牛特選鐵板燒。推薦排在【Day 6 晚餐】（下午參觀完廣島城、原爆圓頂與和平公園後，步行 5~7 分鐘即可優雅入座，吃完逛本通商圈）。"
   },
   {
+    "id": "kenran_amiyaki",
+    "name": "網焼きレストラン 見蘭 (見蘭牛・見島牛)",
+    "prefecture": "山口",
+    "type": "custom",
+    "lat": 34.4087,
+    "lng": 131.3916,
+    "stayDuration": "1.5 小時",
+    "climbLevel": "gourmet",
+    "climbLevelText": "🥩 幻之天然紀念物見蘭牛燒肉（萩市堀內）",
+    "nearestStation": "循環公車 W14站 / 玉江駅 / 東萩駅",
+    "stampLocation": "餐廳櫃台",
+    "closedDay": "Monday",
+    "closedDayText": "週一公休 (遇國定假日順延至翌日)",
+    "backupStamp": "",
+    "openHours": "晚餐 17:00~22:00 (L.O. 21:30) / 午餐僅接受團體預約",
+    "transitInfo": "搭乘萩市循環公車（萩循環まぁーるバス 西回り「晋作くん」）至「W14 ミドリヤファーム入口」站下車即達（均一票價 100 円，可刷 IC 卡）！亦可自 JR 玉江站徒步 15 分，或 JR 東萩站 / 萩巴士中心搭計程車約 8~10 分鐘",
+    "reservationUrl": "https://www.mishimaushi.com/",
+    "notes": "【天然紀念物「見島牛」血統・綠屋農場直營頂級燒肉名店】\\n• 地址：日本〒758-0057 山口縣萩市堀內89\\n• 🚌【超便利公車直達】：搭乘萩市百圓循環公車（萩循環まぁーるバス 西回り「晋作くん」）至「W14 ミドリヤファーム入口」站下車徒步 1 分鐘即達（票價 100 円，可刷 IC 卡）！\\n• ⚠️【注意】：循環公車末班車約 17:30~18:00，建議 17:00 開店抵達用餐；餐後回程若無公車，可步行 15 分至 JR 玉江站或請餐廳協助電話叫計程車。\\n• 美食特色：見蘭牛為日本原生天然紀念物「見島牛」與黑毛和牛交配的夢幻品種，肉味濃郁無比、油花分布細膩！推薦排入【Day 6 晚餐】。"
+  },
+  {
+    "id": "kenran_dining_gen",
+    "name": "見蘭牛ダイニング 玄 (見蘭牛漢堡排/牛排)",
+    "prefecture": "山口",
+    "type": "custom",
+    "lat": 34.3986,
+    "lng": 131.4111,
+    "stayDuration": "1 ~ 1.5 小時",
+    "climbLevel": "gourmet",
+    "climbLevelText": "🥩 見蘭牛極品黃金漢堡排與牛排丼（道の駅 萩往還）",
+    "nearestStation": "萩駅 / 越ヶ浜駅",
+    "stampLocation": "餐廳櫃台 (道の駅 萩往還內)",
+    "closedDay": "Tuesday",
+    "closedDayText": "週二公休 (遇國定假日順延至翌日)",
+    "backupStamp": "",
+    "openHours": "平日 11:00~15:00 / 週六日及國定假日 11:00~17:00 (午餐)",
+    "transitInfo": "「道の駅 萩往還」內 (山口縣萩市椿1258)。【⚠️注意：萩市區循環公車與特急巴士均不停靠】無公車直達，需由 JR 萩站 (車程5~7分) 或 萩巴士中心 / JR 東萩站 (車程10~12分) 搭乘計程車前往 (或自駕租車前往)",
+    "reservationUrl": "https://mishimaushi.com/shop/gen/",
+    "notes": "【道の駅 萩往還名物・超人氣見蘭牛黃金漢堡排與燒肉牛排丼】\\n• 地址：日本〒758-0061 山口縣萩市椿1258 (道の駅 萩往還內)\\n• ⚠️【重要交通注意】：萩市區「萩循環巴士 (まぁーるバス)」與新山口特急巴士「スーパーはぎ号」皆不經停此處！山路陡峭無法徒步，非自駕者請由萩巴士中心或東萩站搭計程車前往 (車程約 10~12 分鐘，單程約 1,800 円；JR 萩站為無人站需預先電話叫車)。\\n• 美食特色：綠屋農場直營，主打 100% 見蘭牛黃金漢堡排（金のハンバーグ）與極上牛排丼，肉汁極度飽滿且價格親民！適合【Day 7 午餐】（自駕或叫計程車上山品嚐）。"
+  },
+  {
     "id": "izumo_taisha",
     "name": "出雲大社 (Izumo Taisha)",
     "prefecture": "島根",
@@ -2282,6 +2322,9 @@
         const existing = state.spots.find(s => s.id === ds.id);
         if (!existing) {
           state.spots.push(JSON.parse(JSON.stringify(ds)));
+        } else if (ds.id === 'kenran_dining_gen' || ds.id === 'kenran_amiyaki') {
+          existing.transitInfo = ds.transitInfo;
+          existing.notes = ds.notes;
         }
       });
 
@@ -3858,7 +3901,7 @@
       if (s.type === 'castle') return 'castle';
       if (s.type === 'lodging') return 'lodging';
       if (s.climbLevel === 'scenic' || s.id.includes('sakyu') || s.id.includes('bikan') || s.id.includes('senkoji') || s.id.includes('museum') || s.id.includes('horikawa') || s.id.includes('kintaikyo') || s.id.includes('akiyoshi') || s.id.includes('bairin')) return 'scenic';
-      if (s.climbLevel === 'gourmet' || s.id.includes('chiyagyu') || s.id.includes('takumi') || s.id.includes('tsubomi') || s.id.includes('jinseki') || s.id.includes('atago')) return 'gourmet';
+      if (s.climbLevel === 'gourmet' || s.id.includes('chiyagyu') || s.id.includes('takumi') || s.id.includes('tsubomi') || s.id.includes('jinseki') || s.id.includes('atago') || s.id.includes('kenran')) return 'gourmet';
       if (s.climbLevel === 'anime' || s.climbLevel === 'museum' || s.id.includes('pokemon') || s.id.includes('peace') || s.id.includes('atomic')) return 'anime';
       return 'custom';
     }
@@ -4032,6 +4075,9 @@
         let bestDayNum = 1;
         if (spot.id.includes('chiyagyu')) bestDayNum = 1;
         else if (spot.id.includes('tottori')) bestDayNum = 3;
+        else if (spot.id.includes('kenran_amiyaki')) bestDayNum = 6;
+        else if (spot.id.includes('kenran_dining_gen')) bestDayNum = 7;
+        else if (spot.id.includes('kenran')) bestDayNum = 6;
         else if (spot.id.includes('hiroshima')) bestDayNum = 6;
 
         const cardBorder = isAssigned 
@@ -4103,8 +4149,8 @@
               <span class="text-2xl">🥩</span>
               <div>
                 <h3 class="font-bold text-sm text-white flex items-center gap-2">
-                  三大頂級和牛名店加選專區
-                  <span class="text-[10px] bg-amber-400 text-slate-950 font-black px-2 py-0.5 rounded-full">千屋牛・鳥取和牛・廣島和牛</span>
+                  四大頂級和牛名店加選專區
+                  <span class="text-[10px] bg-amber-400 text-slate-950 font-black px-2 py-0.5 rounded-full">千屋牛・鳥取和牛・廣島和牛・山口見蘭牛</span>
                 </h3>
                 <p class="text-[11px] text-amber-200/90 mt-0.5">
                   已加入 <strong>${assignedWagyuCount}</strong> / ${wagyuSpots.length} 間名店・點擊按鈕直接加入推薦順路天數或指定天數
@@ -4418,7 +4464,7 @@
       `;
     }
 
-    // 取得每天的大綱簡稱 (精煉景點縮寫動線，如 "D2 鬼ノ城 ➔ 津山城 ➔ 湯郷溫泉")
+    // 取得每天的大綱簡稱 (依需求：主要只放景點跟晚上的住宿，排除餐廳)
     function getDaySummaryBrief(day) {
       if (!day) return '';
 
@@ -4433,8 +4479,6 @@
         'kintaikyo': '錦帶橋',
         'rurikoji_pagoda': '瑠璃光寺五重塔',
         'hofu_tenmangu': '防府天滿宮',
-        'chiyagyu_bisai': '千屋牛',
-        'chiyagyu_kuya': '千屋牛',
         'okayama_aeon': 'AEON採買',
         'okayama_hotel': '宿岡山',
         'okayama_hotel_d11': '宿岡山',
@@ -4442,7 +4486,6 @@
         'tsuyama': '津山城',
         'yunogo_onsen': '湯郷溫泉',
         'tottori': '鳥取城',
-        'tottori_takumi': '和牛たくみ',
         'tottori_sakyu': '鳥取砂丘',
         'hakuto_jinja': '白兔神社',
         'kinosaki_onsen': '城崎溫泉',
@@ -4473,8 +4516,6 @@
         'pokemon_center_hiroshima': '寶可夢中心',
         'atomic_bomb_dome': '原爆圓頂',
         'hiroshima_peace_museum': '和平紀念館',
-        'hiroshima_jinseki': '神石和牛',
-        'hiroshima_atago': '愛宕和牛',
         'yoshida_koriyama': '吉田郡山城',
         'fukuyama': '福山城',
         'tomonoura_onsen': '鞆之浦溫泉',
@@ -4485,52 +4526,136 @@
         'yubara_onsen': '湯原溫泉'
       };
 
-      // 自景點清單中動態提取代表性精簡動線 (絕不寫死天數編號，完全動態自適應)
+      function isRestaurantSpot(s, id) {
+        if (!s && !id) return false;
+        if (s) {
+          if (s.climbLevel === 'gourmet' || s.type === 'restaurant' || s.type === 'gourmet') return true;
+          if (typeof getSpotCategory === 'function' && getSpotCategory(s) === 'gourmet') return true;
+          if (s.name && /和牛|割烹|鉄板焼|燒肉|居酒屋|餐廳|食堂|牛排|牛料理/i.test(s.name)) return true;
+        }
+        if (id && /chiyagyu|takumi|tsubomi|jinseki|atago|kenran|restaurant|gourmet/i.test(id)) return true;
+        return false;
+      }
+
+      // 自景點清單中動態提取代表性精簡動線 (主要只放景點與晚上的住宿，排除餐廳)
       if (day.spotIds && day.spotIds.length > 0) {
-        const names = [];
+        const validSpots = [];
         day.spotIds.forEach(id => {
           if (id === 'taoyuan_airport') return; // 桃園機場不出現在日本天數速跳中
+          const s = (state.spots || []).find(x => x.id === id);
+          if (isRestaurantSpot(s, id)) return; // 依需求：餐廳不用顯示到日期形成大綱裡
+
+          let briefName = '';
           if (SPOT_BRIEFS[id]) {
-            names.push(SPOT_BRIEFS[id]);
-          } else {
-            const s = (state.spots || []).find(x => x.id === id);
-            if (s && s.name) {
-              const clean = s.name.replace(/（.*?）|\(.*?\)/g, '').replace(/[\s・·]+/g, '').trim().slice(0, 6);
-              if (clean) names.push(clean);
-            }
+            briefName = SPOT_BRIEFS[id];
+          } else if (s && s.name) {
+            briefName = s.name.replace(/（.*?）|\(.*?\)/g, '').replace(/[\s・·]+/g, '').trim().slice(0, 6);
+          }
+          if (briefName) {
+            const isLodging = (s && (s.type === 'lodging' || s.climbLevel === 'lodging')) 
+              || (typeof getSpotCategory === 'function' && s && getSpotCategory(s) === 'lodging')
+              || briefName.startsWith('宿') 
+              || briefName.includes('溫泉') 
+              || briefName.includes('飯店') 
+              || briefName.includes('旅館');
+            validSpots.push({ id, name: briefName, isLodging });
           }
         });
 
-        const dedup = names.filter((val, idx) => idx === 0 || val !== names[idx - 1]);
+        const dedup = [];
+        validSpots.forEach((item, idx) => {
+          if (idx === 0 || item.name !== validSpots[idx - 1].name) {
+            dedup.push(item);
+          }
+        });
+
         if (dedup.length > 0) {
-          // 最後一天若只有岡山機場，顯示為返台
-          if (dedup.length === 1 && dedup[0] === '岡山機場') {
+          if (dedup.length === 1 && dedup[0].name === '岡山機場') {
             return '岡山機場 ➔ 返台';
           }
-          // 若景點超過 3 個，取「第一站 ➔ 核心代表名勝 ➔ 當日最終宿點/景點」，保持按鈕精煉不換行破版
-          if (dedup.length > 3) {
-            const first = dedup[0];
-            const last = dedup[dedup.length - 1];
-            const middleCandidates = dedup.slice(1, -1).filter(n => !n.startsWith('宿') && !n.includes('採買'));
-            const mid = middleCandidates.length > 0 ? middleCandidates[Math.floor(middleCandidates.length / 2)] : dedup[1];
-            return `${first} ➔ ${mid} ➔ ${last}`;
+          // 找出當天晚上的住宿 (以當天最後一個住宿點為準)
+          const lodgingIdx = dedup.map(x => x.isLodging).lastIndexOf(true);
+          const lodgingItem = lodgingIdx >= 0 ? dedup[lodgingIdx] : null;
+
+          // 白天景點清單 (排除該主要住宿)
+          const scenicItems = dedup.filter((x, idx) => idx !== lodgingIdx);
+
+          if (lodgingItem) {
+            if (scenicItems.length === 0) {
+              return lodgingItem.name;
+            } else if (scenicItems.length === 1) {
+              return `${scenicItems[0].name} ➔ ${lodgingItem.name}`;
+            } else if (scenicItems.length === 2) {
+              return `${scenicItems[0].name} ➔ ${scenicItems[1].name} ➔ ${lodgingItem.name}`;
+            } else {
+              // 景點超過 2 個：取首個景點 ➔ 中間代表名勝 ➔ 當日晚間住宿
+              const first = scenicItems[0].name;
+              const midCandidates = scenicItems.slice(1);
+              const mid = midCandidates[Math.floor(midCandidates.length / 2)].name;
+              return `${first} ➔ ${mid} ➔ ${lodgingItem.name}`;
+            }
+          } else {
+            // 當日無住宿 (例如最後一天)
+            if (dedup.length > 3) {
+              const first = dedup[0].name;
+              const last = dedup[dedup.length - 1].name;
+              const mid = dedup[Math.floor(dedup.length / 2)].name;
+              return `${first} ➔ ${mid} ➔ ${last}`;
+            }
+            return dedup.map(x => x.name).join(' ➔ ');
           }
-          return dedup.join(' ➔ ');
         }
       }
 
-      // 若當天無景點但有 title，自 title 擷取
+      // 若當天無景點但有 title，自 title 擷取 (排除餐廳字眼)
       if (day.title) {
         let t = day.title.replace(/^Day\s*\d+[\s:：]*/i, '').trim();
         t = t.replace(/->/g, ' ➔ ').replace(/➔/g, ' ➔ ');
-        const parts = t.split('➔').map(p => p.trim().replace(/（.*?）|\(.*?\)/g, '')).filter(Boolean);
+        const parts = t.split('➔').map(p => p.trim().replace(/（.*?）|\(.*?\)/g, '')).filter(p => {
+          if (!p) return false;
+          return !/和牛|割烹|鉄板焼|燒肉|居酒屋|餐廳|食堂|牛排/i.test(p);
+        });
         if (parts.length > 0) {
           return parts.slice(0, 3).join(' ➔ ');
         }
         return t.slice(0, 20);
       }
+      return `Day ${day.dayNumber}`;
+    }
 
-      return `第 ${day.dayNumber} 天`;
+    let isDayNavCollapsed = (() => {
+      try {
+        return localStorage.getItem('jp_day_nav_collapsed') === 'true';
+      } catch (e) {
+        return false;
+      }
+    })();
+
+    function toggleDayNavCollapse() {
+      isDayNavCollapsed = !isDayNavCollapsed;
+      try {
+        localStorage.setItem('jp_day_nav_collapsed', isDayNavCollapsed ? 'true' : 'false');
+      } catch (e) {
+        console.warn(e);
+      }
+      const content = document.getElementById('dayNavContent');
+      const btn = document.getElementById('dayNavToggleBtn');
+      const badge = document.getElementById('dayNavCollapsedHint');
+      if (content && btn) {
+        if (isDayNavCollapsed) {
+          content.classList.add('hidden');
+          btn.innerHTML = '<span>▼</span><span>展開速跳</span>';
+          btn.className = 'text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-bold px-2 py-0.5 rounded-full transition flex items-center gap-1 cursor-pointer';
+          if (badge) badge.classList.remove('hidden');
+        } else {
+          content.classList.remove('hidden');
+          btn.innerHTML = '<span>▲</span><span>縮小隱藏</span>';
+          btn.className = 'text-xs bg-slate-100 hover:bg-slate-200 text-slate-600 border border-slate-200 px-2 py-0.5 rounded-full transition flex items-center gap-1 cursor-pointer';
+          if (badge) badge.classList.add('hidden');
+        }
+      } else {
+        renderMainPanel();
+      }
     }
 
     function renderItineraryTab(container) {
@@ -4538,23 +4663,30 @@
       const assignedIds = new Set();
       state.itinerary.forEach(d => (d.spotIds || []).forEach(id => assignedIds.add(id)));
 
-      // 頂部天數速跳膠囊導航列 (顯示每日景點動線大綱，點擊直達該天)
+      // 頂部天數速跳膠囊導航列 (顯示每日景點動線大綱，點擊直達該天，支援縮小上縮隱藏)
       let dayNavPills = "";
       if (state.itinerary.length > 0) {
         dayNavPills = `
-          <div class="sticky -top-4 z-10 bg-white/95 backdrop-blur-md pt-1.5 pb-2.5 border-b border-slate-200/90 -mx-4 px-4 mb-4 shadow-2xs space-y-1.5">
+          <div id="dayNavContainer" class="sticky -top-4 z-10 bg-white/95 backdrop-blur-md pt-1.5 pb-2.5 border-b border-slate-200/90 -mx-4 px-4 mb-4 shadow-2xs space-y-1.5 transition-all">
             <div class="flex items-center justify-between gap-2 flex-wrap">
-              <div class="flex items-center gap-1.5 text-[11px] font-bold text-slate-700">
+              <div class="flex items-center gap-1.5 text-[11px] font-bold text-slate-700 cursor-pointer select-none" onclick="toggleDayNavCollapse()" title="點擊縮小或展開天數速跳">
                 <span>⚡</span>
                 <span>天數速跳 (點選直達)：</span>
                 <span class="text-[10px] text-slate-400 font-normal">共 ${state.itinerary.length} 天・點擊直達該日</span>
+                <span id="dayNavCollapsedHint" class="text-[10px] bg-amber-50 text-amber-700 font-medium px-1.5 py-0.2 rounded border border-amber-200 ${isDayNavCollapsed ? '' : 'hidden'}">已上縮隱藏</span>
               </div>
-              <button onclick="sortAllDaysSpots()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-bold px-2.5 py-1 rounded-full shadow-2xs transition flex items-center gap-1 shrink-0">
-                <span>✨</span>
-                <span>一鍵自動排序所有天數</span>
-              </button>
+              <div class="flex items-center gap-1.5 shrink-0">
+                <button onclick="toggleDayNavCollapse()" id="dayNavToggleBtn" title="${isDayNavCollapsed ? '展開天數速跳按鈕' : '向上縮小隱藏按鈕區'}" class="text-xs bg-slate-100 hover:bg-slate-200 ${isDayNavCollapsed ? 'text-slate-700 border-slate-300 font-bold' : 'text-slate-600 border-slate-200'} border px-2 py-0.5 rounded-full transition flex items-center gap-1 cursor-pointer">
+                  <span>${isDayNavCollapsed ? '▼' : '▲'}</span>
+                  <span>${isDayNavCollapsed ? '展開速跳' : '縮小隱藏'}</span>
+                </button>
+                <button onclick="sortAllDaysSpots()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-bold px-2.5 py-1 rounded-full shadow-2xs transition flex items-center gap-1 shrink-0">
+                  <span>✨</span>
+                  <span>一鍵自動排序所有天數</span>
+                </button>
+              </div>
             </div>
-            <div class="flex flex-wrap items-center gap-1.5 py-0.5">
+            <div id="dayNavContent" class="flex flex-wrap items-center gap-1.5 py-0.5 ${isDayNavCollapsed ? 'hidden' : ''}">
               ${state.itinerary.map((d, i) => {
                 const th = getDayTheme(i);
                 const summaryBrief = getDaySummaryBrief(d);
