@@ -10,6 +10,36 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <style>
+    /* 全域即時文字編輯模式 */
+    body.live-edit-mode [contenteditable="true"] {
+      cursor: text;
+      outline: 1px dashed transparent;
+      border-radius: 4px;
+      transition: background-color 0.15s ease, outline 0.15s ease;
+    }
+    body.live-edit-mode [contenteditable="true"]:hover {
+      outline: 1px dashed #6366f1 !important;
+      background-color: rgba(99, 102, 241, 0.08) !important;
+    }
+    body.live-edit-mode [contenteditable="true"]:focus {
+      outline: 2px solid #4f46e5 !important;
+      outline-offset: 2px;
+      background-color: #fefce8 !important;
+      box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.15);
+    }
+    .edit-toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .edit-toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
     #map { height: 100%; min-height: 480px; z-index: 10; }
     .custom-marker {
       display: flex;
@@ -652,7 +682,7 @@
     "closedDayText": "全年無休",
     "backupStamp": "",
     "openHours": "15:00 Check-in",
-    "transitInfo": "岡山桃太郎機場搭乘利木津巴士約 30 分直達岡山站西口 (徒步 1~3 分進飯店)",
+    "transitInfo": "岡山桃太郎機場搭乘中鐵/岡電機場巴士約 30 分直達岡山站西口 (單程 1,000 円，徒步 1~3 分進飯店)",
     "reservationUrl": "",
     "notes": "岡山站直結或站前精選飯店（如 Hotel Granvia Okayama / Daiwa Roynet / Mitsui Garden），交通樞紐核心，放下大件行李後即可輕鬆空手出門逛街與享用和牛。"
   },
@@ -1172,7 +1202,7 @@
     "closedDayText": "虎航班機起降",
     "backupStamp": "",
     "openHours": "全天 (配合航班營運)",
-    "transitInfo": "出關後於巴士乘車處搭乘「岡山駅西口行」利木津巴士直達岡山車站 (約30分，單程780円)",
+    "transitInfo": "出關後於巴士乘車處搭乘「岡山駅西口行」中鐵/岡電機場巴士直達岡山車站 (約30分，單程 1,000 円)",
     "reservationUrl": "https://www.okayama-airport.org/access/bus",
     "notes": "台灣虎航直飛起降機場。入境後搭乘直達巴士直奔岡山站前商圈，展開壯遊！"
   },
@@ -1827,7 +1857,7 @@
     "lodgingLocation": "JR 岡山駅東口 / 站前商圈",
     "recommendedHotels": "岡山格蘭比亞大飯店 (車站直結) / 大和Roynet飯店岡山站前 (徒步2分) / 三井花園飯店岡山",
     "lodgingReason": "機場利木津巴士直達西口；千屋牛備彩在格蘭比亞2F；站前直通 AEON 商圈；次日往總社攻鬼ノ城起點極方便。",
-    "notes": "• 【班機抵達】：台灣虎航 IT214 於 15:05 準時降落岡山桃太郎機場 (OKJ)。出關搭利木津巴士約 30 分鐘直達岡山站西口。\\n• 【住宿 Check-in】：進駐岡山站前飯店辦理入住手續並放下大件行李。\\n• 【和牛晚餐 (岡山千屋牛)】：前往岡山格蘭比亞 2F 直結之「鉄板焼 備彩」，零距離品嚐日本最古老血統和牛——岡山千屋牛頂級鐵板燒。\\n• 【商圈漫遊 & 逛街】：餐後漫步西日本最大級「AEON Mall Okayama」(營業至 21:00，350間店鋪) 採買藥妝物資，無其他多餘奔波行程，早點休息為明日名城漫遊儲備體力！",
+    "notes": "• 【班機抵達】：台灣虎航 IT214 於 15:05 準時降落岡山桃太郎機場 (OKJ)。出關搭中鐵/岡電機場巴士約 30 分鐘直達岡山站西口 (單程 1,000 円)。\\n• 【住宿 Check-in】：進駐岡山站前飯店辦理入住手續並放下大件行李。\\n• 【和牛晚餐 (岡山千屋牛)】：前往岡山格蘭比亞 2F 直結之「鉄板焼 備彩」，零距離品嚐日本最古老血統和牛——岡山千屋牛頂級鐵板燒。\\n• 【商圈漫遊 & 逛街】：餐後漫步西日本最大級「AEON Mall Okayama」(營業至 21:00，350間店鋪) 採買藥妝物資，無其他多餘奔波行程，早點休息為明日名城漫遊儲備體力！",
     "spotIds": [
       "okayama_airport",
       "chiyagyu_bisai",
@@ -2338,7 +2368,7 @@
       if (day1 && (!day1.spotIds || day1.spotIds.length === 0 || day1.spotIds.includes('okayama_airport'))) {
         day1.title = "Day 1：抵達岡山・機場 ➔ 住宿 ➔ 和牛 ➔ 逛街";
         day1.spotIds = ['okayama_airport', 'chiyagyu_bisai', 'okayama_aeon', 'okayama_hotel'];
-        day1.notes = "• 【機場抵達】：搭乘台灣虎航下午抵達岡山桃太郎機場 (OKJ)。出關後於 2 號乘車處搭乘利木津巴士約 30 分鐘直達岡山站西口 (單程 780 円，可刷 IC 卡)。\n• 【住宿 Check-in】：進駐岡山站前飯店 (格蘭比比亞 / 大和Roynet / 三井花園) 辦理入住手續並放下大件行李。\n• 【和牛晚餐 (岡山千屋牛)】：前往岡山格蘭比亞 2F 直結之「鉄板焼 備彩」，零距離品嚐日本最古老血統和牛——岡山千屋牛頂級鐵板燒。\n• 【商圈漫遊 & 逛街】：餐後漫步西日本最大級「AEON Mall Okayama」(營業至 21:00，350間店鋪) 逛街採買藥妝物資，無其他多餘奔波行程，早點休息為明日 12 名城巡禮儲備體力！";
+        day1.notes = "• 【機場抵達】：搭乘台灣虎航下午抵達岡山桃太郎機場 (OKJ)。出關後於 2 號乘車處搭乘中鐵/岡電機場巴士約 30 分鐘直達岡山站西口 (單程 1,000 円，可刷 IC 卡)。\n• 【住宿 Check-in】：進駐岡山站前飯店 (格蘭比比亞 / 大和Roynet / 三井花園) 辦理入住手續並放下大件行李。\n• 【和牛晚餐 (岡山千屋牛)】：前往岡山格蘭比亞 2F 直結之「鉄板焼 備彩」，零距離品嚐日本最古老血統和牛——岡山千屋牛頂級鐵板燒。\n• 【商圈漫遊 & 逛街】：餐後漫步西日本最大級「AEON Mall Okayama」(營業至 21:00，350間店鋪) 逛街採買藥妝物資，無其他多餘奔波行程，早點休息為明日 12 名城巡禮儲備體力！";
       }
 
       // 確保徹底排除秋吉台・秋芳洞與未指定之倉敷景點
@@ -3867,6 +3897,82 @@
       }
     }
 
+    // ==========================================
+    // 全域所有文字可編輯模式 (Live Text Edit Mode)
+    // ==========================================
+    let isLiveEditMode = (() => {
+      try {
+        const saved = localStorage.getItem('jp_live_edit_mode');
+        return saved !== null ? saved === 'true' : true; // 預設依用戶要求開啟
+      } catch (e) {
+        return true;
+      }
+    })();
+
+    function toggleLiveEditMode() {
+      isLiveEditMode = !isLiveEditMode;
+      try {
+        localStorage.setItem('jp_live_edit_mode', isLiveEditMode ? 'true' : 'false');
+      } catch (e) {
+        console.warn(e);
+      }
+      applyLiveEditMode();
+      renderMainPanel();
+      showLiveEditToast(isLiveEditMode ? '✏️ 文字編輯模式已開啟 (點選任意文字直接打字修改)' : '🔒 文字編輯模式已關閉 (唯讀模式)');
+    }
+
+    function applyLiveEditMode() {
+      const container = document.getElementById("mainPanelContent");
+      if (!container) return;
+
+      if (isLiveEditMode) {
+        document.body.classList.add("live-edit-mode");
+        // 尋找主面板內所有可編輯的文本節點父容器
+        const elements = container.querySelectorAll('p, h1, h2, h3, h4, h5, h6, li, td, th, blockquote, span, div');
+        elements.forEach(el => {
+          if (el.closest('button, select, input, textarea, a, label, svg, .no-edit, .custom-marker')) {
+            el.removeAttribute('contenteditable');
+            return;
+          }
+          if (el.children.length === 0 && el.textContent.trim().length > 0) {
+            el.setAttribute('contenteditable', 'true');
+            el.setAttribute('spellcheck', 'false');
+          }
+        });
+      } else {
+        document.body.classList.remove("live-edit-mode");
+        container.querySelectorAll('[contenteditable="true"]').forEach(el => {
+          el.removeAttribute('contenteditable');
+        });
+      }
+    }
+
+    function showLiveEditToast(msg) {
+      let toast = document.getElementById('liveEditToast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'liveEditToast';
+        toast.className = 'edit-toast bg-slate-900 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-xl border border-slate-700 flex items-center gap-2';
+        document.body.appendChild(toast);
+      }
+      toast.innerHTML = msg;
+      toast.classList.add('show');
+      clearTimeout(toast._timeout);
+      toast._timeout = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2500);
+    }
+
+    function saveLiveEdits() {
+      try {
+        saveState();
+        showLiveEditToast('💾 已成功儲存所有文字修改！');
+      } catch (e) {
+        console.error(e);
+        alert('儲存失敗：' + e.message);
+      }
+    }
+
     function renderMainPanel() {
       const container = document.getElementById("mainPanelContent");
       if (!container) return;
@@ -4957,11 +5063,11 @@
         tips: "天橋立取行李後搭丹鐵至豐岡無縫換乘 JR 超級松風號直達米子，米子站前公車15分直達皆生海濱旅館"
       },
       "okayama_airport_to_chiyagyu_bisai": {
-        name: "機場利木津巴士 (岡山機場 ➔ 岡山站西口 ➔ 站前格蘭比亞 2F 備彩)",
+        name: "機場巴士 (中鐵/岡電巴士，岡山機場 ➔ 岡山站西口 ➔ 站前格蘭比亞 2F 備彩)",
         time: "約 30 分鐘 (出站即達)",
         passCovered: false,
-        passNote: "機場直達巴士單程 780 円需自理",
-        tips: "利木津巴士配合虎航航班發車，下車過連通道即進飯店與餐廳"
+        passNote: "中鐵/岡電機場巴士單程 1,000 円需自理 (可刷 IC 卡)",
+        tips: "中鐵/岡電機場巴士配合虎航航班發車，單程費用 1,000 円，下車過連通道即進飯店與餐廳"
       },
       "tamatsukuri_onsen_to_taikodani_inari": {
         name: "JR 山陰本線特急「超級隱岐號 (スーパーおき)」直達津和野",
@@ -5044,18 +5150,18 @@
       },
       // Day 1
       "okayama_airport_to_okayama_hotel": {
-        name: "岡山機場利木津巴士 (岡電/中鐵巴士)",
+        name: "岡山機場巴士 (中鐵/岡電巴士)",
         time: "約 30 分鐘",
         passCovered: false,
-        passNote: "非 JR 巴士，單程 780 円自費 (可刷 IC 卡)",
-        tips: "出關後於 2 號乘車處搭車直達岡山站西口，過天橋即進飯店 Check-in 寄放行李"
+        passNote: "中鐵巴士/岡電巴士，單程 1,000 円自費 (可刷 IC 卡)",
+        tips: "出關後於 2 號乘車處搭中鐵/岡電巴士直達岡山站西口，單程費用 1,000 円，過天橋即進飯店 Check-in 寄放行李"
       },
       "okayama_airport_to_okayama": {
-        name: "岡山機場利木津巴士 (岡電/中鐵巴士)",
+        name: "岡山機場巴士 (中鐵/岡電巴士)",
         time: "約 30 分鐘",
         passCovered: false,
-        passNote: "非 JR 巴士，單程 780 円自費",
-        tips: "出關後於 2 號乘車處搭車直達岡山站西口"
+        passNote: "中鐵巴士/岡電巴士，單程 1,000 円自費 (可刷 IC 卡)",
+        tips: "出關後於 2 號乘車處搭中鐵/岡電巴士直達岡山站西口，單程費用 1,000 円"
       },
       "okayama_hotel_to_chiyagyu_bisai": {
         name: "岡山站 2F 室內天橋直結 (格蘭比亞 2F)",
@@ -5065,11 +5171,11 @@
         tips: "岡山站 2F 聯通走廊直結飯店 2 樓鐵板燒，免出站零吹風"
       },
       "okayama_airport_to_chiyagyu_bisai": {
-        name: "岡山機場利木津巴士 (30分) ➔ 岡山站西口 ➔ 2F天橋直結格蘭比亞 (1分)",
-        time: "利木津 30 分 + 步行 1 分",
+        name: "岡山機場巴士 (中鐵/岡電，30分) ➔ 岡山站西口 ➔ 2F天橋直結格蘭比亞 (1分)",
+        time: "機場巴士 30 分 + 步行 1 分",
         passCovered: false,
-        passNote: "機場巴士 780 円自費 (可刷 IC 卡)",
-        tips: "出關搭乘利木津巴士直達岡山站西口，經室內 2F 天橋直達格蘭比亞 2F 備彩和牛"
+        passNote: "中鐵/岡電機場巴士單程 1,000 円自費 (可刷 IC 卡)",
+        tips: "出關搭乘中鐵/岡電機場巴士直達岡山站西口，單程費用 1,000 円，經室內 2F 天橋直達格蘭比亞 2F 備彩和牛"
       },
       "chiyagyu_bisai_to_okayama_aeon": {
         name: "岡山站前地下街通道 (直通 AEON)",
@@ -5739,7 +5845,7 @@
                   <span class="font-bold flex items-center gap-1.5"><span>✈️</span><span>旅程起點：抵達岡山桃太郎機場 (OKJ)</span></span>
                   <span class="text-[11px] bg-sky-100 text-sky-800 font-bold px-2 py-0.5 rounded border border-sky-300">搭乘台灣虎航 IT214 抵達</span>
                 </div>
-                ${renderTransitAttachmentsBlock(day.dayNumber, airportTransitKey, airportTransitAtt, '航班與利木津巴士時刻表')}
+                ${renderTransitAttachmentsBlock(day.dayNumber, airportTransitKey, airportTransitAtt, '航班:')}
               </div>
             `;
           } else {
@@ -7164,7 +7270,7 @@
                 <span class="text-[10px] bg-emerald-500/30 text-emerald-200 border border-emerald-400/40 px-2 py-0.5 rounded font-bold">100% 覆蓋所有長途特急</span>
               </div>
               <p class="text-[11px] text-slate-300 leading-relaxed">
-                • <strong>為什麼 Day 1 不用啟用？</strong> Day 1 虎航下午抵達岡山，進市區僅搭乘「岡山機場利木津巴士」(780 円，本就非 JR 需自費)。若 Day 1 啟用將在 Day 7 提前過期，導致 Day 8 昂貴的「福山➔岡山新幹線」與「岡山➔高梁特急八雲號」需高額自費！<br>
+                • <strong>為什麼 Day 1 不用啟用？</strong> Day 1 虎航下午抵達岡山，進市區僅搭乘「岡山機場巴士 (中鐵/岡電)」(1,000 円，本就非 JR 需自費)。若 Day 1 啟用將在 Day 7 提前過期，導致 Day 8 昂貴的「福山➔岡山新幹線」與「岡山➔高梁特急八雲號」需高額自費！<br>
                 • <strong>延至 Day 2 啟用</strong>：整整 7 天完美覆蓋 Day 2~Day 8 所有昂貴高速鐵道，原價超 48,000 円，<strong>現省超過 25,000 円</strong>！
               </p>
             </div>
@@ -7270,7 +7376,7 @@
                   <span>⚠️</span> 需額外自費之非 JR 交通 (已於行程標註)：
                 </div>
                 <ul class="text-[11px] text-slate-300 space-y-0.5 list-disc list-inside">
-                  <li>岡山機場利木津巴士：單程 780 円 (可刷 IC 卡)</li>
+                  <li>岡山機場巴士 (中鐵/岡電)：單程 1,000 円 (可刷 IC 卡)</li>
                   <li>鬼ノ城計程車：總社站往返單程約 3,500 円</li>
                   <li>備中松山城合乘計程車：高梁站往返單程 500 円 (需預約)</li>
                   <li>湯郷溫泉接駁：林野站至溫泉街旅館大多提供免費專車接送 (計程車約 1,200 円；JR 姫新線 Pass 全包)</li>
