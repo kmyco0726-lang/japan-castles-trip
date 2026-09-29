@@ -1430,6 +1430,26 @@
     "notes": "廣島名店，主打廣島牛、比婆牛特選鐵板燒。推薦排在【Day 6 晚餐】（下午參觀完廣島城、原爆圓頂與和平公園後，步行 5~7 分鐘即可優雅入座，吃完逛本通商圈）。"
   },
   {
+    "id": "aohige_steak",
+    "name": "ステーキ青ひげ (廣島和牛A4厚切牛排)",
+    "prefecture": "廣島",
+    "type": "restaurant",
+    "lat": 34.3941,
+    "lng": 132.4550,
+    "stayDuration": "1.5 小時",
+    "climbLevel": "gourmet",
+    "climbLevelText": "🥩 広島牛A4厚切牛排・原爆圓頂旁隱密名店",
+    "nearestStation": "本通駅 / 原爆ドーム前駅",
+    "stampLocation": "餐廳櫃台",
+    "closedDay": "Wednesday",
+    "closedDayText": "週三公休 (12月除外)",
+    "backupStamp": "",
+    "openHours": "午餐 11:00~15:00 (L.O. 14:00) / 晚餐 17:00~22:00 (L.O. 21:00)",
+    "transitInfo": "廣島電鐵「原爆ドーム前」站或「本通」站徒步約 3~5 分鐘（廣島市中區大手町1丁目7-23 ラフォーレビル 2F，距原爆圓頂與和平紀念公園僅約 200 公尺）",
+    "reservationUrl": "https://www.aohige.jp/steak",
+    "notes": "【廣島在地極品和牛名店】：嚴選廣島縣產 A4 等級高品質「廣島牛」，主打厚切多汁牛排、大型 L 字無縫鐵板現煎與瀬戶內鮑魚、牡蠣海陸盛宴。油脂甘醇細緻不油膩。位置極佳，參觀原爆圓頂與和平公園後步行 3 分鐘即可入座享用午餐或晚餐！"
+  },
+  {
     "id": "kenran_amiyaki",
     "name": "網焼きレストラン 見蘭 (見蘭牛・見島牛)",
     "prefecture": "山口",
@@ -1665,7 +1685,7 @@
     "closedDayText": "砂丘全天開放 (砂之美術館換展期休館)",
     "backupStamp": "",
     "openHours": "砂丘全天 / 砂之美術館 09:00~18:00",
-    "transitInfo": "JR 鳥取站前 0 號巴士月台搭乘公車約 20 分直達「砂丘會館」或「砂之美術館前」",
+    "transitInfo": "JR 鳥取站前 0 號巴士月台搭公車約 20 分直達「砂丘會館」；往返鳥取城跡於「西町」公車站上下車直達 (徒步 5 分，毋須繞回鳥取站)",
     "reservationUrl": "https://www.sand-museum.jp/",
     "notes": "日本國家天然紀念物。歷經十萬年海風與千代川沙土堆積之雄偉奇景。攀登『馬背』頂峰俯瞰日本海壯闊海景；一旁砂之美術館為世界首座以砂雕為主題之室內美術館，每期作品鬼斧神工。"
   },
@@ -2171,8 +2191,8 @@
       5: ['tsuwano', 'taikodani_inari', 'hagi', 'hagi_lodging'],
       6: ['motonosumi_jinja', 'hagi', 'shin_yamaguchi_lodging'],
       7: ['kintaikyo', 'iwakuni', 'itsukushima_jinja', 'hiroshima_lodging_d8'],
-      8: ['hiroshima', 'hiroshima_gokoku_jinja', 'pokemon_center_hiroshima', 'atomic_bomb_dome', 'hiroshima_peace_museum', 'hiroshima_jinseki', 'hiroshima_atago', 'hiroshima_lodging_d9'],
-      9: ['yoshida_koriyama', 'fukuyama', 'tomonoura_onsen'],
+      8: ['hiroshima', 'hiroshima_gokoku_jinja', 'pokemon_center_hiroshima', 'atomic_bomb_dome', 'hiroshima_peace_museum', 'aohige_steak', 'hiroshima_jinseki', 'hiroshima_atago', 'hiroshima_lodging_d9'],
+      9: ['hiroshima', 'hiroshima_gokoku_jinja', 'pokemon_center_hiroshima', 'atomic_bomb_dome', 'hiroshima_peace_museum', 'aohige_steak', 'hiroshima_jinseki', 'hiroshima_atago', 'yoshida_koriyama', 'fukuyama', 'tomonoura_onsen', 'hiroshima_lodging_d9'],
       10: ['bitchu_matsuyama', 'kibitsuhiko_jinja', 'kibitsu_jinja', 'okayama_hotel_d11'],
       11: ['okayama_airport']
     };
@@ -4164,7 +4184,7 @@
       if (s.type === 'castle') return 'castle';
       if (s.type === 'lodging') return 'lodging';
       if (s.climbLevel === 'scenic' || s.id.includes('sakyu') || s.id.includes('bikan') || s.id.includes('senkoji') || s.id.includes('museum') || s.id.includes('horikawa') || s.id.includes('kintaikyo') || s.id.includes('akiyoshi') || s.id.includes('bairin')) return 'scenic';
-      if (s.type === 'restaurant' || s.climbLevel === 'gourmet' || s.id.includes('chiyagyu') || s.id.includes('takumi') || s.id.includes('tsubomi') || s.id.includes('jinseki') || s.id.includes('atago') || s.id.includes('kenran')) return 'gourmet';
+      if (s.type === 'restaurant' || s.climbLevel === 'gourmet' || s.id.includes('chiyagyu') || s.id.includes('takumi') || s.id.includes('tsubomi') || s.id.includes('jinseki') || s.id.includes('atago') || s.id.includes('kenran') || s.id.includes('aohige')) return 'gourmet';
       if (s.climbLevel === 'anime' || s.climbLevel === 'museum' || s.id.includes('pokemon') || s.id.includes('peace') || s.id.includes('atomic')) return 'anime';
       return 'custom';
     }
@@ -4341,7 +4361,12 @@
         else if (spot.id.includes('kenran_amiyaki')) bestDayNum = 6;
         else if (spot.id.includes('kenran_dining_gen')) bestDayNum = 7;
         else if (spot.id.includes('kenran')) bestDayNum = 6;
-        else if (spot.id.includes('hiroshima')) bestDayNum = 6;
+        else if (spot.id.includes('hiroshima') || spot.id.includes('aohige')) {
+          const hiroshimaDay = state.itinerary.find(d => 
+            (d.spotIds || []).some(id => id.includes('hiroshima') || id.includes('atomic_bomb'))
+          );
+          bestDayNum = hiroshimaDay ? hiroshimaDay.dayNumber : 9;
+        }
 
         const cardBorder = isAssigned 
           ? 'border-emerald-500/80 bg-gradient-to-br from-slate-900 via-slate-850 to-emerald-950/40 ring-1 ring-emerald-400/50' 
@@ -5410,6 +5435,41 @@
         passNote: "JR 姬新線與智頭急行特急 100% 包含！特急可免費劃指定席 (接駁車免費/計程車約1,200円)",
         tips: "【特急首選】：湯郷旅館專車 8 分至林野站，搭 JR 姬新線至佐用站，轉特急超級因幡號直達鳥取；【備案】：亦可由湯郷搭計程車 25 分至大原站直接搭特急(43分直達鳥取)。避開津山因美線上午無車空窗！"
       },
+      "yunogo_onsen_to_tottori_sakyu": {
+        name: "湯鄉溫泉 ➔ 鳥取站 (接駁+特急因幡號約90分) ➔ 鳥取砂丘 (日之丸巴士20分)",
+        time: "特急約 1.5 小時 + 巴士 20 分鐘",
+        passCovered: true,
+        passNote: "特急列車 100% 包含！(砂丘路線巴士 380 円自費)",
+        tips: "晨間自湯鄉溫泉搭接駁車至林野/大原站搭特急因幡號直達鳥取站，站前 0 號乘車處搭日之丸巴士直達鳥取砂丘會館"
+      },
+      "tottori_sakyu_to_tottori": {
+        name: "鳥取砂丘 ➔ 鳥取城跡 (日之丸路線巴士・「西町」站下車直達)",
+        time: "公車約 15 分鐘 + 步行約 5 分鐘",
+        passCovered: false,
+        passNote: "日之丸路線巴士單程約 340~380 円 (非 JR 需自費)",
+        tips: "在砂丘會館前搭乘往鳥取站方向之日之丸路線巴士，【於「西町」公車站下車】即可直達鳥取城跡仁風閣/久松公園（毋須搭回鳥取站！下車向東步行約350公尺即抵達入口）"
+      },
+      "tottori_to_tottori_sakyu": {
+        name: "鳥取城跡 ➔ 鳥取砂丘 (步行至「西町」站牌搭日之丸巴士直達)",
+        time: "步行 5 分鐘 + 公車約 15 分鐘",
+        passCovered: false,
+        passNote: "日之丸路線巴士單程約 340~380 円 (自費)",
+        tips: "自鳥取城仁風閣向西步行約 5 分鐘至「西町」站牌，搭乘日之丸路線巴士直達鳥取砂丘會館"
+      },
+      "tottori_to_hakuto_jinja": {
+        name: "鳥取城跡 ➔ 白兔神社 (「西町」搭日之丸巴士鹿野線，或計程車直達)",
+        time: "巴士約 35~40 分鐘 / 計程車約 15 分鐘",
+        passCovered: false,
+        passNote: "日之丸路線巴士單程約 480~550 円 (自費)",
+        tips: "遊覽鳥取城跡後，可步行至「西町」公車站搭乘日之丸巴士（往鹿野方向，經白兔神社前）直達白兔神社；或搭 100 圓巴士返鳥取站轉乘"
+      },
+      "tottori_takumi_to_hakuto_jinja": {
+        name: "たくみ割烹 / 鳥取站 ➔ 白兔神社 (鳥取站前搭日之丸巴士鹿野行)",
+        time: "路線巴士約 35~40 分鐘",
+        passCovered: false,
+        passNote: "日之丸巴士單程約 480~550 円 (自費)",
+        tips: "午餐後由たくみ割烹步行至鳥取站前 4 號乘車處，搭乘日之丸巴士（鹿野行）直達白兔神社前"
+      },
       "tottori_to_tottori_takumi": {
         name: "鳥取城 (仁風閣前) ➔ 鳥取站北口市區 (循環巴士 / 計程車)",
         time: "公車約 9 分鐘 / 計程車 5 分鐘",
@@ -5702,6 +5762,27 @@
         passNote: "飯店共構直達",
         tips: "廣島市區連住免搬行李，享用頂級和牛後即可回房好好休息"
       },
+      "hiroshima_peace_museum_to_aohige_steak": {
+        name: "和平紀念資料館 ➔ 青ひげ牛排館 (徒步 3~4 分鐘)",
+        time: "徒步約 3~4 分鐘 (250m)",
+        passCovered: true,
+        passNote: "市區悠閒步道",
+        tips: "出和平資料館東側沿平和大通り過元安橋，至大手町1丁目即達青ひげ (2F)"
+      },
+      "atomic_bomb_dome_to_aohige_steak": {
+        name: "原爆圓頂 ➔ 青ひげ牛排館 (徒步 3 分鐘)",
+        time: "徒步約 3 分鐘 (200m)",
+        passCovered: true,
+        passNote: "元安川畔步道",
+        tips: "沿元安川向南過元安橋東側，大手町1丁目青ひげ牛排館"
+      },
+      "aohige_steak_to_hiroshima_lodging_d9": {
+        name: "廣島電鐵 (本通駅/原爆ドーム前 ➔ 廣島駅) 或 紅葉巴士",
+        time: "市電車程約 12~14 分鐘",
+        passCovered: false,
+        passNote: "廣島電鐵市電單程 220 円 (若搭 JR 紅葉巴士憑 Pass 免費)",
+        tips: "享用完廣島牛厚切牛排後，步行至本通搭 1 號路面電車直達廣島站前飯店"
+      },
       "hiroshima_city_transit": {
         name: "中國 JR 巴士「廣島市內循環紅葉巴士 meipuru～pu」或步行",
         time: "各點約 5~10 分鐘",
@@ -5881,11 +5962,11 @@
         return {
           station: '鳥取駅',
           toSpot: '鳥取站搭路線巴士直達鳥取砂丘 (約 20 分)',
-          fromSpot: '搭路線巴士返回鳥取站 (約 20 分)',
+          fromSpot: '搭路線巴士往鳥取站/於「西町」下車 (約 15~20 分)',
           timeMin: 20,
-          costNote: '路線巴士單程約 380 円自費',
+          costNote: '路線巴士單程約 340~380 円自費',
           tipsTo: '鳥取站北口 0 號站牌搭路線巴士直達砂丘會館',
-          tipsFrom: '砂丘會館前搭路線公車返回鳥取站'
+          tipsFrom: '砂丘會館前搭公車，若前往鳥取城跡可直接在「西町」公車站下車徒步5分即達'
         };
       }
       if (id === 'tomonoura_onsen' || name.includes('鞆之浦') || name.includes('鞆港')) {
@@ -6232,11 +6313,17 @@
       if (dayNumber === 10 && (fromId === 'tomonoura_onsen' || toId === 'kibitsuhiko_jinja')) return TRANSIT_KNOWLEDGE_BASE["tomonoura_onsen_to_kibitsuhiko_jinja"];
       if (dayNumber === 8 && toId === 'hiroshima') return TRANSIT_KNOWLEDGE_BASE["hiroshima_lodging_d8_to_hiroshima"];
       if (dayNumber === 6 && toId === 'motonosumi_jinja') return TRANSIT_KNOWLEDGE_BASE["hagi_lodging_to_motonosumi_jinja"];
+      if (dayNumber === 3 && fromId === 'yunogo_onsen' && toId === 'tottori_sakyu') return TRANSIT_KNOWLEDGE_BASE["yunogo_onsen_to_tottori_sakyu"];
+      if (dayNumber === 3 && fromId === 'yunogo_onsen' && toId === 'tottori') return TRANSIT_KNOWLEDGE_BASE["yunogo_onsen_to_tottori"];
       if (dayNumber === 3 && fromId === 'tottori' && toId === 'tottori_takumi') return TRANSIT_KNOWLEDGE_BASE["tottori_to_tottori_takumi"];
-      if (dayNumber === 3 && toId === 'tottori_sakyu') return TRANSIT_KNOWLEDGE_BASE["tottori_takumi_to_tottori_sakyu"];
-      if (dayNumber === 3 && toId === 'hakuto_jinja') return TRANSIT_KNOWLEDGE_BASE["tottori_sakyu_to_hakuto_jinja"];
+      if (dayNumber === 3 && fromId === 'tottori_sakyu' && toId === 'tottori') return TRANSIT_KNOWLEDGE_BASE["tottori_sakyu_to_tottori"];
+      if (dayNumber === 3 && fromId === 'tottori' && toId === 'tottori_sakyu') return TRANSIT_KNOWLEDGE_BASE["tottori_to_tottori_sakyu"];
+      if (dayNumber === 3 && fromId === 'tottori' && toId === 'hakuto_jinja') return TRANSIT_KNOWLEDGE_BASE["tottori_to_hakuto_jinja"];
+      if (dayNumber === 3 && fromId === 'tottori_takumi' && toId === 'hakuto_jinja') return TRANSIT_KNOWLEDGE_BASE["tottori_takumi_to_hakuto_jinja"];
+      if (dayNumber === 3 && fromId === 'tottori_takumi' && toId === 'tottori_sakyu') return TRANSIT_KNOWLEDGE_BASE["tottori_takumi_to_tottori_sakyu"];
+      if (dayNumber === 3 && fromId === 'tottori_sakyu' && toId === 'hakuto_jinja') return TRANSIT_KNOWLEDGE_BASE["tottori_sakyu_to_hakuto_jinja"];
       if (dayNumber === 3 && fromId === 'hakuto_jinja' && toId === 'kaike_onsen') return TRANSIT_KNOWLEDGE_BASE["hakuto_jinja_to_kaike_onsen"];
-      if (dayNumber === 3 && toId === 'kaike_onsen') return TRANSIT_KNOWLEDGE_BASE["hakuto_jinja_to_kaike_onsen"] || TRANSIT_KNOWLEDGE_BASE["tottori_sakyu_to_kaike_onsen"];
+      if (dayNumber === 3 && toId === 'kaike_onsen') return TRANSIT_KNOWLEDGE_BASE["hakuto_jinja_to_kaike_onsen"] || TRANSIT_KNOWLEDGE_BASE["tottori_sakyu_to_kaike_onsen"] || TRANSIT_KNOWLEDGE_BASE["tottori_to_kaike_onsen"];
       if (dayNumber === 4 && toId === 'adachi_museum') return TRANSIT_KNOWLEDGE_BASE["gassan_toda_to_adachi_museum"];
       if (dayNumber === 4 && toId === 'matsue') return TRANSIT_KNOWLEDGE_BASE["adachi_museum_to_matsue"];
 

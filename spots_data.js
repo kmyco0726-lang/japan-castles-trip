@@ -721,6 +721,26 @@ const DEFAULT_SPOTS = [
     "notes": "廣島名店，主打廣島牛、比婆牛特選鐵板燒。推薦排在【Day 6 晚餐】（下午參觀完廣島城、原爆圓頂與和平公園後，步行 5~7 分鐘即可優雅入座，吃完逛本通商圈）。"
   },
   {
+    "id": "aohige_steak",
+    "name": "ステーキ青ひげ (廣島和牛A4厚切牛排)",
+    "prefecture": "廣島",
+    "type": "restaurant",
+    "lat": 34.3941,
+    "lng": 132.4550,
+    "stayDuration": "1.5 小時",
+    "climbLevel": "gourmet",
+    "climbLevelText": "🥩 広島牛A4厚切牛排・原爆圓頂旁隱密名店",
+    "nearestStation": "本通駅 / 原爆ドーム前駅",
+    "stampLocation": "餐廳櫃台",
+    "closedDay": "Wednesday",
+    "closedDayText": "週三公休 (12月除外)",
+    "backupStamp": "",
+    "openHours": "午餐 11:00~15:00 (L.O. 14:00) / 晚餐 17:00~22:00 (L.O. 21:00)",
+    "transitInfo": "廣島電鐵「原爆ドーム前」站或「本通」站徒步約 3~5 分鐘（廣島市中區大手町1丁目7-23 ラフォーレビル 2F，距原爆圓頂與和平紀念公園僅約 200 公尺）",
+    "reservationUrl": "https://www.aohige.jp/steak",
+    "notes": "【廣島在地極品和牛名店】：嚴選廣島縣產 A4 等級高品質「廣島牛」，主打厚切多汁牛排、大型 L 字無縫鐵板現煎與瀬戶內鮑魚、牡蠣海陸盛宴。油脂甘醇細緻不油膩。位置極佳，參觀原爆圓頂與和平公園後步行 3 分鐘即可入座享用午餐或晚餐！"
+  },
+  {
     "id": "kenran_amiyaki",
     "name": "網焼きレストラン 見蘭 (見蘭牛・見島牛)",
     "prefecture": "山口",
@@ -956,7 +976,7 @@ const DEFAULT_SPOTS = [
     "closedDayText": "砂丘全天開放 (砂之美術館換展期休館)",
     "backupStamp": "",
     "openHours": "砂丘全天 / 砂之美術館 09:00~18:00",
-    "transitInfo": "JR 鳥取站前 0 號巴士月台搭乘公車約 20 分直達「砂丘會館」或「砂之美術館前」",
+    "transitInfo": "JR 鳥取站前 0 號巴士月台搭公車約 20 分直達「砂丘會館」；往返鳥取城跡於「西町」公車站上下車直達 (徒步 5 分，毋須繞回鳥取站)",
     "reservationUrl": "https://www.sand-museum.jp/",
     "notes": "日本國家天然紀念物。歷經十萬年海風與千代川沙土堆積之雄偉奇景。攀登『馬背』頂峰俯瞰日本海壯闊海景；一旁砂之美術館為世界首座以砂雕為主題之室內美術館，每期作品鬼斧神工。"
   },
