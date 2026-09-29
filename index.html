@@ -9,6 +9,8 @@
   <!-- Leaflet CSS & JS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- QRCode.js (產生分享 QR Code) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
     /* 全域即時文字編輯模式 */
     body.live-edit-mode [contenteditable="true"] {
@@ -89,7 +91,7 @@
         <h1 class="text-lg font-bold tracking-wide flex items-center gap-2">
           山陰山陽 100名城巡禮路線規劃器
           <span class="text-xs bg-red-600 px-2 py-0.5 rounded font-mono font-normal">12名城+溫泉</span>
-          <span class="text-xs bg-amber-400 text-slate-950 font-black px-2.5 py-0.5 rounded shadow-sm">⚡ V56 最新版 (OpenStreetMap 日本開源街景)</span>
+          <span class="text-xs bg-amber-400 text-slate-950 font-black px-2.5 py-0.5 rounded shadow-sm">V56</span>
         </h1>
         <p class="text-xs text-slate-400">含休館日智能檢核・Yahoo乘換案內直連・三朝/湯原溫泉入庫・地圖依排定天數精確過濾</p>
       </div>
@@ -98,23 +100,15 @@
       <button onclick="resetToDefault()" class="bg-red-600 hover:bg-red-500 text-white font-bold px-3 py-1.5 rounded flex items-center gap-1.5 transition shadow-md text-xs cursor-pointer border border-red-400 shrink-0" title="若看到舊版行程，點擊此按鈕立即清空瀏覽器快取並載入最新版！">
         🔄 強制載入最新行程 (清空舊快取 V56)
       </button>
+      <button id="saveStatusBtn" onclick="manualSaveState()" class="bg-emerald-700/90 hover:bg-emerald-600 text-white font-bold px-3 py-1.5 rounded flex items-center gap-1.5 transition shadow-sm text-xs cursor-pointer border border-emerald-400/60 shrink-0" title="點擊立即確認儲存至瀏覽器 LocalStorage">
+        <span id="saveStatusDot" class="w-2 h-2 rounded-full bg-emerald-400"></span>
+        <span id="saveStatusText">💾 已儲存</span>
+      </button>
       <button id="cloudSyncStatusBtn" onclick="openCloudSyncModal()" class="bg-indigo-700 hover:bg-indigo-600 text-white font-bold px-3 py-1.5 rounded flex items-center gap-1.5 transition shadow-sm text-xs cursor-pointer border border-indigo-400/50 shrink-0" title="點擊設定雙人即時雲端同步 (Firebase)">
         <span id="cloudSyncDot" class="w-2 h-2 rounded-full bg-slate-400"></span>
         <span id="cloudSyncStatusText">☁️ 雲端同步</span>
       </button>
-      <button onclick="generateShareUrl()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded flex items-center gap-1.5 transition shadow-sm text-xs">
-        🔗 複製分享連結
-      </button>
-      <button onclick="exportMarkdown()" class="bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded flex items-center gap-1.5 transition">
-        📄 匯出手冊 (Markdown)
-      </button>
-      <button onclick="exportJSON()" class="bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded flex items-center gap-1.5 transition">
-        📥 備份 JSON
-      </button>
-      <label class="bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded flex items-center gap-1.5 cursor-pointer transition">
-        📤 讀取 JSON
-        <input type="file" id="importInput" accept=".json" class="hidden" onchange="importJSON(event)">
-      </label>
+
     </div>
   </header>
 
@@ -209,7 +203,8 @@
             <select id="modalSpotType" class="w-full border rounded p-2 bg-white">
               <option value="castle">🏯 名城 / 史蹟</option>
               <option value="lodging">🏨 住宿 / 飯店 / 溫泉</option>
-              <option value="custom">📍 一般景點 / 美食</option>
+              <option value="restaurant">🍽️ 美食 / 餐廳 / 和牛</option>
+              <option value="custom">📍 一般景點 / 特色點位</option>
             </select>
           </div>
           <div>
@@ -231,6 +226,9 @@
               <option value="Wednesday">週三 (Wednesday)</option>
               <option value="Thursday">週四 (Thursday)</option>
               <option value="Friday">週五 (Friday)</option>
+              <option value="Saturday">週六 (Saturday)</option>
+              <option value="Sunday">週日 (Sunday)</option>
+              <option value="Saturday,Sunday">週末六日 (Sat & Sun)</option>
             </select>
           </div>
         </div>
@@ -278,6 +276,31 @@
           <label class="block font-medium text-slate-700 mb-1">交通方式與轉乘說明</label>
           <textarea id="modalSpotTransit" rows="2" class="w-full border rounded p-2" placeholder="例如：從車站步行10分鐘..."></textarea>
         </div>
+        <!-- 🍽️ 用餐 / 餐廳預約管理區塊 -->
+        <div class="bg-amber-50/80 border border-amber-200 rounded-lg p-3 space-y-2">
+          <div class="font-bold text-amber-900 flex items-center justify-between text-xs">
+            <span class="flex items-center gap-1.5">
+              <span>🍽️</span><span>用餐與席位預約狀態</span>
+            </span>
+            <span class="text-[10px] text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded font-normal">餐廳/和牛/名店必填</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-medium text-slate-700 mb-1">是否已預約席位</label>
+              <select id="modalSpotBookingStatus" class="w-full border rounded p-1.5 bg-white text-xs font-bold text-slate-800">
+                <option value="none">⚪ 未預約 / 現場候位 (Walk-in)</option>
+                <option value="booked">✅ 已完成預約 (Booked)</option>
+                <option value="pending">⏳ 待預約 / 尚未開放預訂</option>
+                <option value="not_needed">❌ 無需預約 (隨到隨吃)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-medium text-slate-700 mb-1">預約時間 (入座/訂位時間)</label>
+              <input type="text" id="modalSpotBookingTime" class="w-full border rounded p-1.5 text-xs font-mono font-bold text-slate-900 bg-white" placeholder="例如：18:30 / 12:00">
+            </div>
+          </div>
+        </div>
+
         <div>
           <label class="block font-medium text-slate-700 mb-1">備註 / 事項 / 預約網址</label>
           <textarea id="modalSpotNotes" rows="2" class="w-full border rounded p-2" placeholder="注意事項、票價、電話等"></textarea>
@@ -543,6 +566,46 @@
       <div class="flex justify-end gap-2 pt-2 border-t">
         <button type="button" onclick="closeMembersModal()" class="px-3 py-1.5 border rounded text-xs text-slate-600 hover:bg-slate-100 cursor-pointer">取消</button>
         <button type="button" onclick="saveMembersModal()" class="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-xs font-bold shadow-sm transition cursor-pointer">儲存名稱</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 彈窗：快速設定用餐預約狀態與時間 Modal -->
+  <div id="quickBookingModal" class="fixed inset-0 bg-black/50 z-[2000] hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl max-w-sm w-full p-5 space-y-3.5">
+      <div class="flex justify-between items-center border-b pb-2">
+        <h3 class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+          <span>🍽️</span><span>填寫用餐預約資訊</span>
+        </h3>
+        <button onclick="closeQuickBookingModal()" class="text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+      </div>
+      <div>
+        <p class="text-xs text-slate-700 font-bold truncate" id="quickBookingSpotName"></p>
+        <p class="text-[11px] text-slate-400 mt-0.5">即時更新預約席位與訂位時間，自動連動行程標籤</p>
+      </div>
+      <input type="hidden" id="quickBookingSpotId" value="">
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">是否已預約席位 *</label>
+          <select id="quickBookingStatus" class="w-full border rounded p-2 text-xs font-bold text-slate-800 bg-white">
+            <option value="booked">✅ 已預約 (Booked)</option>
+            <option value="pending">⏳ 待預約 / 尚未開放預訂</option>
+            <option value="none">⚪ 未預約 / 現場候位 (Walk-in)</option>
+            <option value="not_needed">❌ 無需預約 (隨到隨吃)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">預約的時間為 (例如：18:30 / 12:00) *</label>
+          <input type="text" id="quickBookingTime" class="w-full border rounded p-2 text-sm font-mono font-bold text-slate-900 bg-amber-50/50" placeholder="例如：18:30 或 19:00">
+        </div>
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">訂位代號 / 備註 (選填)</label>
+          <input type="text" id="quickBookingNote" class="w-full border rounded p-2 text-xs" placeholder="例如：已在官網付訂 / 訂位人王先生">
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-2 border-t">
+        <button type="button" onclick="closeQuickBookingModal()" class="px-3 py-1.5 border rounded text-xs text-slate-600 hover:bg-slate-100 cursor-pointer">取消</button>
+        <button type="button" onclick="saveQuickBookingModal()" class="px-4 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded text-xs font-bold shadow-sm transition cursor-pointer">儲存預約資訊</button>
       </div>
     </div>
   </div>
@@ -842,7 +905,7 @@
     "closedDayText": "週一休息 (休館時至「総社市埋蔵文化財学習の館」蓋章 9:00～16:00)",
     "backupStamp": "総社市埋蔵文化財学習の館 (9:00～16:00)",
     "openHours": "09:00 - 17:00",
-    "transitInfo": "吉備線・伯備線「総社駅」からタクシー約30分 (山頂無定期公車，建議回程預約)",
+    "transitInfo": "ＪＲ伯備線(桃太郎線)「総社駅」からタクシー約30分 (山頂無定期公車，建議回程預約)",
     "reservationUrl": "",
     "notes": "名城編號 69。山頂俯瞰吉備平野視野極佳。下計程車後需步行陡坡前往西門與城郭巡禮，建議預留 1.5 ~ 2 小時；下車時請務必先與司機約定下山回程時間。"
   },
@@ -2119,10 +2182,21 @@
       if (!spotIds || !Array.isArray(spotIds)) return [];
       const orderList = CANONICAL_SPOT_ORDER[dayNumber] || [];
 
-      // Day 1 特別處理：機場 ➔ 住宿Check-in ➔ 和牛 ➔ 逛街 ➔ 住宿
+      // Day 1 特別處理：機場 ➔ 住宿Check-in ➔ 和牛 ➔ 逛街 ➔ 住宿 (不丟棄使用者自訂加入的景點)
       if (dayNumber === 1) {
-        const d1Desired = ['okayama_airport', 'chiyagyu_bisai', 'okayama_aeon', 'okayama_hotel'];
-        return d1Desired.filter(id => spotIds.includes(id));
+        const d1Order = ['okayama_airport', 'chiyagyu_bisai', 'chiyagyu_kuya', 'okayama_aeon', 'okayama_hotel'];
+        return [...spotIds].sort((a, b) => {
+          const idxA = d1Order.indexOf(a);
+          const idxB = d1Order.indexOf(b);
+          if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+          if (idxA !== -1) return -1;
+          if (idxB !== -1) return 1;
+          const spA = state.spots.find(s => s.id === a);
+          const spB = state.spots.find(s => s.id === b);
+          if (isLodgingSpot(spA)) return 1;
+          if (isLodgingSpot(spB)) return -1;
+          return 0;
+        });
       }
 
       // 其他天數：優先按權威地理順路表 (orderList) 排序！
@@ -2278,6 +2352,14 @@
           if (sharedData.deleted && Array.isArray(sharedData.deleted)) {
             state.deletedSpotIds = sharedData.deleted;
           }
+          // 合併分享者的自訂景點（不覆蓋本地已有的同 id 景點）
+          if (sharedData.customSpots && Array.isArray(sharedData.customSpots)) {
+            sharedData.customSpots.forEach(sharedSpot => {
+              if (!state.spots.find(s => s.id === sharedSpot.id)) {
+                state.spots.push(sharedSpot);
+              }
+            });
+          }
         } catch (err) {
           console.warn('無法解析分享網址中的行程參數:', err);
         }
@@ -2303,22 +2385,15 @@
       const savedRate = localStorage.getItem(STORAGE_KEY_EXCHANGE_RATE);
       state.exchangeRate = savedRate ? parseFloat(savedRate) || 0.215 : 0.215;
 
-      // 讀取 LocalStorage，嚴格保護使用者已自訂的行程內容
+      // 讀取 LocalStorage，嚴格保護使用者已自訂的行程內容與排序
       const savedSpots = localStorage.getItem(STORAGE_KEY_SPOTS);
       const savedItinerary = localStorage.getItem(STORAGE_KEY_ITINERARY);
       const savedVer = localStorage.getItem(STORAGE_KEY_ITINERARY_VER);
       
-      // V12 修復：清空先前可能誤刪的 deleted 列表，讓出雲大社與所有名勝完整重現在庫！
+      const savedDeleted = localStorage.getItem(STORAGE_KEY_DELETED_SPOTS);
+      state.deletedSpotIds = savedDeleted ? JSON.parse(savedDeleted) : [];
       if (savedVer !== CURRENT_ITINERARY_VER) {
-        state.deletedSpotIds = [];
-        localStorage.removeItem('jp_castle_itinerary_okayama');
-        localStorage.removeItem(STORAGE_KEY_ITINERARY);
-        localStorage.removeItem(STORAGE_KEY_SPOTS);
-        localStorage.removeItem(STORAGE_KEY_DELETED_SPOTS);
         localStorage.setItem(STORAGE_KEY_ITINERARY_VER, CURRENT_ITINERARY_VER);
-      } else {
-        const savedDeleted = localStorage.getItem(STORAGE_KEY_DELETED_SPOTS);
-        state.deletedSpotIds = savedDeleted ? JSON.parse(savedDeleted) : [];
       }
 
       // 行程一律固定為：🍑 岡山出發 12 天大閉環
@@ -2327,24 +2402,41 @@
       const fallbackSpots = getEffectiveDefaultSpots();
 
       const savedOkayama = localStorage.getItem('jp_castle_itinerary_okayama');
-      if (savedOkayama && savedVer === CURRENT_ITINERARY_VER) {
+      let loadedItinerary = null;
+      if (savedOkayama) {
         try {
-          state.itinerary = JSON.parse(savedOkayama);
-        } catch (e) {
-          state.itinerary = fallbackItinerary;
-        }
-      } else if (savedItinerary && savedVer === CURRENT_ITINERARY_VER) {
+          const parsed = JSON.parse(savedOkayama);
+          if (Array.isArray(parsed) && parsed.length > 0) loadedItinerary = parsed;
+        } catch (e) {}
+      }
+      if (!loadedItinerary && savedItinerary) {
         try {
-          state.itinerary = JSON.parse(savedItinerary);
-        } catch (e) {
-          state.itinerary = fallbackItinerary;
-        }
+          const parsed = JSON.parse(savedItinerary);
+          if (Array.isArray(parsed) && parsed.length > 0) loadedItinerary = parsed;
+        } catch (e) {}
+      }
+
+      // 檢查防禦性快照備份
+      if (!loadedItinerary) {
+        try {
+          const snapshot = localStorage.getItem('jp_trip_backup_snapshot');
+          if (snapshot) {
+            const parsed = JSON.parse(snapshot);
+            if (parsed && Array.isArray(parsed.itinerary) && parsed.itinerary.length > 0) {
+              loadedItinerary = parsed.itinerary;
+            }
+          }
+        } catch (e) {}
+      }
+
+      if (loadedItinerary) {
+        state.itinerary = loadedItinerary;
       } else {
         state.itinerary = fallbackItinerary;
       }
 
       // 景點庫合流：確保所有景點全數在庫，且嚴格過濾已刪除景點
-      let initialSpots = (savedSpots && savedVer === CURRENT_ITINERARY_VER) ? JSON.parse(savedSpots) : [];
+      let initialSpots = savedSpots ? JSON.parse(savedSpots) : [];
       initialSpots = initialSpots.filter(s => s.id !== 'sakaiminato_mizuki');
       state.spots = initialSpots;
       fallbackSpots.forEach(ds => {
@@ -2363,9 +2455,9 @@
         if (!s.checklists) s.checklists = {};
       });
 
-      // 岡山出發：確保 Day 1 嚴格符合指定：「機場 ➔ 和牛 ➔ 逛街 ➔ 住宿」
+      // 岡山出發：若 Day 1 完全無景點時才給予預設值，不覆蓋使用者自訂已儲存之景點
       const day1 = state.itinerary.find(d => d.dayNumber === 1);
-      if (day1 && (!day1.spotIds || day1.spotIds.length === 0 || day1.spotIds.includes('okayama_airport'))) {
+      if (day1 && (!day1.spotIds || day1.spotIds.length === 0)) {
         day1.title = "Day 1：抵達岡山・機場 ➔ 住宿 ➔ 和牛 ➔ 逛街";
         day1.spotIds = ['okayama_airport', 'chiyagyu_bisai', 'okayama_aeon', 'okayama_hotel'];
         day1.notes = "• 【機場抵達】：搭乘台灣虎航下午抵達岡山桃太郎機場 (OKJ)。出關後於 2 號乘車處搭乘中鐵/岡電機場巴士約 30 分鐘直達岡山站西口 (單程 1,000 円，可刷 IC 卡)。\n• 【住宿 Check-in】：進駐岡山站前飯店 (格蘭比比亞 / 大和Roynet / 三井花園) 辦理入住手續並放下大件行李。\n• 【和牛晚餐 (岡山千屋牛)】：前往岡山格蘭比亞 2F 直結之「鉄板焼 備彩」，零距離品嚐日本最古老血統和牛——岡山千屋牛頂級鐵板燒。\n• 【商圈漫遊 & 逛街】：餐後漫步西日本最大級「AEON Mall Okayama」(營業至 21:00，350間店鋪) 逛街採買藥妝物資，無其他多餘奔波行程，早點休息為明日 12 名城巡禮儲備體力！";
@@ -2377,29 +2469,79 @@
         if (d.spotIds) d.spotIds = d.spotIds.filter(id => id !== 'kurashiki_bikan' && id !== 'onomichi_senkoji' && id !== 'akiyoshidai_akiyoshido');
       });
 
-      // 啟動時自動排序所有天數
-      state.itinerary.forEach(d => {
-        if (d.spotIds && d.spotIds.length > 0) {
-          d.spotIds = sortDaySpots(d.dayNumber, d.spotIds);
-        }
-      });
+      // 注意：F5 載入時 100% 保持使用者在 LocalStorage 的排序，絕不自動覆蓋重排序！
+      updateSaveStatusUI();
+    }
 
-      saveState();
+    // 儲存狀態指示更新與即時 Toast 提示
+    function updateSaveStatusUI(customMsg) {
+      const text = document.getElementById("saveStatusText");
+      const dot = document.getElementById("saveStatusDot");
+      if (!text) return;
+      const t = new Date();
+      const timeStr = `${String(t.getHours()).padStart(2, '0')}:${String(t.getMinutes()).padStart(2, '0')}:${String(t.getSeconds()).padStart(2, '0')}`;
+      text.innerText = customMsg || `💾 已儲存 (${timeStr})`;
+      if (dot) {
+        dot.className = "w-2 h-2 rounded-full bg-emerald-400";
+      }
+    }
+
+    function showSaveToast(message = "行程排序與內容已即時自動儲存！") {
+      let toast = document.getElementById("globalSaveToast");
+      if (!toast) {
+        toast = document.createElement("div");
+        toast.id = "globalSaveToast";
+        toast.className = "fixed bottom-5 right-5 z-[99999] bg-slate-900/90 text-white text-xs font-bold px-3.5 py-2.5 rounded-xl shadow-xl flex items-center gap-2 border border-emerald-500/50 backdrop-blur-md transition-all duration-300 opacity-0 translate-y-3 pointer-events-none";
+        document.body.appendChild(toast);
+      }
+      toast.innerHTML = `<span class="text-emerald-400 text-sm">✅</span><span>${escapeHtml(message)}</span>`;
+      toast.classList.remove("opacity-0", "translate-y-3");
+      toast.classList.add("opacity-100", "translate-y-0");
+      if (toast._timer) clearTimeout(toast._timer);
+      toast._timer = setTimeout(() => {
+        toast.classList.remove("opacity-100", "translate-y-0");
+        toast.classList.add("opacity-0", "translate-y-3");
+      }, 1800);
+    }
+
+    function manualSaveState() {
+      saveState({ forceUpdateTimestamp: true, notify: true });
+      updateSaveStatusUI("💾 已確認全部儲存");
+      showSaveToast("已確認儲存至瀏覽器 LocalStorage！按 F5 重整保證不遺失。");
     }
 
     function saveState(options = {}) {
-      const { skipCloudPush = false } = options || {};
-      localStorage.setItem(STORAGE_KEY_SPOTS, JSON.stringify(state.spots));
-      localStorage.setItem(STORAGE_KEY_ITINERARY, JSON.stringify(state.itinerary));
-      localStorage.setItem('jp_castle_itinerary_okayama', JSON.stringify(state.itinerary));
-      localStorage.setItem(STORAGE_KEY_DELETED_SPOTS, JSON.stringify(state.deletedSpotIds || []));
-      localStorage.setItem(STORAGE_KEY_EXPENSES, JSON.stringify(state.expenses || []));
-      localStorage.setItem(STORAGE_KEY_MEMBERS, JSON.stringify(state.members || { a: "獅子", b: "方" }));
-      localStorage.setItem(STORAGE_KEY_EXCHANGE_RATE, String(state.exchangeRate || 0.215));
+      const { skipCloudPush = false, notify = false } = options || {};
+      const now = Date.now();
+      state.lastModifiedAt = now;
+      try {
+        localStorage.setItem('jp_trip_local_last_modified', String(now));
+        localStorage.setItem(STORAGE_KEY_SPOTS, JSON.stringify(state.spots));
+        localStorage.setItem(STORAGE_KEY_ITINERARY, JSON.stringify(state.itinerary));
+        localStorage.setItem('jp_castle_itinerary_okayama', JSON.stringify(state.itinerary));
+        localStorage.setItem(STORAGE_KEY_DELETED_SPOTS, JSON.stringify(state.deletedSpotIds || []));
+        localStorage.setItem(STORAGE_KEY_EXPENSES, JSON.stringify(state.expenses || []));
+        localStorage.setItem(STORAGE_KEY_MEMBERS, JSON.stringify(state.members || { a: "獅子", b: "方" }));
+        localStorage.setItem(STORAGE_KEY_EXCHANGE_RATE, String(state.exchangeRate || 0.215));
+        localStorage.setItem(STORAGE_KEY_ITINERARY_VER, CURRENT_ITINERARY_VER);
+
+        // 雙重保險快照
+        localStorage.setItem('jp_trip_backup_snapshot', JSON.stringify({
+          itinerary: state.itinerary,
+          spots: state.spots,
+          timestamp: now
+        }));
+      } catch (err) {
+        console.warn("localStorage 儲存異常:", err);
+      }
       updateBadges();
       updateTabButtons();
+      updateSaveStatusUI();
+      if (notify) {
+        showSaveToast();
+      }
 
-      // 當雲端同步已開啟時，自動排程低延遲防抖上傳至雲端資料庫
+      // 當雲端同步已開啟時，自動排程低延遲上傳至雲端資料庫
       if (!skipCloudPush && typeof scheduleCloudPush === 'function' && cloudConfig && cloudConfig.enabled && cloudConfig.autoSync) {
         scheduleCloudPush();
       }
@@ -2856,7 +2998,7 @@
         [34.7297, 133.7661]  // 鬼ノ城
       ],
 
-      // 岡山 ➔ 總社 (JR 吉備線 / 桃太郎線 平原鐵道) ➔ 鬼ノ城
+      // 岡山 ➔ 總社 (ＪＲ伯備線(桃太郎線)) ➔ 鬼ノ城
       "okayama_to_kinojo": [
         [34.6663, 133.9185], // 岡山站
         [34.6752, 133.8852], // 大安寺
@@ -3456,6 +3598,12 @@
               if (sp1.id === 'taoyuan_airport' || sp2.id === 'taoyuan_airport' || sp1.lat < 30 || sp2.lat < 30) {
                 continue;
               }
+              const segmentTransitKey = `${sp1.id}_to_${sp2.id}`;
+              const isMorningLodging = (i === 0 && transitSeq[0].id !== (day.spotIds || [])[0]);
+              const fallbackKey = isMorningLodging ? `start_to_${sp2.id}` : '';
+              if (day.deletedTransitKeys && (day.deletedTransitKeys.includes(segmentTransitKey) || (fallbackKey && day.deletedTransitKeys.includes(fallbackKey)))) {
+                continue;
+              }
               const trackPoints = getRealisticTransitTrack(sp1, sp2, day.dayNumber);
               trackPoints.forEach(p => {
                 if (p[0] > 30) {
@@ -3538,6 +3686,12 @@
             const sp2 = transitSeq[i + 1];
             if (sp1 && sp2 && sp1.lat && sp2.lat) {
               if (sp1.id === 'taoyuan_airport' || sp2.id === 'taoyuan_airport' || sp1.lat < 30 || sp2.lat < 30) {
+                continue;
+              }
+              const segmentTransitKey = `${sp1.id}_to_${sp2.id}`;
+              const isMorningLodging = (i === 0 && transitSeq[0].id !== (day.spotIds || [])[0]);
+              const fallbackKey = isMorningLodging ? `start_to_${sp2.id}` : '';
+              if (day.deletedTransitKeys && (day.deletedTransitKeys.includes(segmentTransitKey) || (fallbackKey && day.deletedTransitKeys.includes(fallbackKey)))) {
                 continue;
               }
               const trackPoints = getRealisticTransitTrack(sp1, sp2, day.dayNumber);
@@ -3848,7 +4002,10 @@
       if (!spot || !spot.closedDay || spot.closedDay === "None" || !dateStr) return null;
       const dow = getDayOfWeek(dateStr);
       if (!dow) return null;
-      if (spot.closedDay.toLowerCase() === dow.en.toLowerCase()) {
+      const closed = String(spot.closedDay).toLowerCase();
+      const todayEn = dow.en.toLowerCase();
+      const closedDays = closed.split(/[,/、\s|]+/).map(s => s.trim());
+      if (closedDays.includes(todayEn) || closed === todayEn) {
         return {
           dayZh: dow.zh,
           spotName: spot.name,
@@ -4007,7 +4164,7 @@
       if (s.type === 'castle') return 'castle';
       if (s.type === 'lodging') return 'lodging';
       if (s.climbLevel === 'scenic' || s.id.includes('sakyu') || s.id.includes('bikan') || s.id.includes('senkoji') || s.id.includes('museum') || s.id.includes('horikawa') || s.id.includes('kintaikyo') || s.id.includes('akiyoshi') || s.id.includes('bairin')) return 'scenic';
-      if (s.climbLevel === 'gourmet' || s.id.includes('chiyagyu') || s.id.includes('takumi') || s.id.includes('tsubomi') || s.id.includes('jinseki') || s.id.includes('atago') || s.id.includes('kenran')) return 'gourmet';
+      if (s.type === 'restaurant' || s.climbLevel === 'gourmet' || s.id.includes('chiyagyu') || s.id.includes('takumi') || s.id.includes('tsubomi') || s.id.includes('jinseki') || s.id.includes('atago') || s.id.includes('kenran')) return 'gourmet';
       if (s.climbLevel === 'anime' || s.climbLevel === 'museum' || s.id.includes('pokemon') || s.id.includes('peace') || s.id.includes('atomic')) return 'anime';
       return 'custom';
     }
@@ -4051,7 +4208,7 @@
         targetDay.spotIds.splice(insertIndex, 0, spotId);
       }
       targetDay.spotIds = sortDaySpotsLodgingAtEnd(targetDay.spotIds);
-      saveState();
+      saveState({ notify: true });
       renderMainPanel();
       renderMapElements();
     }
@@ -4086,7 +4243,7 @@
         changed = true;
       }
       if (changed) {
-        saveState();
+        saveState({ notify: true });
         renderMainPanel();
         renderMapElements();
         updateMapFilterDropdown();
@@ -4236,12 +4393,20 @@
               <div class="text-[11px] text-slate-300 mt-1 line-clamp-2 leading-relaxed">
                 ${escapeHtml(spot.notes || spot.climbLevelText || '')}
               </div>
-              ${spot.reservationUrl ? `<div class="mt-1"><a href="${spot.reservationUrl}" target="_blank" class="text-[10px] text-amber-300 hover:underline inline-flex items-center gap-0.5">🔗 查看菜單與預約 ↗</a></div>` : ''}
+              <div class="mt-1.5 flex items-center gap-1.5 flex-wrap">
+                ${renderDiningBookingBadge(spot)}
+                ${spot.reservationUrl ? `<a href="${spot.reservationUrl}" target="_blank" class="text-[10px] text-amber-300 hover:underline inline-flex items-center gap-0.5">🔗 查看菜單與官網 ↗</a>` : ''}
+              </div>
             </div>
             <div class="pt-2 border-t border-slate-700/60 flex items-center justify-between gap-2">
-              <button onclick="focusSpotOnMap('${spot.id}')" class="text-[11px] text-slate-400 hover:text-slate-200 transition">
-                🎯 定位
-              </button>
+              <div class="flex items-center gap-2">
+                <button onclick="focusSpotOnMap('${spot.id}')" class="text-[11px] text-slate-400 hover:text-slate-200 transition">
+                  🎯 定位
+                </button>
+                <button type="button" onclick="openQuickBookingModal('${spot.id}')" class="text-[11px] text-amber-300 hover:text-amber-200 hover:underline">
+                  🍽️ 填預約時間
+                </button>
+              </div>
               ${actionButtons}
             </div>
           </div>
@@ -5008,9 +5173,17 @@
               <!-- 景點循序清單與區間車次 -->
               <div>
                 <div class="flex items-center justify-between text-xs mb-2">
-                  <span class="font-bold text-slate-800 flex items-center gap-1">
-                    <span>📍</span> 造訪順序與轉乘連動：
-                  </span>
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <span class="font-bold text-slate-800 flex items-center gap-1">
+                      <span>📍</span> 造訪順序與轉乘連動：
+                    </span>
+                    ${(day.deletedTransitKeys && day.deletedTransitKeys.length > 0) ? `
+                      <span class="text-[11px] bg-amber-50 text-amber-800 px-2 py-0.5 rounded border border-amber-200 flex items-center gap-1 font-medium shadow-3xs">
+                        <span>🗑️ 已刪除 ${day.deletedTransitKeys.length} 段區間</span>
+                        <button type="button" onclick="restoreAllTransitSegments(${day.dayNumber})" class="text-indigo-600 hover:text-indigo-800 hover:underline font-bold ml-1 cursor-pointer">全部復原</button>
+                      </span>
+                    ` : ''}
+                  </div>
                   <button onclick="openAddSpotModalForDay(${day.dayNumber})" class="text-xs font-bold px-2.5 py-1 rounded shadow-2xs flex items-center gap-1 transition ${theme.badgeBg}">
                     ➕ 加入景點至 Day ${day.dayNumber}
                   </button>
@@ -5194,18 +5367,25 @@
 
       // Day 2
       "okayama_to_kinojo": {
-        name: "JR 吉備線 (桃太郎線) 或 伯備線 普通車 (約 27~40 分鐘) + 計程車 (約 25~30 分鐘)",
-        time: "鐵道約 27~40 分 + 計程車 25~30 分",
+        name: "ＪＲ伯備線(桃太郎線) 普通車 (約 27~35 分鐘) + 計程車 (約 25~30 分鐘)",
+        time: "鐵道約 27~35 分 + 計程車 25~30 分",
         passCovered: true,
         passNote: "JR 在來線全額包含 (總社至鬼ノ城計程車約 3,500 円自費)",
-        tips: "總社站出站轉乘計程車直達鬼ノ城山頂西門，請先與司機預約下山回程時間"
+        tips: "岡山駅搭乘ＪＲ伯備線(桃太郎線)直達總社站，出站轉乘計程車直達鬼ノ城山頂西門，請先與司機預約下山回程時間"
       },
       "okayama_hotel_to_kinojo": {
-        name: "JR 吉備線 (桃太郎線) 普通車 (岡山 ➔ 總社) + 計程車",
-        time: "鐵道約 35 分 + 計程車 25 分",
+        name: "ＪＲ伯備線(桃太郎線) 普通車 (岡山駅 ➔ 総社駅) + 計程車",
+        time: "鐵道約 27~35 分 + 計程車 25 分",
         passCovered: true,
         passNote: "JR 在來線全額包含 (計程車自費約 3,500 円)",
-        tips: "總社站出站搭計程車攻古代山城鬼ノ城"
+        tips: "岡山駅搭乘ＪＲ伯備線(桃太郎線)直達總社站，出站搭計程車攻古代山城鬼ノ城"
+      },
+      "okayama_station_to_kinojo": {
+        name: "ＪＲ伯備線(桃太郎線) 普通車 (岡山駅 ➔ 総社駅) + 計程車",
+        time: "鐵道約 27~35 分 + 計程車 25 分",
+        passCovered: true,
+        passNote: "JR 在來線全額包含 (計程車自費約 3,500 円)",
+        tips: "岡山駅搭乘ＪＲ伯備線(桃太郎線)直達總社站，出站搭計程車攻古代山城鬼ノ城"
       },
       "kinojo_to_tsuyama": {
         name: "JR 伯備線 + JR 津山線「快速ことぶき」(岡山轉乘)",
@@ -5622,6 +5802,412 @@
       return (state.spots || []).find(s => s.id === lastSpotId) || null;
     }
 
+    // 反向交通路徑智慧對稱適配 (當使用者調轉兩景點先後次序時)
+    function reverseTransitDetails(orig, fromSpot, toSpot) {
+      if (!orig) return null;
+      const fromName = fromSpot ? fromSpot.name : '';
+      const toName = toSpot ? toSpot.name : '';
+      const fromStation = fromSpot ? (fromSpot.nearestStation || fromSpot.name) : '';
+      const toStation = toSpot ? (toSpot.nearestStation || toSpot.name) : '';
+
+      let revName = orig.name || '';
+      // 若名稱包含括號 (A ➔ B)，只反轉含有箭頭括號內的區間，保留前面的車種/幹線別名
+      const bracketMatch = revName.match(/^(.*)\(([^()]*?)\s*([➔至\->])\s*([^()]*?)\)(.*?)$/);
+      if (bracketMatch) {
+        const prefix = bracketMatch[1];
+        const segA = bracketMatch[2].trim();
+        const arrow = bracketMatch[3];
+        const segB = bracketMatch[4].trim();
+        const suffix = bracketMatch[5];
+        revName = `${prefix}(${segB} ➔ ${segA})${suffix}`;
+      } else if (revName.includes(" ➔ ")) {
+        const parts = revName.split(" ➔ ");
+        if (parts.length === 2) {
+          revName = `${parts[1].trim()} ➔ ${parts[0].trim()}`;
+        }
+      } else if (revName.includes(" + ")) {
+        // 多段接駁反轉順序
+        revName = revName.split(" + ").reverse().join(" + ");
+      }
+
+      return {
+        name: revName || `${fromStation || fromName} ➔ ${toStation || toName} 鐵道動線`,
+        time: orig.time || "約 20~40 分鐘",
+        passCovered: orig.passCovered !== undefined ? orig.passCovered : true,
+        passNote: orig.passNote || "山陽&山陰周遊券範圍內 JR 鐵道全包",
+        tips: orig.tips ? `返程或逆向動線：${orig.tips}` : "可直接於車站搭乘對向列車或點擊 Yahoo 車次確認即時時刻"
+      };
+    }
+
+    // 景點末端特定接駁特徵 (離開最近鐵路車站所需之公車/計程車/渡輪，方向感知)
+    function getSpotAccessInfo(spot) {
+      if (!spot) return null;
+      const id = spot.id || '';
+      const name = spot.name || '';
+      if (id === 'kinojo' || name.includes('鬼之城') || name.includes('鬼ノ城')) {
+        return {
+          station: '総社駅',
+          toSpot: '総社站搭計程車直達鬼之城山頂 (約 20 分)',
+          fromSpot: '計程車下山返回総社站 (約 20 分)',
+          timeMin: 20,
+          costNote: '計程車自費約 3,000 円',
+          tipsTo: '総社站東口出站轉乘計程車直達鬼之城山頂西門，請先與司機約定下山回程時間',
+          tipsFrom: '自鬼之城搭計程車下山返回総社站'
+        };
+      }
+      if (id === 'bitchu_matsuyama' || name.includes('備中松山城')) {
+        return {
+          station: '備中高梁駅',
+          toSpot: '備中高梁站搭觀光合乘計程車直達鞴峠 (約 15 分)',
+          fromSpot: '搭觀光合乘計程車返回備中高梁站 (約 15 分)',
+          timeMin: 15,
+          costNote: '合乘計程車單程 500 円自費需前一日預約',
+          tipsTo: '備中高梁站前轉乘觀光合計程車直達鞴峠登山口登天空之城',
+          tipsFrom: '自鞴峠搭合計程車返回備中高梁站'
+        };
+      }
+      if (id === 'izumo_taisha' || name.includes('出雲大社')) {
+        return {
+          station: '出雲市駅',
+          toSpot: '出雲市站搭一畑電車/巴士直達出雲大社 (約 20 分)',
+          fromSpot: '搭一畑電車/巴士返回出雲市站 (約 20 分)',
+          timeMin: 20,
+          costNote: '一畑私鐵/巴士約 500~530 円自費',
+          tipsTo: '出雲市站前 1 號月台搭一畑巴士或搭一畑電車直達出雲大社',
+          tipsFrom: '大社前搭乘一畑巴士/電車返回出雲市站'
+        };
+      }
+      if (id === 'tottori_sakyu' || name.includes('鳥取砂丘')) {
+        return {
+          station: '鳥取駅',
+          toSpot: '鳥取站搭路線巴士直達鳥取砂丘 (約 20 分)',
+          fromSpot: '搭路線巴士返回鳥取站 (約 20 分)',
+          timeMin: 20,
+          costNote: '路線巴士單程約 380 円自費',
+          tipsTo: '鳥取站北口 0 號站牌搭路線巴士直達砂丘會館',
+          tipsFrom: '砂丘會館前搭路線公車返回鳥取站'
+        };
+      }
+      if (id === 'tomonoura_onsen' || name.includes('鞆之浦') || name.includes('鞆港')) {
+        return {
+          station: '福山駅',
+          toSpot: '福山站南口搭鞆鐵巴士直達鞆之浦 (約 30 分)',
+          fromSpot: '搭鞆鐵巴士返回福山站 (約 30 分)',
+          timeMin: 30,
+          costNote: '鞆鐵巴士單程 530 円自費',
+          tipsTo: '福山站南口 5 號巴士站牌直達鞆之浦',
+          tipsFrom: '鞆之浦搭鞆鐵巴士返回福山站'
+        };
+      }
+      if (id === 'itsukushima_jinja' || name.includes('宮島') || name.includes('嚴島') || name.includes('厳島')) {
+        return {
+          station: '宮島口駅',
+          toSpot: '宮島口搭 JR 西日本宮島渡輪登島 (約 10 分)',
+          fromSpot: '宮島碼頭搭 JR 西日本宮島渡輪返回宮島口 (約 10 分)',
+          timeMin: 10,
+          costNote: 'JR 宮島渡輪憑 Pass 全包 (宮島訪問稅 100 円自費)',
+          tipsTo: '出宮島口站步行 3 分至碼頭，搭乘 JR 西日本宮島渡輪大鳥居航路',
+          tipsFrom: '宮島棧橋搭乘 JR 宮島渡輪返回宮島口站'
+        };
+      }
+      if (id === 'adachi_museum' || name.includes('足立美術館')) {
+        return {
+          station: '安來駅',
+          toSpot: '安來站搭免費穿梭巴士直達足立美術館 (約 20 分)',
+          fromSpot: '搭足立美術館免費接駁車返回安來站 (約 20 分)',
+          timeMin: 20,
+          costNote: '美術館接駁車免費',
+          tipsTo: '安來站前專用乘車處搭乘免費接駁車',
+          tipsFrom: '美術館前專用乘車處搭接駁專車返回安來站'
+        };
+      }
+      if (id === 'kintaikyo' || name.includes('錦帶橋') || name.includes('錦帯橋')) {
+        return {
+          station: '岩國駅',
+          toSpot: '岩國站搭防長/岩國巴士直達錦帶橋 (約 18 分)',
+          fromSpot: '搭公車返回岩國站 (約 18 分)',
+          timeMin: 18,
+          costNote: '公車單程約 300 円自費',
+          tipsTo: '岩國站西口搭公車直達錦帶橋',
+          tipsFrom: '錦帶橋站牌搭公車返回岩國站'
+        };
+      }
+      if (id === 'okayama_airport' || name.includes('機場') || name.includes('空港')) {
+        return {
+          station: '岡山駅',
+          toSpot: '岡山站西口搭利木津巴士直達機場 (約 30 分)',
+          fromSpot: '岡山機場搭利木津巴士直達岡山站 (約 30 分)',
+          timeMin: 30,
+          costNote: '機場巴士單程 780 円自費',
+          tipsTo: '岡山站西口 2 號乘車處搭車直達機場',
+          tipsFrom: '岡山機場 2 號乘車處搭車直達岡山站西口'
+        };
+      }
+      if (id === 'yunogo_onsen' || name.includes('湯鄉') || name.includes('湯郷')) {
+        return {
+          station: '津山駅',
+          toSpot: '津山站前搭宇野巴士至湯鄉溫泉 (約 20 分)',
+          fromSpot: '搭宇野巴士返回津山站 (約 20 分)',
+          timeMin: 20,
+          costNote: '巴士約 550 円自費',
+          tipsTo: '津山站前轉乘往湯鄉溫泉方向巴士',
+          tipsFrom: '湯鄉溫泉搭巴士返回津山站'
+        };
+      }
+      return null;
+    }
+
+    // 鐵路走廊幹線推算函式
+    function inferRailTransit(railFrom, railTo, distKm, combinedText) {
+      // 1. 山陽新幹線廊道
+      const SHINKANSEN_STOPS = ["岡山", "福山", "新尾道", "三原", "東廣島", "廣島", "新岩國", "德山", "新山口", "厚狹", "新下關", "小倉", "博多", "相生", "姬路", "西明石", "新神戶", "新大阪"];
+      const fromIsShinkansen = SHINKANSEN_STOPS.some(s => railFrom.includes(s));
+      const toIsShinkansen = SHINKANSEN_STOPS.some(s => railTo.includes(s));
+
+      if (fromIsShinkansen && toIsShinkansen && railFrom !== railTo && distKm >= 15) {
+        const shinkansenMins = Math.max(12, Math.round(distKm / 3.4 + 7));
+        return {
+          name: `JR 山陽新幹線 (${railFrom} ➔ ${railTo}) (Nozomi / Sakura / Mizuho)`,
+          timeMin: shinkansenMins,
+          passCovered: true,
+          passNote: "山陽&山陰地區周遊券全包！(含 Nozomi / Mizuho 指定席與自由席)",
+          tips: "班次極為密集（約 5~10 分鐘一班），持 Pass 可至綠色售票機或人工窗口免費劃位指定席"
+        };
+      }
+
+      // 2. 伯備線路廊 (岡山 ⇋ 倉敷 ⇋ 總社 ⇋ 備中高梁 ⇋ 新見 ⇋ 米子 ⇋ 松江 ⇋ 出雲市)
+      const HAKUBI_STOPS = ["岡山", "倉敷", "総社", "総社駅", "備前一宮", "吉備津", "足守", "清音", "備中高梁", "新見", "生山", "根雨", "伯耆大山", "米子", "松江", "出雲市"];
+      const fromIsHakubi = HAKUBI_STOPS.some(s => railFrom.includes(s));
+      const toIsHakubi = HAKUBI_STOPS.some(s => railTo.includes(s));
+
+      if (fromIsHakubi && toIsHakubi && railFrom !== railTo) {
+        if (distKm >= 25 || railFrom.includes("高梁") || railTo.includes("高梁") || railFrom.includes("新見") || railTo.includes("新見") || railFrom.includes("米子") || railTo.includes("米子") || railFrom.includes("松江") || railTo.includes("松江") || railFrom.includes("出雲") || railTo.includes("出雲")) {
+          const yakumoMins = Math.max(34, Math.round(distKm / 1.3 + 8));
+          return {
+            name: `JR 伯備線 特急「やくも」(八雲號) (${railFrom} ➔ ${railTo})`,
+            timeMin: yakumoMins,
+            passCovered: true,
+            passNote: "特急八雲號全車指定席，持 JR Pass 免費劃位！",
+            tips: "新型 273 系「八雲號」全車為指定席，搭車前請提前於車站綠色售票機劃妥車票"
+          };
+        } else {
+          const localMins = Math.max(10, Math.round(distKm * 1.4 + 4));
+          return {
+            name: `JR 伯備線(桃太郎線) / 吉備線 (${railFrom} ➔ ${railTo})`,
+            timeMin: localMins,
+            passCovered: true,
+            passNote: "JR 在來線全額包含",
+            tips: "岡山站在來線月台搭車直達，班次密集隨到隨搭"
+          };
+        }
+      }
+
+      // 3. 山陰本線廊道 (鳥取 ⇋ 倉吉 ⇋ 米子 ⇋ 安來 ⇋ 松江 ⇋ 玉造溫泉 ⇋ 宍道 ⇋ 出雲市 ⇋ 益田)
+      const SANIN_STOPS = ["鳥取", "倉吉", "米子", "安來", "松江", "玉造溫泉", "宍道", "出雲市", "大田市", "江津", "濱田", "益田"];
+      const fromIsSanin = SANIN_STOPS.some(s => railFrom.includes(s));
+      const toIsSanin = SANIN_STOPS.some(s => railTo.includes(s));
+
+      if (fromIsSanin && toIsSanin && railFrom !== railTo) {
+        if ((railFrom.includes("鳥取") || railTo.includes("鳥取")) && (railFrom.includes("米子") || railTo.includes("米子") || railFrom.includes("倉吉") || railTo.includes("倉吉"))) {
+          const matsukazeMins = Math.max(28, Math.round(distKm / 1.2 + 8));
+          return {
+            name: `JR 山陰本線 特急「スーパーまつかぜ」(超級松風) (${railFrom} ➔ ${railTo})`,
+            timeMin: matsukazeMins,
+            passCovered: true,
+            passNote: "山陰本線特急與快速全額包含",
+            tips: "沿山陰海岸行駛，持 Pass 可免費搭乘自由席或劃指定席"
+          };
+        } else {
+          const saninMins = Math.max(15, Math.round(distKm * 1.0 + 6));
+          return {
+            name: `JR 山陰本線 特急「やくも」/「スーパーおき」/ 在來線快速 (${railFrom} ➔ ${railTo})`,
+            timeMin: saninMins,
+            passCovered: true,
+            passNote: "JR 山陰本線全額包含",
+            tips: "宍道湖畔鐵道，班次頻繁，特急與普通車皆可搭乘"
+          };
+        }
+      }
+
+      // 4. 境線走廊 (米子 ⇋ 境港)
+      if (railFrom.includes("境港") || railTo.includes("境港") || combinedText.includes("境港") || combinedText.includes("水木茂")) {
+        return {
+          name: `JR 境線 (鬼太郎彩繪列車) (${railFrom} ➔ ${railTo})`,
+          timeMin: 45,
+          passCovered: true,
+          passNote: "JR 境線全額包含",
+          tips: "米子站 0 號月台發車，全車體與站名皆融入水木茂鬼太郎妖怪特色"
+        };
+      }
+
+      // 5. 津山線走廊 (岡山 ⇋ 津山)
+      if ((railFrom.includes("津山") || railTo.includes("津山")) && (railFrom.includes("岡山") || railTo.includes("岡山"))) {
+        return {
+          name: `JR 津山線 快速「ことぶき」(壽號) / 普通列車 (${railFrom} ➔ ${railTo})`,
+          timeMin: 65,
+          passCovered: true,
+          passNote: "JR 津山線全額包含",
+          tips: "岡山站津山線專用月台搭乘直達津山"
+        };
+      }
+
+      // 6. 山口線走廊 (新山口 ⇋ 津和野 ⇋ 益田)
+      if ((railFrom.includes("津和野") || railTo.includes("津和野")) && (railFrom.includes("山口") || railTo.includes("山口"))) {
+        const yamaguchiMins = Math.max(30, Math.round(distKm / 1.1 + 10));
+        return {
+          name: `JR 山口線 特急「スーパーおき」/ 普通車 (${railFrom} ➔ ${railTo})`,
+          timeMin: yamaguchiMins,
+          passCovered: true,
+          passNote: "JR 山口線全額包含",
+          tips: "特急超級隱岐號直通山口線與山陰本線"
+        };
+      }
+
+      // 7. 廣島市區內移動
+      if ((railFrom.includes("廣島") || railTo.includes("廣島") || railFrom.includes("広島") || railTo.includes("広島")) && distKm <= 8) {
+        return {
+          name: "廣島電鐵 (路電) 或 廣島和平觀光循環巴士 (Meipuru-pu)",
+          timeMin: 15,
+          passCovered: true,
+          passNote: "中國 JR 觀光循環巴士憑 Pass 免費！(廣電路電 220 円投現/IC卡)",
+          tips: "廣島站前可搭乘廣島和平循環巴士（橘線/綠線/檸檬線）直達原爆圓頂與和平紀念公園"
+        };
+      }
+
+      // 8. 通用鐵路在來線推算
+      if (distKm >= 25) {
+        const estMin = Math.max(20, Math.round(distKm / 1.1 + 8));
+        return {
+          name: `JR 鐵道 (在來線特急/快速) (${railFrom} ➔ ${railTo})`,
+          timeMin: estMin,
+          passCovered: true,
+          passNote: "山陽&山陰地區周遊券全額覆蓋 JR 鐵道",
+          tips: "兩地搭乘 JR 鐵路直通，點擊上方 Yahoo 車次可查最新時刻與月台"
+        };
+      } else {
+        const estMin = Math.max(10, Math.round(distKm * 1.4 + 5));
+        return {
+          name: `JR 在來線普通/快速列車 (${railFrom} ➔ ${railTo})`,
+          timeMin: estMin,
+          passCovered: true,
+          passNote: "JR 在來線全額包含",
+          tips: "短程在來線區間電車，班次頻繁隨到隨搭"
+        };
+      }
+    }
+
+    // 🌐 前端智慧動態交通推算引擎 (當使用者在網頁上隨意調換順序或新增景點時，前端立即直接推導交通過程)
+    function inferDynamicTransit(fromSpot, toSpot, dayNumber) {
+      const fromName = fromSpot ? fromSpot.name : (dayNumber === 1 ? '抵達岡山' : '起點');
+      const toName = toSpot ? toSpot.name : '目的地';
+      const fromStation = fromSpot ? (fromSpot.nearestStation || fromSpot.name) : '岡山駅';
+      const toStation = toSpot ? (toSpot.nearestStation || toSpot.name) : '岡山駅';
+
+      // 直線地理距離計算 (Haversine km)
+      let distKm = 10;
+      if (fromSpot && toSpot && fromSpot.lat && fromSpot.lng && toSpot.lat && toSpot.lng) {
+        distKm = calcHaversineKm(fromSpot.lat, fromSpot.lng, toSpot.lat, toSpot.lng);
+      } else if (fromStation === toStation) {
+        distKm = 0.5;
+      }
+
+      const combinedText = `${fromName} ${toName} ${fromStation} ${toStation}`;
+
+      // 檢查起點與終點是否為特殊接駁景點 (方向感知)
+      const fromAccess = getSpotAccessInfo(fromSpot);
+      const toAccess = getSpotAccessInfo(toSpot);
+
+      const railFrom = fromAccess ? fromAccess.station : fromStation;
+      const railTo = toAccess ? toAccess.station : toStation;
+
+      // 狀況 A: 同站接駁 (起點與終點依附於同一車站)
+      if (railFrom === railTo) {
+        if (fromAccess && !toAccess) {
+          // 自景點返回車站 (例如 鬼之城 ➔ 総社站)
+          return {
+            name: fromAccess.fromSpot,
+            time: `約 ${fromAccess.timeMin} 分鐘`,
+            passCovered: false,
+            passNote: fromAccess.costNote,
+            tips: fromAccess.tipsFrom
+          };
+        }
+        if (!fromAccess && toAccess) {
+          // 自車站前往景點 (例如 総社站 ➔ 鬼之城)
+          return {
+            name: toAccess.toSpot,
+            time: `約 ${toAccess.timeMin} 分鐘`,
+            passCovered: false,
+            passNote: toAccess.costNote,
+            tips: toAccess.tipsTo
+          };
+        }
+        if (fromAccess && toAccess && fromSpot.id !== toSpot.id) {
+          // 同一車站下的兩處接駁景點
+          return {
+            name: `${fromAccess.fromSpot} + ${toAccess.toSpot}`,
+            time: `約 ${fromAccess.timeMin + toAccess.timeMin} 分鐘`,
+            passCovered: false,
+            passNote: `${fromAccess.costNote}；${toAccess.costNote}`,
+            tips: `${fromAccess.tipsFrom} ➔ ${toAccess.tipsTo}`
+          };
+        }
+
+        // 超短距離 / 同商圈 / 市區徒步 (< 1.8 km 或相同車站)
+        if (distKm <= 0.3) {
+          return {
+            name: `市區漫步步行 (相鄰景點 / 同站商圈)`,
+            time: "徒步約 3~5 分鐘",
+            passCovered: true,
+            passNote: "徒步免費漫步",
+            tips: "兩景點相鄰或位於同一站體商圈，直接沿街景漫步即可輕鬆抵達"
+          };
+        }
+        const walkMin = Math.max(5, Math.round(distKm * 10 + 3));
+        return {
+          name: `市區漫步或市區路面電車/短程公車 (${fromStation} ➔ ${toStation})`,
+          time: `步行約 ${walkMin} 分鐘 (路電/公車約 5 分鐘)`,
+          passCovered: true,
+          passNote: "徒步免費 (市區公車/路電約 140~200 円自費)",
+          tips: `距離僅約 ${distKm.toFixed(1)} 公里，可悠閒徒步穿梭街巷或搭乘短程路面電車`
+        };
+      }
+
+      // 狀況 B: 跨站鐵道 + 方向感知前後接駁
+      const rail = inferRailTransit(railFrom, railTo, distKm, combinedText);
+
+      let finalName = "";
+      let totalMin = rail.timeMin;
+      let passNotes = [rail.passNote];
+      let tipsParts = [];
+
+      if (fromAccess) {
+        finalName += `${fromAccess.fromSpot} + `;
+        totalMin += fromAccess.timeMin;
+        passNotes.push(fromAccess.costNote);
+        tipsParts.push(fromAccess.tipsFrom);
+      }
+
+      finalName += rail.name;
+
+      if (toAccess) {
+        finalName += ` + ${toAccess.toSpot}`;
+        totalMin += toAccess.timeMin;
+        passNotes.push(toAccess.costNote);
+        tipsParts.push(toAccess.tipsTo);
+      }
+
+      tipsParts.push(rail.tips);
+
+      return {
+        name: finalName,
+        time: totalMin > 60 ? `合計約 ${Math.floor(totalMin / 60)} 小時 ${totalMin % 60} 分鐘` : `合計約 ${totalMin} 分鐘`,
+        passCovered: rail.passCovered,
+        passNote: passNotes.join("；"),
+        tips: tipsParts.join(" ➔ ")
+      };
+    }
+
     function getTransitDetails(fromSpot, toSpot, dayNumber) {
       const fromId = fromSpot ? fromSpot.id : (dayNumber === 1 ? 'taoyuan_airport' : '');
       const toId = toSpot ? toSpot.id : '';
@@ -5629,20 +6215,19 @@
       if (fromId === 'taoyuan_airport' && toId === 'okayama_airport') return TRANSIT_KNOWLEDGE_BASE["taoyuan_airport_to_okayama_airport"];
       if (toId === 'okayama_airport' && fromId === 'taoyuan_airport') return TRANSIT_KNOWLEDGE_BASE["taoyuan_airport_to_okayama_airport"];
 
+      // 1. 正向完全比對
       const exactKey = `${fromId}_to_${toId}`;
       if (TRANSIT_KNOWLEDGE_BASE[exactKey]) {
         return TRANSIT_KNOWLEDGE_BASE[exactKey];
       }
 
-      if (toId === 'amanohashidate') return TRANSIT_KNOWLEDGE_BASE["kinosaki_onsen_to_amanohashidate"];
-      if (toId === 'ine_funaya') return TRANSIT_KNOWLEDGE_BASE["amanohashidate_to_ine_funaya"];
-      if (fromId === 'ine_funaya' && toId === 'kinosaki_onsen') return TRANSIT_KNOWLEDGE_BASE["ine_funaya_to_kinosaki_onsen"];
-      if (toId === 'kinosaki_onsen') return (fromId === 'ine_funaya' ? TRANSIT_KNOWLEDGE_BASE["ine_funaya_to_kinosaki_onsen"] : TRANSIT_KNOWLEDGE_BASE["tottori_sakyu_to_kinosaki_onsen"]);
-      if (fromId === 'kinosaki_onsen' && toId === 'sakaiminato_mizuki') return TRANSIT_KNOWLEDGE_BASE["kinosaki_onsen_to_sakaiminato_mizuki"];
-      if (toId === 'sakaiminato_mizuki') return TRANSIT_KNOWLEDGE_BASE["kinosaki_onsen_to_sakaiminato_mizuki"] || TRANSIT_KNOWLEDGE_BASE["amanohashidate_lodging_to_sakaiminato_mizuki"];
-      if (toId === 'kaike_onsen') return (fromId === 'sakaiminato_mizuki' ? TRANSIT_KNOWLEDGE_BASE["sakaiminato_mizuki_to_kaike_onsen"] : TRANSIT_KNOWLEDGE_BASE["tottori_to_kaike_onsen"]);
+      // 2. 反向智慧對稱比對 (景點順序調換時自動反轉適配)
+      const reverseKey = `${toId}_to_${fromId}`;
+      if (TRANSIT_KNOWLEDGE_BASE[reverseKey]) {
+        return reverseTransitDetails(TRANSIT_KNOWLEDGE_BASE[reverseKey], fromSpot, toSpot);
+      }
 
-      // 依天數與動線上下文智能走廊配對 (防錯配與跨日銜接)
+      // 3. 依天數與動線上下文走廊匹配 (防跨日銜接)
       if (dayNumber === 10 && toId === 'bitchu_matsuyama') return TRANSIT_KNOWLEDGE_BASE["okayama_hotel_d11_to_bitchu_matsuyama"];
       if (dayNumber === 10 && (fromId === 'tomonoura_onsen' || toId === 'kibitsuhiko_jinja')) return TRANSIT_KNOWLEDGE_BASE["tomonoura_onsen_to_kibitsuhiko_jinja"];
       if (dayNumber === 8 && toId === 'hiroshima') return TRANSIT_KNOWLEDGE_BASE["hiroshima_lodging_d8_to_hiroshima"];
@@ -5655,61 +6240,8 @@
       if (dayNumber === 4 && toId === 'adachi_museum') return TRANSIT_KNOWLEDGE_BASE["gassan_toda_to_adachi_museum"];
       if (dayNumber === 4 && toId === 'matsue') return TRANSIT_KNOWLEDGE_BASE["adachi_museum_to_matsue"];
 
-      // 通用兜底映射 (以起訖點精準防呆)
-      if (fromId === 'okayama_airport' || (dayNumber === 1 && toId === 'okayama_station')) return TRANSIT_KNOWLEDGE_BASE["okayama_airport_to_okayama_hotel"] || TRANSIT_KNOWLEDGE_BASE["okayama_airport_to_okayama"];
-      if (toId === 'okayama_hotel') return TRANSIT_KNOWLEDGE_BASE["okayama_airport_to_okayama_hotel"];
-      if (toId === 'chiyagyu_bisai' || toId === 'chiyagyu_kuya') return TRANSIT_KNOWLEDGE_BASE["okayama_hotel_to_chiyagyu_bisai"];
-      if (toId === 'okayama_aeon') return TRANSIT_KNOWLEDGE_BASE["chiyagyu_bisai_to_okayama_aeon"];
-      if (toId === 'kinojo') return TRANSIT_KNOWLEDGE_BASE["okayama_to_kinojo"];
-      if (toId === 'tsuyama') return TRANSIT_KNOWLEDGE_BASE["kinojo_to_tsuyama"];
-      if (toId === 'yunogo_onsen') return TRANSIT_KNOWLEDGE_BASE["tsuyama_to_yunogo_onsen"];
-      if (fromId === 'yunogo_onsen' && toId === 'tottori') return TRANSIT_KNOWLEDGE_BASE["yunogo_onsen_to_tottori"];
-      if (fromId === 'tottori' && toId === 'tottori_takumi') return TRANSIT_KNOWLEDGE_BASE["tottori_to_tottori_takumi"];
-      if (toId === 'tottori_sakyu') return TRANSIT_KNOWLEDGE_BASE["tottori_takumi_to_tottori_sakyu"];
-      if (toId === 'kaike_onsen' || toId === 'tottori_tsubomi') return TRANSIT_KNOWLEDGE_BASE["tottori_to_kaike_onsen"];
-      if (toId === 'gassan_toda') return TRANSIT_KNOWLEDGE_BASE["kaike_onsen_to_gassan_toda"];
-      if (toId === 'adachi_museum') return TRANSIT_KNOWLEDGE_BASE["gassan_toda_to_adachi_museum"];
-      if (toId === 'matsue' || toId === 'matsue_horikawa') return TRANSIT_KNOWLEDGE_BASE["adachi_museum_to_matsue"] || TRANSIT_KNOWLEDGE_BASE["gassan_toda_to_matsue"];
-      if (toId === 'matsue_lodging') return TRANSIT_KNOWLEDGE_BASE["matsue_to_matsue_lodging"];
-      if (toId === 'izumo_taisha') return TRANSIT_KNOWLEDGE_BASE["matsue_lodging_to_izumo_taisha"] || TRANSIT_KNOWLEDGE_BASE["matsue_to_izumo_taisha"];
-      if (toId === 'tamatsukuri_yu_jinja') return TRANSIT_KNOWLEDGE_BASE["izumo_taisha_to_tamatsukuri_yu_jinja"];
-      if (toId === 'tamatsukuri_onsen') return TRANSIT_KNOWLEDGE_BASE["tamatsukuri_yu_jinja_to_tamatsukuri_onsen"] || TRANSIT_KNOWLEDGE_BASE["izumo_taisha_to_tamatsukuri_onsen"];
-      if (toId === 'tsuwano' || toId === 'taikodani_inari') return TRANSIT_KNOWLEDGE_BASE["tamatsukuri_onsen_to_tsuwano"];
-      if (toId === 'hagi_lodging') return TRANSIT_KNOWLEDGE_BASE["tsuwano_to_hagi_lodging"];
-      if (toId === 'motonosumi_jinja') return TRANSIT_KNOWLEDGE_BASE["hagi_lodging_to_motonosumi_jinja"];
-      if (toId === 'hagi') return (fromId === 'motonosumi_jinja' ? TRANSIT_KNOWLEDGE_BASE["motonosumi_jinja_to_hagi"] : TRANSIT_KNOWLEDGE_BASE["tsuwano_to_hagi"]);
-      if (toId === 'hofu_tenmangu') return (fromId === 'rurikoji_pagoda' ? TRANSIT_KNOWLEDGE_BASE["rurikoji_pagoda_to_hofu_tenmangu"] : (TRANSIT_KNOWLEDGE_BASE["shin_yamaguchi_lodging_to_hofu_tenmangu"] || TRANSIT_KNOWLEDGE_BASE["rurikoji_pagoda_to_hofu_tenmangu"]));
-      if (fromId === 'hofu_tenmangu' && toId === 'shin_yamaguchi_lodging') return TRANSIT_KNOWLEDGE_BASE["hofu_tenmangu_to_shin_yamaguchi_lodging"];
-      if (toId === 'kintaikyo') return (fromId === 'hofu_tenmangu' ? TRANSIT_KNOWLEDGE_BASE["hofu_tenmangu_to_kintaikyo"] : TRANSIT_KNOWLEDGE_BASE["shin_yamaguchi_lodging_to_kintaikyo"]);
-      if (fromId === 'kintaikyo' && toId === 'iwakuni') return TRANSIT_KNOWLEDGE_BASE["kintaikyo_to_iwakuni"];
-      if (toId === 'shin_yamaguchi_lodging' || toId === 'shin_yamaguchi_station' || toId === 'shin_yamaguchi') return (fromId === 'hofu_tenmangu' ? TRANSIT_KNOWLEDGE_BASE["hofu_tenmangu_to_shin_yamaguchi_lodging"] : (TRANSIT_KNOWLEDGE_BASE["hagi_to_shin_yamaguchi_lodging"] || TRANSIT_KNOWLEDGE_BASE["hagi_to_shin_yamaguchi"]));
-      if (toId === 'iwakuni') return (fromId === 'kintaikyo' ? TRANSIT_KNOWLEDGE_BASE["kintaikyo_to_iwakuni"] : (TRANSIT_KNOWLEDGE_BASE["shin_yamaguchi_lodging_to_iwakuni"] || TRANSIT_KNOWLEDGE_BASE["shin_yamaguchi_to_iwakuni"]));
-      if (toId === 'itsukushima_jinja') return TRANSIT_KNOWLEDGE_BASE["iwakuni_to_itsukushima_jinja"];
-      if (toId === 'hiroshima_lodging_d8') return TRANSIT_KNOWLEDGE_BASE["itsukushima_jinja_to_hiroshima_lodging_d8"];
-      if (toId === 'hiroshima_gokoku_jinja') return TRANSIT_KNOWLEDGE_BASE["hiroshima_to_hiroshima_gokoku_jinja"];
-      if (toId === 'pokemon_center_hiroshima' || toId === 'pokemon_center') return TRANSIT_KNOWLEDGE_BASE["hiroshima_gokoku_jinja_to_pokemon_center_hiroshima"];
-      if (toId === 'atomic_bomb_dome') return TRANSIT_KNOWLEDGE_BASE["pokemon_center_hiroshima_to_atomic_bomb_dome"];
-      if (toId === 'hiroshima_peace_museum') return TRANSIT_KNOWLEDGE_BASE["atomic_bomb_dome_to_hiroshima_peace_museum"];
-      if (toId === 'hiroshima_jinseki') return TRANSIT_KNOWLEDGE_BASE["hiroshima_peace_museum_to_hiroshima_jinseki"];
-      if (toId === 'hiroshima_lodging_d9') return TRANSIT_KNOWLEDGE_BASE["hiroshima_jinseki_to_hiroshima_lodging_d9"];
-      if (toId === 'hiroshima' || toId === 'hiroshima_atago') return TRANSIT_KNOWLEDGE_BASE["hiroshima_lodging_d8_to_hiroshima"] || TRANSIT_KNOWLEDGE_BASE["iwakuni_to_hiroshima"];
-      if (toId === 'yoshida_koriyama') return TRANSIT_KNOWLEDGE_BASE["hiroshima_lodging_d9_to_yoshida_koriyama"] || TRANSIT_KNOWLEDGE_BASE["hiroshima_to_yoshida_koriyama"];
-      if (toId === 'fukuyama') return TRANSIT_KNOWLEDGE_BASE["yoshida_koriyama_to_fukuyama"];
-      if (toId === 'tomonoura_onsen') return TRANSIT_KNOWLEDGE_BASE["fukuyama_to_tomonoura_onsen"];
-      if (toId === 'kibitsuhiko_jinja') return TRANSIT_KNOWLEDGE_BASE["tomonoura_onsen_to_kibitsuhiko_jinja"];
-      if (toId === 'kibitsu_jinja') return TRANSIT_KNOWLEDGE_BASE["kibitsuhiko_jinja_to_kibitsu_jinja"];
-      if (toId === 'okayama_hotel_d11') return TRANSIT_KNOWLEDGE_BASE["kibitsu_jinja_to_okayama_hotel_d11"];
-      if (toId === 'bitchu_matsuyama') return TRANSIT_KNOWLEDGE_BASE["okayama_hotel_d11_to_bitchu_matsuyama"] || TRANSIT_KNOWLEDGE_BASE["okayama_to_bitchu_matsuyama"];
-      if (fromId === 'bitchu_matsuyama' && toId === 'okayama_airport') return TRANSIT_KNOWLEDGE_BASE["bitchu_matsuyama_to_okayama_airport"];
-      if (toId === 'okayama_airport') return TRANSIT_KNOWLEDGE_BASE["bitchu_matsuyama_to_okayama_airport"];
-
-      return {
-        name: "JR 在來線 / 新幹線 鐵路動線",
-        time: "約 20~50 分鐘 (依班型)",
-        passCovered: true,
-        passNote: "山陽&山陰周遊券範圍內 JR 鐵道皆全額免費",
-        tips: "點擊上方 Yahoo 車次按鈕可即時查詢今日最速時刻表"
-      };
+      // 4. 前端智慧動態交通推算引擎 (完全動態算出路線、車程、車種、Pass 覆蓋與建議)
+      return inferDynamicTransit(fromSpot, toSpot, dayNumber);
     }
 
     // 渲染交通卡片內的時刻表縮圖、附件與保留空間
@@ -5817,96 +6349,183 @@
           // 當第 0 個點是桃園機場、岡山機場或晨間出發住宿點時，顯示旅程起點，不顯示反向區間
           if (spot.id === 'taoyuan_airport') {
             const tpeTransitKey = `taoyuan_airport_${day.dayNumber}`;
-            const tpeTransitAtt = (day.transitAttachments && day.transitAttachments[tpeTransitKey]) || { notes: '', images: [], link: '' };
-            transitCardHeaderHtml = `
-              <div class="bg-blue-50 border border-blue-300 rounded-xl p-3 text-xs text-blue-950 space-y-2 shadow-2xs">
-                <div class="flex items-center justify-between flex-wrap gap-2">
-                  <span class="font-bold flex items-center gap-1.5 text-sm text-blue-950">
-                    <span>🛫</span><span>旅程啟程出發地：台灣桃園國際機場 第一航廈 (T1)</span>
-                  </span>
-                  <span class="text-[11px] bg-blue-100 text-blue-900 font-bold px-2.5 py-0.5 rounded border border-blue-300 shadow-3xs">
-                    搭乘台灣虎航 IT 214 (11:30 起飛)
-                  </span>
+            const isDel = day.deletedTransitKeys && day.deletedTransitKeys.includes(tpeTransitKey);
+            const isAllHidden = day.completelyHiddenTransitKeys && day.completelyHiddenTransitKeys.includes(tpeTransitKey);
+            if (isDel) {
+              transitCardHeaderHtml = isAllHidden ? "" : `
+                <div class="my-1.5 py-1 px-2.5 rounded-lg border border-dashed border-blue-200 bg-blue-50/50 flex items-center justify-between text-xs text-blue-800">
+                  <span>已隱藏桃園機場啟程提示</span>
+                  <div class="flex items-center gap-2">
+                    <button type="button" onclick="restoreTransitSegment(${day.dayNumber}, '${tpeTransitKey}')" class="text-blue-600 font-bold hover:underline text-[11px] cursor-pointer">↩️ 復原</button>
+                    <button type="button" onclick="hideTransitPlaceholder(${day.dayNumber}, '${tpeTransitKey}')" class="text-slate-400 hover:text-slate-600 text-xs px-1 cursor-pointer">✕</button>
+                  </div>
                 </div>
-                <div class="text-[11px] text-blue-900 bg-white/80 p-2 rounded-lg border border-blue-200 leading-relaxed">
-                  • <strong>航廈位置</strong>：桃園機場第一航廈 (Terminal 1) 1 樓出境大廳台灣虎航專屬櫃檯。<br>
-                  • <strong>關鍵報到時間</strong>：<strong>09:00</strong> 開櫃報到託運 (起飛前 2.5 小時) ➔ <strong>10:45</strong> 準時嚴格關櫃 (起飛前 45 分鐘)！<br>
-                  • <strong>機場交通</strong>：台北車站搭乘桃園機場捷運直達車約 35 分鐘直達 A12 第一航廈站。
+              `;
+            } else {
+              const tpeTransitAtt = (day.transitAttachments && day.transitAttachments[tpeTransitKey]) || { notes: '', images: [], link: '' };
+              transitCardHeaderHtml = `
+                <div class="bg-blue-50 border border-blue-300 rounded-xl p-3 text-xs text-blue-950 space-y-2 shadow-2xs">
+                  <div class="flex items-center justify-between flex-wrap gap-2">
+                    <span class="font-bold flex items-center gap-1.5 text-sm text-blue-950">
+                      <span>🛫</span><span>旅程啟程出發地：台灣桃園國際機場 第一航廈 (T1)</span>
+                    </span>
+                    <div class="flex items-center gap-1.5 shrink-0">
+                      <span class="text-[11px] bg-blue-100 text-blue-900 font-bold px-2.5 py-0.5 rounded border border-blue-300 shadow-3xs">
+                        搭乘台灣虎航 IT 214 (11:30 起飛)
+                      </span>
+                      <button type="button" onclick="deleteTransitSegment(${day.dayNumber}, '${tpeTransitKey}')" class="text-blue-400 hover:text-rose-600 hover:bg-rose-50 px-1.5 py-0.5 rounded border border-blue-200 hover:border-rose-300 transition text-[10px] flex items-center gap-0.5 cursor-pointer" title="隱藏此啟程提示">
+                        <span>🗑️</span><span>隱藏</span>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="text-[11px] text-blue-900 bg-white/80 p-2 rounded-lg border border-blue-200 leading-relaxed">
+                    • <strong>航廈位置</strong>：桃園機場第一航廈 (Terminal 1) 1 樓出境大廳台灣虎航專屬櫃檯。<br>
+                    • <strong>關鍵報到時間</strong>：<strong>09:00</strong> 開櫃報到託運 (起飛前 2.5 小時) ➔ <strong>10:45</strong> 準時嚴格關櫃 (起飛前 45 分鐘)！<br>
+                    • <strong>機場交通</strong>：台北車站搭乘桃園機場捷運直達車約 35 分鐘直達 A12 第一航廈站。
+                  </div>
+                  ${renderTransitAttachmentsBlock(day.dayNumber, tpeTransitKey, tpeTransitAtt, '虎航機票電子憑證 / 桃機報到登機證')}
                 </div>
-                ${renderTransitAttachmentsBlock(day.dayNumber, tpeTransitKey, tpeTransitAtt, '虎航機票電子憑證 / 桃機報到登機證')}
-              </div>
-            `;
+              `;
+            }
           } else if (spot.id === 'okayama_airport') {
             const airportTransitKey = `okayama_airport_${day.dayNumber}`;
-            const airportTransitAtt = (day.transitAttachments && day.transitAttachments[airportTransitKey]) || { notes: '', images: [], link: '' };
-            transitCardHeaderHtml = `
-              <div class="bg-sky-50 border border-sky-300 rounded-xl p-2.5 text-xs text-sky-950 space-y-2 shadow-2xs">
-                <div class="flex items-center justify-between">
-                  <span class="font-bold flex items-center gap-1.5"><span>✈️</span><span>旅程起點：抵達岡山桃太郎機場 (OKJ)</span></span>
-                  <span class="text-[11px] bg-sky-100 text-sky-800 font-bold px-2 py-0.5 rounded border border-sky-300">搭乘台灣虎航 IT214 抵達</span>
+            const isDel = day.deletedTransitKeys && day.deletedTransitKeys.includes(airportTransitKey);
+            const isAllHidden = day.completelyHiddenTransitKeys && day.completelyHiddenTransitKeys.includes(airportTransitKey);
+            if (isDel) {
+              transitCardHeaderHtml = isAllHidden ? "" : `
+                <div class="my-1.5 py-1 px-2.5 rounded-lg border border-dashed border-sky-200 bg-sky-50/50 flex items-center justify-between text-xs text-sky-800">
+                  <span>已隱藏岡山機場啟程提示</span>
+                  <div class="flex items-center gap-2">
+                    <button type="button" onclick="restoreTransitSegment(${day.dayNumber}, '${airportTransitKey}')" class="text-sky-600 font-bold hover:underline text-[11px] cursor-pointer">↩️ 復原</button>
+                    <button type="button" onclick="hideTransitPlaceholder(${day.dayNumber}, '${airportTransitKey}')" class="text-slate-400 hover:text-slate-600 text-xs px-1 cursor-pointer">✕</button>
+                  </div>
                 </div>
-                ${renderTransitAttachmentsBlock(day.dayNumber, airportTransitKey, airportTransitAtt, '航班:')}
-              </div>
-            `;
+              `;
+            } else {
+              const airportTransitAtt = (day.transitAttachments && day.transitAttachments[airportTransitKey]) || { notes: '', images: [], link: '' };
+              transitCardHeaderHtml = `
+                <div class="bg-sky-50 border border-sky-300 rounded-xl p-2.5 text-xs text-sky-950 space-y-2 shadow-2xs">
+                  <div class="flex items-center justify-between">
+                    <span class="font-bold flex items-center gap-1.5"><span>✈️</span><span>旅程起點：抵達岡山桃太郎機場 (OKJ)</span></span>
+                    <div class="flex items-center gap-1.5 shrink-0">
+                      <span class="text-[11px] bg-sky-100 text-sky-800 font-bold px-2 py-0.5 rounded border border-sky-300">搭乘台灣虎航 IT214 抵達</span>
+                      <button type="button" onclick="deleteTransitSegment(${day.dayNumber}, '${airportTransitKey}')" class="text-sky-400 hover:text-rose-600 hover:bg-rose-50 px-1.5 py-0.5 rounded border border-sky-200 hover:border-rose-300 transition text-[10px] flex items-center gap-0.5 cursor-pointer" title="隱藏此啟程提示">
+                        <span>🗑️</span><span>隱藏</span>
+                      </button>
+                    </div>
+                  </div>
+                  ${renderTransitAttachmentsBlock(day.dayNumber, airportTransitKey, airportTransitAtt, '航班:')}
+                </div>
+              `;
+            }
           } else {
+            const morningKey = `morning_origin_${day.dayNumber}`;
+            const isDel = day.deletedTransitKeys && day.deletedTransitKeys.includes(morningKey);
+            const isAllHidden = day.completelyHiddenTransitKeys && day.completelyHiddenTransitKeys.includes(morningKey);
+            if (isDel) {
+              transitCardHeaderHtml = isAllHidden ? "" : `
+                <div class="my-1.5 py-1 px-2.5 rounded-lg border border-dashed border-amber-200 bg-amber-50/50 flex items-center justify-between text-xs text-amber-900">
+                  <span>已隱藏晨間出發地提示</span>
+                  <div class="flex items-center gap-2">
+                    <button type="button" onclick="restoreTransitSegment(${day.dayNumber}, '${morningKey}')" class="text-amber-700 font-bold hover:underline text-[11px] cursor-pointer">↩️ 復原</button>
+                    <button type="button" onclick="hideTransitPlaceholder(${day.dayNumber}, '${morningKey}')" class="text-slate-400 hover:text-slate-600 text-xs px-1 cursor-pointer">✕</button>
+                  </div>
+                </div>
+              `;
+            } else {
+              transitCardHeaderHtml = `
+                <div class="bg-amber-50 border border-amber-300 rounded-xl p-2.5 text-xs text-amber-950 flex items-center justify-between shadow-2xs">
+                  <span class="font-bold flex items-center gap-1.5"><span>🌅</span><span>晨間出發地：${escapeHtml(spot.name)} (昨夜名湯住宿)</span></span>
+                  <div class="flex items-center gap-1.5 shrink-0">
+                    <span class="text-[11px] bg-amber-100 text-amber-900 font-bold px-2 py-0.5 rounded border border-amber-300">今日旅程由此啟程</span>
+                    <button type="button" onclick="deleteTransitSegment(${day.dayNumber}, '${morningKey}')" class="text-amber-500 hover:text-rose-600 hover:bg-rose-50 px-1.5 py-0.5 rounded border border-amber-200 hover:border-rose-300 transition text-[10px] flex items-center gap-0.5 cursor-pointer" title="隱藏此出發提示">
+                      <span>🗑️</span><span>隱藏</span>
+                    </button>
+                  </div>
+                </div>
+              `;
+            }
+          }
+        } else {
+          const transitKey = `${prevSpot ? prevSpot.id : 'start'}_to_${spot.id}`;
+          const isDeleted = day.deletedTransitKeys && day.deletedTransitKeys.includes(transitKey);
+          const isCompletelyHidden = day.completelyHiddenTransitKeys && day.completelyHiddenTransitKeys.includes(transitKey);
+
+          if (isDeleted) {
+            if (!isCompletelyHidden) {
+              transitCardHeaderHtml = `
+                <div class="my-1.5 py-1.5 px-3 rounded-xl border border-dashed border-slate-300 bg-slate-50/80 hover:bg-slate-100/70 transition flex items-center justify-between text-xs text-slate-500 shadow-3xs">
+                  <div class="flex items-center gap-1.5 min-w-0">
+                    <span class="text-slate-400 text-sm shrink-0">🚫</span>
+                    <span class="truncate">已刪除搭乘區間：<strong class="text-slate-700 font-semibold">${escapeHtml(fromStation)}</strong> ➔ <strong class="text-slate-700 font-semibold">${escapeHtml(toStation)}</strong></span>
+                  </div>
+                  <div class="flex items-center gap-2 shrink-0">
+                    <button type="button" onclick="restoreTransitSegment(${day.dayNumber}, '${transitKey}')" class="text-indigo-600 hover:text-indigo-800 font-bold hover:underline flex items-center gap-1 text-[11px] cursor-pointer">
+                      <span>↩️</span><span>復原搭乘區間</span>
+                    </button>
+                    <button type="button" onclick="hideTransitPlaceholder(${day.dayNumber}, '${transitKey}')" class="text-slate-400 hover:text-slate-600 text-xs px-1 cursor-pointer font-bold" title="徹底不顯示此列">
+                      ✕
+                    </button>
+                  </div>
+                </div>
+              `;
+            } else {
+              transitCardHeaderHtml = "";
+            }
+          } else {
+            const transitInfo = getTransitDetails(prevSpot, spot, day.dayNumber);
+            const transitTitle = isLodging 
+              ? `<span class="flex items-center gap-1.5 font-bold text-indigo-950"><span>🏨</span><span class="text-indigo-700">前往夜宿：</span><strong>${escapeHtml(fromStation)}</strong> ➔ <strong>${escapeHtml(toStation)}</strong></span>`
+              : `<span class="flex items-center gap-1.5 font-medium text-slate-800"><span>🚃</span><span>搭乘區間：</span><strong>${escapeHtml(fromStation)}</strong> ➔ <strong>${escapeHtml(toStation)}</strong></span>`;
+            const transitBoxBg = isLodging ? 'bg-indigo-50/90 border-indigo-300 text-indigo-950' : `${theme.transitBorder} border bg-white/70`;
+
+            const passBadge = transitInfo.passCovered
+              ? `<span class="bg-emerald-100 text-emerald-900 border border-emerald-300 font-bold px-2 py-0.5 rounded text-[10px] flex items-center gap-1 shadow-2xs" title="${escapeHtml(transitInfo.passNote)}">
+                   <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                   <span>🎫 JR Pass ✅ 包含</span>
+                   <span class="hidden sm:inline text-[10px] text-emerald-700 font-normal">(${escapeHtml(transitInfo.passNote)})</span>
+                 </span>`
+              : `<span class="bg-amber-100 text-amber-900 border border-amber-300 font-bold px-2 py-0.5 rounded text-[10px] flex items-center gap-1 shadow-2xs" title="${escapeHtml(transitInfo.passNote)}">
+                   <span>⚠️ JR Pass ❌ 不含</span>
+                   <span class="hidden sm:inline text-[10px] text-amber-800 font-normal">(${escapeHtml(transitInfo.passNote)})</span>
+                 </span>`;
+
+            const transitAtt = (day.transitAttachments && day.transitAttachments[transitKey]) || { notes: '', images: [], link: '' };
+
             transitCardHeaderHtml = `
-              <div class="bg-amber-50 border border-amber-300 rounded-xl p-2.5 text-xs text-amber-950 flex items-center justify-between shadow-2xs">
-                <span class="font-bold flex items-center gap-1.5"><span>🌅</span><span>晨間出發地：${escapeHtml(spot.name)} (昨夜名湯住宿)</span></span>
-                <span class="text-[11px] bg-amber-100 text-amber-900 font-bold px-2 py-0.5 rounded border border-amber-300">今日旅程由此啟程</span>
+              <div class="${transitBoxBg} rounded-xl p-2.5 text-xs space-y-2 shadow-2xs border">
+                <div class="flex items-center justify-between gap-1.5 flex-wrap">
+                  ${transitTitle}
+                  <div class="flex items-center gap-1.5 shrink-0">
+                    <a href="${yahooUrl}" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-2 py-0.5 rounded shadow-2xs transition flex items-center gap-1 text-[11px]">
+                      <span>🔍</span> Yahoo車次 ↗
+                    </a>
+                    <a href="${gmapsUrl}" target="_blank" class="bg-slate-700 hover:bg-slate-800 text-white px-2 py-0.5 rounded shadow-2xs transition text-[11px]">
+                      🗺️ 路線 ↗
+                    </a>
+                    <button type="button" onclick="deleteTransitSegment(${day.dayNumber}, '${transitKey}')" class="text-slate-400 hover:text-rose-600 hover:bg-rose-50 px-1.5 py-0.5 rounded border border-slate-300 hover:border-rose-300 transition text-[11px] flex items-center gap-0.5 cursor-pointer shadow-3xs" title="刪除此段搭乘區間 (不顯示交通卡)">
+                      <span>🗑️</span><span>刪除區間</span>
+                    </button>
+                  </div>
+                </div>
+                <div class="pt-1.5 border-t border-slate-200/80 flex flex-wrap items-center justify-between gap-1.5 text-[11px]">
+                  <div class="flex items-center gap-2 flex-wrap text-slate-700">
+                    <span class="font-bold text-slate-900 flex items-center gap-1 bg-white px-2 py-0.5 rounded border border-slate-200 shadow-3xs">
+                      <span>🚅</span> ${escapeHtml(transitInfo.name)}
+                    </span>
+                    <span class="text-slate-600 flex items-center gap-0.5">
+                      <span>⏱️</span> 車程：<strong class="text-slate-900 font-bold">${escapeHtml(transitInfo.time)}</strong>
+                    </span>
+                  </div>
+                  <div>
+                    ${passBadge}
+                  </div>
+                </div>
+                ${transitInfo.tips ? `<div class="text-[10px] text-slate-500 bg-slate-100/80 px-2 py-0.5 rounded flex items-center gap-1"><span>💡</span><span>${escapeHtml(transitInfo.tips)}</span></div>` : ''}
+                ${renderTransitAttachmentsBlock(day.dayNumber, transitKey, transitAtt, 'JR / 巴士時刻表與乘車附件')}
               </div>
             `;
           }
-        } else {
-          const transitInfo = getTransitDetails(prevSpot, spot, day.dayNumber);
-          const transitTitle = isLodging 
-            ? `<span class="flex items-center gap-1.5 font-bold text-indigo-950"><span>🏨</span><span class="text-indigo-700">前往夜宿：</span><strong>${escapeHtml(fromStation)}</strong> ➔ <strong>${escapeHtml(toStation)}</strong></span>`
-            : `<span class="flex items-center gap-1.5 font-medium text-slate-800"><span>🚃</span><span>搭乘區間：</span><strong>${escapeHtml(fromStation)}</strong> ➔ <strong>${escapeHtml(toStation)}</strong></span>`;
-          const transitBoxBg = isLodging ? 'bg-indigo-50/90 border-indigo-300 text-indigo-950' : `${theme.transitBorder} border bg-white/70`;
-
-          const passBadge = transitInfo.passCovered
-            ? `<span class="bg-emerald-100 text-emerald-900 border border-emerald-300 font-bold px-2 py-0.5 rounded text-[10px] flex items-center gap-1 shadow-2xs" title="${escapeHtml(transitInfo.passNote)}">
-                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                 <span>🎫 JR Pass ✅ 包含</span>
-                 <span class="hidden sm:inline text-[10px] text-emerald-700 font-normal">(${escapeHtml(transitInfo.passNote)})</span>
-               </span>`
-            : `<span class="bg-amber-100 text-amber-900 border border-amber-300 font-bold px-2 py-0.5 rounded text-[10px] flex items-center gap-1 shadow-2xs" title="${escapeHtml(transitInfo.passNote)}">
-                 <span>⚠️ JR Pass ❌ 不含</span>
-                 <span class="hidden sm:inline text-[10px] text-amber-800 font-normal">(${escapeHtml(transitInfo.passNote)})</span>
-               </span>`;
-
-          const transitKey = `${prevSpot ? prevSpot.id : 'start'}_to_${spot.id}`;
-          const transitAtt = (day.transitAttachments && day.transitAttachments[transitKey]) || { notes: '', images: [], link: '' };
-
-          transitCardHeaderHtml = `
-            <div class="${transitBoxBg} rounded-xl p-2.5 text-xs space-y-2 shadow-2xs border">
-              <div class="flex items-center justify-between gap-1.5 flex-wrap">
-                ${transitTitle}
-                <div class="flex items-center gap-1.5 shrink-0">
-                  <a href="${yahooUrl}" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-2 py-0.5 rounded shadow-2xs transition flex items-center gap-1 text-[11px]">
-                    <span>🔍</span> Yahoo車次 ↗
-                  </a>
-                  <a href="${gmapsUrl}" target="_blank" class="bg-slate-700 hover:bg-slate-800 text-white px-2 py-0.5 rounded shadow-2xs transition text-[11px]">
-                    🗺️ 路線 ↗
-                  </a>
-                </div>
-              </div>
-              <div class="pt-1.5 border-t border-slate-200/80 flex flex-wrap items-center justify-between gap-1.5 text-[11px]">
-                <div class="flex items-center gap-2 flex-wrap text-slate-700">
-                  <span class="font-bold text-slate-900 flex items-center gap-1 bg-white px-2 py-0.5 rounded border border-slate-200 shadow-3xs">
-                    <span>🚅</span> ${escapeHtml(transitInfo.name)}
-                  </span>
-                  <span class="text-slate-600 flex items-center gap-0.5">
-                    <span>⏱️</span> 車程：<strong class="text-slate-900 font-bold">${escapeHtml(transitInfo.time)}</strong>
-                  </span>
-                </div>
-                <div>
-                  ${passBadge}
-                </div>
-              </div>
-              ${transitInfo.tips ? `<div class="text-[10px] text-slate-500 bg-slate-100/80 px-2 py-0.5 rounded flex items-center gap-1"><span>💡</span><span>${escapeHtml(transitInfo.tips)}</span></div>` : ''}
-              ${renderTransitAttachmentsBlock(day.dayNumber, transitKey, transitAtt, 'JR / 巴士時刻表與乘車附件')}
-            </div>
-          `;
         }
 
         html += transitCardHeaderHtml;
@@ -5950,7 +6569,8 @@
                         ${lodgingBadge}
                         <span class="text-[10px] bg-slate-100 text-slate-600 px-1 rounded">${escapeHtml(spot.prefecture || '')}</span>
                         ${durationBadge}
-                        ${spot.reservationUrl ? `<a href="${spot.reservationUrl}" target="_blank" class="text-[10px] bg-emerald-100 text-emerald-800 px-1 rounded font-bold hover:underline">計程車預約 ↗</a>` : ''}
+                        ${renderDiningBookingBadge(spot)}
+                        ${spot.reservationUrl ? `<a href="${spot.reservationUrl}" target="_blank" class="text-[10px] bg-emerald-100 text-emerald-800 px-1 rounded font-bold hover:underline">計程車/官網預約 ↗</a>` : ''}
                       </div>
                       ${spot.climbLevelText && !isLodging ? `<div class="text-[11px] text-slate-600 mt-0.5 flex items-center gap-1 font-medium"><span class="text-amber-700">🚶</span> <span>${escapeHtml(spot.climbLevelText)}</span></div>` : ''}
                     `;
@@ -5979,8 +6599,11 @@
               </div>
             </div>
 
-            <!-- 地圖定位控制 -->
-            <div class="pt-1 border-t border-slate-100 flex items-center justify-end text-[11px]">
+            <!-- 地圖定位與編輯控制列 -->
+            <div class="pt-1 border-t border-slate-100 flex items-center justify-between text-[11px]">
+              <button type="button" onclick="openSpotModal('${spot.id}')" class="text-slate-500 hover:text-slate-800 text-[11px] hover:underline flex items-center gap-1">
+                ✏️ 編輯地點
+              </button>
               <button onclick="focusSpotOnMap('${spot.id}')" class="text-red-600 hover:underline text-[11px] flex items-center gap-1">
                 <span>🎯</span> 在地圖中定位
               </button>
@@ -6098,12 +6721,23 @@
                   ${spot.backupStamp ? `<div><strong>🔄 備用蓋章：</strong>${escapeHtml(spot.backupStamp)}</div>` : ''}
                   <div><strong>🚌 接駁交通：</strong>${escapeHtml(spot.transitInfo || '無')}</div>
                   <div>${closedText}</div>
+                  ${(isDiningSpot(spot) || spot.bookingTime || spot.bookingStatus) ? `
+                    <div class="mt-1 pt-1 border-t border-slate-100 flex items-center gap-1.5 flex-wrap">
+                      <span class="text-slate-500 font-medium">🍽️ 用餐預約：</span>
+                      ${renderDiningBookingBadge(spot)}
+                    </div>
+                  ` : ''}
                 </div>
               </div>
               <div class="flex flex-col gap-1 items-end shrink-0">
                 <button onclick="showSpotOnMap('${spot.id}')" class="text-xs bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 font-bold px-2 py-1 rounded flex items-center gap-1 transition shadow-2xs cursor-pointer" title="在地圖上查看此景點位置">
                   🗺️ 看位置
                 </button>
+                ${isDiningSpot(spot) ? `
+                  <button type="button" onclick="openQuickBookingModal('${spot.id}')" class="text-xs text-amber-700 hover:text-amber-900 font-bold hover:underline">
+                    🍽️ 填預約
+                  </button>
+                ` : ''}
                 <button onclick="openSpotModal('${spot.id}')" class="text-xs text-blue-600 hover:underline">
                   ✏️ 編輯
                 </button>
@@ -6119,7 +6753,7 @@
             ${spot.notes ? `<div class="bg-slate-50 text-[11px] text-slate-600 p-2 rounded border border-slate-100">📝 <strong>筆記：</strong>${escapeHtml(spot.notes)}</div>` : ''}
 
             <div class="flex items-center justify-between pt-1 border-t border-slate-100 text-xs">
-              <div class="flex items-center gap-1.5">
+              <div class="flex items-center gap-1.5 flex-wrap">
                 <button onclick="showSpotOnMap('${spot.id}')" class="text-indigo-600 hover:text-indigo-800 font-bold flex items-center gap-1 text-xs cursor-pointer">
                   📍 在地圖查看
                 </button>
@@ -7604,6 +8238,54 @@
       renderMainPanel();
     }
 
+    // ==========================================
+    // 搭乘區間自訂刪除與復原管理模組
+    // ==========================================
+    function deleteTransitSegment(dayNumber, transitKey) {
+      const day = state.itinerary.find(d => d.dayNumber === dayNumber);
+      if (!day) return;
+      if (!day.deletedTransitKeys) day.deletedTransitKeys = [];
+      if (!day.deletedTransitKeys.includes(transitKey)) {
+        day.deletedTransitKeys.push(transitKey);
+        saveState({ notify: true });
+        renderMainPanel();
+        renderMapElements();
+      }
+    }
+
+    function restoreTransitSegment(dayNumber, transitKey) {
+      const day = state.itinerary.find(d => d.dayNumber === dayNumber);
+      if (!day || !day.deletedTransitKeys) return;
+      day.deletedTransitKeys = day.deletedTransitKeys.filter(k => k !== transitKey);
+      if (day.completelyHiddenTransitKeys) {
+        day.completelyHiddenTransitKeys = day.completelyHiddenTransitKeys.filter(k => k !== transitKey);
+      }
+      saveState({ notify: true });
+      renderMainPanel();
+      renderMapElements();
+    }
+
+    function hideTransitPlaceholder(dayNumber, transitKey) {
+      const day = state.itinerary.find(d => d.dayNumber === dayNumber);
+      if (!day) return;
+      if (!day.completelyHiddenTransitKeys) day.completelyHiddenTransitKeys = [];
+      if (!day.completelyHiddenTransitKeys.includes(transitKey)) {
+        day.completelyHiddenTransitKeys.push(transitKey);
+        saveState();
+        renderMainPanel();
+      }
+    }
+
+    function restoreAllTransitSegments(dayNumber) {
+      const day = state.itinerary.find(d => d.dayNumber === dayNumber);
+      if (!day) return;
+      day.deletedTransitKeys = [];
+      day.completelyHiddenTransitKeys = [];
+      saveState();
+      renderMainPanel();
+      renderMapElements();
+    }
+
     function openImageViewer(imageUrl, title) {
       const modal = document.getElementById('imageViewerModal');
       const img = document.getElementById('imageViewerImg');
@@ -7728,7 +8410,7 @@
       const day = state.itinerary.find(d => d.dayNumber === dayNumber);
       if (day && day.spotIds) {
         day.spotIds.splice(index, 1);
-        saveState();
+        saveState({ notify: true });
         renderMainPanel();
         renderMapElements();
       }
@@ -7757,7 +8439,7 @@
       day.spotIds[index] = day.spotIds[targetIdx];
       day.spotIds[targetIdx] = temp;
       day.spotIds = sortDaySpotsLodgingAtEnd(day.spotIds);
-      saveState();
+      saveState({ notify: true });
       renderMainPanel();
       renderMapElements();
     }
@@ -8198,6 +8880,100 @@
     }
 
     // ==========================================
+    // 快速用餐預約狀態與預約時間控制 (Quick Dining Booking Modal)
+    // ==========================================
+    function isDiningSpot(spot) {
+      if (!spot) return false;
+      // 名城或溫泉住宿絕對不是單純用餐景點
+      if (spot.type === 'castle' || spot.type === 'lodging') return false;
+      if (spot.type === 'restaurant') return true;
+      if (typeof getSpotCategory === 'function' && getSpotCategory(spot) === 'gourmet') return true;
+      const n = (spot.name || '').toLowerCase();
+      if (n.includes('和牛') || n.includes('千屋牛') || n.includes('割烹') || n.includes('鐵板燒') || n.includes('鉄板焼') || n.includes('餐廳') || n.includes('居酒屋') || n.includes('食堂') || n.includes('拉麵')) return true;
+      return false;
+    }
+
+    function renderDiningBookingBadge(spot, isCompact = false) {
+      if (!spot) return "";
+      const status = spot.bookingStatus || (spot.isBooked ? 'booked' : 'none');
+      const time = (spot.bookingTime || '').trim();
+      const isDining = isDiningSpot(spot);
+
+      // 非餐飲地點且從未設定預約時，不顯示任何按鈕或徽章 (例如津山城、松江城等名城)
+      if (!isDining && status === 'none' && !time) return "";
+
+      let badgeHtml = "";
+      if (status === 'booked') {
+        badgeHtml = `
+          <button type="button" onclick="openQuickBookingModal('${spot.id}')" class="text-[10px] bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-2 py-0.5 rounded shadow-3xs flex items-center gap-1 transition cursor-pointer border border-emerald-400" title="點擊修改預約時間或狀態">
+            <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+            <span>🍽️ 已預約</span>
+            ${time ? `<span class="bg-emerald-800/80 px-1 py-0.2 rounded font-mono">${escapeHtml(time)}</span>` : ''}
+            <span class="text-[9px] opacity-80">✏️</span>
+          </button>
+        `;
+      } else if (status === 'pending') {
+        badgeHtml = `
+          <button type="button" onclick="openQuickBookingModal('${spot.id}')" class="text-[10px] bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-2 py-0.5 rounded shadow-3xs flex items-center gap-1 transition cursor-pointer border border-amber-300" title="點擊填寫預約狀態與時間">
+            <span>⏳ 待預約</span>
+            ${time ? `<span class="bg-amber-600/80 text-white px-1 py-0.2 rounded font-mono">${escapeHtml(time)}</span>` : ''}
+            <span class="text-[9px] opacity-80">✏️</span>
+          </button>
+        `;
+      } else if (status === 'not_needed') {
+        badgeHtml = `
+          <button type="button" onclick="openQuickBookingModal('${spot.id}')" class="text-[10px] bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-1.5 py-0.5 rounded flex items-center gap-1 transition cursor-pointer" title="點擊修改預約資訊">
+            <span>無需預約</span>
+            ${time ? `<span class="font-mono font-bold">${escapeHtml(time)}</span>` : ''}
+          </button>
+        `;
+      } else {
+        // 未預約 (Walk-in) 或美食點尚未登記
+        badgeHtml = `
+          <button type="button" onclick="openQuickBookingModal('${spot.id}')" class="text-[10px] bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold px-1.5 py-0.5 rounded flex items-center gap-1 transition cursor-pointer" title="點擊填寫是否預約及預約時間">
+            <span>🍽️ 填預約狀態</span>
+            ${time ? `<span class="font-mono text-rose-900 font-bold">${escapeHtml(time)}</span>` : ''}
+          </button>
+        `;
+      }
+      return badgeHtml;
+    }
+
+    function openQuickBookingModal(spotId) {
+      const s = state.spots.find(item => item.id === spotId);
+      if (!s) return;
+      document.getElementById("quickBookingSpotId").value = spotId;
+      document.getElementById("quickBookingSpotName").innerText = `${s.name} (${s.prefecture || ''})`;
+      document.getElementById("quickBookingStatus").value = s.bookingStatus || (s.isBooked ? 'booked' : 'none');
+      document.getElementById("quickBookingTime").value = s.bookingTime || "";
+      document.getElementById("quickBookingNote").value = s.bookingNote || "";
+      document.getElementById("quickBookingModal").classList.remove("hidden");
+      setTimeout(() => document.getElementById("quickBookingTime").focus(), 100);
+    }
+
+    function closeQuickBookingModal() {
+      document.getElementById("quickBookingModal").classList.add("hidden");
+    }
+
+    function saveQuickBookingModal() {
+      const spotId = document.getElementById("quickBookingSpotId").value;
+      const s = state.spots.find(item => item.id === spotId);
+      if (!s) return;
+      const status = document.getElementById("quickBookingStatus").value;
+      const time = document.getElementById("quickBookingTime").value.trim();
+      const note = document.getElementById("quickBookingNote").value.trim();
+
+      s.bookingStatus = status;
+      s.bookingTime = time;
+      s.isBooked = (status === 'booked');
+      if (note) s.bookingNote = note;
+
+      saveState();
+      closeQuickBookingModal();
+      renderMainPanel();
+    }
+
+    // ==========================================
     // 景點 Modal (新增/編輯)
     // ==========================================
     function openSpotModal(spotId = null) {
@@ -8213,13 +8989,27 @@
         document.getElementById("modalSpotType").value = s.type || "castle";
         document.getElementById("modalSpotPrefecture").value = s.prefecture || "";
         document.getElementById("modalSpotStation").value = s.nearestStation || "";
-        document.getElementById("modalSpotClosedDay").value = s.closedDay || "None";
+        const closedSelect = document.getElementById("modalSpotClosedDay");
+        const closedVal = s.closedDay || "None";
+        let hasOpt = false;
+        for (let i = 0; i < closedSelect.options.length; i++) {
+          if (closedSelect.options[i].value === closedVal) { hasOpt = true; break; }
+        }
+        if (!hasOpt && closedVal !== "None") {
+          const opt = document.createElement("option");
+          opt.value = closedVal;
+          opt.textContent = `${closedVal}`;
+          closedSelect.appendChild(opt);
+        }
+        closedSelect.value = closedVal;
         document.getElementById("modalSpotLat").value = s.lat || "";
         document.getElementById("modalSpotLng").value = s.lng || "";
         document.getElementById("modalSpotStayDuration").value = s.stayDuration || "";
         document.getElementById("modalSpotClimbLevel").value = s.climbLevelText || "";
         document.getElementById("modalSpotHours").value = s.openHours || "";
         document.getElementById("modalSpotTransit").value = s.transitInfo || "";
+        document.getElementById("modalSpotBookingStatus").value = s.bookingStatus || (s.isBooked ? 'booked' : 'none');
+        document.getElementById("modalSpotBookingTime").value = s.bookingTime || "";
         document.getElementById("modalSpotNotes").value = s.notes || "";
       } else {
         title.innerText = "新增景點 / 住宿點";
@@ -8234,6 +9024,8 @@
         document.getElementById("modalSpotClimbLevel").value = "平山城";
         document.getElementById("modalSpotHours").value = "";
         document.getElementById("modalSpotTransit").value = "";
+        document.getElementById("modalSpotBookingStatus").value = "none";
+        document.getElementById("modalSpotBookingTime").value = "";
         document.getElementById("modalSpotNotes").value = "";
       }
 
@@ -8263,6 +9055,8 @@
       const climbLevelText = document.getElementById("modalSpotClimbLevel").value.trim();
       const hours = document.getElementById("modalSpotHours").value.trim();
       const transit = document.getElementById("modalSpotTransit").value.trim();
+      const bookingStatus = document.getElementById("modalSpotBookingStatus").value;
+      const bookingTime = document.getElementById("modalSpotBookingTime").value.trim();
       const notes = document.getElementById("modalSpotNotes").value.trim();
       const autoAssign = document.getElementById("modalAutoAssignCheckbox").checked;
 
@@ -8282,6 +9076,9 @@
           s.climbLevelText = climbLevelText;
           s.openHours = hours;
           s.transitInfo = transit;
+          s.bookingStatus = bookingStatus;
+          s.bookingTime = bookingTime;
+          s.isBooked = (bookingStatus === 'booked');
           s.notes = notes;
         }
       } else {
@@ -8302,6 +9099,9 @@
           climbLevelText: climbLevelText,
           openHours: hours,
           transitInfo: transit,
+          bookingStatus: bookingStatus,
+          bookingTime: bookingTime,
+          isBooked: (bookingStatus === 'booked'),
           reservationUrl: "",
           notes: notes,
           checklists: {}
@@ -8332,7 +9132,7 @@
         }
       }
 
-      saveState();
+      saveState({ notify: true });
       closeSpotModal();
       renderMainPanel();
       renderMapElements();
@@ -8346,28 +9146,74 @@
     // ==========================================
     function generateShareUrl() {
       try {
+        // 只帶自訂新增的景點（id 以 custom_ 開頭），不帶內建景點（避免 URL 過長）
+        const customSpots = state.spots.filter(s => s.id && s.id.startsWith('custom_'));
         const payload = {
           plan: state.currentRoutePlan || 'okayama',
           itinerary: state.itinerary,
-          deleted: state.deletedSpotIds || []
+          deleted: state.deletedSpotIds || [],
+          customSpots: customSpots.length > 0 ? customSpots : undefined
         };
         const jsonStr = JSON.stringify(payload);
         const base64 = btoa(unescape(encodeURIComponent(jsonStr)));
         const shareUrl = window.location.origin + window.location.pathname + '#plan=' + base64;
-        
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(shareUrl).then(() => {
-            alert("✅ 已成功複製「專屬行程分享網址」至剪貼簿！\n\n發給朋友打開，即可直接瀏覽您客製好的所有天數、車次、備忘與選定景點！");
-          }).catch(() => {
-            prompt("請手動按 Ctrl+C 複製以下專屬分享網址：", shareUrl);
-          });
-        } else {
-          prompt("請手動按 Ctrl+C 複製以下專屬分享網址：", shareUrl);
-        }
+        showShareQrModal(shareUrl);
       } catch (err) {
-        alert("產生分享網址失敗：" + err.message);
+        alert('產生分享網址失敗：' + err.message);
       }
     }
+
+    function showShareQrModal(shareUrl) {
+      // 移除舊 Modal（若已存在）
+      const oldModal = document.getElementById('shareQrModal');
+      if (oldModal) oldModal.remove();
+
+      const modal = document.createElement('div');
+      modal.id = 'shareQrModal';
+      modal.className = 'fixed inset-0 bg-black/60 flex items-center justify-center z-[9999]';
+      modal.innerHTML = `
+        <div class="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm mx-4 flex flex-col items-center gap-4">
+          <h2 class="text-lg font-bold text-slate-800">🔗 分享行程</h2>
+          <p class="text-xs text-slate-500 text-center">掃描 QR Code 或複製連結，朋友打開後即可瀏覽你客製的完整行程</p>
+          <div id="shareQrCode" class="rounded-xl overflow-hidden border border-slate-200 p-2 bg-white"></div>
+          <input id="shareQrUrlInput" type="text" readonly value="${shareUrl}"
+            class="w-full text-xs bg-slate-100 rounded-lg px-3 py-2 border border-slate-200 text-slate-700 break-all select-all cursor-pointer"
+            onclick="this.select()" />
+          <div class="flex gap-2 w-full">
+            <button onclick="
+              navigator.clipboard && navigator.clipboard.writeText(document.getElementById('shareQrUrlInput').value)
+                .then(() => { this.textContent = '✅ 已複製！'; setTimeout(() => this.textContent = '📋 複製連結', 1500); })
+                .catch(() => document.getElementById('shareQrUrlInput').select());
+            " class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded-lg text-sm transition">📋 複製連結</button>
+            <button onclick="document.getElementById('shareQrModal').remove()"
+              class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-2 rounded-lg text-sm transition">關閉</button>
+          </div>
+          <p class="text-[10px] text-slate-400 text-center">⚠️ 連結含行程與自訂景點資料，僅限瀏覽，不影響對方原有資料</p>
+        </div>
+      `;
+      document.body.appendChild(modal);
+      // 點擊背景關閉
+      modal.addEventListener('click', (e) => { if (e.target === modal) modal.remove(); });
+
+      // 產生 QR Code
+      setTimeout(() => {
+        const qrContainer = document.getElementById('shareQrCode');
+        if (qrContainer && typeof QRCode !== 'undefined') {
+          new QRCode(qrContainer, {
+            text: shareUrl,
+            width: 200,
+            height: 200,
+            colorDark: '#1e293b',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.M
+          });
+        } else if (qrContainer) {
+          qrContainer.innerHTML = '<p class="text-xs text-slate-400 p-4">QR Code 載入中，請確認網路連線</p>';
+        }
+      }, 80);
+    }
+
+
 
     function exportJSON() {
       const planName = state.currentRoutePlan || 'okayama';
@@ -8443,11 +9289,16 @@
             md += `   - 開放時間：${sp.openHours || '見官網'} (公休：${sp.closedDayText || '無'})\n`;
             md += `   - 接駁交通：${sp.transitInfo || '無'}\n`;
             const transitKey = `${prevSp ? prevSp.id : 'start'}_to_${sp.id}`;
-            const att = day.transitAttachments && day.transitAttachments[transitKey];
-            if (att) {
-              if (att.notes) md += `   - 班次備忘：${att.notes}\n`;
-              if (att.link) md += `   - 時刻表連結：${att.link}\n`;
-              if (att.images && att.images.length > 0) md += `   - 時刻表附件：已附加 ${att.images.length} 份時刻表縮圖資料\n`;
+            const isTransitDeleted = day.deletedTransitKeys && day.deletedTransitKeys.includes(transitKey);
+            if (isTransitDeleted) {
+              md += `   - 搭乘區間：*(已自訂移除此段搭乘區間)*\n`;
+            } else {
+              const att = day.transitAttachments && day.transitAttachments[transitKey];
+              if (att) {
+                if (att.notes) md += `   - 班次備忘：${att.notes}\n`;
+                if (att.link) md += `   - 時刻表連結：${att.link}\n`;
+                if (att.images && att.images.length > 0) md += `   - 時刻表附件：已附加 ${att.images.length} 份時刻表縮圖資料\n`;
+              }
             }
             if (sp.reservationUrl) md += `   - 預約連結：${sp.reservationUrl}\n`;
             if (sp.notes) md += `   - 攻略筆記：${sp.notes}\n`;
@@ -8581,7 +9432,31 @@
       updateCloudStatusUI("syncing", "準備儲存至雲端...");
       cloudPushTimer = setTimeout(() => {
         pushToCloud({ silent: true });
-      }, 1200); // 1.2 秒防抖
+      }, 300); // 300 毫秒極速防抖
+    }
+
+    // 瀏覽器關閉或重整前，立即以 keepalive 將最新狀態發送至雲端
+    if (typeof window !== 'undefined') {
+      window.addEventListener('beforeunload', () => {
+        if (cloudConfig && cloudConfig.enabled && cloudConfig.autoSync) {
+          const localMod = parseInt(localStorage.getItem('jp_trip_local_last_modified') || '0', 10);
+          if (localMod > (cloudConfig.lastSyncedAt || 0)) {
+            const roomKey = encodeURIComponent(cloudConfig.roomId.trim());
+            const url = `${getEffectiveDbUrl()}/rooms/${roomKey}.json`;
+            const payload = getSyncPayload();
+            try {
+              fetch(url, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+                keepalive: true
+              });
+              cloudConfig.lastSyncedAt = payload.updatedAt;
+              saveCloudConfig();
+            } catch (e) {}
+          }
+        }
+      });
     }
 
     async function pushToCloud(options = {}) {
@@ -8612,6 +9487,7 @@
         }
 
         cloudConfig.lastSyncedAt = payload.updatedAt;
+        localStorage.setItem('jp_trip_local_last_modified', String(payload.updatedAt));
         saveCloudConfig();
         updateCloudStatusUI("synced", `已同步 (${formatSyncTime(payload.updatedAt)})`);
 
@@ -8655,13 +9531,20 @@
 
         let hasChanges = false;
 
-        // 比較時間戳：若本機 lastSyncedAt 比雲端 updatedAt 更新，代表本機有未上傳的變更，跳過蓋覆
+        // 比較時間戳：若本機本地修改時間比雲端更新，代表本機有尚未上傳的修改，絕對不可被雲端蓋覆！
         const cloudUpdatedAt = data.updatedAt || 0;
-        const localUpdatedAt = cloudConfig.lastSyncedAt || 0;
-        // initial && localUpdatedAt===0：本機從未同步過，無條件接受雲端（初次連線場景）
-        // 其他情況：只有雲端比較新才蓋覆
-        const neverSyncedBefore = initial && localUpdatedAt === 0;
-        const cloudIsNewer = cloudUpdatedAt > localUpdatedAt;
+        const localModifiedAt = parseInt(localStorage.getItem('jp_trip_local_last_modified') || '0', 10);
+        const localSyncedAt = cloudConfig.lastSyncedAt || 0;
+
+        if (localModifiedAt > cloudUpdatedAt) {
+          console.log("本機修改較新，不接受雲端覆蓋，反向上傳本地最新資料至雲端");
+          updateCloudStatusUI("synced", `本地較新，正在上傳同步...`);
+          await pushToCloud({ silent: true });
+          return;
+        }
+
+        const neverSyncedBefore = initial && localSyncedAt === 0 && localModifiedAt === 0;
+        const cloudIsNewer = cloudUpdatedAt > localSyncedAt && cloudUpdatedAt > localModifiedAt;
         const shouldApplyCloud = neverSyncedBefore || cloudIsNewer;
 
         // 合併後要用的 deletedSpotIds（優先用雲端，但至少保留本機的）
@@ -8672,13 +9555,28 @@
 
         if (data.itinerary && Array.isArray(data.itinerary)) {
           if (shouldApplyCloud) {
-            // 清理行程中任何已被刪除的景點 ID
-            data.itinerary.forEach(d => {
-              if (d.spotIds) {
-                d.spotIds = d.spotIds.filter(id =>
+            // 清理行程中已被刪除之景點，並合併保留本地與雲端已刪除的搭乘區間 (deletedTransitKeys)
+            data.itinerary.forEach(cloudDay => {
+              if (cloudDay.spotIds) {
+                cloudDay.spotIds = cloudDay.spotIds.filter(id =>
                   id !== 'sakaiminato_mizuki' &&
                   !mergedDeletedIds.includes(id)
                 );
+              }
+              const localDay = state.itinerary.find(ld => ld.dayNumber === cloudDay.dayNumber);
+              if (localDay) {
+                if (localDay.deletedTransitKeys && localDay.deletedTransitKeys.length > 0) {
+                  cloudDay.deletedTransitKeys = Array.from(new Set([
+                    ...(cloudDay.deletedTransitKeys || []),
+                    ...localDay.deletedTransitKeys
+                  ]));
+                }
+                if (localDay.completelyHiddenTransitKeys && localDay.completelyHiddenTransitKeys.length > 0) {
+                  cloudDay.completelyHiddenTransitKeys = Array.from(new Set([
+                    ...(cloudDay.completelyHiddenTransitKeys || []),
+                    ...localDay.completelyHiddenTransitKeys
+                  ]));
+                }
               }
             });
             state.itinerary = data.itinerary;
