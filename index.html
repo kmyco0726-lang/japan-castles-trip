@@ -619,7 +619,7 @@
   </div>
 
   <!-- 載入原始景點資料庫 -->
-  <script src="spots_data.js?v=2027_01_13_ROUTE_OPTIMIZE_V62_13DAYS_IWAMI_GINZAN"></script>
+  <script src="spots_data.js?v=2027_01_13_ROUTE_OPTIMIZE_V63_EXPENSES_RESET"></script>
 
   <!-- 應用程式主邏輯 -->
   <script>
@@ -2851,35 +2851,45 @@
     }
 
     function initMap() {
-      // 中國地方 (山陰山陽) 中心點約為 35.0, 133.0
-      map = L.map('map').setView([34.9, 133.2], 8);
-
-      // 圖資配置：專用 OpenStreetMap 日本 (開源街景)
-      // 免金鑰、零浮水印、無 403 阻擋，單一極簡高效
-      const osmJpLayer = L.tileLayer('https://tile.openstreetmap.jp/{z}/{x}/{y}.png', {
-        maxZoom: 18,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors, OSM Japan'
-      });
-      osmJpLayer.addTo(map);
-
-      markersLayer = L.layerGroup().addTo(map);
-      linesLayer = L.layerGroup().addTo(map);
-      spotHighlightLayer = L.layerGroup().addTo(map);
-
-      renderMapElements();
-      updateMapFilterDropdown();
-
-      // 防呆：確保在 DOM 就緒與排版完成後自動更新尺寸，避免地圖空白消失
-      setTimeout(() => {
-        if (map) {
-          map.invalidateSize();
-          fitMapBounds();
+      try {
+        if (typeof L === 'undefined') {
+          console.warn("Leaflet (L) 尚未就緒");
+          return;
         }
-      }, 300);
+        const mapContainer = document.getElementById('map');
+        if (!mapContainer) return;
 
-      window.addEventListener('resize', () => {
-        if (map) map.invalidateSize();
-      });
+        // 中國地方 (山陰山陽) 中心點約為 35.0, 133.0
+        map = L.map('map').setView([34.9, 133.2], 8);
+
+        // 圖資配置：專用 OpenStreetMap 日本 (開源街景)
+        const osmJpLayer = L.tileLayer('https://tile.openstreetmap.jp/{z}/{x}/{y}.png', {
+          maxZoom: 18,
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors, OSM Japan'
+        });
+        osmJpLayer.addTo(map);
+
+        markersLayer = L.layerGroup().addTo(map);
+        linesLayer = L.layerGroup().addTo(map);
+        spotHighlightLayer = L.layerGroup().addTo(map);
+
+        renderMapElements();
+        updateMapFilterDropdown();
+
+        // 防呆：確保在 DOM 就緒與排版完成後自動更新尺寸，避免地圖空白消失
+        setTimeout(() => {
+          if (map) {
+            map.invalidateSize();
+            fitMapBounds();
+          }
+        }, 300);
+
+        window.addEventListener('resize', () => {
+          if (map) map.invalidateSize();
+        });
+      } catch (err) {
+        console.error("地圖初始化失敗 (不影響行程與記帳渲染):", err);
+      }
     }
 
 
@@ -10895,14 +10905,41 @@
     }
 
     // ==========================================
-    // 啟動程式
+    // 啟動程式 (支援 DOMContentLoaded 與即時/延遲載入)
     // ==========================================
-    window.addEventListener("DOMContentLoaded", () => {
-      initState();
-      initMap();
-      renderMainPanel();
-      initCloudSync(); // 啟動雲端即時同步機制
-    });
+    let isAppBooted = false;
+    function bootApp() {
+      if (isAppBooted) return;
+      isAppBooted = true;
+      try {
+        initState();
+      } catch (e) {
+        console.error("initState 異常:", e);
+      }
+      try {
+        updateTabButtons();
+        renderMainPanel();
+      } catch (e) {
+        console.error("renderMainPanel 異常:", e);
+      }
+      try {
+        initMap();
+      } catch (e) {
+        console.error("initMap 異常:", e);
+      }
+      try {
+        initCloudSync(); // 啟動雲端即時同步機制
+      } catch (e) {
+        console.error("initCloudSync 異常:", e);
+      }
+    }
+
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+      bootApp();
+    } else {
+      window.addEventListener("DOMContentLoaded", bootApp);
+      window.addEventListener("load", bootApp);
+    }
   </script>
 
   <!-- ☁️ 雙人即時雲端同步設定 Modal -->
