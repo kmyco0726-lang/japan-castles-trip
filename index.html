@@ -91,14 +91,14 @@
         <h1 class="text-lg font-bold tracking-wide flex items-center gap-2">
           山陰山陽 100名城巡禮路線規劃器
           <span class="text-xs bg-red-600 px-2 py-0.5 rounded font-mono font-normal">12名城+溫泉</span>
-          <span class="text-xs bg-amber-400 text-slate-950 font-black px-2.5 py-0.5 rounded shadow-sm">V57</span>
+          <span class="text-xs bg-amber-400 text-slate-950 font-black px-2.5 py-0.5 rounded shadow-sm">V66</span>
         </h1>
-        <p class="text-xs text-slate-400">全新車資統計・逐趟票價完整列出・巴士/電車/住宿/吃飯 獨立篩選總金額與最後總計</p>
+        <p class="text-xs text-slate-400">D12起點鞆之浦➔岡山放行李➔備中松山・JR Pass 7日券(Day 3~9)・其他天自費・兩人記帳獨立</p>
       </div>
     </div>
     <div class="flex items-center gap-2 text-sm">
       <button onclick="resetToDefault()" class="bg-red-600 hover:bg-red-500 text-white font-bold px-3 py-1.5 rounded flex items-center gap-1.5 transition shadow-md text-xs cursor-pointer border border-red-400 shrink-0" title="若看到舊版行程，點擊此按鈕立即清空瀏覽器快取並載入最新版！">
-        🔄 強制載入最新行程 (清空舊快取 V57)
+        🔄 強制載入最新行程 (清空舊快取 V66)
       </button>
       <button id="saveStatusBtn" onclick="manualSaveState()" class="bg-emerald-700/90 hover:bg-emerald-600 text-white font-bold px-3 py-1.5 rounded flex items-center gap-1.5 transition shadow-sm text-xs cursor-pointer border border-emerald-400/60 shrink-0" title="點擊立即確認儲存至瀏覽器 LocalStorage">
         <span id="saveStatusDot" class="w-2 h-2 rounded-full bg-emerald-400"></span>
@@ -129,7 +129,7 @@
           <span>🚅</span><span>車次速查</span>
         </button>
         <button id="tabBtnBudget" onclick="switchTab('budget')" class="py-3 px-3 sm:px-4 text-center text-slate-600 hover:text-slate-900 shrink-0 flex items-center justify-center gap-1 border-b-2 border-transparent transition">
-          <span>📊</span><span>車資與全旅費統計</span>
+          <span>🚅</span><span>全行程車資統計</span>
         </button>
         <button id="tabBtnExpenses" onclick="switchTab('expenses')" class="py-3 px-3 sm:px-4 text-center text-slate-600 hover:text-slate-900 shrink-0 flex items-center justify-center gap-1 border-b-2 border-transparent transition">
           <span>💰</span><span>兩人記帳分帳</span>
@@ -551,6 +551,111 @@
     </div>
   </div>
 
+    <!-- 彈窗：行程車資專用新增/編輯 Modal (Transit Fare Modal) -->
+  <div id="fareModal" class="fixed inset-0 bg-black/50 z-[2000] hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-5 space-y-3.5 max-h-[92vh] overflow-y-auto">
+      <div class="flex justify-between items-center border-b pb-2">
+        <h3 class="font-bold text-slate-900 text-base flex items-center gap-2" id="fareModalTitle">
+          <span>🚅</span><span>新增行程車資項目</span>
+        </h3>
+        <button onclick="closeFareModal()" class="text-slate-400 hover:text-slate-600 text-xl font-bold cursor-pointer">&times;</button>
+      </div>
+
+      <input type="hidden" id="modalFareId" value="">
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">車資項目 / 路線區間 *</label>
+          <input type="text" id="modalFareTitle" class="w-full border rounded p-2 text-sm font-medium focus:ring-1 focus:ring-blue-500 outline-none" placeholder="例如：岡山駅 ➔ 備中高梁駅 (特急やくも)">
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">行程天數 *</label>
+            <select id="modalFareDay" class="w-full border rounded p-2 bg-white font-medium">
+              <option value="1">Day 1</option>
+              <option value="2">Day 2</option>
+              <option value="3">Day 3</option>
+              <option value="4">Day 4</option>
+              <option value="5">Day 5</option>
+              <option value="6">Day 6</option>
+              <option value="7">Day 7</option>
+              <option value="8">Day 8</option>
+              <option value="9">Day 9</option>
+              <option value="10">Day 10</option>
+              <option value="11">Day 11</option>
+              <option value="12">Day 12</option>
+              <option value="13">Day 13</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">單人票價 (JPY) *</label>
+            <input type="number" id="modalFareAmount" step="1" min="0" class="w-full border rounded p-2 text-sm font-mono font-bold text-slate-900 focus:ring-1 focus:ring-blue-500 outline-none" placeholder="0">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">車種分類 *</label>
+            <select id="modalFareType" class="w-full border rounded p-2 bg-white font-medium">
+              <option value="train">🚅 電車 / 鐵道 / 新幹線 / 特急</option>
+              <option value="bus">🚌 巴士 / 機場客運 / 觀光公車</option>
+              <option value="taxi">🚕 計程車 / 觀光合乘計程車</option>
+              <option value="cable_ferry">🚠 纜車 / 渡輪 / 觀光船</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">車種細稱</label>
+            <input type="text" id="modalFareTypeName" class="w-full border rounded p-2 text-xs font-medium focus:ring-1 focus:ring-blue-500 outline-none" placeholder="例如：特急指定席 / 機場巴士">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">起點站</label>
+            <input type="text" id="modalFareFrom" class="w-full border rounded p-2 text-xs font-medium focus:ring-1 focus:ring-blue-500 outline-none" placeholder="例如：岡山駅">
+          </div>
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">終點站</label>
+            <input type="text" id="modalFareTo" class="w-full border rounded p-2 text-xs font-medium focus:ring-1 focus:ring-blue-500 outline-none" placeholder="例如：備中高梁駅">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">JR Pass 涵蓋狀態 *</label>
+          <select id="modalFarePassCovered" class="w-full border rounded p-2 bg-white font-bold text-slate-800">
+            <option value="true">✅ JR Pass 7日券 全包 (0 元免補票)</option>
+            <option value="false">⚠️ 需自費 (非 JR / 私鐵 / 公車 / 計程車 / 纜車)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">Pass 說明與搭乘提示</label>
+          <input type="text" id="modalFarePassNote" class="w-full border rounded p-2 text-xs font-medium focus:ring-1 focus:ring-blue-500 outline-none" placeholder="例如：JR Pass 7日券 全額包含特急指定席">
+        </div>
+
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">詳細搭乘指引備註</label>
+          <textarea id="modalFareNotes" rows="2" class="w-full border rounded p-2 text-xs font-medium focus:ring-1 focus:ring-blue-500 outline-none" placeholder="例如：車程約 35 分鐘，持 Pass 可至綠色售票機劃指定席"></textarea>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between pt-3 border-t">
+        <button type="button" id="btnDeleteFare" onclick="deleteFareModalAction()" class="text-rose-600 hover:text-rose-700 text-xs font-bold transition px-2 py-1 rounded hover:bg-rose-50 cursor-pointer hidden">
+          🗑️ 刪除此趟車資
+        </button>
+        <div class="flex items-center gap-2 ml-auto">
+          <button type="button" onclick="closeFareModal()" class="px-3 py-1.5 border rounded text-xs text-slate-600 hover:bg-slate-100 font-bold transition cursor-pointer">
+            取消
+          </button>
+          <button type="button" onclick="saveFareModal()" class="px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded text-xs font-bold shadow-md transition cursor-pointer">
+            確認儲存
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- 彈窗：設定旅伴成員名稱 Modal (不寫死人名) -->
   <div id="membersModal" class="fixed inset-0 bg-black/50 z-[2000] hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-xl shadow-2xl max-w-sm w-full p-5 space-y-3.5">
@@ -630,7 +735,7 @@
     const STORAGE_KEY_ITINERARY = "jp_castles_itinerary_v1";
     const STORAGE_KEY_ITINERARY_VER = "jp_castles_itinerary_ver";
     const STORAGE_KEY_DELETED_SPOTS = "jp_castles_deleted_spots_v1";
-    const CURRENT_ITINERARY_VER = "2027_01_13_ROUTE_OPTIMIZE_V63_EXPENSES_RESET";
+    const CURRENT_ITINERARY_VER = "2027_01_13_ROUTE_V67_D3_WINTER_TOTTORI";
 
     // ==========================================
     // 雙重自包含備援資料庫 (Fallback Database)
@@ -1158,24 +1263,24 @@
     "notes": "名城編號 71。水野勝成所築，全日本唯一北側覆蓋黑鐵板之「鐵板張天守」、伏見櫓。就在新幹線福山站北口正前方，平坦好走，基本預留 1 小時。"
   },
   {
-    "id": "yunogo_onsen",
-    "name": "湯郷溫泉 (美作市)",
-    "prefecture": "岡山",
+    "id": "tottori_hotel",
+    "name": "鳥取站前飯店 (住宿建議)",
+    "prefecture": "鳥取",
     "type": "lodging",
-    "lat": 35.0064,
-    "lng": 134.0925,
+    "lat": 35.4941,
+    "lng": 134.2258,
     "stayDuration": "夜宿放鬆",
     "climbLevel": "lodging",
-    "climbLevelText": "♨️ 千年白鷺名湯（當日夜宿溫泉放鬆）",
-    "nearestStation": "林野駅",
-    "stampLocation": "溫泉街各大旅館 / 湯郷鷺溫泉館",
+    "climbLevelText": "🏨 站前市區住宿 (建議：鳥取站前格林豪泰 / 莫里斯 / 超級酒店)",
+    "nearestStation": "鳥取駅",
+    "stampLocation": "飯店櫃檯",
     "closedDay": "None",
-    "closedDayText": "住宿推薦點 (鷺溫泉館全天開放)",
+    "closedDayText": "住宿推薦點",
     "backupStamp": "",
-    "openHours": "全天",
-    "transitInfo": "JR 姫新線「林野駅」轉乘旅館專車/計程車約 8 分 (JR Pass 全包姫新線；計程車約 1,200 円)；或自津山站搭計程車約 30 分直達溫泉街",
-    "reservationUrl": "https://spa-yunogo.or.jp/",
-    "notes": "美作三湯之一，千年白鷺古湯，弱鹼性美肌名湯。津山城參觀後夜宿首選，和風老街悠閒散步。"
+    "openHours": "15:00 Check-in",
+    "transitInfo": "JR 因美線/智頭急行抵達鳥取站，北口/南口出站徒步 1~3 分即達各飯店；隔天清晨直奔砂丘零負擔",
+    "reservationUrl": "",
+    "notes": "【住宿建議地點：JR 鳥取駅前】\n• 推薦飯店：鳥取站前格林豪泰酒店 (Green Hotel Tottori，北口徒步2分)、鳥取站前超級酒店 (Super Hotel，出站2分)、鳥取市區莫里斯飯店 (Tottori City Hotel)。\n• 順路理由：津山攻城後搭 JR 因美線直奔鳥取站，夜宿站前放下行李；隔天一早免拉車，出飯店即到鳥取站前巴士站搭車前往鳥取砂丘！"
   },
   {
     "id": "tamatsukuri_onsen",
@@ -2030,8 +2135,8 @@
     "lodging": "岡山站前飯店 (格蘭比亞 / 大和Roynet / 三井花園)",
     "lodgingLocation": "JR 岡山駅東口 / 站前商圈",
     "recommendedHotels": "岡山格蘭比亞大飯店 (車站直結) / 大和Roynet飯店岡山站前 (徒步2分) / 三井花園飯店岡山",
-    "lodgingReason": "機場利木津巴士直達西口；千屋牛備彩在格蘭比亞2F；站前直通 AEON 商圈；次日往備中高梁攻備中松山城起點極方便。",
-    "notes": "• 【班機抵達】：台灣虎航 IT214 於 15:05 準時降落岡山桃太郎機場 (OKJ)。出關搭中鐵/岡電機場巴士約 30 分鐘直達岡山站西口 (單程 1,000 円)。\\n• 【住宿 Check-in】：進駐岡山站前飯店辦理入住手續並放下大件行李。\\n• 【和牛晚餐 (岡山千屋牛)】：前往岡山格蘭比亞 2F 直結之「鉄板焼 備彩」，零距離品嚐日本最古老血統和牛——岡山千屋牛頂級鐵板燒。\\n• 【商圈漫遊 & 逛街】：餐後漫步西日本最大級「AEON Mall Okayama」(營業至 21:00，350間店鋪) 採買藥妝物資，早點休息為明日名城漫遊儲備體力！",
+    "lodgingReason": "機場利木津巴士直達西口；千屋牛備彩在格蘭比亞2F；站前直通 AEON 商圈；次日往總社攻鬼之城起點極方便。",
+    "notes": "• 【班機抵達】：台灣虎航 IT214 於 15:05 準時降落岡山桃太郎機場 (OKJ)。出關搭中鐵/岡電機場巴士約 30 分鐘直達岡山站西口 (單程 1,000 円)。\n• 【住宿 Check-in】：進駐岡山站前飯店辦理入住手續並放下大件行李。\n• 【和牛晚餐 (岡山千屋牛)】：前往岡山格蘭比亞 2F 直結之「鉄板焼 備彩」，零距離品嚐日本最古老血統和牛——岡山千屋牛頂級鐵板燒。\n• 【商圈漫遊 & 逛街】：餐後漫步西日本最大級「AEON Mall Okayama」(營業至 21:00，350間店鋪) 採買藥妝物資，早點休息為明日名城漫遊儲備體力！",
     "spotIds": [
       "okayama_airport",
       "chiyagyu_bisai",
@@ -2041,65 +2146,47 @@
   },
   {
     "dayNumber": 2,
-    "title": "Day 2：天空之城備中松山城 ➔ 桃太郎吉備路傳說 ➔ 岡山市區採買",
+    "title": "Day 2：吉備古國名城鬼之城 ➔ 津山城 ➔ 抵達鳥取站前夜宿",
     "date": "2027-01-14",
-    "baseStation": "岡山駅 / 備中高梁駅 / 備前一宮駅 / 岡山駅",
-    "lodging": "岡山站前飯店 (D2 連住第2晚)",
-    "lodgingLocation": "JR 岡山駅東口 / 站前商圈 (格蘭比亞 / 大和Roynet)",
-    "recommendedHotels": "岡山格蘭比亞大飯店 (車站直結) / 大和Roynet飯店岡山站前",
-    "lodgingReason": "連住岡山站前樞紐免換飯店退房，次日晨間往總社攻鬼之城與津山城極為從容方便。",
-    "notes": "• 【天空之城・備中松山城 (停留 2~2.5h)】：晨間自岡山站搭乘特急八雲號至備中高梁站。搭乘觀光合乘計程車直達鞴峠登上海拔 430 公尺之現存最高天守備中松山城，有機會巧遇貓城主「三十郎」！\\n• 【吉備路桃太郎傳說・吉備津彥神社 & 吉備津神社 (停留 1.5h)】：下午搭 JR 伯備線/吉備線至備前一宮與吉備津站，走訪桃太郎原型神話之吉備津彥神社與擁有 398 公尺木造壯觀大迴廊之國寶吉備津神社。\\n• 【傍晚返岡山採買】：返回岡山站，前往唐吉訶德、AEON Mall 與車站一番街採購名產與藥妝！",
+    "baseStation": "岡山駅 / 津山駅 / 鳥取駅",
+    "lodging": "鳥取站前精選飯店 (鳥取市)",
+    "lodgingLocation": "鳥取駅前 (鳥取市)",
+    "recommendedHotels": "鳥取站前格林豪泰酒店 (Green Hotel) / 鳥取站前超級酒店 (Super Hotel) / 鳥取市區莫里斯飯店",
+    "lodgingReason": "津山城攻城後搭乘 JR 因美線直達鳥取站夜宿站前飯店，省去偏遠溫泉拉車；隔天早晨零負擔從鳥取站直接啟程前往鳥取砂丘！",
+    "notes": "• 【鬼ノ城・登山步道 (建議預留 1.5~2h)】：晨間自岡山搭 JR 吉備線至總社站，搭計程車約 30 分攻登古代神秘山城鬼ノ城。山頂西門石垣與步道巡禮視野極佳，下車時務必先與司機約定下山回程時間！\n• 【津山城・平山城 (基本預留 1h)】：午後搭 JR 津山線至津山站，步行 10 分攻登津山城（鶴山公園備中櫓，園區平緩好走）。\n• 【前往鳥取站前宿】：津山城參觀後返回津山站，搭乘 JR 因美線經智頭直奔鳥取站（普通車約 1.5~2h，或搭乘特急超級因幡號），出站步行 1~3 分即達站前飯店 Check-in 卸下大件行李，晚上可在鳥取市區悠閒晚餐休息。",
     "spotIds": [
-      "bitchu_matsuyama",
-      "kibitsuhiko_jinja",
-      "kibitsu_jinja",
-      "okayama_hotel"
+      "kinojo",
+      "tsuyama",
+      "tottori_hotel"
     ]
   },
   {
     "dayNumber": 3,
-    "title": "Day 3：吉備古國名城 ➔ 湯郷名湯早到夜宿",
+    "title": "Day 3：晨遊鳥取城跡 ➔ 冬季鳥取砂丘 (展望台/吊椅纜車) ➔ 和牛元祖「たくみ割烹店」午餐 ➔ 特急直達宿城崎溫泉",
     "date": "2027-01-15",
-    "baseStation": "岡山駅 / 津山駅 / 林野駅",
-    "lodging": "湯郷溫泉 和風旅館 (美作市)",
-    "lodgingLocation": "湯郷溫泉街 (美作市)",
-    "recommendedHotels": "季譜之里 (Kifu no Sato) / 竹亭溫泉旅館 (Chikutei) / 湯鄉 Grand Hotel",
-    "lodgingReason": "美作三湯千年名湯，津山搭 JR 姫新線至林野站享旅館專車免費接駁（8分），15:30 早到泡夕之湯，享用會席料理。",
-    "notes": "• 【♨️ 溫泉早到模式 (建議 15:20~15:30 抵達湯郷溫泉)】：溫泉旅館精髓在於早到泡第一道「夕之湯」、換浴衣放鬆並準時享用 18:00 會席料理。\\n• 【鬼ノ城・登山步道 (建議預留 1.5~2h)】：晨間自岡山搭 JR 吉備線至總社站，搭計程車約 30 分攻登古代神秘山城鬼ノ城。山頂西門石垣與步道巡禮視野極佳，下車時務必先與司機約定下山回程時間！\\n• 【津山城・平山城 (基本預留 1h)】：午後搭 JR 津山線至津山站，步行 10 分攻登津山城（鶴山公園備中櫓，園區平緩好走）。\\n• 【前往湯郷溫泉宿】：津山城參觀後，搭乘 JR 姫新線至「林野站」(約 18 分，JR Pass 包含)，出站由旅館專車免費接送 (約 8 分) 或搭計程車 (約 8 分，1,200 円)；入住和風旅館，享受千年美肌白鷺古湯與老街散策。",
-    "spotIds": [
-      "kinojo",
-      "tsuyama",
-      "yunogo_onsen"
-    ]
-  },
-  {
-    "dayNumber": 4,
-    "title": "Day 4：晨遊鳥取砂丘 ➔ 登鳥取城天球丸 ➔ 白兔神社緣結 ➔ 鳥取車站晚餐 ➔ 宿城崎溫泉",
-    "date": "2027-01-16",
-    "baseStation": "林野駅 / 鳥取駅 / 城崎溫泉駅",
+    "baseStation": "鳥取駅 / 城崎溫泉駅",
     "lodging": "城崎溫泉 和風旅館 (七大外湯巡禮/松葉蟹)",
     "lodgingLocation": "城崎溫泉街 (兵庫縣豐岡市)",
     "recommendedHotels": "西村屋本館 / 城崎山名央館 (Yamanaokan) / 旅館 川口屋本館",
-    "lodgingReason": "砂丘、鳥取城與白兔神社巡禮後返回鳥取站晚餐，餐後搭特急直達城崎溫泉；入住換穿浴衣木屐，享受七大外湯巡禮與冬季極品日本海松葉蟹盛宴；隔天晨間搭京都丹後鐵道前往天橋立僅需 50 分鐘！",
-    "notes": "• 【08:15~09:45 晨間移動 (約 1.5h)】：湯郷溫泉旅館專車至林野站 ➔ 搭車經姬新線/智頭急行 ➔ 09:45 抵達「鳥取駅」，站內置物櫃寄放大件行李。\\n• 【10:10~12:15 絕景・鳥取砂丘 & 砂之美術館 (停留 2h)】：鳥取站前 0 號巴士月台搭日之丸路線巴士 20 分直達砂丘會館，漫步馬背頂峰眺望日本海海天一色，參觀世界級砂之美術館。\\n• 【12:30~14:00 名城・鳥取城 (停留 1.5h)】：砂丘會館前搭乘日之丸路線巴士於「西町」公車站下車直達鳥取城跡仁風閣/久松公園，蓋取 100名城第 63 號章，漫步天球丸特殊圓形石垣。\\n• 【14:20~15:45 白兔神社・因幡之白兔神話緣結 (停留 1h20m)】：自鳥取城步行至西町站牌搭乘日之丸巴士鹿野線約 35 分直達「白兎神社前」，參拜《古事記》神話發祥地與神話白兔雕像，祈求結緣良緣。\\n• 【16:00~16:45 返回鳥取車站商圈】：自白兔神社前搭乘日之丸巴士返回鳥取站前。\\n• 【17:00~18:30 日本涮涮鍋元祖「たくみ割烹店」晚餐 (預留 1.5h)】：鳥取站北口榮町商圈，享用日本和牛涮涮鍋發祥店之「元祖鳥取和牛すすぎ鍋」豐盛晚宴。\\n• 【18:50~19:50 前往城崎溫泉 ➔ Check-in】：返回鳥取站取行李，搭乘山陰本線特急約 55 分鐘直達「城崎溫泉駅」(JR Pass 全包！出站步行 3~8 分進溫泉旅館)，換穿浴衣木屐漫步外湯街！",
+    "lodgingReason": "本日正式啟用 JR Pass 7日券(第1天)！晨遊鳥取城與冬季砂丘纜車，中午在站前享用和牛元祖涮涮鍋午餐後，搭乘直達特急於 14:11 抵達城崎溫泉；提早入住和風溫泉旅館，換穿浴衣木屐，享受七大外湯巡禮與冬季極品日本海松葉蟹盛宴！",
+    "notes": "• 【🎫 JR Pass 7日券啟用 第1天】：正式開通周遊券！午後搭乘「特急はまかぜ4號」直達城崎溫泉，全額免費劃位指定席！\n• 【07:50~07:55 鳥取公車前往鳥取城 (免計程車)】：鳥取站前搭乘日之丸巴士（北園團地線）於 07:50 發車，07:55 抵達「県庁日赤前」(170 円)，下車步行 4~5 分鐘於 08:00 整抵達久松公園鳥取城跡。\n• 【08:00~09:40 名城・鳥取城跡 & 仁風閣 (停留約 1.5h)】：冬季不上久松山頂，晨間散步參觀天球丸獨特圓形石垣、二之丸與仁風閣庭園外觀；09:00 準時於「仁風閣展示館」蓋取 100名城第 63 號章。\n• 【09:47~10:02 前往鳥取砂丘 (順向搭車技巧)】：自鳥取城步行至「県庁日赤前」站牌，搭乘日之丸巴士鳥取砂丘線(39系統)直奔砂丘。強烈建議在 10:00 提早於「砂丘センター展望台」下車！\n• 【10:00~11:15 冬季鳥取砂丘 & 觀光吊椅纜車 (預留約 1h15m)】：於見晴之丘展望台室內吹暖氣、居高俯瞰冬日積雪砂丘與日本海壯闊全景；搭乘單程觀光吊椅纜車（約 5 分鐘，300 円）面向大海下滑至砂丘平地入口。冬季風大不強登馬背，於前緣踩雪賞景拍照後，參觀「鳥取砂丘遊客中心(ビジターセンター)」室內地質展覽與溫水洗腳區，最後至砂丘會館採買特產。(※若遇強風纜車停駛，巴士直接坐至砂丘會館)。\n• 【11:20~11:42 返回鳥取站】：砂丘會館搭乘日之丸路線巴士返回鳥取車站 (390 円)。\n• 【11:47~12:47 日本涮涮鍋元祖「たくみ割烹店」極品午餐 (整整 1 小時)】：自鳥取站北口步行僅 4 分鐘抵達榮町「たくみ割烹店」，享用日本和牛元祖涮涮鍋「すすぎ鍋」豐盛午餐！(⚠️注意：每週三公休)。\n• 【12:56~14:11 移動至城崎溫泉 ➔ Check-in】：步行 4 分鐘返回鳥取站，搭乘 12:56 直達特急「はまかぜ4號」(JR Pass 免費)，14:11 提早抵達城崎溫泉！免轉車、舒適抵達，下午悠閒入住換穿浴衣漫步七大外湯街！(備案：若午餐較晚可搭 13:33 普通車於濱坂轉車約 15:15~15:30 抵達)。",
     "spotIds": [
-      "tottori_sakyu",
       "tottori",
-      "hakuto_jinja",
+      "tottori_sakyu",
       "tottori_takumi",
       "kinosaki_onsen"
     ]
   },
   {
-    "dayNumber": 5,
-    "title": "Day 5：日本三景天橋立 (飛龍觀/傘松公園) ➔ 伊根舟屋 (海上午餐與遊覽船) ➔ 宿皆生溫泉 (海濱夕陽)",
-    "date": "2027-01-17",
+    "dayNumber": 4,
+    "title": "Day 4：日本三景天橋立 (飛龍觀/傘松公園) ➔ 伊根舟屋 (海上午餐與遊覽船) ➔ 宿皆生溫泉 (海濱夕陽)",
+    "date": "2027-01-16",
     "baseStation": "城崎溫泉駅 / 天橋立駅 / 伊根灣 / 米子駅",
     "lodging": "皆生溫泉 海濱旅館 (米子市)",
     "lodgingLocation": "皆生溫泉海濱 (米子市)",
     "recommendedHotels": "皆生菊乃家 / 皆生海色湯宿海心 (Umi to Kokoro) / 華水亭 (Kasuiten)",
-    "lodgingReason": "城崎溫泉晨間出發遊天橋立與伊根舟屋，午後搭特急直達米子，入住山陰名湯皆生溫泉海景旅館，邊賞日本海夕陽邊享用境港極品海鮮！",
-    "notes": "• 【天橋立・日本三景 (建議預留 2h)】：自城崎溫泉搭京都丹後鐵道前往天橋立，搭纜車上飛龍觀眺望青松沙洲「跨下窺看」天地顛倒絕景，或漫步迴旋橋與白砂青松參道。\\n• 【伊根舟屋・海之京都 (預留 2h)】：自天橋立搭丹後路線巴士約 55 分鐘抵達伊根，搭乘伊根灣遊覽船（餵海鷗、賞230棟臨海舟屋群），並於海景餐廳享用鰤魚在地料理。\\n• 【傍晚移動至皆生溫泉宿】：午後搭乘特急經福知山/鳥取直達米子站，轉路線巴士 20 分入住「皆生溫泉」海濱和風旅館，沉浸在自日本海湧出的鹽泉（海洋性美肌保溫之湯），享用山陰黑毛和牛與松葉蟹宴席。",
+    "lodgingReason": "JR Pass 7日券(第2天)！包含京都丹後鐵道全線與長途特急，城崎溫泉出發遊天橋立與伊根舟屋，午後搭特急直達米子，入住山陰名湯皆生溫泉海景旅館，邊賞日本海夕陽邊享用境港極品海鮮！",
+    "notes": "• 【🎫 JR Pass 第2天】：憑 Pass 免費搭乘京都丹後鐵道全線特急及山陰本線特急！\n• 【天橋立・日本三景 (建議預留 2h)】：自城崎溫泉搭京都丹後鐵道前往天橋立，搭纜車上飛龍觀眺望青松沙洲「跨下窺看」天地顛倒絕景，或漫步迴旋橋與白砂青松參道。\n• 【伊根舟屋・海之京都 (預留 2h)】：自天橋立搭丹後路線巴士約 55 分鐘抵達伊根，搭乘伊根灣遊覽船（餵海鷗、賞230棟臨海舟屋群），並於海景餐廳享用鰤魚在地料理。\n• 【傍晚移動至皆生溫泉宿】：午後搭乘特急經福知山/鳥取直達米子站，轉路線巴士 20 分入住「皆生溫泉」海濱和風旅館，沉浸在自日本海湧出的鹽泉（海洋性美肌保溫之湯），享用山陰黑毛和牛與松葉蟹宴席。",
     "spotIds": [
       "amanohashidate",
       "ine_funaya",
@@ -2107,15 +2194,15 @@
     ]
   },
   {
-    "dayNumber": 6,
-    "title": "Day 6：戰國月山富田城 ➔ 足立美術館 ➔ 國寶松江城 ➔ 宿玉造溫泉",
-    "date": "2027-01-18",
+    "dayNumber": 5,
+    "title": "Day 5：戰國月山富田城 ➔ 足立美術館 ➔ 國寶松江城 ➔ 宿玉造溫泉",
+    "date": "2027-01-17",
     "baseStation": "米子駅 / 安來駅 / 松江駅 / 玉造溫泉駅",
     "lodging": "玉造溫泉 和風旅館 (日本第一美肌神之湯)",
     "lodgingLocation": "玉造溫泉街 (松江市玉湯町)",
-    "recommendedHotels": "佳翠苑 皆美 (Kasuen Minami) / 湯之助之宿 長樂園 (混浴大露天風呂) / 白石家 (Shiraishiya)",
-    "lodgingReason": "松江城遊覽後搭 JR 山陰本線僅 8 分鐘直達玉造溫泉站，旅館專車接駁；享受《出雲國風土記》記載「一濯則形容端正，再沐則萬病悉除」的日本最古天然化妝水美肌神湯，漫步玉湯川宮橋與足湯！",
-    "notes": "• 【安來雙雄順路串聯】：月山富田城與足立美術館同在安來站！安來市營黃色公車直通串聯，完全不走回頭路！\\n• 【月山富田城・戰國五大山城 (停留 2~2.5h)】：清晨自米子搭 JR 山陰本線至安來站，轉搭安來市營黃色巴士攻登戰國名城月山富田城，巡禮山中御殿與本丸天險。\\n• 【足立美術館・連續21年日本第一庭園 (停留 1.5h)】：山麓搭黃色公車 8 分鐘直達足立美術館，透過借景枯山水庭園與橫山大觀名畫感受極致美學。\\n• 【國寶松江城・現存天守 (停留 1.5h)】：搭足立免費接駁車至安來站，搭特急八雲號 14 分至松江站，搭觀光巴士至松江城登現存天守，可體驗堀川遊覽船護城河巡航。\\n• 【傍晚前往玉造溫泉 ➔ Check-in】：返回松江站搭乘 JR 山陰本線僅 8 分鐘抵達「玉造溫泉駅」(JR Pass 全包！出站由旅館專車 5 分鐘接駁進溫泉街)，入住和風名宿，享受千年美肌神之湯與島根在地會席晚宴。",
+    "recommendedHotels": "佳翠苑 皆美 (Kasuen Minami) / 湯之助之宿 長樂園 / 白石家 (Shiraishiya)",
+    "lodgingReason": "JR Pass 7日券(第3天)！松江城遊覽後搭 JR 山陰本線僅 8 分鐘直達玉造溫泉站，旅館專車接駁；享受日本最古天然化妝水美肌神湯，漫步玉湯川宮橋與足湯！",
+    "notes": "• 【🎫 JR Pass 第3天】：涵蓋在來線與特急八雲號指定席！\n• 【月山富田城・戰國五大山城 (停留 2~2.5h)】：清晨自米子搭 JR 山陰本線至安來站，轉搭安來市營黃色巴士攻登戰國名城月山富田城，巡禮山中御殿與本丸天險。\n• 【足立美術館・連續21年日本第一庭園 (停留 1.5h)】：山麓搭黃色公車 8 分鐘直達足立美術館，透過借景枯山水庭園與橫山大觀名畫感受極致美學。\n• 【國寶松江城・現存天守 (停留 1.5h)】：搭足立免費接駁車至安來站，搭特急八雲號 14 分至松江站，搭觀光巴士至松江城登現存天守。\n• 【傍晚前往玉造溫泉 ➔ Check-in】：返回松江站搭乘 JR 山陰本線僅 8 分鐘抵達「玉造溫泉駅」(JR Pass 免費！出站旅館專車接送)，入住和風名宿，享受千年美肌神之湯與島根在地會席晚宴。",
     "spotIds": [
       "gassan_toda",
       "adachi_museum",
@@ -2124,30 +2211,30 @@
     ]
   },
   {
-    "dayNumber": 7,
-    "title": "Day 7：世界遺產石見銀山・龍源寺間步坑道 ➔ 大森街區散策 ➔ 宿津和野",
-    "date": "2027-01-19",
+    "dayNumber": 6,
+    "title": "Day 6：世界遺產石見銀山・龍源寺間步坑道 ➔ 大森街區散策 ➔ 宿津和野",
+    "date": "2027-01-18",
     "baseStation": "玉造溫泉駅 / 大田市駅 / 益田駅 / 津和野駅",
     "lodging": "津和野 和風名宿 / 站前飯店 (住宿建議)",
     "lodgingLocation": "津和野城下町 (殿町周邊 / 站前)",
     "recommendedHotels": "津和野 原田屋 (Haradaya) / 若里 (Wakasato) / 益田站前飯店",
-    "lodgingReason": "大田市石見銀山巡禮後搭特急抵達津和野，漫步紅瓦與鯉魚街道，入住小京都和風旅館，次日晨間搭纜車攻津和野城視野最佳。",
-    "notes": "• 【玉造晨湯放鬆】：晨起享受美肌神之湯大露天風呂晨湯與溫泉早餐，旅館接駁車送至玉造溫泉站。\\n• 【世界遺產石見銀山・龍源寺間步坑道 (停留 3h)】：搭乘 JR 特急 Super Oki 約 40 分直達「大田市站」，搭石見交通巴士抵大森代官所跡。租借電動單車穿梭森林綠蔭，進入唯一常態公開之「龍源寺間步」坑道（全長 273 公尺），近距離觀察昔日礦工手鑿岩壁痕跡、排水豎坑與冰涼地下泉脈，感受德川幕府大森銀山之繁華歷史！\\n• 【午後搭特急直奔津和野 ➔ Check-in】：返回大田市站，搭乘 JR 山陰本線/山口線特急直達「津和野站」，入住小京都紅瓦老街和風名宿，品嚐鄉土香魚與在地料理。",
+    "lodgingReason": "JR Pass 7日券(第4天)！搭乘長途特急スーパーまつかぜ與スーパーおき直達津和野，漫步紅瓦與鯉魚街道，入住小京都和風旅館，次日晨間搭纜車攻津和野城視野最佳。",
+    "notes": "• 【🎫 JR Pass 第4天】：全包山陰兩大特急指定席！\n• 【世界遺產石見銀山・龍源寺間步坑道 (停留 3h)】：搭乘 JR 特急 Super Oki 約 40 分直達「大田市站」，搭石見交通巴士抵大森代官所跡。租借電動單車穿梭森林綠蔭，進入「龍源寺間步」坑道（全長 273 公尺），近距離觀察昔日礦工手鑿岩壁痕跡。\n• 【午後搭特急直奔津和野 ➔ Check-in】：返回大田市站，搭乘 JR 山陰本線/山口線特急直達「津和野站」，入住小京都紅瓦老街和風名宿，品嚐鄉土香魚與在地料理。",
     "spotIds": [
       "iwami_ginzan",
       "tsuwano_lodging"
     ]
   },
   {
-    "dayNumber": 8,
-    "title": "Day 8：山陰小京都津和野・城下町與纜車山城 ➔ 太皷谷稻成神社 ➔ 宿萩市",
-    "date": "2027-01-20",
+    "dayNumber": 7,
+    "title": "Day 7：山陰小京都津和野・城下町與纜車山城 ➔ 太皷谷稻成神社 ➔ 宿萩市",
+    "date": "2027-01-19",
     "baseStation": "津和野駅 / 益田駅 / 東萩駅",
     "lodging": "萩市區飯店 / 萩溫泉旅館",
     "lodgingLocation": "萩市區 / 萩城下町 / 菊濱海濱溫泉",
     "recommendedHotels": "北門屋敷 (Hokumon Yashiki) / 萩之宿 常茂惠 (Tomoe) / 萩溫泉景觀飯店",
-    "lodgingReason": "晨間在津和野搭纜車登山頂山城與參拜五大稻荷，午後前往維新發祥地萩市，入住古町海濱名宿，次日清晨探訪元乃隅與萩城動線最順暢。",
-    "notes": "• 【津和野城・觀光纜車與石垣絕景 (停留 2h)】：清晨搭乘單人觀光纜車輕鬆登頂津和野城跡，居高臨下俯瞰紅瓦城下町與白壁水道錦鯉街道。\\n• 【太皷谷稻成神社 (停留 40m)】：山麓漫步參拜日本五大稻荷之一，穿過千本紅鳥居隧道，祈求事業安泰。\\n• 【前往萩市 ➔ 夜宿古町】：午後自津和野搭 JR 轉公車前往長州藩本城「萩市」，漫步城下町白壁土藏，入住溫泉名宿享用山口見島牛或長門地雞盛宴。",
+    "lodgingReason": "JR Pass 7日券(第5天)！津和野登山頂山城與參拜五大稻荷，午後前往維新發祥地萩市，入住古町海濱名宿，次日清晨探訪元乃隅與萩城動線最順暢。",
+    "notes": "• 【🎫 JR Pass 第5天】：涵蓋山口線至山陰本線東萩站！\n• 【津和野城・觀光纜車與石垣絕景 (停留 2h)】：清晨搭乘單人觀光纜車輕鬆登頂津和野城跡，居高臨下俯瞰紅瓦城下町與白壁水道錦鯉街道。\n• 【太皷谷稻成神社 (停留 40m)】：山麓漫步參拜日本五大稻荷之一，穿過千本紅鳥居隧道。\n• 【前往萩市 ➔ 夜宿古町】：午後自津和野搭 JR 轉公車前往長州藩本城「萩市」，漫步城下町白壁土藏，入住溫泉名宿享用山口見島牛或長門地雞盛宴。",
     "spotIds": [
       "tsuwano",
       "taikodani_inari",
@@ -2155,15 +2242,15 @@
     ]
   },
   {
-    "dayNumber": 9,
-    "title": "Day 9：長門斷崖絕景元乃隅神社 ➔ 長州維新世界遺產萩城 ➔ 宿新山口",
-    "date": "2027-01-21",
+    "dayNumber": 8,
+    "title": "Day 8：長門斷崖絕景元乃隅神社 ➔ 長州維新世界遺產萩城 ➔ 宿新山口",
+    "date": "2027-01-20",
     "baseStation": "東萩駅 / 長門市駅 / 新山口駅",
     "lodging": "新山口站前飯店 (住宿建議)",
     "lodgingLocation": "JR 新山口駅南口(新幹線口) / 北口 (Comfort Hotel / 東橫INN)",
     "recommendedHotels": "Comfort Hotel 新山口 / 東橫INN 新山口駅南口 / 國際飯店山口",
-    "lodgingReason": "晨遊元乃隅千本鳥居與長門絕壁，下午漫步世界遺產萩城古街；傍晚搭直達特急巴士「超級萩號 (Super Hagi)」直奔新幹線樞紐新山口站，次日晨間搭新幹線攻錦帶橋與宮島極致省時！",
-    "notes": "• 【元乃隅神社・百廿三座鳥居絕壁 (建議預留 1.5h)】：晨間自萩出發前往長門市，搭乘計程車直達面臨日本海懸崖之元乃隅神社，走過 123 座沿著翠綠斷崖蜿蜒至海邊的紅色鳥居，挑戰日本最高難度賽錢箱！\\n• 【萩城跡・指月公園與古民家聚落 (建議預留 1.5h)】：午後返回萩市區，走訪長州藩毛利家指月城（100名城）、松下村塾與白壁土藏城下町，感受幕末維新志士之故鄉。\\n• 【直達特急巴士直奔新山口】：自東萩站或萩巴士中心搭乘中國 JR 巴士「Super Hagi 號」(約 60 分鐘，JR Pass 免費搭乘) 直抵新幹線樞紐新山口站，入住站前飯店，養精蓄銳明日攻嚴島與廣島。",
+    "lodgingReason": "JR Pass 7日券(第6天)！晨遊元乃隅千本鳥居與長門絕壁，下午漫步世界遺產萩城；傍晚搭直達特急巴士「超級萩號 (Super Hagi)」直奔新幹線樞紐新山口站，次日晨間搭新幹線攻錦帶橋與宮島極致省時！",
+    "notes": "• 【🎫 JR Pass 第6天】：涵蓋山陰本線及中國 JR 巴士 Super Hagi 直達特急客運(免費搭乘)！\n• 【元乃隅神社・百廿三座鳥居絕壁 (建議預留 1.5h)】：晨間自萩出發前往長門市，搭乘計程車直達面臨日本海懸崖之元乃隅神社，走過 123 座紅色鳥居。\n• 【萩城跡・指月公園與古民家聚落 (建議預留 1.5h)】：午後返回萩市區，走訪長州藩毛利家指月城（100名城）、松下村塾與白壁土藏城下町。\n• 【直達特急巴士直奔新山口】：自東萩站或萩巴士中心搭乘中國 JR 巴士「Super Hagi 號」(約 60 分鐘，JR Pass 免費搭乘) 直抵新幹線樞紐新山口站，入住站前飯店。",
     "spotIds": [
       "motonosumi_jinja",
       "hagi",
@@ -2171,15 +2258,15 @@
     ]
   },
   {
-    "dayNumber": 10,
-    "title": "Day 10：周防名橋錦帶橋・岩國城 ➔ 宮島世界遺產嚴島神社 ➔ 宿廣島",
-    "date": "2027-01-22",
+    "dayNumber": 9,
+    "title": "Day 9：周防名橋錦帶橋・岩國城 ➔ 宮島世界遺產嚴島神社 ➔ 宿廣島",
+    "date": "2027-01-21",
     "baseStation": "新山口駅 / 新岩國駅 / 岩國駅 / 宮島口駅 / 廣島駅",
-    "lodging": "廣島站前飯店 (D10 住宿建議)",
+    "lodging": "廣島站前飯店 (D9 連住第1晚)",
     "lodgingLocation": "JR 廣島駅南口 / 站前商圈 (喜來登 / 格蘭比亞)",
     "recommendedHotels": "廣島喜來登大飯店 (車站直結) / 廣島格蘭比亞大飯店 (北口直結) / 廣島大和Roynet飯店",
-    "lodgingReason": "新山口搭新幹線僅 28 分到新岩國，錦帶橋＋纜車攻岩國城；午後 JR 順路直達宮島口，搭 JR 渡輪登嚴島神社賞海上鳥居退潮夕陽；傍晚進駐廣島連住 2 晚，徹底免搬行李！",
-    "notes": "• 【錦帶橋 & 岩國城・木造五連拱橋與纜車天守 (預留 2h)】：晨間自新山口搭新幹線至新岩國站，轉公車抵日本三大名橋「錦帶橋」，走過木造五連拱波浪橋面；搭乘纜車登上橫山頂峰岩國城天守，飽覽錦川蜿蜒出海口全景。\\n• 【宮島・嚴島神社・海上大鳥居 (預留 2.5h)】：搭乘 JR 山陽本線至宮島口，憑 JR Pass 免費搭乘 JR 西日本宮島渡輪直擊海上鳥居視角，漫步世界遺產國寶神社迴廊，品嚐宮島烤牡蠣與紅葉饅頭。\\n• 【傍晚進駐廣島站前飯店 (連住第 1 晚)】：自宮島口搭 JR 25 分返抵廣島站，入住南口或北口站前飯店，晚餐於站內 ekie 享用在地人氣廣島燒。",
+    "lodgingReason": "JR Pass 7日券啟用最後一天(第7天)！新山口搭新幹線僅 28 分到新岩國，錦帶橋＋纜車攻岩國城；午後 JR 順路直達宮島口，搭 JR 渡輪登嚴島神社賞海上鳥居；傍晚進駐廣島連住 2 晚，徹底免搬行李！",
+    "notes": "• 【🎫 JR Pass 第7天 (今日最後一日使用)】：山陽新幹線、JR山陽本線及JR宮島渡輪全額涵蓋，發揮 Pass 最終最高價值！\n• 【錦帶橋 & 岩國城・木造五連拱橋與纜車天守 (預留 2h)】：晨間自新山口搭新幹線至新岩國站，轉公車抵日本三大名橋「錦帶橋」，走過木造五連拱橋面；搭乘纜車登上橫山頂峰岩國城天守。\n• 【宮島・嚴島神社・海上大鳥居 (預留 2.5h)】：搭乘 JR 山陽本線至宮島口，憑 JR Pass 免費搭乘 JR 西日本宮島渡輪直擊海上鳥居視角，漫步世界遺產國寶神社迴廊。\n• 【傍晚進駐廣島站前飯店 (連住第 1 晚)】：自宮島口搭 JR 25 分返抵廣島站，入住站前飯店，晚餐享用在地人氣廣島燒。",
     "spotIds": [
       "kintaikyo",
       "iwakuni",
@@ -2188,15 +2275,15 @@
     ]
   },
   {
-    "dayNumber": 11,
-    "title": "Day 11：廣島和平文化・鯉城與護國神社 ➔ 原爆圓頂 ➔ 廣島和牛晚宴 (宿廣島)",
-    "date": "2027-01-23",
+    "dayNumber": 10,
+    "title": "Day 10：廣島和平文化・鯉城與護國神社 ➔ 原爆圓頂 ➔ 廣島和牛晚宴 (宿廣島)",
+    "date": "2027-01-22",
     "baseStation": "廣島駅 / 原爆圓頂前 / 本通商圈",
-    "lodging": "廣島站前飯店 (D11 連住第2晚)",
+    "lodging": "廣島站前飯店 (D10 連住第2晚)",
     "lodgingLocation": "JR 廣島駅 (南口/北口站前飯店)",
     "recommendedHotels": "廣島喜來登大飯店 / 廣島格蘭比亞大飯店",
-    "lodgingReason": "廣島市區深度一日漫遊，全日利用廣島電鐵路面電車與 Meipuru-pu 觀光巴士；連住同間飯店免收行李，夜晚享用廣島特選頂級和牛盛宴。",
-    "notes": "• 【廣島城・毛利輝元名城與廣島護國神社 (預留 1.5h)】：晨間搭路面電車前往廣島城，登黑木雕漆復原天守（鯉城），並參拜境內鎮守之廣島護國神社。\\n• 【寶可夢中心廣島 & 本通商圈採買 (預留 1.5h)】：至 SOGO 廣島店 6F 探訪 Pokemon Center Hiroshima，採買鯉魚王限定周邊與文創商品。\\n• 【世界遺產原爆圓頂 & 和平紀念資料館 (預留 2h)】：走訪原爆圓頂歷史遺跡，漫步和平紀念公園慰靈碑，走進和平紀念資料館深思和平歷史真諦。\\n• 【廣島特選和牛晚宴 (預留 1.5h)】：晚餐預約「青ひげ」品嚐廣島在地頂級「廣島牛・神石牛」牛排，或至格蘭比亞 21F 鉄板焼 神石享用高空和牛套餐！",
+    "lodgingReason": "【⚠️ 不使用 Pass (全自費)】廣島市區深度一日漫遊，利用廣島電鐵路面電車 (均一價 220 円)；連住同間飯店免收行李，夜晚享用廣島特選頂級和牛盛宴。",
+    "notes": "• 【⚠️ 今日起不使用 JR Pass】：廣島市區景點集中，搭路面電車單程僅 220 円，直接刷 IC 卡即可。\n• 【廣島城・毛利輝元名城與廣島護國神社 (預留 1.5h)】：晨間搭路面電車前往廣島城，登黑木雕漆復原天守（鯉城），並參拜境內鎮守之廣島護國神社。\n• 【寶可夢中心廣島 & 本通商圈採買 (預留 1.5h)】：至 SOGO 廣島店 6F 探訪 Pokemon Center Hiroshima，採買鯉魚王限定周邊。\n• 【世界遺產原爆圓頂 & 和平紀念資料館 (預留 2h)】：走訪原爆圓頂歷史遺跡，漫步和平紀念公園慰靈碑，走進和平紀念資料館深思和平歷史真諦。\n• 【廣島特選和牛晚宴 (預留 1.5h)】：晚餐預約「青ひげ」品嚐廣島在地頂級「廣島牛・神石牛」牛排，或至格蘭比亞 21F 鉄板焼 神石享用高空和牛套餐！",
     "spotIds": [
       "hiroshima",
       "hiroshima_gokoku_jinja",
@@ -2208,15 +2295,15 @@
     ]
   },
   {
-    "dayNumber": 12,
-    "title": "Day 12：毛利要塞吉田郡山城 ➔ 福山城 ➔ 鞆之浦夕陽溫泉",
-    "date": "2027-01-24",
+    "dayNumber": 11,
+    "title": "Day 11：毛利要塞吉田郡山城 ➔ 福山城 ➔ 鞆之浦夕陽溫泉",
+    "date": "2027-01-23",
     "baseStation": "廣島駅 / 廣島巴士中心 / 福山駅 / 鞆之浦",
     "lodging": "鞆之浦溫泉 海景旅館 (福山市)",
     "lodgingLocation": "鞆之浦古港 / 仙醉島海景露天風呂",
     "recommendedHotels": "景勝館 漣亭 / 汀邸 遠音近音 (Ofutei) / 鷗風亭 (Hotel Osource)",
-    "lodgingReason": "福山站搭巴士30分直達鞆之浦古港；傍晚在海景露天溫泉賞瀨戶內海仙醉島絕景，享用鯛魚海鮮料理；次日晨間搭巴士與新幹線返回岡山機場返台最穩妥。",
-    "notes": "• 【吉田郡山城・全山要塞 (建議預留 2h)】：晨間自廣島巴士中心搭客運往安藝高田，走訪戰國謀將毛利元就百萬一心之居城吉田郡山城。\\n• 【福山城・鐵板張天守 (預留 1h)】：午後搭乘山陽新幹線 23 分直達福山站，北口出站 1 分直達福山城，欣賞全日本唯一背面覆蓋黑鐵板之天守。\\n• 【鞆之浦古港散策 & 溫泉海景夜宿】：福山站南口搭巴士 30 分直達宮崎駿《崖上的波妞》取景舞台鞆之浦，欣賞江戶時代常夜燈古港，入住海景溫泉飯店享受露天風呂與瀨戶內海海鮮盛宴。",
+    "lodgingReason": "【⚠️ 不使用 Pass (全自費)】廣島搭高速客運登吉田郡山城；下午搭新幹線自由席 23 分至福山城；福山站轉公車直達鞆之浦古港海景露天溫泉，享用瀨戶內海海鮮料理。",
+    "notes": "• 【⚠️ 今日不使用 Pass】：廣島到安藝高田為高速客運 (非 JR)；廣島到福山自費買山陽新幹線自由席 (僅 3,740 円)。\n• 【吉田郡山城・全山要塞 (建議預留 2h)】：晨間自廣島巴士中心搭客運往安藝高田，走訪戰國謀將毛利元就百萬一心之居城吉田郡山城。\n• 【福山城・鐵板張天守 (預留 1h)】：午後搭乘山陽新幹線自由席 23 分直達福山站，北口出站 1 分直達福山城，欣賞全日本唯一背面覆蓋黑鐵板之天守。\n• 【鞆之浦古港散策 & 溫泉海景夜宿】：福山站南口搭巴士 30 分直達宮崎駿《崖上的波妞》取景舞台鞆之浦，欣賞江戶時代常夜燈古港，入住海景溫泉飯店享受露天風呂與瀨戶內海海鮮盛宴。",
     "spotIds": [
       "yoshida_koriyama",
       "fukuyama",
@@ -2224,15 +2311,32 @@
     ]
   },
   {
+    "dayNumber": 12,
+    "title": "Day 12：鞆之浦晨光 ➔ 福山新幹線 ➔ 岡山 ➔ 天空之城備中松山城 ➔ 桃太郎吉備路傳說 ➔ 宿岡山站前",
+    "date": "2027-01-24",
+    "baseStation": "鞆之浦 / 福山駅 / 岡山駅 / 備中高梁駅 / 備前一宮駅",
+    "lodging": "岡山站前飯店 (格蘭比亞 / 大和Roynet / 三井花園)",
+    "lodgingLocation": "JR 岡山駅東口 / 站前商圈",
+    "recommendedHotels": "岡山格蘭比亞大飯店 (車站直結) / 大和Roynet飯店岡山站前 (徒步2分) / 三井花園飯店岡山",
+    "lodgingReason": "【⚠️ 不使用 Pass (全自費)】今日移動備中松山城！晨間自鞆之浦經福山搭新幹線僅 16 分回岡山飯店放下行李；輕裝攻現存最高天守備中松山城與吉備津神社；今晚夜宿岡山站前，明日去機場極速從容！",
+    "notes": "• 【⚠️ 今日不使用 Pass】：福山到岡山新幹線自由席僅 1,770 円；岡山往備中高梁搭普通車僅 860 円 (特急自由席 1,500 円)，吉備線 150~210 円，直接購票/刷 IC 卡最經濟實惠！\n• 【09:00~10:15 鞆之浦 ➔ 福山 ➔ 岡山】：搭公車至福山站，搭新幹線自由席 16 分鐘極速直達岡山站，站前飯店 Check-in 卸下大件行李。\n• 【天空之城・備中松山城 (停留 2~2.5h)】：自岡山站搭 JR 伯備線至備中高梁站。搭乘觀光合乘計程車直達鞴峠登上海拔 430 公尺之現存最高天守備中松山城，巧遇貓城主「三十郎」！\n• 【吉備路桃太郎傳說・吉備津彥神社 & 吉備津神社 (停留 1.5h)】：下午搭 JR 伯備線/吉備線至備前一宮與吉備津站，走訪桃太郎原型神話之吉備津彥神社與擁有 398 公尺木造壯觀大迴廊之國寶吉備津神社。\n• 【傍晚返岡山採買 & 宿岡山】：返回岡山站，前往唐吉訶德、AEON Mall 與車站一番街採購名產，夜宿岡山站前！",
+    "spotIds": [
+      "bitchu_matsuyama",
+      "kibitsuhiko_jinja",
+      "kibitsu_jinja",
+      "okayama_hotel"
+    ]
+  },
+  {
     "dayNumber": 13,
-    "title": "Day 13：鞆之浦晨光 ➔ 福山搭新幹線 ➔ 岡山 ➔ 岡山桃太郎機場搭機返台 (虎航 IT215)",
+    "title": "Day 13：岡山市區漫遊伴手禮 ➔ 岡山桃太郎機場搭機返台 (虎航 IT215)",
     "date": "2027-01-25",
-    "baseStation": "鞆之浦 / 福山駅 / 岡山駅 / 岡山桃太郎機場 (OKJ)",
+    "baseStation": "岡山駅 / 岡山桃太郎機場 (OKJ)",
     "lodging": "返抵台灣溫暖的家",
     "lodgingLocation": "台北桃園國際機場 (TPE)",
     "recommendedHotels": "無 (返抵國門)",
     "lodgingReason": "搭乘台灣虎航 IT 215 班機，15:55 起飛，17:40 抵達台北桃園第一航廈。",
-    "notes": "• 【晨間鞆之浦海景早餐與退房】：在海景溫泉飯店享用豐盛早餐，眺望瀨戶內海仙醉島晨曦。\\n• 【09:30~10:45 鞆之浦 ➔ 福山 ➔ 岡山】：搭乘鞆鐵道巴士約 30 分鐘返回福山站，轉乘山陽新幹線僅 16 分鐘極速直達岡山站，可於一番街最後補買伴手禮。\\n• 【13:00 利木津巴士直達機場】：岡山站西口巴士乘車處搭乘中鐵/岡電機場巴士 (約30分鐘，單程 1,000 円) 直達岡山桃太郎機場 (OKJ)。\\n• 【13:45 虎航櫃檯報到手續 & ✈️ 返台】：起飛前 2 小時辦理登機與行李託運，搭乘 15:55 起飛班機 (IT215) 於 17:40 順利返抵台灣桃園第一航廈 (TPE)，13天山陰山陽100名城、日本三景、世界遺產石見銀山與名湯巡禮圓滿成功！",
+    "notes": "• 【悠閒早餐與市區最後採買】：因前晚已住在岡山站前，完全不必跨縣趕路，在車站一番街輕鬆補買岡山白桃甜點與伴手禮。\n• 【13:00 利木津巴士直達機場】：岡山站西口巴士乘車處搭乘中鐵/岡電機場巴士 (約30分鐘，單程 1,000 円自費) 直達岡山桃太郎機場 (OKJ)。\n• 【13:45 虎航櫃檯報到手續 & ✈️ 返台】：起飛前 2 小時辦理登機與行李託運，搭乘 15:55 起飛班機 (IT215) 於 17:40 順利返抵台灣桃園第一航廈 (TPE)，13天山陰山陽100名城、日本三景、世界遺產石見銀山與名湯巡禮圓滿成功！",
     "spotIds": [
       "okayama_airport"
     ]
@@ -2252,11 +2356,14 @@
     }
 
     function getEffectiveDefaultItinerary() {
-      // 內建權威之岡山出發 12 天真實地理順路行程 (全面排入 12 座名城＋7 大核心神社，100% 免疫快取脫節)
+      if (typeof DEFAULT_ITINERARY !== 'undefined' && Array.isArray(DEFAULT_ITINERARY) && DEFAULT_ITINERARY.length > 0) {
+        return DEFAULT_ITINERARY;
+      }
       return BUILTIN_DEFAULT_ITINERARY;
     }
 
     const STORAGE_KEY_EXPENSES = "jp_trip_expenses_v1";
+    const STORAGE_KEY_TRANSIT_FARES = "jp_trip_transit_fares_v1";
     const STORAGE_KEY_MEMBERS = "jp_trip_members_v1";
     const STORAGE_KEY_EXCHANGE_RATE = "jp_trip_exchange_rate_v1";
     const STORAGE_KEY_CLOUD_CONFIG = "jp_trip_cloud_sync_config_v1";
@@ -2279,6 +2386,7 @@
       selectedDayFilter: "all",
       editingSpotId: null,
       expenses: [],
+      transitFares: [],
       members: { a: "成員 A", b: "成員 B" },
       exchangeRate: 0.215, // 1 JPY = 0.215 TWD
       expenseFilterCategory: "all",
@@ -2287,7 +2395,11 @@
       budgetFilterCategory: "all",
       budgetFilterDay: "all",
       budgetFilterPass: "all",
-      budgetSearchKeyword: ""
+      budgetSearchKeyword: "",
+      transitFilterCategory: "all",
+      transitFilterDay: "all",
+      transitFilterPass: "all",
+      transitSearchKeyword: ""
     };
 
     // ==========================================
@@ -2296,17 +2408,17 @@
     // ==========================================
     const CANONICAL_SPOT_ORDER = {
       1: ['okayama_airport', 'chiyagyu_bisai', 'chiyagyu_kuya', 'okayama_aeon', 'okayama_hotel'],
-      2: ['bitchu_matsuyama', 'kibitsuhiko_jinja', 'kibitsu_jinja', 'okayama_hotel', 'okayama_hotel_d11'],
-      3: ['kinojo', 'tsuyama', 'yunogo_onsen'],
-      4: ['tottori_sakyu', 'tottori', 'hakuto_jinja', 'tottori_takumi', 'kinosaki_onsen'],
-      5: ['amanohashidate', 'ine_funaya', 'kaike_onsen'],
-      6: ['gassan_toda', 'adachi_museum', 'matsue', 'matsue_horikawa', 'tamatsukuri_onsen'],
-      7: ['iwami_ginzan', 'tsuwano_lodging', 'tsuwano'],
-      8: ['tsuwano', 'taikodani_inari', 'hagi', 'hagi_lodging'],
-      9: ['motonosumi_jinja', 'hagi', 'shin_yamaguchi_lodging'],
-      10: ['kintaikyo', 'iwakuni', 'itsukushima_jinja', 'hiroshima_lodging_d8'],
-      11: ['hiroshima', 'hiroshima_gokoku_jinja', 'pokemon_center_hiroshima', 'atomic_bomb_dome', 'hiroshima_peace_museum', 'aohige_steak', 'hiroshima_jinseki', 'hiroshima_atago', 'hiroshima_lodging_d9'],
-      12: ['yoshida_koriyama', 'fukuyama', 'tomonoura_onsen'],
+      2: ['kinojo', 'tsuyama', 'tottori_hotel'],
+      3: ['tottori', 'tottori_sakyu', 'tottori_takumi', 'kinosaki_onsen'],
+      4: ['amanohashidate', 'ine_funaya', 'kaike_onsen'],
+      5: ['gassan_toda', 'adachi_museum', 'matsue', 'matsue_horikawa', 'tamatsukuri_onsen'],
+      6: ['iwami_ginzan', 'tsuwano_lodging', 'tsuwano'],
+      7: ['tsuwano', 'taikodani_inari', 'hagi', 'hagi_lodging'],
+      8: ['motonosumi_jinja', 'hagi', 'shin_yamaguchi_lodging'],
+      9: ['kintaikyo', 'iwakuni', 'itsukushima_jinja', 'hiroshima_lodging_d8'],
+      10: ['hiroshima', 'hiroshima_gokoku_jinja', 'pokemon_center_hiroshima', 'atomic_bomb_dome', 'hiroshima_peace_museum', 'aohige_steak', 'hiroshima_jinseki', 'hiroshima_atago', 'hiroshima_lodging_d9'],
+      11: ['yoshida_koriyama', 'fukuyama', 'tomonoura_onsen'],
+      12: ['bitchu_matsuyama', 'kibitsuhiko_jinja', 'kibitsu_jinja', 'okayama_hotel', 'okayama_hotel_d11'],
       13: ['okayama_airport']
     };
 
@@ -2498,7 +2610,34 @@
         }
       }
 
-      // 讀取兩人分帳與記帳資料
+      // 讀取全行程車資資料 (專屬行程車資庫，完全獨立於兩人記帳)
+      try {
+        const savedFares = localStorage.getItem(STORAGE_KEY_TRANSIT_FARES);
+        state.transitFares = savedFares ? JSON.parse(savedFares) : [];
+      } catch (e) {
+        state.transitFares = [];
+      }
+      if (!state.transitFares || state.transitFares.length === 0) {
+        if (typeof DEFAULT_TRANSIT_FARES !== 'undefined' && Array.isArray(DEFAULT_TRANSIT_FARES)) {
+          state.transitFares = JSON.parse(JSON.stringify(DEFAULT_TRANSIT_FARES));
+        }
+      }
+
+      // 平滑同步升級：若車資包含舊版 Day 3 (白兔神社或舊 fare_d3_7)，自動更新為 Day 3 最新冬季自費與 Pass 車資
+      if (state.transitFares && state.transitFares.length > 0 && typeof DEFAULT_TRANSIT_FARES !== 'undefined') {
+        const hasOldD3 = state.transitFares.some(f => f.dayNumber === 3 && (f.id === 'fare_d3_7' || (f.notes && f.notes.includes('白兎神社')) || (f.title && f.title.includes('白兔神社'))));
+        if (hasOldD3) {
+          state.transitFares = state.transitFares.filter(f => f.dayNumber !== 3);
+          const newD3 = DEFAULT_TRANSIT_FARES.filter(f => f.dayNumber === 3);
+          state.transitFares.push(...newD3);
+          state.transitFares.sort((a, b) => (a.dayNumber || 0) - (b.dayNumber || 0));
+          try {
+            localStorage.setItem(STORAGE_KEY_TRANSIT_FARES, JSON.stringify(state.transitFares));
+          } catch (_) {}
+        }
+      }
+
+      // 讀取兩人分帳與記帳資料 (專屬雙人分帳，完全獨立於行程車資)
       try {
         const savedExpenses = localStorage.getItem(STORAGE_KEY_EXPENSES);
         state.expenses = savedExpenses ? JSON.parse(savedExpenses) : [];
@@ -2525,67 +2664,139 @@
       const savedRate = localStorage.getItem(STORAGE_KEY_EXCHANGE_RATE);
       state.exchangeRate = savedRate ? parseFloat(savedRate) || 0.215 : 0.215;
 
-      // 讀取 LocalStorage，嚴格保護使用者已自訂的行程內容與排序
+      // 讀取 LocalStorage，嚴格保護使用者已自訂的行程內容與排序，特別是交通時刻表與乘車附件
       const savedSpots = localStorage.getItem(STORAGE_KEY_SPOTS);
       const savedVer = localStorage.getItem(STORAGE_KEY_ITINERARY_VER);
       
       const savedDeleted = localStorage.getItem(STORAGE_KEY_DELETED_SPOTS);
       state.deletedSpotIds = savedDeleted ? JSON.parse(savedDeleted) : [];
-      
+
+      // ★ 核心保護機制：嚴密備份所有既有上傳之交通時刻表縮圖與乘車附件，保證 100% 不遺失
+      const existingTransitAttachments = {};
+      const backupSources = [
+        localStorage.getItem('jp_castle_itinerary_okayama'),
+        localStorage.getItem(STORAGE_KEY_ITINERARY),
+        localStorage.getItem('jp_trip_backup_snapshot')
+      ];
+      backupSources.forEach(src => {
+        if (!src) return;
+        try {
+          const parsed = JSON.parse(src);
+          const list = Array.isArray(parsed) ? parsed : (parsed && Array.isArray(parsed.itinerary) ? parsed.itinerary : []);
+          list.forEach(d => {
+            if (d && d.dayNumber && d.transitAttachments) {
+              if (!existingTransitAttachments[d.dayNumber]) {
+                existingTransitAttachments[d.dayNumber] = {};
+              }
+              Object.keys(d.transitAttachments).forEach(k => {
+                const item = d.transitAttachments[k];
+                if (item && ((item.images && item.images.length > 0) || item.notes || item.link)) {
+                  existingTransitAttachments[d.dayNumber][k] = JSON.parse(JSON.stringify(item));
+                }
+              });
+            }
+          });
+        } catch (_) {}
+      });
+
       let loadedItinerary = null;
-      if (savedVer !== CURRENT_ITINERARY_VER) {
-        localStorage.setItem(STORAGE_KEY_ITINERARY_VER, CURRENT_ITINERARY_VER);
-        localStorage.removeItem('jp_castle_itinerary_okayama');
-        localStorage.removeItem(STORAGE_KEY_ITINERARY);
-        localStorage.removeItem('jp_trip_backup_snapshot');
-        localStorage.removeItem(STORAGE_KEY_EXPENSES);
-        localStorage.setItem('jp_trip_local_last_modified', String(Date.now()));
-      } else {
-        const savedOkayama = localStorage.getItem('jp_castle_itinerary_okayama');
-        if (savedOkayama) {
+      const savedOkayama = localStorage.getItem('jp_castle_itinerary_okayama');
+      if (savedOkayama) {
+        try {
+          const parsed = JSON.parse(savedOkayama);
+          if (Array.isArray(parsed) && parsed.length > 0) loadedItinerary = parsed;
+        } catch (e) {}
+      }
+      if (!loadedItinerary) {
+        const savedItinerary = localStorage.getItem(STORAGE_KEY_ITINERARY);
+        if (savedItinerary) {
           try {
-            const parsed = JSON.parse(savedOkayama);
+            const parsed = JSON.parse(savedItinerary);
             if (Array.isArray(parsed) && parsed.length > 0) loadedItinerary = parsed;
           } catch (e) {}
         }
-        if (!loadedItinerary) {
-          const savedItinerary = localStorage.getItem(STORAGE_KEY_ITINERARY);
-          if (savedItinerary) {
-            try {
-              const parsed = JSON.parse(savedItinerary);
-              if (Array.isArray(parsed) && parsed.length > 0) loadedItinerary = parsed;
-            } catch (e) {}
-          }
-        }
-        if (!loadedItinerary) {
-          try {
-            const snapshot = localStorage.getItem('jp_trip_backup_snapshot');
-            if (snapshot) {
-              const parsed = JSON.parse(snapshot);
-              if (parsed && Array.isArray(parsed.itinerary) && parsed.itinerary.length > 0) {
-                loadedItinerary = parsed.itinerary;
-              }
+      }
+      if (!loadedItinerary) {
+        try {
+          const snapshot = localStorage.getItem('jp_trip_backup_snapshot');
+          if (snapshot) {
+            const parsed = JSON.parse(snapshot);
+            if (parsed && Array.isArray(parsed.itinerary) && parsed.itinerary.length > 0) {
+              loadedItinerary = parsed.itinerary;
             }
-          } catch (e) {}
-        }
+          }
+        } catch (e) {}
       }
 
       // 行程一律固定為：🍑 岡山出發 12 天大閉環
       state.currentRoutePlan = 'okayama';
-      const fallbackItinerary = JSON.parse(JSON.stringify(BUILTIN_DEFAULT_ITINERARY));
+      const fallbackItinerary = JSON.parse(JSON.stringify(getEffectiveDefaultItinerary()));
       const fallbackSpots = getEffectiveDefaultSpots();
 
       if (loadedItinerary) {
         state.itinerary = loadedItinerary;
+        // 手術式替換：若既有儲存行程含湯郷溫泉，自動平滑升級為鳥取站前夜宿
+        const d2 = state.itinerary.find(d => d.dayNumber === 2);
+        if (d2) {
+          if (d2.spotIds && d2.spotIds.includes('yunogo_onsen')) {
+            d2.spotIds = d2.spotIds.map(id => id === 'yunogo_onsen' ? 'tottori_hotel' : id);
+            d2.title = "Day 2：吉備古國名城鬼之城 ➔ 津山城 ➔ 抵達鳥取站前夜宿";
+            d2.lodging = "鳥取站前精選飯店 (鳥取市)";
+            d2.lodgingLocation = "鳥取駅前 (鳥取市)";
+            d2.recommendedHotels = "鳥取站前格林豪泰酒店 (Green Hotel) / 鳥取站前超級酒店 (Super Hotel) / 鳥取市區莫里斯飯店";
+            d2.lodgingReason = "津山城攻城後搭乘 JR 因美線直達鳥取站夜宿站前飯店，省去偏遠溫泉拉車；隔天早晨零負擔從鳥取站直接啟程前往鳥取砂丘！";
+            d2.baseStation = "岡山駅 / 津山駅 / 鳥取駅";
+            d2.notes = "• 【鬼ノ城・登山步道 (建議預留 1.5~2h)】：晨間自岡山搭 JR 吉備線至總社站，搭計程車約 30 分攻登古代神秘山城鬼ノ城。山頂西門石垣與步道巡禮視野極佳，下車時務必先與司機約定下山回程時間！\n• 【津山城・平山城 (基本預留 1h)】：午後搭 JR 津山線至津山站，步行 10 分攻登津山城（鶴山公園備中櫓，園區平緩好走）。\n• 【前往鳥取站前宿】：津山城參觀後返回津山站，搭乘 JR 因美線經智頭直奔鳥取站（普通車約 1.5~2h，或搭乘特急超級因幡號），出站步行 1~3 分即達站前飯店 Check-in 卸下大件行李，晚上可在鳥取市區悠閒晚餐休息。";
+          }
+        }
+        const d3 = state.itinerary.find(d => d.dayNumber === 3);
+        if (d3) {
+          d3.baseStation = "鳥取駅 / 城崎溫泉駅";
+          // 平滑升級：若為舊版 Day 3 (白兔神社或砂丘在前)，自動更新為最新冬季名城與砂丘纜車順序
+          if (!d3.spotIds || d3.spotIds.includes('hakuto_jinja') || d3.spotIds[0] === 'tottori_sakyu') {
+            d3.title = "Day 3：晨遊鳥取城跡 ➔ 冬季鳥取砂丘 (展望台/吊椅纜車) ➔ 和牛元祖「たくみ割烹店」午餐 ➔ 特急直達宿城崎溫泉";
+            d3.lodgingReason = "本日正式啟用 JR Pass 7日券(第1天)！晨遊鳥取城與冬季砂丘纜車，中午在站前享用和牛元祖涮涮鍋午餐後，搭乘直達特急於 14:11 抵達城崎溫泉；提早入住和風溫泉旅館，換穿浴衣木屐，享受七大外湯巡禮與冬季極品日本海松葉蟹盛宴！";
+            d3.notes = "• 【🎫 JR Pass 7日券啟用 第1天】：正式開通周遊券！午後搭乘「特急はまかぜ4號」直達城崎溫泉，全額免費劃位指定席！\n• 【07:50~07:55 鳥取公車前往鳥取城 (免計程車)】：鳥取站前搭乘日之丸巴士（北園團地線）於 07:50 發車，07:55 抵達「県庁日赤前」(170 円)，下車步行 4~5 分鐘於 08:00 整抵達久松公園鳥取城跡。\n• 【08:00~09:40 名城・鳥取城跡 & 仁風閣 (停留約 1.5h)】：冬季不上久松山頂，晨間散步參觀天球丸獨特圓形石垣、二之丸與仁風閣庭園外觀；09:00 準時於「仁風閣展示館」蓋取 100名城第 63 號章。\n• 【09:47~10:02 前往鳥取砂丘 (順向搭車技巧)】：自鳥取城步行至「県庁日赤前」站牌，搭乘日之丸巴士鳥取砂丘線(39系統)直奔砂丘。強烈建議在 10:00 提早於「砂丘センター展望台」下車！\n• 【10:00~11:15 冬季鳥取砂丘 & 觀光吊椅纜車 (預留約 1h15m)】：於見晴之丘展望台室內吹暖氣、居高俯瞰冬日積雪砂丘與日本海壯闊全景；搭乘單程觀光吊椅纜車（約 5 分鐘，300 円）面向大海下滑至砂丘平地入口。冬季風大不強登馬背，於前緣踩雪賞景拍照後，參觀「鳥取砂丘遊客中心(ビジターセンター)」室內地質展覽與溫水洗腳區，最後至砂丘會館採買特產。(※若遇強風纜車停駛，巴士直接坐至砂丘會館)。\n• 【11:20~11:42 返回鳥取站】：砂丘會館搭乘日之丸路線巴士返回鳥取車站 (390 円)。\n• 【11:47~12:47 日本涮涮鍋元祖「たくみ割烹店」極品午餐 (整整 1 小時)】：自鳥取站北口步行僅 4 分鐘抵達榮町「たくみ割烹店」，享用日本和牛元祖涮涮鍋「すすぎ鍋」豐盛午餐！(⚠️注意：每週三公休)。\n• 【12:56~14:11 移動至城崎溫泉 ➔ Check-in】：步行 4 分鐘返回鳥取站，搭乘 12:56 直達特急「はまかぜ4號」(JR Pass 免費)，14:11 提早抵達城崎溫泉！免轉車、舒適抵達，下午悠閒入住換穿浴衣漫步七大外湯街！(備案：若午餐較晚可搭 13:33 普通車於濱坂轉車約 15:15~15:30 抵達)。";
+            d3.spotIds = ["tottori", "tottori_sakyu", "tottori_takumi", "kinosaki_onsen"];
+          }
+        }
       } else {
         state.itinerary = fallbackItinerary;
       }
 
-      // 景點庫合流：確保所有景點全數在庫，且嚴格過濾已刪除景點
+      // ★ 乘車附件 100% 完整還原並智慧映射新路廊 (保留舊 key 同時複製至新 key)
+      state.itinerary.forEach(day => {
+        if (!day.transitAttachments) day.transitAttachments = {};
+        const saved = existingTransitAttachments[day.dayNumber];
+        if (saved) {
+          Object.keys(saved).forEach(k => {
+            if (!day.transitAttachments[k] || !day.transitAttachments[k].images || day.transitAttachments[k].images.length === 0) {
+              day.transitAttachments[k] = JSON.parse(JSON.stringify(saved[k]));
+            }
+          });
+        }
+        // Day 2 舊湯鄉附件映射至鳥取站前飯店 (保留舊 key 不刪除)
+        if (day.dayNumber === 2 && day.transitAttachments['tsuyama_to_yunogo_onsen']) {
+          const oldAtt = day.transitAttachments['tsuyama_to_yunogo_onsen'];
+          if (!day.transitAttachments['tsuyama_to_tottori_hotel'] || !day.transitAttachments['tsuyama_to_tottori_hotel'].images || day.transitAttachments['tsuyama_to_tottori_hotel'].images.length === 0) {
+            day.transitAttachments['tsuyama_to_tottori_hotel'] = JSON.parse(JSON.stringify(oldAtt));
+          }
+        }
+        // Day 3 舊湯鄉出發附件映射至鳥取飯店出發 (保留舊 key 不刪除)
+        if (day.dayNumber === 3) {
+          const oldD3Att = day.transitAttachments['yunogo_onsen_to_tottori_sakyu'] || day.transitAttachments['yunogo_onsen_to_tottori'];
+          if (oldD3Att && (!day.transitAttachments['tottori_hotel_to_tottori_sakyu'] || !day.transitAttachments['tottori_hotel_to_tottori_sakyu'].images || day.transitAttachments['tottori_hotel_to_tottori_sakyu'].images.length === 0)) {
+            day.transitAttachments['tottori_hotel_to_tottori_sakyu'] = JSON.parse(JSON.stringify(oldD3Att));
+          }
+        }
+      });
+
+      // 景點庫合流：徹底排除湯郷溫泉，確保納入鳥取站前飯店，且嚴格過濾已刪除景點
       let initialSpots = savedSpots ? JSON.parse(savedSpots) : [];
-      initialSpots = initialSpots.filter(s => s.id !== 'sakaiminato_mizuki');
+      initialSpots = initialSpots.filter(s => s.id !== 'sakaiminato_mizuki' && s.id !== 'yunogo_onsen');
       state.spots = initialSpots;
       fallbackSpots.forEach(ds => {
+        if (ds.id === 'yunogo_onsen') return;
         if (state.deletedSpotIds && state.deletedSpotIds.includes(ds.id)) return;
         const existing = state.spots.find(s => s.id === ds.id);
         if (!existing) {
@@ -2595,6 +2806,10 @@
           existing.notes = ds.notes;
         }
       });
+      if (!state.spots.some(s => s.id === 'tottori_hotel')) {
+        const tottoriHotelDef = fallbackSpots.find(s => s.id === 'tottori_hotel');
+        if (tottoriHotelDef) state.spots.push(JSON.parse(JSON.stringify(tottoriHotelDef)));
+      }
 
       // 若某些 spot 缺失預設屬性，補齊
       state.spots.forEach(s => {
@@ -2611,21 +2826,7 @@
       
       // Day 3 ~ 11 全面採用官方最新順序
 
-      // Day 5 依最新需求更新夜宿：改為玉造溫泉
-      const day5 = state.itinerary.find(d => d.dayNumber === 5);
-      if (day5) {
-        if (!day5.spotIds || day5.spotIds.includes('matsue_lodging')) {
-          day5.spotIds = ['gassan_toda', 'adachi_museum', 'matsue', 'tamatsukuri_onsen'];
-          day5.title = "Day 5：戰國月山富田城 ➔ 足立美術館 ➔ 國寶松江城 ➔ 宿玉造溫泉";
-          day5.baseStation = "米子駅 / 安來駅 / 松江駅 / 玉造溫泉駅";
-          day5.lodging = "玉造溫泉 和風旅館 (日本第一美肌神之湯)";
-          day5.lodgingLocation = "玉造溫泉街 (松江市玉湯町)";
-          day5.recommendedHotels = "佳翠苑 皆美 (Kasuen Minami) / 湯之助之宿 長樂園 (混浴大露天風呂) / 白石家 (Shiraishiya)";
-          day5.lodgingReason = "松江城遊覽後搭 JR 山陰本線僅 8 分鐘直達玉造溫泉站，旅館專車接駁；享受《出雲國風土記》記載「一濯則形容端正，再沐則萬病悉除」的日本最古天然化妝水美肌神湯，漫步玉湯川宮橋與足湯！";
-          day5.notes = "• 【安來雙雄順路串聯】：月山富田城與足立美術館同在安來站！安來市營黃色公車直通串聯，完全不走回頭路！\n• 【月山富田城・戰國五大山城 (停留 2~2.5h)】：清晨自米子搭 JR 山陰本線至安來站，轉搭安來市營黃色巴士攻登戰國名城月山富田城，巡禮山中御殿與本丸天險。\n• 【足立美術館・連續21年日本第一庭園 (停留 1.5h)】：山麓搭黃色公車 8 分鐘直達足立美術館，透過借景枯山水庭園與橫山大觀名畫感受極致美學。\n• 【國寶松江城・現存天守 (停留 1.5h)】：搭足立免費接駁車至安來站，搭特急八雲號 14 分至松江站，搭觀光巴士至松江城登現存天守，可體驗堀川遊覽船護城河巡航。\n• 【傍晚前往玉造溫泉 ➔ Check-in】：返回松江站搭乘 JR 山陰本線僅 8 分鐘抵達「玉造溫泉駅」(JR Pass 全包！出站由旅館專車 5 分鐘接駁進溫泉街)，入住和風名宿，享受千年美肌神之湯與島根在地會席晚宴。";
-          try { localStorage.setItem('jp_castle_itinerary_okayama', JSON.stringify(state.itinerary)); } catch(err){}
-        }
-      }
+      // Day 5 已在標準行程對齊
 
       // 確保排除已廢棄之秋吉台景點
       state.spots = state.spots.filter(s => s.id !== 'akiyoshidai_akiyoshido');
@@ -2685,6 +2886,7 @@
         localStorage.setItem('jp_castle_itinerary_okayama', JSON.stringify(state.itinerary));
         localStorage.setItem(STORAGE_KEY_DELETED_SPOTS, JSON.stringify(state.deletedSpotIds || []));
         localStorage.setItem(STORAGE_KEY_EXPENSES, JSON.stringify(state.expenses || []));
+        localStorage.setItem(STORAGE_KEY_TRANSIT_FARES, JSON.stringify(state.transitFares || []));
         localStorage.setItem(STORAGE_KEY_MEMBERS, JSON.stringify(state.members || { a: "獅子", b: "方" }));
         localStorage.setItem(STORAGE_KEY_EXCHANGE_RATE, String(state.exchangeRate || 0.215));
         localStorage.setItem(STORAGE_KEY_ITINERARY_VER, CURRENT_ITINERARY_VER);
@@ -3207,7 +3409,24 @@
         [35.0645, 134.0048]  // 津山城 (鶴山公園)
       ],
 
-      // Day 2: 津山 ➔ 湯郷溫泉 (JR 姫新線至林野 / 國道179號 吉井川走廊)
+      // Day 2: 津山 ➔ 鳥取 (JR 因美線 & 智頭急行 穿越因幡連峰)
+      "tsuyama_to_tottori_hotel": [
+        [35.0645, 134.0048], // 津山城
+        [35.0538, 134.0041], // 津山站
+        [35.0952, 134.0352], // 高野
+        [35.1215, 134.0852], // 美作加茂
+        [35.1852, 134.1685], // 知和・美作河井
+        [35.2654, 134.2286], // 智頭
+        [35.3452, 134.2215], // 用瀨
+        [35.4215, 134.2486], // 郡家
+        [35.4941, 134.2258]  // 鳥取站前飯店
+      ],
+      "tottori_hotel_to_tottori_sakyu": [
+        [35.4941, 134.2258], // 鳥取站前飯店
+        [35.5394, 134.2286]  // 鳥取砂丘
+      ],
+
+      // Day 2 舊備用路線
       "tsuyama_to_yunogo_onsen": [
         [35.0645, 134.0048], // 津山城
         [35.0538, 134.0041], // 津山站
@@ -3253,6 +3472,12 @@
         [35.5089, 134.2386],
         [35.5250, 134.2380],
         [35.5401, 134.2285]  // 鳥取砂丘
+      ],
+      "tottori_sakyu_to_tottori_takumi": [
+        [35.5401, 134.2285], // 鳥取砂丘
+        [35.5250, 134.2380],
+        [35.5089, 134.2386],
+        [35.4963, 134.2267]  // たくみ割烹店 / 鳥取站前
       ],
       "tottori_sakyu_to_hakuto_jinja": [
         [35.5401, 134.2285], // 鳥取砂丘
@@ -4987,6 +5212,7 @@
         'okayama_hotel_d11': '宿岡山',
         'kinojo': '鬼ノ城',
         'tsuyama': '津山城',
+        'tottori_hotel': '宿鳥取站前',
         'yunogo_onsen': '湯郷溫泉',
         'tottori': '鳥取城',
         'tottori_sakyu': '鳥取砂丘',
@@ -5626,6 +5852,27 @@
         passNote: "JR 在來線全額包含",
         tips: "津山站下車步行 10 分鐘即達津山城 (鶴山公園備中櫓)"
       },
+      "tsuyama_to_tottori_hotel": {
+        name: "JR 因美線普通車 或 經智頭轉乘特急スーパーいなば/はくと 直達鳥取駅",
+        time: "約 1 小時 30 分 ~ 1 小時 50 分鐘",
+        passCovered: false,
+        passNote: "非 Pass 天數 (乘車券約 1,170 円，若搭特急自由席/指定席另加特急券)",
+        tips: "津山城攻城後返回津山站，搭乘 JR 因美線直奔鳥取站；出站步行 1~3 分鐘即達站前飯店 Check-in 卸下大件行李！"
+      },
+      "tottori_hotel_to_tottori_sakyu": {
+        name: "鳥取站前 0 號公車月台搭乘「日之丸路線巴士」直達鳥取砂丘",
+        time: "公車約 20 分鐘",
+        passCovered: false,
+        passNote: "日之丸路線巴士單程 390 円 (自費，非 Pass 範圍)",
+        tips: "晨間自鳥取站前飯店退房後輕裝出發，站前 0 號乘車處搭日之丸巴士直達鳥取砂丘會館"
+      },
+      "tottori_hotel_to_tottori": {
+        name: "鳥取站前 ➔ 鳥取城/仁風閣 (日之丸巴士 北園團地線 免計程車)",
+        time: "公車 5 分鐘 + 步行 4-5 分鐘",
+        passCovered: false,
+        passNote: "單程 170 円 (自費，免搭計程車)",
+        tips: "07:50 於鳥取站前搭乘日之丸巴士北園團地線，07:55 抵達「県庁日赤前」(170 円)，徒步約 4-5 分於 08:00 整抵達久松公園鳥取城跡入口！"
+      },
       "tsuyama_to_yunogo_onsen": {
         name: "JR 姬新線 (津山 ➔ 林野 18分) + 旅館專車免費接送 / 計程車 (8分)",
         time: "合計約 25~30 分鐘",
@@ -5657,11 +5904,18 @@
         tips: "在砂丘會館前搭乘往鳥取站方向之日之丸路線巴士，【於「西町」公車站下車】即可直達鳥取城跡仁風閣/久松公園（毋須搭回鳥取站！下車向東步行約350公尺即抵達入口）"
       },
       "tottori_to_tottori_sakyu": {
-        name: "鳥取城跡 ➔ 鳥取砂丘 (步行至「西町」站牌搭日之丸巴士直達)",
-        time: "步行 5 分鐘 + 公車約 15 分鐘",
+        name: "鳥取城跡 ➔ 鳥取砂丘 (県庁日赤前搭日之丸巴士直達)",
+        time: "公車約 15 分鐘",
         passCovered: false,
-        passNote: "日之丸路線巴士單程約 340~380 円 (自費)",
-        tips: "自鳥取城仁風閣向西步行約 5 分鐘至「西町」站牌，搭乘日之丸路線巴士直達鳥取砂丘會館"
+        passNote: "日之丸路線巴士單程 390 円 (自費)",
+        tips: "自鳥取城步行至「県庁日赤前」站牌，09:47 搭乘日之丸路線巴士(39系統)直奔砂丘；建議 10:00 提早於「砂丘センター展望台」下車，搭吊椅纜車俯瞰雪白砂丘！"
+      },
+      "tottori_sakyu_to_tottori_takumi": {
+        name: "鳥取砂丘 (砂丘會館) ➔ 鳥取站北口 / たくみ割烹店 (日之丸路線巴士)",
+        time: "公車約 22 分鐘 + 步行 4 分鐘",
+        passCovered: false,
+        passNote: "日之丸巴士單程 390 円 (自費)",
+        tips: "11:20 於砂丘會館搭乘日之丸路線巴士直達鳥取站 (11:42 抵達)，步行 4 分鐘至榮町「たくみ割烹店」享用鳥取和牛涮涮鍋午餐 (整整 1 小時)"
       },
       "tottori_to_hakuto_jinja": {
         name: "鳥取城跡 ➔ 白兔神社 (「西町」搭日之丸巴士鹿野線，或計程車直達)",
@@ -5706,11 +5960,11 @@
         tips: "參拜白兔神社後，於神社前搭乘日之丸路線巴士返回鳥取車站商圈，徒步 2 分鐘抵達「たくみ割烹店」享用晚餐"
       },
       "tottori_takumi_to_kinosaki_onsen": {
-        name: "鳥取站 ➔ 城崎溫泉站 (JR 山陰本線 特急「はまかぜ」濱風號 / 普通車)",
-        time: "特急約 55 分鐘 / 普通車約 1 小時 20 分",
+        name: "鳥取站 ➔ 城崎溫泉站 (JR 山陰本線 特急「はまかぜ4號」直達 / 普通車)",
+        time: "特急直達約 1 小時 15 分 / 普通車約 1 小時 45 分",
         passCovered: true,
-        passNote: "JR 山陰本線特急 100% 包含！(JR Pass 免費劃指定席，原價約 2,630 円)",
-        tips: "晚餐後步行 2 分鐘返回鳥取站置物櫃取大件行李，搭乘 JR 山陰本線特急直達「城崎溫泉駅」，出站漫步七大外湯街進駐溫泉旅館！"
+        passNote: "JR 山陰本線特急 100% 包含！(JR Pass 免費劃指定席，原價約 2,330 円)",
+        tips: "午餐後步行 4 分鐘回鳥取站，搭乘 12:56 特急「はまかぜ4號」直達城崎溫泉駅 (14:11 抵達，免轉車)！若搭 13:33 普通車則需於濱坂轉車 (約 15:15~15:30 抵達)"
       },
       "hakuto_jinja_to_kaike_onsen": {
         name: "白兔神社搭日之丸巴士返鳥取站 (40分) + JR 特急「スーパーまつかぜ」(55分) + 公車 (15分)",
@@ -6095,11 +6349,11 @@
         tips: "岡山站搭 08:15 發車之特急八雲號直達備中高梁，轉合計程車至鞴峠登天空之城"
       },
       "tomonoura_onsen_to_bitchu_matsuyama": {
-        name: "山陽新幹線 (福山➔岡山 16分) + 特急「やくも」(岡山➔備中高梁 34分)",
-        time: "合計約 50 分鐘 (轉合乘計程車 15 分)",
-        passCovered: true,
-        passNote: "新幹線＋特急八雲號全額包含！(高梁觀光合乘計程車 500 円自費)",
-        tips: "特急八雲號為全車指定席，請提前於綠色售票機劃位；觀光計程車需前一日預約"
+        name: "鞆鐵巴士至福山 (30分) + 新幹線自由席至岡山 (16分) + JR伯備線至備中高梁 (34~45分)",
+        time: "合計約 1 小時 30 分 (經福山、岡山直達備中高梁)",
+        passCovered: false,
+        passNote: "⚠️ 不使用 Pass (全自費：巴士 560 円 + 新幹線自由席 1,770 円 + 伯備線 860 円)",
+        tips: "晨間自鞆之浦搭巴士至福山站，搭新幹線自由席 16 分回岡山站前飯店放行李，轉乘伯備線直達備中高梁"
       },
       "bitchu_matsuyama_to_okayama_airport": {
         name: "JR 伯備線 特急「やくも」(備中高梁 ➔ 岡山 34分) + 機場利木津 (30分)",
@@ -6294,6 +6548,17 @@
           costNote: '機場巴士單程 780 円自費',
           tipsTo: '岡山站西口 2 號乘車處搭車直達機場',
           tipsFrom: '岡山機場 2 號乘車處搭車直達岡山站西口'
+        };
+      }
+      if (id === 'tottori_hotel' || id === 'tottori_lodging' || name.includes('鳥取站前飯店')) {
+        return {
+          station: '鳥取駅',
+          toSpot: '出站步行 1~3 分鐘即達',
+          fromSpot: '步行 1~3 分鐘即達鳥取站',
+          timeMin: 2,
+          costNote: '步行 0 円',
+          tipsTo: '鳥取站北口/南口出站即達飯店',
+          tipsFrom: '步行前往鳥取站搭車'
         };
       }
       if (id === 'yunogo_onsen' || name.includes('湯鄉') || name.includes('湯郷')) {
@@ -6581,20 +6846,23 @@
       }
 
       // 3. 依天數與動線上下文走廊匹配 (防跨日銜接)
-      if (dayNumber === 2 && toId === 'bitchu_matsuyama') return TRANSIT_KNOWLEDGE_BASE["okayama_to_bitchu_matsuyama"] || TRANSIT_KNOWLEDGE_BASE["okayama_hotel_d11_to_bitchu_matsuyama"];
+      if (dayNumber === 11 && toId === 'fukuyama') return TRANSIT_KNOWLEDGE_BASE["yoshida_koriyama_to_fukuyama"];
+      if (dayNumber === 11 && toId === 'tomonoura_onsen') return TRANSIT_KNOWLEDGE_BASE["fukuyama_to_tomonoura_onsen"];
+      if (dayNumber === 12 && toId === 'bitchu_matsuyama') return TRANSIT_KNOWLEDGE_BASE["tomonoura_onsen_to_bitchu_matsuyama"] || TRANSIT_KNOWLEDGE_BASE["okayama_to_bitchu_matsuyama"];
       if (dayNumber === 7 && toId === 'iwami_ginzan') return TRANSIT_KNOWLEDGE_BASE["tamatsukuri_onsen_to_iwami_ginzan"];
       if (dayNumber === 7 && (toId === 'tsuwano_lodging' || toId === 'tsuwano')) return TRANSIT_KNOWLEDGE_BASE["iwami_ginzan_to_tsuwano_lodging"] || TRANSIT_KNOWLEDGE_BASE["iwami_ginzan_to_tsuwano"];
-      if (dayNumber === 12 && toId === 'fukuyama') return TRANSIT_KNOWLEDGE_BASE["yoshida_koriyama_to_fukuyama"];
-      if (dayNumber === 12 && toId === 'tomonoura_onsen') return TRANSIT_KNOWLEDGE_BASE["fukuyama_to_tomonoura_onsen"];
-      if (dayNumber === 13 && toId === 'okayama_airport') return TRANSIT_KNOWLEDGE_BASE["tomonoura_onsen_to_okayama_airport"] || {
-        name: "鞆鐵巴士(30分) ➔ 福山搭新幹線(16分) ➔ 岡山站轉機場巴士(30分)",
-        time: "合計約 1 小時 20 分",
-        passCovered: true,
-        passNote: "新幹線全包，巴士共 1,530 円自費",
-        tips: "退房後搭巴士至福山，轉新幹線至岡山站，西口搭利木津巴士直達機場"
+      if (dayNumber === 13 && toId === 'okayama_airport') return TRANSIT_KNOWLEDGE_BASE["okayama_hotel_d12_to_okayama_airport"] || {
+        name: "岡山空港利木津巴士 (岡山站西口 ➔ 岡山桃太郎機場)",
+        time: "巴士約 30 分鐘",
+        passCovered: false,
+        passNote: "單程自費 1,000 円 (可刷 IC 卡)",
+        tips: "岡山站西口巴士乘車處搭車直達機場，報到搭乘虎航 IT215 返台"
       };
       if (dayNumber === 8 && toId === 'hiroshima') return TRANSIT_KNOWLEDGE_BASE["hiroshima_lodging_d8_to_hiroshima"];
       if (dayNumber === 6 && toId === 'motonosumi_jinja') return TRANSIT_KNOWLEDGE_BASE["hagi_lodging_to_motonosumi_jinja"];
+      if (dayNumber === 2 && toId === 'tottori_hotel') return TRANSIT_KNOWLEDGE_BASE["tsuyama_to_tottori_hotel"];
+      if (dayNumber === 3 && fromId === 'tottori_hotel' && toId === 'tottori_sakyu') return TRANSIT_KNOWLEDGE_BASE["tottori_hotel_to_tottori_sakyu"];
+      if (dayNumber === 3 && fromId === 'tottori_hotel' && toId === 'tottori') return TRANSIT_KNOWLEDGE_BASE["tottori_hotel_to_tottori"];
       if (dayNumber === 3 && fromId === 'yunogo_onsen' && toId === 'tottori_sakyu') return TRANSIT_KNOWLEDGE_BASE["yunogo_onsen_to_tottori_sakyu"];
       if (dayNumber === 3 && fromId === 'yunogo_onsen' && toId === 'tottori') return TRANSIT_KNOWLEDGE_BASE["yunogo_onsen_to_tottori"];
       if (dayNumber === 3 && fromId === 'tottori' && toId === 'tottori_takumi') return TRANSIT_KNOWLEDGE_BASE["tottori_to_tottori_takumi"];
@@ -8229,102 +8497,115 @@
       URL.revokeObjectURL(url);
     }
 
-    // ==========================================
-    // 車資與全旅費統計模組 (Transit Fares & Full Trip Budget Module)
-    // 支援：每一趟車資列出、最後總計、依 巴士/電車/住宿/吃飯 篩選總金額與明細
-    // 不論 JR Pass 是否包含皆忠實計算，並提供自訂增修與即時重算
+        // ==========================================
+    // 全行程車資統計模組 (Transit Fares Module)
+    // 專注：目前行程全部車資精準統計 (逐趟票價、車種、JR Pass效益、單人/兩人小計與總計)
+    // 規則：純車資統計，不包含住宿、吃飯、購物等無關雜項；與「兩人記帳分帳」完全獨立不互串
     // ==========================================
 
-    function ensureBudgetItemsLoaded() {
-      if (!state.expenses || state.expenses.length === 0) {
-        if (typeof DEFAULT_TRIP_BUDGET !== 'undefined' && Array.isArray(DEFAULT_TRIP_BUDGET)) {
-          state.expenses = JSON.parse(JSON.stringify(DEFAULT_TRIP_BUDGET));
+    function ensureTransitFaresLoaded() {
+      if (!state.transitFares || state.transitFares.length === 0) {
+        if (typeof DEFAULT_TRANSIT_FARES !== 'undefined' && Array.isArray(DEFAULT_TRANSIT_FARES)) {
+          state.transitFares = JSON.parse(JSON.stringify(DEFAULT_TRANSIT_FARES));
           saveState();
         }
       }
     }
 
-    function resetBudgetToDefault() {
-      if (!confirm("確定要將兩人記帳重設為預設紀錄嗎？\n(將僅保留獅子幫方出機票紀錄)")) return;
-      if (typeof DEFAULT_TRIP_BUDGET !== 'undefined' && Array.isArray(DEFAULT_TRIP_BUDGET)) {
-        state.expenses = JSON.parse(JSON.stringify(DEFAULT_TRIP_BUDGET));
+    function resetTransitFaresToDefault() {
+      if (!confirm("確定要將行程車資重設為官方預設 13 天全套車資嗎？\n(將重設為 62 趟精準車資明細；完全不影響兩人記帳分帳資料)")) return;
+      if (typeof DEFAULT_TRANSIT_FARES !== 'undefined' && Array.isArray(DEFAULT_TRANSIT_FARES)) {
+        state.transitFares = JSON.parse(JSON.stringify(DEFAULT_TRANSIT_FARES));
         saveState();
         renderMainPanel();
-        alert("已重設記帳資料！");
+        alert("已重設為全行程 13 天官方預設車資！");
       }
     }
 
-    function setBudgetFilterCategory(cat) {
-      state.budgetFilterCategory = cat;
+    // 舊名稱相容別名
+    function ensureBudgetItemsLoaded() {
+      ensureTransitFaresLoaded();
+    }
+    function resetBudgetToDefault() {
+      resetTransitFaresToDefault();
+    }
+
+    function setTransitFilterCategory(cat) {
+      state.transitFilterCategory = cat;
+      renderMainPanel();
+    }
+    function setTransitFilterDay(day) {
+      state.transitFilterDay = day;
+      renderMainPanel();
+    }
+    function setTransitFilterPass(pass) {
+      state.transitFilterPass = pass;
+      renderMainPanel();
+    }
+    function setTransitSearchKeyword(kw) {
+      state.transitSearchKeyword = kw;
       renderMainPanel();
     }
 
-    function setBudgetFilterDay(day) {
-      state.budgetFilterDay = day;
-      renderMainPanel();
-    }
+    // 舊篩選函式相容
+    function setBudgetFilterCategory(cat) { setTransitFilterCategory(cat); }
+    function setBudgetFilterDay(day) { setTransitFilterDay(day); }
+    function setBudgetFilterPass(pass) { setTransitFilterPass(pass); }
+    function setBudgetSearchKeyword(kw) { setTransitSearchKeyword(kw); }
 
-    function setBudgetFilterPass(pass) {
-      state.budgetFilterPass = pass;
-      renderMainPanel();
-    }
-
-    function setBudgetSearchKeyword(kw) {
-      state.budgetSearchKeyword = kw;
-      renderMainPanel();
-    }
-
-    // 取得行程卡片專用車資資訊
+    // 取得行程卡片專用車資資訊 (從獨立車資資料庫讀取)
     function getTransitFareInfo(fromSpot, toSpot, dayNumber, transitInfo) {
-      const expenses = (state.expenses && state.expenses.length > 0) ? state.expenses : (typeof DEFAULT_TRIP_BUDGET !== 'undefined' ? DEFAULT_TRIP_BUDGET : []);
+      const fares = (state.transitFares && state.transitFares.length > 0) ? state.transitFares : (typeof DEFAULT_TRANSIT_FARES !== 'undefined' ? DEFAULT_TRANSIT_FARES : []);
       const fromName = fromSpot ? fromSpot.name : '';
       const toName = toSpot ? toSpot.name : '';
       const fromStation = fromSpot ? (fromSpot.nearestStation || fromSpot.name) : '';
       const toStation = toSpot ? (toSpot.nearestStation || toSpot.name) : '';
 
-      // 依當天天數優先搜尋匹配
-      const dayMatches = expenses.filter(e => e.dayNumber === dayNumber && (e.category === 'transit' || ['bus', 'train', 'taxi', 'cable_ferry'].includes(e.transitType)));
-      // 優先 1：起點與終點同時符合之精確區間
-      for (const e of dayMatches) {
-        const title = e.title || '';
-        const matchFrom = (fromStation && title.includes(fromStation)) || (fromName && title.includes(fromName.substring(0, 3)));
-        const matchTo = (toStation && title.includes(toStation)) || (toName && title.includes(toName.substring(0, 3)));
+      // 依當天天數搜尋
+      const dayMatches = fares.filter(f => f.dayNumber === dayNumber);
+      
+      // 優先 1：起點與終點站皆匹配
+      for (const f of dayMatches) {
+        const title = f.title || '';
+        const matchFrom = (fromStation && title.includes(fromStation)) || (fromName && title.includes(fromName.substring(0, 3))) || (f.from && f.from.includes(fromStation));
+        const matchTo = (toStation && title.includes(toStation)) || (toName && title.includes(toName.substring(0, 3))) || (f.to && f.to.includes(toStation));
         if (matchFrom && matchTo) {
-          const tType = e.transitType || 'train';
-          const tLabel = tType === 'bus' ? '巴士' : (tType === 'taxi' ? '計程車' : (tType === 'cable_ferry' ? '纜車/渡輪' : '電車'));
+          const tType = f.transitType || 'train';
+          const tLabel = f.transitTypeName || (tType === 'bus' ? '巴士' : (tType === 'taxi' ? '計程車' : (tType === 'cable_ferry' ? '纜車/渡輪' : '電車')));
           return {
-            fare: parseFloat(e.amount) || 0,
+            fare: parseFloat(f.amount) || 0,
             transitType: tType,
             transitTypeLabel: tLabel,
-            passCovered: e.passCovered !== undefined ? e.passCovered : (transitInfo ? transitInfo.passCovered : true)
-          };
-        }
-      }
-      // 優先 2：單邊站名符合
-      for (const e of dayMatches) {
-        const title = e.title || '';
-        if ((fromStation && title.includes(fromStation)) || (toStation && title.includes(toStation)) ||
-            (fromName && title.includes(fromName.substring(0, 3))) || (toName && title.includes(toName.substring(0, 3)))) {
-          const tType = e.transitType || 'train';
-          const tLabel = tType === 'bus' ? '巴士' : (tType === 'taxi' ? '計程車' : (tType === 'cable_ferry' ? '纜車/渡輪' : '電車'));
-          return {
-            fare: parseFloat(e.amount) || 0,
-            transitType: tType,
-            transitTypeLabel: tLabel,
-            passCovered: e.passCovered !== undefined ? e.passCovered : (transitInfo ? transitInfo.passCovered : true)
+            passCovered: f.passCovered !== undefined ? f.passCovered : (transitInfo ? transitInfo.passCovered : true)
           };
         }
       }
 
-      // 常用特定區間 fallback 規則
-      if (dayNumber === 1 && (toStation.includes('岡山') || toName.includes('岡山'))) {
-        return { fare: 1000, transitType: 'bus', transitTypeLabel: '巴士', passCovered: false };
+      // 優先 2：單邊站名符合
+      for (const f of dayMatches) {
+        const title = f.title || '';
+        if ((fromStation && title.includes(fromStation)) || (toStation && title.includes(toStation)) ||
+            (fromName && title.includes(fromName.substring(0, 3))) || (toName && title.includes(toName.substring(0, 3)))) {
+          const tType = f.transitType || 'train';
+          const tLabel = f.transitTypeName || (tType === 'bus' ? '巴士' : (tType === 'taxi' ? '計程車' : (tType === 'cable_ferry' ? '纜車/渡輪' : '電車')));
+          return {
+            fare: parseFloat(f.amount) || 0,
+            transitType: tType,
+            transitTypeLabel: tLabel,
+            passCovered: f.passCovered !== undefined ? f.passCovered : (transitInfo ? transitInfo.passCovered : true)
+          };
+        }
       }
-      if (dayNumber === 2 && toStation.includes('総社')) {
-        return { fare: 420, transitType: 'train', transitTypeLabel: '電車', passCovered: true };
+
+      // 常見關鍵字 fallback 規則
+      if (dayNumber === 1 && (toStation.includes('岡山') || toName.includes('岡山'))) {
+        return { fare: 1000, transitType: 'bus', transitTypeLabel: '機場巴士', passCovered: false };
+      }
+      if (dayNumber === 2 && toStation.includes('高梁')) {
+        return { fare: 2230, transitType: 'train', transitTypeLabel: '特急やくも', passCovered: true };
       }
       if (fromStation.includes('総社') && toName.includes('鬼')) {
-        return { fare: 3500, transitType: 'taxi', transitTypeLabel: '計程車', passCovered: false };
+        return { fare: 3500, transitType: 'taxi', transitTypeLabel: '預約計程車', passCovered: false };
       }
       if (fromName.includes('鬼') && toStation.includes('津山')) {
         return { fare: 1680, transitType: 'train', transitTypeLabel: '電車', passCovered: true };
@@ -8335,27 +8616,35 @@
       if (fromStation.includes('林野') && (toName.includes('湯') || toStation.includes('湯'))) {
         return { fare: 0, transitType: 'bus', transitTypeLabel: '免費接駁', passCovered: true };
       }
-      if ((fromStation.includes('松江') || fromName.includes('松江')) && (toStation.includes('玉造') || toName.includes('玉造'))) {
-        return { fare: 200, transitType: 'train', transitTypeLabel: '電車', passCovered: true };
+      if (dayNumber === 4 && (toStation.includes('砂丘') || toName.includes('砂丘'))) {
+        return { fare: 390, transitType: 'bus', transitTypeLabel: '路線公車', passCovered: false };
       }
-      if ((fromStation.includes('玉造') || fromName.includes('玉造')) && (toStation.includes('津和野') || toName.includes('津和野'))) {
-        return { fare: 5030, transitType: 'train', transitTypeLabel: '特急指定席', passCovered: true };
+      if (dayNumber === 5 && (toName.includes('天橋立') || toStation.includes('天橋立'))) {
+        return { fare: 1220, transitType: 'train', transitTypeLabel: '丹後鐵道', passCovered: true };
       }
-
-      if (transitInfo && (transitInfo.name.includes('機場巴士') || transitInfo.name.includes('利木津'))) {
-        return { fare: 1000, transitType: 'bus', transitTypeLabel: '巴士', passCovered: false };
+      if (dayNumber === 6 && toStation.includes('安來')) {
+        return { fare: 240, transitType: 'train', transitTypeLabel: '電車', passCovered: true };
       }
-      if (transitInfo && (transitInfo.name.includes('新幹線') || transitInfo.name.includes('のぞみ') || transitInfo.name.includes('さくら'))) {
-        return { fare: 3810, transitType: 'train', transitTypeLabel: '新幹線', passCovered: true };
+      if (dayNumber === 7 && toStation.includes('大田市')) {
+        return { fare: 2230, transitType: 'train', transitTypeLabel: '特急指定席', passCovered: true };
       }
-      if (transitInfo && transitInfo.name.includes('やくも')) {
-        return { fare: 2150, transitType: 'train', transitTypeLabel: '特急指定席', passCovered: true };
+      if (dayNumber === 8 && toName.includes('纜車')) {
+        return { fare: 700, transitType: 'cable_ferry', transitTypeLabel: '登山纜車', passCovered: false };
       }
-      if (transitInfo && transitInfo.name.includes('計程車')) {
-        return { fare: 3500, transitType: 'taxi', transitTypeLabel: '計程車', passCovered: false };
+      if (dayNumber === 9 && toStation.includes('新山口')) {
+        return { fare: 1800, transitType: 'bus', transitTypeLabel: 'Super Hagi 特急巴士', passCovered: true };
       }
-      if (transitInfo && (transitInfo.name.includes('巴士') || transitInfo.name.includes('公車'))) {
-        return { fare: 300, transitType: 'bus', transitTypeLabel: '巴士', passCovered: false };
+      if (dayNumber === 10 && toStation.includes('新岩國')) {
+        return { fare: 3210, transitType: 'train', transitTypeLabel: '山陽新幹線', passCovered: true };
+      }
+      if (dayNumber === 11 && toStation.includes('福山')) {
+        return { fare: 3740, transitType: 'train', transitTypeLabel: '山陽新幹線', passCovered: false };
+      }
+      if (dayNumber === 12 && (fromStation.includes('福山') || fromStation.includes('鞆之浦')) && (toStation.includes('高梁') || toStation.includes('松山'))) {
+        return { fare: 3190, transitType: 'train', transitTypeLabel: '巴士+新幹線+JR', passCovered: false };
+      }
+      if (dayNumber === 13 && (toStation.includes('機場') || toStation.includes('空港'))) {
+        return { fare: 1000, transitType: 'bus', transitTypeLabel: '機場利木津巴士', passCovered: false };
       }
 
       return {
@@ -8366,232 +8655,129 @@
       };
     }
 
+    // ==========================================
+    // 渲染全行程車資統計面板 (Transit Fares Tab)
+    // 嚴格落實：純車資統計，不記住宿、吃飯、購物等無關雜項
+    // ==========================================
     function renderBudgetTab(container) {
-      ensureBudgetItemsLoaded();
-      const expenses = state.expenses || [];
-      const filterCat = state.budgetFilterCategory || 'all';
-      const filterDay = state.budgetFilterDay || 'all';
-      const filterPass = state.budgetFilterPass || 'all';
-      const searchKeyword = (state.budgetSearchKeyword || '').trim().toLowerCase();
+      ensureTransitFaresLoaded();
+      const fares = state.transitFares || [];
+      const filterCat = state.transitFilterCategory || 'all';
+      const filterDay = state.transitFilterDay || 'all';
+      const filterPass = state.transitFilterPass || 'all';
+      const searchKeyword = (state.transitSearchKeyword || '').trim().toLowerCase();
       const rate = state.exchangeRate || 0.215;
 
-      // 總覽統計計算
+      // 全域車資匯總計算 (純車資)
       let totalAllJPY = 0;
       let busTotal = 0, busCount = 0;
       let trainTotal = 0, trainCount = 0;
       let taxiTotal = 0, taxiCount = 0;
       let cableTotal = 0, cableCount = 0;
-      let lodgingTotal = 0, lodgingCount = 0;
-      let foodTotal = 0, foodCount = 0;
-      let ticketsTotal = 0, ticketsCount = 0;
-      let shoppingTotal = 0;
-      let otherTotal = 0;
       let jrPassCoveredTotal = 0;
       let selfPaidTransitTotal = 0;
+      let noPassDaysTotal = 0;
 
-      expenses.forEach(exp => {
-        const amt = parseFloat(exp.amount) || 0;
-        const jpyAmt = exp.currency === 'JPY' ? amt : Math.round(amt / rate);
+      fares.forEach(fare => {
+        const amt = parseFloat(fare.amount) || 0;
+        const d = fare.dayNumber || 1;
+        totalAllJPY += amt;
 
-        totalAllJPY += jpyAmt;
-
-        const tType = exp.transitType || (exp.category === 'transit' ? 'train' : '');
-        if (tType === 'bus' || exp.category === 'bus') {
-          busTotal += jpyAmt; busCount++;
-        } else if (tType === 'train' || exp.category === 'train') {
-          trainTotal += jpyAmt; trainCount++;
-        } else if (tType === 'taxi' || exp.category === 'taxi') {
-          taxiTotal += jpyAmt; taxiCount++;
-        } else if (tType === 'cable_ferry' || tType === 'cable' || exp.category === 'cable_ferry') {
-          cableTotal += jpyAmt; cableCount++;
+        const tType = fare.transitType || 'train';
+        if (tType === 'bus') {
+          busTotal += amt; busCount++;
+        } else if (tType === 'train') {
+          trainTotal += amt; trainCount++;
+        } else if (tType === 'taxi') {
+          taxiTotal += amt; taxiCount++;
+        } else if (tType === 'cable_ferry' || tType === 'cable') {
+          cableTotal += amt; cableCount++;
         }
 
-        if (exp.category === 'lodging') {
-          lodgingTotal += jpyAmt; lodgingCount++;
-        } else if (exp.category === 'food') {
-          foodTotal += jpyAmt; foodCount++;
-        } else if (exp.category === 'tickets') {
-          ticketsTotal += jpyAmt; ticketsCount++;
-        } else if (exp.category === 'shopping') {
-          shoppingTotal += jpyAmt;
-        } else if (exp.category === 'other') {
-          otherTotal += jpyAmt;
-        }
-
-        if (exp.category === 'transit' || ['bus', 'train', 'taxi', 'cable_ferry'].includes(tType)) {
-          if (exp.passCovered) {
-            jrPassCoveredTotal += jpyAmt;
-          } else {
-            selfPaidTransitTotal += jpyAmt;
+        if (fare.passCovered) {
+          jrPassCoveredTotal += amt;
+        } else {
+          selfPaidTransitTotal += amt;
+          if (d < 3 || d > 9) {
+            noPassDaysTotal += amt;
           }
         }
       });
 
-      const transitTotalAll = busTotal + trainTotal + taxiTotal + cableTotal;
       const totalAllTWD = Math.round(totalAllJPY * rate);
-      const jrPassSavings = jrPassCoveredTotal - 23000;
+      const totalTwoPersonsJPY = totalAllJPY * 2;
+      const totalTwoPersonsTWD = Math.round(totalTwoPersonsJPY * rate);
 
-      // 依條件過濾項目
-      const filtered = expenses.filter(exp => {
-        const tType = exp.transitType || (exp.category === 'transit' ? 'train' : '');
+      const passPriceSingle = 23000;
+      const passPriceTwo = 46000;
+      const jrPassSavingsSingle = jrPassCoveredTotal - passPriceSingle;
+      const jrPassSavingsTwo = (jrPassCoveredTotal * 2) - passPriceTwo;
 
-        // 種類過濾
+      const selfPaidTwoPersonsJPY = selfPaidTransitTotal * 2;
+      const selfPaidTwoPersonsTWD = Math.round(selfPaidTwoPersonsJPY * rate);
+
+      // 依條件過濾車資項目
+      const filtered = fares.filter(fare => {
+        const tType = fare.transitType || 'train';
+
+        // 車種過濾
         if (filterCat !== 'all') {
-          if (filterCat === 'bus' && tType !== 'bus' && exp.category !== 'bus') return false;
-          if (filterCat === 'train' && tType !== 'train' && exp.category !== 'train') return false;
-          if (filterCat === 'taxi' && tType !== 'taxi' && exp.category !== 'taxi') return false;
-          if (filterCat === 'cable_ferry' && tType !== 'cable_ferry' && tType !== 'cable' && exp.category !== 'cable_ferry') return false;
-          if (filterCat === 'transit' && !['bus', 'train', 'taxi', 'cable_ferry'].includes(tType) && exp.category !== 'transit') return false;
-          if (filterCat === 'lodging' && exp.category !== 'lodging') return false;
-          if (filterCat === 'food' && exp.category !== 'food') return false;
-          if (filterCat === 'tickets' && exp.category !== 'tickets') return false;
-          if (filterCat === 'shopping' && exp.category !== 'shopping') return false;
-          if (filterCat === 'other' && exp.category !== 'other') return false;
+          if (filterCat === 'bus' && tType !== 'bus') return false;
+          if (filterCat === 'train' && tType !== 'train') return false;
+          if (filterCat === 'taxi' && tType !== 'taxi') return false;
+          if (filterCat === 'cable_ferry' && tType !== 'cable_ferry' && tType !== 'cable') return false;
         }
 
         // 天數過濾
         if (filterDay !== 'all') {
-          if (String(exp.dayNumber) !== String(filterDay)) return false;
+          if (String(fare.dayNumber) !== String(filterDay)) return false;
         }
 
         // Pass 覆蓋過濾
-        if (filterPass === 'covered' && !exp.passCovered) return false;
-        if (filterPass === 'self' && exp.passCovered) return false;
+        if (filterPass === 'covered' && !fare.passCovered) return false;
+        if (filterPass === 'self' && fare.passCovered) return false;
 
         // 關鍵字搜尋
         if (searchKeyword) {
-          const text = `${exp.title || ''} ${exp.notes || ''} ${exp.passNote || ''}`.toLowerCase();
+          const text = `${fare.title || ''} ${fare.from || ''} ${fare.to || ''} ${fare.notes || ''} ${fare.passNote || ''} ${fare.transitTypeName || ''}`.toLowerCase();
           if (!text.includes(searchKeyword)) return false;
         }
 
         return true;
       });
 
-      // 篩選後的小計總額
+      // 篩選後的小計
       let filteredTotalJPY = 0;
-      filtered.forEach(e => {
-        const amt = parseFloat(e.amount) || 0;
-        filteredTotalJPY += (e.currency === 'JPY' ? amt : Math.round(amt / rate));
+      filtered.forEach(f => {
+        filteredTotalJPY += (parseFloat(f.amount) || 0);
       });
       const filteredTotalTWD = Math.round(filteredTotalJPY * rate);
 
-      // 產生各分類聚焦提示橫幅
-      let focusedBannerHtml = "";
-      if (filterCat === 'bus') {
-        focusedBannerHtml = `
-          <div class="bg-gradient-to-r from-amber-600 via-amber-500 to-amber-700 text-white rounded-xl p-3.5 shadow-md flex items-center justify-between flex-wrap gap-2">
-            <div>
-              <div class="text-xs font-bold text-amber-100 flex items-center gap-1.5">
-                <span>🚌</span><span>目前篩選：全行程巴士 / 機場客運 / 觀光公車</span>
-              </div>
-              <div class="text-xl sm:text-2xl font-black font-mono tracking-tight mt-0.5">
-                巴士經費總計：¥ ${filteredTotalJPY.toLocaleString()}
-                <span class="text-xs font-normal text-amber-100 ml-1">(約 NT$ ${filteredTotalTWD.toLocaleString()})</span>
-              </div>
-            </div>
-            <span class="text-xs bg-white/20 text-white font-bold px-3 py-1 rounded-full border border-white/30 font-mono">
-              共 ${filtered.length} 趟巴士
-            </span>
-          </div>
-        `;
-      } else if (filterCat === 'train') {
-        focusedBannerHtml = `
-          <div class="bg-gradient-to-r from-blue-700 via-indigo-600 to-blue-800 text-white rounded-xl p-3.5 shadow-md flex items-center justify-between flex-wrap gap-2">
-            <div>
-              <div class="text-xs font-bold text-blue-100 flex items-center gap-1.5">
-                <span>🚅</span><span>目前篩選：全行程電車 / JR 在來線 / 新幹線 / 特急</span>
-              </div>
-              <div class="text-xl sm:text-2xl font-black font-mono tracking-tight mt-0.5">
-                電車經費總計：¥ ${filteredTotalJPY.toLocaleString()}
-                <span class="text-xs font-normal text-blue-100 ml-1">(約 NT$ ${filteredTotalTWD.toLocaleString()})</span>
-              </div>
-            </div>
-            <span class="text-xs bg-white/20 text-white font-bold px-3 py-1 rounded-full border border-white/30 font-mono">
-              共 ${filtered.length} 趟電車
-            </span>
-          </div>
-        `;
-      } else if (filterCat === 'lodging') {
-        focusedBannerHtml = `
-          <div class="bg-gradient-to-r from-indigo-800 via-indigo-700 to-purple-800 text-white rounded-xl p-3.5 shadow-md flex items-center justify-between flex-wrap gap-2">
-            <div>
-              <div class="text-xs font-bold text-indigo-100 flex items-center gap-1.5">
-                <span>♨️</span><span>目前篩選：全行程溫泉旅館 / 飯店住宿</span>
-              </div>
-              <div class="text-xl sm:text-2xl font-black font-mono tracking-tight mt-0.5">
-                住宿飯店經費總計：¥ ${filteredTotalJPY.toLocaleString()}
-                <span class="text-xs font-normal text-indigo-100 ml-1">(約 NT$ ${filteredTotalTWD.toLocaleString()})</span>
-              </div>
-            </div>
-            <span class="text-xs bg-white/20 text-white font-bold px-3 py-1 rounded-full border border-white/30 font-mono">
-              共 ${filtered.length} 晚住宿
-            </span>
-          </div>
-        `;
-      } else if (filterCat === 'food') {
-        focusedBannerHtml = `
-          <div class="bg-gradient-to-r from-orange-600 via-amber-600 to-rose-600 text-white rounded-xl p-3.5 shadow-md flex items-center justify-between flex-wrap gap-2">
-            <div>
-              <div class="text-xs font-bold text-orange-100 flex items-center gap-1.5">
-                <span>🍜</span><span>目前篩選：全行程餐飲美食 / 和牛名店 / 特色料理</span>
-              </div>
-              <div class="text-xl sm:text-2xl font-black font-mono tracking-tight mt-0.5">
-                吃飯餐飲經費總計：¥ ${filteredTotalJPY.toLocaleString()}
-                <span class="text-xs font-normal text-orange-100 ml-1">(約 NT$ ${filteredTotalTWD.toLocaleString()})</span>
-              </div>
-            </div>
-            <span class="text-xs bg-white/20 text-white font-bold px-3 py-1 rounded-full border border-white/30 font-mono">
-              共 ${filtered.length} 筆美食
-            </span>
-          </div>
-        `;
-      } else if (filterCat === 'taxi') {
-        focusedBannerHtml = `
-          <div class="bg-gradient-to-r from-yellow-600 via-amber-600 to-yellow-700 text-white rounded-xl p-3.5 shadow-md flex items-center justify-between flex-wrap gap-2">
-            <div>
-              <div class="text-xs font-bold text-yellow-100 flex items-center gap-1.5">
-                <span>🚕</span><span>目前篩選：登山預約計程車 / 觀光乘合計程車</span>
-              </div>
-              <div class="text-xl sm:text-2xl font-black font-mono tracking-tight mt-0.5">
-                計程車經費總計：¥ ${filteredTotalJPY.toLocaleString()}
-              </div>
-            </div>
-            <span class="text-xs bg-white/20 text-white font-bold px-3 py-1 rounded-full border border-white/30 font-mono">
-              共 ${filtered.length} 趟
-            </span>
-          </div>
-        `;
-      }
-
-      // 按天數 (Day 1 ~ Day 12 + 公費 0) 分組
+      // 按天數 (Day 1 ~ Day 13) 分組
       const groupedByDay = {};
-      filtered.forEach(exp => {
-        const d = exp.dayNumber || 0;
+      filtered.forEach(fare => {
+        const d = fare.dayNumber || 1;
         if (!groupedByDay[d]) groupedByDay[d] = [];
-        groupedByDay[d].push(exp);
+        groupedByDay[d].push(fare);
       });
 
-      const dayKeys = Object.keys(groupedByDay).map(Number).sort((a, b) => {
-        if (a === 0) return 1;
-        if (b === 0) return -1;
-        return a - b;
-      });
+      const dayKeys = Object.keys(groupedByDay).map(Number).sort((a, b) => a - b);
 
       // 產生清單 HTML
       let listHtml = "";
       if (filtered.length === 0) {
         listHtml = `
-          <div class="bg-white rounded-xl border border-slate-200 p-8 text-center space-y-3">
-            <div class="text-4xl">🔍</div>
-            <h3 class="font-bold text-slate-700 text-sm">沒有符合目前篩選條件的費用項目</h3>
+          <div class="bg-white rounded-xl border border-slate-200 p-8 text-center space-y-3 shadow-2xs">
+            <div class="text-4xl">🚅</div>
+            <h3 class="font-bold text-slate-800 text-sm">沒有符合目前條件的行程車資項目</h3>
             <p class="text-xs text-slate-500 max-w-sm mx-auto">
-              您可以嘗試切換篩選分類，或點擊下方按鈕重新載入全行程 12 天官方預設車資與開銷。
+              您可以嘗試切換車種篩選或天數，或點擊下方按鈕重新載入全行程 13 天官方預設車資。
             </p>
             <div class="flex items-center justify-center gap-2 pt-2">
-              <button onclick="setBudgetFilterCategory('all'); setBudgetFilterDay('all');" class="bg-slate-800 hover:bg-slate-700 text-white font-bold px-3.5 py-1.5 rounded-lg text-xs transition cursor-pointer">
+              <button onclick="setTransitFilterCategory('all'); setTransitFilterDay('all');" class="bg-slate-800 hover:bg-slate-700 text-white font-bold px-3.5 py-1.5 rounded-lg text-xs transition cursor-pointer">
                 清除所有篩選條件
               </button>
-              <button onclick="resetBudgetToDefault()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3.5 py-1.5 rounded-lg text-xs transition cursor-pointer">
+              <button onclick="resetTransitFaresToDefault()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-3.5 py-1.5 rounded-lg text-xs transition cursor-pointer">
                 🔄 重設載入官方全行程車資
               </button>
             </div>
@@ -8601,80 +8787,88 @@
         listHtml = dayKeys.map(dayNum => {
           const dayItems = groupedByDay[dayNum] || [];
           let daySubtotalJPY = 0;
+          let dayPassCoveredJPY = 0;
+          let daySelfPaidJPY = 0;
+
           dayItems.forEach(item => {
             const amt = parseFloat(item.amount) || 0;
-            daySubtotalJPY += (item.currency === 'JPY' ? amt : Math.round(amt / rate));
+            daySubtotalJPY += amt;
+            if (item.passCovered) {
+              dayPassCoveredJPY += amt;
+            } else {
+              daySelfPaidJPY += amt;
+            }
           });
 
           const dayItinerary = (state.itinerary || []).find(d => d.dayNumber === dayNum);
-          const dayTitle = dayNum > 0 
-            ? (dayItinerary ? dayItinerary.title : `Day ${dayNum}`) 
-            : '行程全期 / 公費項目';
+          const dayTitle = dayItinerary ? dayItinerary.title : `Day ${dayNum} 行程`;
+          const isPassDay = (dayNum >= 3 && dayNum <= 9);
+          const passDayIndex = dayNum - 2;
+
+          let passDayBadge = isPassDay
+            ? `<span class="text-[11px] bg-emerald-700 text-white font-mono font-bold px-2 py-0.5 rounded shadow-3xs flex items-center gap-1"><span>🎫</span><span>JR Pass (第 ${passDayIndex} 天 / 共7天)</span></span>`
+            : `<span class="text-[11px] bg-slate-700 text-amber-300 font-mono font-bold px-2 py-0.5 rounded shadow-3xs flex items-center gap-1"><span>⚠️</span><span>不使用 Pass (全自費)</span></span>`;
 
           return `
-            <div class="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden space-y-0">
-              <!-- 天數標頭與當日小計 -->
-              <div class="bg-slate-100/90 border-b border-slate-200 px-3.5 py-2.5 flex items-center justify-between flex-wrap gap-2">
-                <div class="flex items-center gap-2">
+            <div class="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden space-y-0" id="fareDayCard_${dayNum}">
+              <!-- 天數標頭與當日車資小計 -->
+              <div class="${isPassDay ? 'bg-emerald-50/70 border-emerald-200' : 'bg-slate-100/90 border-slate-200'} border-b px-3.5 py-2.5 flex items-center justify-between flex-wrap gap-2">
+                <div class="flex items-center gap-2 flex-wrap">
                   <span class="text-xs bg-slate-900 text-white font-mono font-bold px-2 py-0.5 rounded shadow-3xs">
-                    ${dayNum > 0 ? `Day ${dayNum}` : '公費'}
+                    Day ${dayNum}
                   </span>
+                  ${passDayBadge}
                   <span class="font-bold text-slate-800 text-xs sm:text-sm truncate">
                     ${escapeHtml(dayTitle)}
                   </span>
                 </div>
-                <div class="flex items-center gap-2">
-                  <span class="text-xs text-slate-500">當日小計：</span>
-                  <span class="font-mono font-black text-slate-900 text-sm sm:text-base">
-                    ¥ ${daySubtotalJPY.toLocaleString()}
-                  </span>
-                  <button type="button" onclick="openBudgetAddModal(${dayNum})" class="text-[11px] bg-white hover:bg-amber-50 text-slate-700 hover:text-amber-800 border border-slate-300 hover:border-amber-300 px-2 py-0.5 rounded font-bold transition flex items-center gap-0.5 cursor-pointer ml-1" title="為 Day ${dayNum} 新增一筆花費">
+                <div class="flex items-center gap-2.5 flex-wrap">
+                  <div class="text-xs text-slate-500 flex items-center gap-2">
+                    <span>單人小計：<strong class="font-mono font-black text-slate-900 text-sm">¥ ${daySubtotalJPY.toLocaleString()}</strong></span>
+                    <span class="text-[10px] bg-slate-200 text-slate-700 px-1.5 py-0.2 rounded font-mono">兩人 ¥ ${(daySubtotalJPY * 2).toLocaleString()}</span>
+                  </div>
+                  <div class="text-[10px] text-slate-400 flex items-center gap-1">
+                    <span class="text-emerald-700 font-bold">Pass已包 ¥${dayPassCoveredJPY.toLocaleString()}</span>
+                    <span>|</span>
+                    <span class="text-amber-800 font-bold">自費 ¥${daySelfPaidJPY.toLocaleString()}</span>
+                  </div>
+                  <button type="button" onclick="openFareAddModal(${dayNum})" class="text-[11px] bg-white hover:bg-blue-50 text-slate-700 hover:text-blue-800 border border-slate-300 hover:border-blue-300 px-2 py-0.5 rounded font-bold transition flex items-center gap-0.5 cursor-pointer ml-1" title="為 Day ${dayNum} 新增一趟車資">
                     <span>➕</span><span>新增</span>
                   </button>
                 </div>
               </div>
 
-              <!-- 該天所有車資與費用項目列表 -->
+              <!-- 該天所有車資項目列表 -->
               <div class="divide-y divide-slate-100">
                 ${dayItems.map(item => {
                   const amt = parseFloat(item.amount) || 0;
-                  const isJPY = item.currency === 'JPY';
-                  const tType = item.transitType || (item.category === 'transit' ? 'train' : '');
+                  const amtTwo = amt * 2;
+                  const tType = item.transitType || 'train';
 
-                  // 類別徽章
+                  // 車種徽章
                   let catBadge = "";
-                  if (tType === 'bus' || item.category === 'bus') {
-                    catBadge = `<span class="bg-amber-100 text-amber-900 border border-amber-300 font-bold px-2 py-0.5 rounded text-[10px] flex items-center gap-1 shrink-0"><span>🚌</span><span>巴士</span></span>`;
-                  } else if (tType === 'train' || item.category === 'train') {
-                    catBadge = `<span class="bg-blue-100 text-blue-900 border border-blue-300 font-bold px-2 py-0.5 rounded text-[10px] flex items-center gap-1 shrink-0"><span>🚅</span><span>電車</span></span>`;
-                  } else if (tType === 'taxi' || item.category === 'taxi') {
-                    catBadge = `<span class="bg-yellow-100 text-yellow-950 border border-yellow-300 font-bold px-2 py-0.5 rounded text-[10px] flex items-center gap-1 shrink-0"><span>🚕</span><span>計程車</span></span>`;
-                  } else if (tType === 'cable_ferry' || tType === 'cable' || item.category === 'cable_ferry') {
-                    catBadge = `<span class="bg-sky-100 text-sky-900 border border-sky-300 font-bold px-2 py-0.5 rounded text-[10px] flex items-center gap-1 shrink-0"><span>🚠</span><span>纜車/渡輪</span></span>`;
-                  } else if (item.category === 'lodging') {
-                    catBadge = `<span class="bg-indigo-100 text-indigo-900 border border-indigo-300 font-bold px-2 py-0.5 rounded text-[10px] flex items-center gap-1 shrink-0"><span>♨️</span><span>住宿</span></span>`;
-                  } else if (item.category === 'food') {
-                    catBadge = `<span class="bg-orange-100 text-orange-950 border border-orange-300 font-bold px-2 py-0.5 rounded text-[10px] flex items-center gap-1 shrink-0"><span>🍜</span><span>吃飯餐飲</span></span>`;
-                  } else if (item.category === 'tickets') {
-                    catBadge = `<span class="bg-emerald-100 text-emerald-950 border border-emerald-300 font-bold px-2 py-0.5 rounded text-[10px] flex items-center gap-1 shrink-0"><span>🏯</span><span>門票景點</span></span>`;
-                  } else if (item.category === 'shopping') {
-                    catBadge = `<span class="bg-purple-100 text-purple-950 border border-purple-300 font-bold px-2 py-0.5 rounded text-[10px] flex items-center gap-1 shrink-0"><span>🛍️</span><span>購物採買</span></span>`;
+                  if (tType === 'bus') {
+                    catBadge = `<span class="bg-amber-100 text-amber-950 border border-amber-300 font-bold px-2 py-0.5 rounded text-[10px] flex items-center gap-1 shrink-0"><span>🚌</span><span>${escapeHtml(item.transitTypeName || '巴士')}</span></span>`;
+                  } else if (tType === 'train') {
+                    catBadge = `<span class="bg-blue-100 text-blue-950 border border-blue-300 font-bold px-2 py-0.5 rounded text-[10px] flex items-center gap-1 shrink-0"><span>🚅</span><span>${escapeHtml(item.transitTypeName || '電車')}</span></span>`;
+                  } else if (tType === 'taxi') {
+                    catBadge = `<span class="bg-yellow-100 text-yellow-950 border border-yellow-300 font-bold px-2 py-0.5 rounded text-[10px] flex items-center gap-1 shrink-0"><span>🚕</span><span>${escapeHtml(item.transitTypeName || '計程車')}</span></span>`;
                   } else {
-                    catBadge = `<span class="bg-slate-100 text-slate-800 border border-slate-300 font-bold px-2 py-0.5 rounded text-[10px] flex items-center gap-1 shrink-0"><span>💡</span><span>其他</span></span>`;
+                    catBadge = `<span class="bg-sky-100 text-sky-950 border border-sky-300 font-bold px-2 py-0.5 rounded text-[10px] flex items-center gap-1 shrink-0"><span>🚠</span><span>${escapeHtml(item.transitTypeName || '纜車/渡輪')}</span></span>`;
                   }
 
-                  // Pass 徽章
+                  // Pass 徽章 (嚴格依是否在 Pass 天數與涵蓋狀態呈現)
                   let passHtml = "";
-                  if (item.category === 'transit' || ['bus', 'train', 'taxi', 'cable_ferry'].includes(tType)) {
-                    if (item.passCovered) {
-                      passHtml = `<span class="text-[10px] bg-emerald-50 text-emerald-800 border border-emerald-300 font-bold px-1.5 py-0.5 rounded shadow-3xs" title="${escapeHtml(item.passNote || 'JR Pass 覆蓋全免')}">🎫 JR Pass ✅ 全包</span>`;
-                    } else {
-                      passHtml = `<span class="text-[10px] bg-amber-50 text-amber-800 border border-amber-300 font-bold px-1.5 py-0.5 rounded shadow-3xs" title="${escapeHtml(item.passNote || '需自費')}">⚠️ 需自費</span>`;
-                    }
+                  if (item.passCovered) {
+                    passHtml = `<span class="text-[10px] bg-emerald-50 text-emerald-800 border border-emerald-300 font-bold px-1.5 py-0.5 rounded shadow-3xs" title="${escapeHtml(item.passNote || 'JR Pass 7日券 全包')}">🎫 JR Pass (第 ${passDayIndex} 天) ✅ 全包 (0元)</span>`;
+                  } else if (isPassDay) {
+                    passHtml = `<span class="text-[10px] bg-amber-50 text-amber-900 border border-amber-300 font-bold px-1.5 py-0.5 rounded shadow-3xs" title="${escapeHtml(item.passNote || '需自費')}">⚠️ 需自費 (非 Pass 範圍)</span>`;
+                  } else {
+                    passHtml = `<span class="text-[10px] bg-slate-100 text-slate-700 border border-slate-300 font-bold px-1.5 py-0.5 rounded shadow-3xs" title="${escapeHtml(item.passNote || '不使用 Pass (自費)')}">⚠️ 不使用 Pass (自費 ¥${amt.toLocaleString()})</span>`;
                   }
 
                   return `
-                    <div class="p-3 hover:bg-slate-50/70 transition flex items-start justify-between gap-2.5 flex-wrap sm:flex-nowrap">
+                    <div class="p-3 hover:bg-slate-50/80 transition flex items-start justify-between gap-2.5 flex-wrap sm:flex-nowrap">
                       <div class="flex items-start gap-2.5 min-w-0">
                         <div class="mt-0.5">${catBadge}</div>
                         <div class="min-w-0">
@@ -8693,20 +8887,20 @@
                       <div class="flex items-center gap-3 shrink-0 ml-auto sm:ml-0">
                         <div class="text-right">
                           <div class="font-mono font-black text-slate-900 text-sm sm:text-base">
-                            ${isJPY ? '¥' : 'NT$'} ${amt.toLocaleString()}
+                            ¥ ${amt.toLocaleString()}
+                            <span class="text-[10px] font-normal text-slate-500 ml-0.5">/人</span>
                           </div>
-                          ${isJPY ? `
-                            <div class="text-[10px] text-slate-400 font-mono">
-                              約 NT$ ${Math.round(amt * rate).toLocaleString()}
-                            </div>
-                          ` : ''}
+                          <div class="text-[10px] text-slate-500 font-mono flex items-center justify-end gap-1">
+                            <span>兩人 ¥ ${amtTwo.toLocaleString()}</span>
+                            <span>(約 NT$ ${Math.round(amt * rate).toLocaleString()})</span>
+                          </div>
                         </div>
 
                         <div class="flex items-center gap-1 border-l border-slate-200 pl-2">
-                          <button type="button" onclick="openBudgetEditModal('${item.id}')" class="text-slate-500 hover:text-slate-800 hover:bg-slate-200 p-1.5 rounded transition text-xs cursor-pointer" title="編輯金額與備註">
+                          <button type="button" onclick="openFareEditModal('${item.id}')" class="text-slate-500 hover:text-slate-800 hover:bg-slate-200 p-1.5 rounded transition text-xs cursor-pointer" title="編輯車資金額與備註">
                             ✏️
                           </button>
-                          <button type="button" onclick="deleteBudgetItem('${item.id}')" class="text-slate-400 hover:text-rose-600 hover:bg-rose-50 p-1.5 rounded transition text-xs cursor-pointer" title="刪除此筆項目">
+                          <button type="button" onclick="deleteFareItem('${item.id}')" class="text-slate-400 hover:text-rose-600 hover:bg-rose-50 p-1.5 rounded transition text-xs cursor-pointer" title="刪除此趟車資">
                             🗑️
                           </button>
                         </div>
@@ -8720,233 +8914,234 @@
         }).join('');
       }
 
-      // 渲染整體面板
+      // 渲染主工作區
       container.innerHTML = `
         <div class="space-y-4">
-          <!-- 頂部標題與主操作列 -->
+          <!-- 頂部標題與主功能列 -->
           <div class="flex items-center justify-between flex-wrap gap-2 pb-2 border-b border-slate-200">
             <div>
               <h2 class="font-bold text-slate-900 text-base sm:text-lg flex items-center gap-2">
-                <span>📊</span> 全行程車資與旅行經費統計
+                <span>🚅</span> 目前行程全部車資統計
+                <span class="text-xs bg-blue-100 text-blue-800 font-mono font-black px-2 py-0.5 rounded">13天 62趟</span>
+                <span class="text-xs bg-emerald-600 text-white font-mono font-black px-2 py-0.5 rounded">Pass 第3~9天啟用</span>
               </h2>
               <p class="text-xs text-slate-500">
-                每一趟車資皆忠實列出・不論是否含在 JR Pass 內皆獨立統計・支援 巴士/電車/住宿/吃飯 分類精準篩選
+                每一趟車資皆忠實列出・JR Pass 7日券啟用紀錄 (Day 3~9)・其他天清楚標示不使用Pass・無住宿吃飯雜項
               </p>
             </div>
             <div class="flex items-center gap-2 flex-wrap">
-              <button onclick="exportBudgetCSV()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-3 py-1.5 rounded-lg text-xs border border-slate-300 transition flex items-center gap-1 cursor-pointer shadow-3xs">
+              <button onclick="exportTransitFaresCSV()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-3 py-1.5 rounded-lg text-xs border border-slate-300 transition flex items-center gap-1 cursor-pointer shadow-3xs">
                 <span>📥</span><span>匯出車資報表 CSV</span>
               </button>
-              <button onclick="resetBudgetToDefault()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-3 py-1.5 rounded-lg text-xs border border-slate-300 transition flex items-center gap-1 cursor-pointer shadow-3xs" title="若資料有缺，一鍵載入官方全行程完整車資與開銷預算">
-                <span>🔄</span><span>載入預設 12 天車資</span>
+              <button onclick="resetTransitFaresToDefault()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-3 py-1.5 rounded-lg text-xs border border-slate-300 transition flex items-center gap-1 cursor-pointer shadow-3xs" title="一鍵載入全行程 13 天完整車資明細 (不影響兩人記帳)">
+                <span>🔄</span><span>載入預設 13 天車資</span>
               </button>
-              <button onclick="openBudgetAddModal(1)" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-3.5 py-1.5 rounded-lg text-xs shadow-sm transition flex items-center gap-1 cursor-pointer">
-                <span>➕</span><span>記一筆新支出</span>
+              <button onclick="openFareAddModal(1)" class="bg-blue-600 hover:bg-blue-500 text-white font-black px-3.5 py-1.5 rounded-lg text-xs shadow-sm transition flex items-center gap-1 cursor-pointer">
+                <span>➕</span><span>新增一趟車資</span>
               </button>
             </div>
           </div>
 
-          <!-- 全旅費核心總計大看板 (含總計、車資、住宿、餐飲、Pass分析) -->
-          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
-            <!-- 總計看板 -->
-            <div class="col-span-2 sm:col-span-3 lg:col-span-2 bg-gradient-to-br from-slate-900 via-slate-850 to-indigo-950 text-white rounded-xl p-3.5 shadow-md border border-slate-800 space-y-1">
+          <!-- 全行程車資 3 大核心總計看板 -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <!-- 1. 全行程車資總額 -->
+            <div class="bg-gradient-to-br from-slate-900 via-slate-850 to-blue-950 text-white rounded-xl p-3.5 shadow-md border border-slate-800 space-y-1">
               <div class="text-[11px] font-bold text-slate-300 flex items-center justify-between">
-                <span>💰 全行程總經費支出</span>
-                <span class="text-[10px] bg-amber-400 text-slate-950 font-black px-1.5 py-0.2 rounded font-mono">共 ${expenses.length} 筆</span>
+                <span class="flex items-center gap-1">🚗 全行程車資總原價</span>
+                <span class="text-[10px] bg-blue-400 text-slate-950 font-black px-1.5 py-0.2 rounded font-mono">共 ${fares.length} 趟</span>
               </div>
               <div class="text-2xl sm:text-3xl font-black font-mono tracking-tight text-white">
                 ¥ ${totalAllJPY.toLocaleString()}
+                <span class="text-xs font-normal text-slate-300 ml-1">/ 人</span>
               </div>
-              <div class="text-xs text-emerald-400 font-mono flex items-center gap-1">
-                <span>折合約 NT$ ${totalAllTWD.toLocaleString()}</span>
-                <span class="text-[10px] text-slate-400">(匯率 ${rate})</span>
+              <div class="text-xs text-blue-300 font-mono flex items-center justify-between pt-1 border-t border-white/10">
+                <span>兩人總計：¥ ${totalTwoPersonsJPY.toLocaleString()}</span>
+                <span>約 NT$ ${totalAllTWD.toLocaleString()} / 人</span>
               </div>
             </div>
 
-            <!-- 巴士總計 -->
-            <div class="bg-amber-50 border border-amber-200 rounded-xl p-2.5 space-y-1 cursor-pointer hover:border-amber-400 transition shadow-3xs" onclick="setBudgetFilterCategory('bus')">
-              <div class="text-[11px] font-bold text-amber-900 flex items-center justify-between">
-                <span>🚌 巴士客運</span>
-                <span class="text-[10px] bg-amber-200/80 text-amber-950 px-1 rounded font-mono font-bold">${busCount} 趟</span>
+            <!-- 2. JR PASS 7日券 實戰效益 (精確標明 Day 3~9) -->
+            <div class="bg-gradient-to-br from-emerald-950 via-slate-900 to-teal-950 text-white rounded-xl p-3.5 shadow-md border border-emerald-500/30 space-y-1">
+              <div class="text-[11px] font-bold text-emerald-300 flex items-center justify-between">
+                <span class="flex items-center gap-1">🎫 JR Pass 啟用天數：Day 3 ～ Day 9 (7天)</span>
+                <span class="text-[10px] bg-emerald-400 text-slate-950 font-black px-1.5 py-0.2 rounded font-mono">票價 ¥23,000</span>
               </div>
-              <div class="text-base sm:text-lg font-black font-mono text-slate-900">
-                ¥ ${busTotal.toLocaleString()}
+              <div class="text-2xl sm:text-3xl font-black font-mono tracking-tight text-emerald-400">
+                現省 ¥ ${jrPassSavingsSingle > 0 ? jrPassSavingsSingle.toLocaleString() : '0'}
+                <span class="text-xs font-normal text-emerald-200 ml-1">/ 人</span>
               </div>
-              <div class="text-[10px] text-amber-700">含機場巴士/觀光公車</div>
+              <div class="text-xs text-emerald-200 font-mono flex items-center justify-between pt-1 border-t border-white/10">
+                <span>涵蓋原價：¥ ${jrPassCoveredTotal.toLocaleString()}</span>
+                <span>兩人淨省：¥ ${jrPassSavingsTwo > 0 ? jrPassSavingsTwo.toLocaleString() : '0'} ✅</span>
+              </div>
             </div>
 
+            <!-- 3. 自費車資總計 (含非 Pass 天數與非 JR 交通) -->
+            <div class="bg-gradient-to-br from-amber-950 via-slate-900 to-red-950 text-white rounded-xl p-3.5 shadow-md border border-amber-500/30 space-y-1">
+              <div class="text-[11px] font-bold text-amber-300 flex items-center justify-between">
+                <span class="flex items-center gap-1">⚠️ 需自費車資總額 (全期)</span>
+                <span class="text-[10px] bg-amber-400 text-slate-950 font-black px-1.5 py-0.2 rounded font-mono">D1,2,10~13 + 公車/計程車</span>
+              </div>
+              <div class="text-2xl sm:text-3xl font-black font-mono tracking-tight text-amber-400">
+                ¥ ${selfPaidTransitTotal.toLocaleString()}
+                <span class="text-xs font-normal text-amber-200 ml-1">/ 人</span>
+              </div>
+              <div class="text-xs text-amber-200 font-mono flex items-center justify-between pt-1 border-t border-white/10">
+                <span>兩人自費：¥ ${selfPaidTwoPersonsJPY.toLocaleString()}</span>
+                <span>(約 NT$ ${selfPaidTwoPersonsTWD.toLocaleString()})</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 大車種分類快速看板 (支援點擊篩選) -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
             <!-- 電車總計 -->
-            <div class="bg-blue-50 border border-blue-200 rounded-xl p-2.5 space-y-1 cursor-pointer hover:border-blue-400 transition shadow-3xs" onclick="setBudgetFilterCategory('train')">
+            <div class="bg-blue-50 border border-blue-200 rounded-xl p-2.5 space-y-0.5 cursor-pointer hover:border-blue-400 transition shadow-3xs" onclick="setTransitFilterCategory('train')">
               <div class="text-[11px] font-bold text-blue-900 flex items-center justify-between">
-                <span>🚅 電車/鐵道</span>
+                <span>🚅 電車 / 新幹線 / 特急</span>
                 <span class="text-[10px] bg-blue-200/80 text-blue-950 px-1 rounded font-mono font-bold">${trainCount} 趟</span>
               </div>
               <div class="text-base sm:text-lg font-black font-mono text-slate-900">
                 ¥ ${trainTotal.toLocaleString()}
               </div>
-              <div class="text-[10px] text-blue-700">JR/新幹線/在來特急</div>
+              <div class="text-[10px] text-blue-700">新幹線・特急指定席・在來線</div>
             </div>
 
-            <!-- 住宿總計 -->
-            <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-2.5 space-y-1 cursor-pointer hover:border-indigo-400 transition shadow-3xs" onclick="setBudgetFilterCategory('lodging')">
-              <div class="text-[11px] font-bold text-indigo-900 flex items-center justify-between">
-                <span>♨️ 住宿飯店</span>
-                <span class="text-[10px] bg-indigo-200/80 text-indigo-950 px-1 rounded font-mono font-bold">${lodgingCount} 晚</span>
+            <!-- 巴士總計 -->
+            <div class="bg-amber-50 border border-amber-200 rounded-xl p-2.5 space-y-0.5 cursor-pointer hover:border-amber-400 transition shadow-3xs" onclick="setTransitFilterCategory('bus')">
+              <div class="text-[11px] font-bold text-amber-900 flex items-center justify-between">
+                <span>🚌 巴士 / 客運 / 公車</span>
+                <span class="text-[10px] bg-amber-200/80 text-amber-950 px-1 rounded font-mono font-bold">${busCount} 趟</span>
               </div>
               <div class="text-base sm:text-lg font-black font-mono text-slate-900">
-                ¥ ${lodgingTotal.toLocaleString()}
+                ¥ ${busTotal.toLocaleString()}
               </div>
-              <div class="text-[10px] text-indigo-700">名湯溫泉/站前大飯店</div>
+              <div class="text-[10px] text-amber-700">機場客運・觀光公車・特急巴士</div>
             </div>
 
-            <!-- 吃飯餐飲總計 -->
-            <div class="bg-orange-50 border border-orange-200 rounded-xl p-2.5 space-y-1 cursor-pointer hover:border-orange-400 transition shadow-3xs" onclick="setBudgetFilterCategory('food')">
-              <div class="text-[11px] font-bold text-orange-950 flex items-center justify-between">
-                <span>🍜 吃飯餐飲</span>
-                <span class="text-[10px] bg-orange-200/80 text-orange-950 px-1 rounded font-mono font-bold">${foodCount} 筆</span>
+            <!-- 計程車總計 -->
+            <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-2.5 space-y-0.5 cursor-pointer hover:border-yellow-400 transition shadow-3xs" onclick="setTransitFilterCategory('taxi')">
+              <div class="text-[11px] font-bold text-yellow-950 flex items-center justify-between">
+                <span>🚕 計程車 / 觀光合乘</span>
+                <span class="text-[10px] bg-yellow-200/80 text-yellow-950 px-1 rounded font-mono font-bold">${taxiCount} 趟</span>
               </div>
               <div class="text-base sm:text-lg font-black font-mono text-slate-900">
-                ¥ ${foodTotal.toLocaleString()}
+                ¥ ${taxiTotal.toLocaleString()}
               </div>
-              <div class="text-[10px] text-orange-800">和牛鐵板燒/涮涮鍋</div>
+              <div class="text-[10px] text-yellow-800">鬼之城・松山城合乘・元乃隅</div>
+            </div>
+
+            <!-- 纜車渡輪總計 -->
+            <div class="bg-sky-50 border border-sky-200 rounded-xl p-2.5 space-y-0.5 cursor-pointer hover:border-sky-400 transition shadow-3xs" onclick="setTransitFilterCategory('cable_ferry')">
+              <div class="text-[11px] font-bold text-sky-900 flex items-center justify-between">
+                <span>🚠 纜車 / 渡輪 / 遊船</span>
+                <span class="text-[10px] bg-sky-200/80 text-sky-950 px-1 rounded font-mono font-bold">${cableCount} 趟</span>
+              </div>
+              <div class="text-base sm:text-lg font-black font-mono text-slate-900">
+                ¥ ${cableTotal.toLocaleString()}
+              </div>
+              <div class="text-[10px] text-sky-700">天橋立・宮島渡輪・伊根舟屋</div>
             </div>
           </div>
 
-          <!-- JR PASS 實質效益比對橫幅 -->
-          <div class="bg-slate-900 border border-indigo-500/30 rounded-xl p-3 text-white flex items-center justify-between flex-wrap gap-2 text-xs">
-            <div class="flex items-center gap-2 flex-wrap">
-              <span class="text-base">🎫</span>
-              <span class="font-bold text-slate-200">JR 周遊券 7 日券實戰對照：</span>
-              <span class="text-slate-300">涵蓋 JR 鐵道原價 <strong class="font-mono text-amber-300">¥${jrPassCoveredTotal.toLocaleString()}</strong></span>
-              <span>- 票價 <strong class="font-mono text-slate-300">¥23,000</strong></span>
-              <span>➔</span>
-              <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 px-2 py-0.5 rounded font-black font-mono">
-                現省 ¥ ${jrPassSavings > 0 ? jrPassSavings.toLocaleString() : '0'}+
-              </span>
-            </div>
-            <div class="text-slate-400 text-[11px]">
-              自費交通 (非 JR 巴士/計程車/纜車): <strong class="font-mono text-amber-300">¥${selfPaidTransitTotal.toLocaleString()}</strong>
-            </div>
-          </div>
-
-          <!-- 篩選器工具列 (種類標籤切換 + 天數 + Pass狀態 + 關鍵字) -->
-          <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2.5">
-            <!-- 種類快速切換標籤列 -->
+          <!-- 車資篩選器工具列 (車種 + 天數 + Pass狀態 + 關鍵字) -->
+          <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2.5 shadow-2xs">
+            <!-- 車種切換標籤 -->
             <div class="flex items-center gap-1.5 flex-wrap text-xs">
-              <span class="font-bold text-slate-700 text-xs shrink-0 mr-1">經費種類：</span>
+              <span class="font-bold text-slate-700 text-xs shrink-0 mr-1">車種篩選：</span>
 
-              <button type="button" onclick="setBudgetFilterCategory('all')" 
+              <button type="button" onclick="setTransitFilterCategory('all')" 
                 class="px-2.5 py-1 rounded-lg font-bold transition cursor-pointer shadow-3xs text-xs ${filterCat === 'all' ? 'bg-slate-900 text-white' : 'bg-white hover:bg-slate-200 text-slate-700 border border-slate-300'}">
-                全部 (${expenses.length})
+                全部 (${fares.length})
               </button>
 
-              <button type="button" onclick="setBudgetFilterCategory('bus')" 
-                class="px-2.5 py-1 rounded-lg font-bold transition cursor-pointer shadow-3xs text-xs flex items-center gap-1 ${filterCat === 'bus' ? 'bg-amber-600 text-white' : 'bg-white hover:bg-amber-50 text-amber-900 border border-amber-300'}">
-                <span>🚌</span><span>巴士 (${busCount})</span>
-              </button>
-
-              <button type="button" onclick="setBudgetFilterCategory('train')" 
+              <button type="button" onclick="setTransitFilterCategory('train')" 
                 class="px-2.5 py-1 rounded-lg font-bold transition cursor-pointer shadow-3xs text-xs flex items-center gap-1 ${filterCat === 'train' ? 'bg-blue-600 text-white' : 'bg-white hover:bg-blue-50 text-blue-900 border border-blue-300'}">
-                <span>🚅</span><span>電車 (${trainCount})</span>
+                <span>🚅</span><span>電車 / 新幹線 (${trainCount})</span>
               </button>
 
-              <button type="button" onclick="setBudgetFilterCategory('taxi')" 
+              <button type="button" onclick="setTransitFilterCategory('bus')" 
+                class="px-2.5 py-1 rounded-lg font-bold transition cursor-pointer shadow-3xs text-xs flex items-center gap-1 ${filterCat === 'bus' ? 'bg-amber-600 text-white' : 'bg-white hover:bg-amber-50 text-amber-900 border border-amber-300'}">
+                <span>🚌</span><span>巴士 / 機場客運 (${busCount})</span>
+              </button>
+
+              <button type="button" onclick="setTransitFilterCategory('taxi')" 
                 class="px-2.5 py-1 rounded-lg font-bold transition cursor-pointer shadow-3xs text-xs flex items-center gap-1 ${filterCat === 'taxi' ? 'bg-yellow-600 text-white' : 'bg-white hover:bg-yellow-50 text-yellow-950 border border-yellow-300'}">
                 <span>🚕</span><span>計程車 (${taxiCount})</span>
               </button>
 
-              <button type="button" onclick="setBudgetFilterCategory('cable_ferry')" 
+              <button type="button" onclick="setTransitFilterCategory('cable_ferry')" 
                 class="px-2.5 py-1 rounded-lg font-bold transition cursor-pointer shadow-3xs text-xs flex items-center gap-1 ${filterCat === 'cable_ferry' ? 'bg-sky-600 text-white' : 'bg-white hover:bg-sky-50 text-sky-900 border border-sky-300'}">
-                <span>🚠</span><span>纜車/渡輪 (${cableCount})</span>
-              </button>
-
-              <button type="button" onclick="setBudgetFilterCategory('lodging')" 
-                class="px-2.5 py-1 rounded-lg font-bold transition cursor-pointer shadow-3xs text-xs flex items-center gap-1 ${filterCat === 'lodging' ? 'bg-indigo-700 text-white' : 'bg-white hover:bg-indigo-50 text-indigo-900 border border-indigo-300'}">
-                <span>♨️</span><span>住宿飯店 (${lodgingCount})</span>
-              </button>
-
-              <button type="button" onclick="setBudgetFilterCategory('food')" 
-                class="px-2.5 py-1 rounded-lg font-bold transition cursor-pointer shadow-3xs text-xs flex items-center gap-1 ${filterCat === 'food' ? 'bg-orange-600 text-white' : 'bg-white hover:bg-orange-50 text-orange-950 border border-orange-300'}">
-                <span>🍜</span><span>吃飯餐飲 (${foodCount})</span>
-              </button>
-
-              <button type="button" onclick="setBudgetFilterCategory('tickets')" 
-                class="px-2.5 py-1 rounded-lg font-bold transition cursor-pointer shadow-3xs text-xs flex items-center gap-1 ${filterCat === 'tickets' ? 'bg-emerald-600 text-white' : 'bg-white hover:bg-emerald-50 text-emerald-950 border border-emerald-300'}">
-                <span>🏯</span><span>門票景點 (${ticketsCount})</span>
-              </button>
-
-              <button type="button" onclick="setBudgetFilterCategory('shopping')" 
-                class="px-2.5 py-1 rounded-lg font-bold transition cursor-pointer shadow-3xs text-xs flex items-center gap-1 ${filterCat === 'shopping' ? 'bg-purple-600 text-white' : 'bg-white hover:bg-purple-50 text-purple-950 border border-purple-300'}">
-                <span>🛍️</span><span>購物採買</span>
+                <span>🚠</span><span>纜車 / 渡輪 (${cableCount})</span>
               </button>
             </div>
 
-            <!-- 下拉細部條件與搜尋 -->
+            <!-- 天數、Pass、關鍵字搜尋 -->
             <div class="flex items-center justify-between flex-wrap gap-2 text-xs pt-1 border-t border-slate-200/80">
               <div class="flex items-center gap-2 flex-wrap">
                 <!-- 天數篩選 -->
                 <div class="flex items-center gap-1">
                   <span class="text-slate-500 font-medium">天數：</span>
-                  <select onchange="setBudgetFilterDay(this.value)" class="border border-slate-300 rounded px-2 py-1 bg-white outline-none font-medium text-slate-800">
-                    <option value="all" ${filterDay === 'all' ? 'selected' : ''}>📅 全部天數</option>
-                    ${Array.from({length: 12}, (_, i) => i + 1).map(d => `
-                      <option value="${d}" ${filterDay === String(d) ? 'selected' : ''}>Day ${d}</option>
+                  <select onchange="setTransitFilterDay(this.value)" class="border border-slate-300 rounded px-2 py-1 bg-white outline-none font-medium text-slate-800">
+                    <option value="all" ${filterDay === 'all' ? 'selected' : ''}>📅 全部天數 (13天)</option>
+                    ${Array.from({length: 13}, (_, i) => i + 1).map(d => `
+                      <option value="${d}" ${filterDay === String(d) ? 'selected' : ''}>
+                        Day ${d} ${d >= 3 && d <= 9 ? '(Pass第' + (d - 2) + '天)' : '(不使用Pass)'}
+                      </option>
                     `).join('')}
-                    <option value="0" ${filterDay === '0' ? 'selected' : ''}>公費/整趟</option>
                   </select>
                 </div>
 
                 <!-- JR Pass 狀態篩選 -->
                 <div class="flex items-center gap-1">
-                  <span class="text-slate-500 font-medium">JR Pass：</span>
-                  <select onchange="setBudgetFilterPass(this.value)" class="border border-slate-300 rounded px-2 py-1 bg-white outline-none font-medium text-slate-800">
+                  <span class="text-slate-500 font-medium">Pass 狀態：</span>
+                  <select onchange="setTransitFilterPass(this.value)" class="border border-slate-300 rounded px-2 py-1 bg-white outline-none font-medium text-slate-800">
                     <option value="all" ${filterPass === 'all' ? 'selected' : ''}>全部狀態</option>
-                    <option value="covered" ${filterPass === 'covered' ? 'selected' : ''}>✅ JR Pass 已包含</option>
-                    <option value="self" ${filterPass === 'self' ? 'selected' : ''}>⚠️ 需自費</option>
+                    <option value="covered" ${filterPass === 'covered' ? 'selected' : ''}>✅ JR Pass 啟用已包 (Day 3~9)</option>
+                    <option value="self" ${filterPass === 'self' ? 'selected' : ''}>⚠️ 不使用 Pass 或需自費</option>
                   </select>
                 </div>
 
                 <!-- 關鍵字搜尋 -->
                 <div class="flex items-center gap-1 bg-white border border-slate-300 rounded px-2 py-0.5 shadow-3xs">
                   <span class="text-slate-400">🔍</span>
-                  <input type="text" value="${escapeHtml(state.budgetSearchKeyword || '')}" 
-                    oninput="setBudgetSearchKeyword(this.value)" 
-                    placeholder="搜尋站名/店名/項目..." 
+                  <input type="text" value="${escapeHtml(state.transitSearchKeyword || '')}" 
+                    oninput="setTransitSearchKeyword(this.value)" 
+                    placeholder="搜尋站名/路線/車種..." 
                     class="text-xs bg-transparent outline-none w-32 sm:w-44 text-slate-800">
-                  ${state.budgetSearchKeyword ? `<button onclick="setBudgetSearchKeyword('')" class="text-slate-400 hover:text-slate-600">✕</button>` : ''}
+                  ${state.transitSearchKeyword ? `<button onclick="setTransitSearchKeyword('')" class="text-slate-400 hover:text-slate-600">✕</button>` : ''}
                 </div>
               </div>
 
               <div class="text-[11px] text-slate-500 font-medium ml-auto">
-                符合項目：<strong>${filtered.length}</strong> 筆 / 篩選小計：<strong class="font-mono text-slate-900">¥${filteredTotalJPY.toLocaleString()}</strong>
+                符合車資：<strong>${filtered.length}</strong> 趟 / 篩選小計：<strong class="font-mono text-slate-900">¥ ${filteredTotalJPY.toLocaleString()}</strong>
+                <span class="text-[10px] text-slate-400 font-mono">(約 NT$ ${filteredTotalTWD.toLocaleString()})</span>
               </div>
             </div>
           </div>
 
-          <!-- 聚焦橫幅 (當選取特定分類時醒目提示) -->
-          ${focusedBannerHtml}
-
-          <!-- 按天分組逐趟清單 -->
+          <!-- 按天分組逐趟車資清單 -->
           <div class="space-y-3.5">
             ${listHtml}
           </div>
 
-          <!-- 底部最後總計醒目卡片 -->
-          <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white rounded-xl p-4 shadow-md flex items-center justify-between flex-wrap gap-3">
+          <!-- 底部最後總計醒目橫幅 -->
+          <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-blue-950 text-white rounded-xl p-4 shadow-md flex items-center justify-between flex-wrap gap-3">
             <div>
-              <div class="text-xs text-indigo-200 font-bold flex items-center gap-1">
-                <span>🏁</span><span>全行程經費最後總計 (含車資每一趟、住宿與餐飲)：</span>
+              <div class="text-xs text-blue-200 font-bold flex items-center gap-1">
+                <span>🏁</span><span>目前行程全部車資最後總計：</span>
               </div>
               <div class="text-2xl sm:text-3xl font-black font-mono tracking-tight text-amber-400 mt-1">
                 ¥ ${totalAllJPY.toLocaleString()}
-                <span class="text-sm font-normal text-slate-300 ml-2">(約合新台幣 NT$ ${totalAllTWD.toLocaleString()})</span>
+                <span class="text-xs font-normal text-slate-300 ml-1">/ 人</span>
+                <span class="text-sm font-normal text-blue-200 ml-3">兩人總計：¥ ${totalTwoPersonsJPY.toLocaleString()} (約 NT$ ${totalTwoPersonsTWD.toLocaleString()})</span>
               </div>
             </div>
             <div class="flex items-center gap-2">
-              <button onclick="exportBudgetCSV()" class="bg-white/10 hover:bg-white/20 text-white border border-white/30 font-bold px-3 py-1.5 rounded-lg text-xs transition cursor-pointer">
-                📥 匯出完整 CSV 報表
+              <button onclick="exportTransitFaresCSV()" class="bg-white/10 hover:bg-white/20 text-white border border-white/30 font-bold px-3 py-1.5 rounded-lg text-xs transition cursor-pointer">
+                📥 匯出完整車資報表 CSV
               </button>
-              <button onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-3.5 py-1.5 rounded-lg text-xs transition cursor-pointer">
+              <button onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="bg-blue-600 hover:bg-blue-500 text-white font-black px-3.5 py-1.5 rounded-lg text-xs transition cursor-pointer shadow-md">
                 ⬆️ 返回頂部
               </button>
             </div>
@@ -8955,45 +9150,142 @@
       `;
     }
 
-    // 快速彈窗新增與編輯預算項目
-    function openBudgetAddModal(defaultDay = 1) {
-      openAddExpenseModal(defaultDay);
+    // 車資彈窗操作模組 (Transit Fare Modal Handlers)
+    // ==========================================
+    function openFareAddModal(defaultDay = 1) {
+      document.getElementById("modalFareId").value = "";
+      document.getElementById("fareModalTitle").innerHTML = '<span>🚅</span><span>新增行程車資項目</span>';
+      document.getElementById("modalFareTitle").value = "";
+      document.getElementById("modalFareDay").value = String(defaultDay || 1);
+      document.getElementById("modalFareAmount").value = "";
+      document.getElementById("modalFareType").value = "train";
+      document.getElementById("modalFareTypeName").value = "電車";
+      document.getElementById("modalFareFrom").value = "";
+      document.getElementById("modalFareTo").value = "";
+      document.getElementById("modalFarePassCovered").value = "true";
+      document.getElementById("modalFarePassNote").value = "JR Pass 7日券 全包";
+      document.getElementById("modalFareNotes").value = "";
+      document.getElementById("btnDeleteFare").classList.add("hidden");
+
+      document.getElementById("fareModal").classList.remove("hidden");
+      setTimeout(() => document.getElementById("modalFareTitle").focus(), 50);
     }
 
-    function openBudgetEditModal(id) {
-      openEditExpenseModal(id);
+    function openFareEditModal(id) {
+      const fares = state.transitFares || [];
+      const fare = fares.find(f => f.id === id);
+      if (!fare) return;
+
+      document.getElementById("modalFareId").value = fare.id;
+      document.getElementById("fareModalTitle").innerHTML = '<span>✏️</span><span>編輯行程車資項目</span>';
+      document.getElementById("modalFareTitle").value = fare.title || "";
+      document.getElementById("modalFareDay").value = String(fare.dayNumber || 1);
+      document.getElementById("modalFareAmount").value = fare.amount || 0;
+      document.getElementById("modalFareType").value = fare.transitType || "train";
+      document.getElementById("modalFareTypeName").value = fare.transitTypeName || "";
+      document.getElementById("modalFareFrom").value = fare.from || "";
+      document.getElementById("modalFareTo").value = fare.to || "";
+      document.getElementById("modalFarePassCovered").value = fare.passCovered ? "true" : "false";
+      document.getElementById("modalFarePassNote").value = fare.passNote || "";
+      document.getElementById("modalFareNotes").value = fare.notes || "";
+      document.getElementById("btnDeleteFare").classList.remove("hidden");
+
+      document.getElementById("fareModal").classList.remove("hidden");
     }
 
-    function deleteBudgetItem(id) {
-      if (!confirm("確定要刪除這筆車資或開銷項目嗎？")) return;
-      state.expenses = (state.expenses || []).filter(e => e.id !== id);
+    function closeFareModal() {
+      document.getElementById("fareModal").classList.add("hidden");
+    }
+
+    function saveFareModal() {
+      const id = document.getElementById("modalFareId").value;
+      const title = document.getElementById("modalFareTitle").value.trim();
+      const dayNumber = parseInt(document.getElementById("modalFareDay").value, 10) || 1;
+      const amount = parseFloat(document.getElementById("modalFareAmount").value) || 0;
+      const transitType = document.getElementById("modalFareType").value;
+      const transitTypeName = document.getElementById("modalFareTypeName").value.trim() || (transitType === 'bus' ? '巴士' : (transitType === 'taxi' ? '計程車' : (transitType === 'cable_ferry' ? '纜車/渡輪' : '電車')));
+      const from = document.getElementById("modalFareFrom").value.trim();
+      const to = document.getElementById("modalFareTo").value.trim();
+      const passCovered = document.getElementById("modalFarePassCovered").value === "true";
+      const passNote = document.getElementById("modalFarePassNote").value.trim();
+      const notes = document.getElementById("modalFareNotes").value.trim();
+
+      if (!title) {
+        alert("請輸入車資項目名稱！");
+        document.getElementById("modalFareTitle").focus();
+        return;
+      }
+
+      if (!state.transitFares) state.transitFares = [];
+
+      if (id) {
+        // 更新現有項目
+        const idx = state.transitFares.findIndex(f => f.id === id);
+        if (idx !== -1) {
+          state.transitFares[idx] = {
+            ...state.transitFares[idx],
+            title, dayNumber, amount, transitType, transitTypeName, from, to, passCovered, passNote, notes
+          };
+        }
+      } else {
+        // 新增項目
+        const newId = "fare_custom_" + Date.now();
+        state.transitFares.push({
+          id: newId,
+          dayNumber, title, from, to, transitType, transitTypeName, amount, passCovered, passNote, notes
+        });
+      }
+
+      saveState();
+      closeFareModal();
+      renderMainPanel();
+    }
+
+    function deleteFareModalAction() {
+      const id = document.getElementById("modalFareId").value;
+      if (!id) return;
+      if (!confirm("確定要刪除這趟車資項目嗎？")) return;
+      deleteFareItem(id);
+      closeFareModal();
+    }
+
+    function deleteFareItem(id) {
+      if (!confirm("確定要刪除這趟車資項目嗎？")) return;
+      state.transitFares = (state.transitFares || []).filter(f => f.id !== id);
       saveState();
       renderMainPanel();
     }
 
-    function exportBudgetCSV() {
-      if (!state.expenses || state.expenses.length === 0) {
-        alert("目前尚無資料可匯出！");
+    function exportTransitFaresCSV() {
+      const fares = state.transitFares || [];
+      if (fares.length === 0) {
+        alert("目前尚無車資資料可匯出！");
         return;
       }
-      let csv = "\uFEFF序號,天數,品項名稱,支出類別,車種子類別,幣別,金額,JR Pass是否全包,備註\n";
-      state.expenses.forEach((exp, idx) => {
-        const amt = parseFloat(exp.amount) || 0;
-        const dayLabel = exp.dayNumber > 0 ? `Day ${exp.dayNumber}` : '公費/整趟';
-        const catLabel = exp.category || '';
-        const tTypeLabel = exp.transitType || '';
-        const passLabel = exp.passCovered ? 'JR Pass全包' : '需自費';
-        const cleanNotes = (exp.notes || exp.passNote || '').replace(/"/g, '""');
-        const cleanTitle = (exp.title || '').replace(/"/g, '""');
+      const rate = state.exchangeRate || 0.215;
+      let csv = "﻿序號,天數,路線名稱,車種分類,車種細稱,起點,終點,單人票價(JPY),兩人合計(JPY),約折合(TWD),JR Pass狀態,Pass說明,搭乘備註\n";
+      fares.forEach((f, idx) => {
+        const amt = parseFloat(f.amount) || 0;
+        const amtTwo = amt * 2;
+        const twd = Math.round(amt * rate);
+        const dayLabel = `Day ${f.dayNumber || 1}`;
+        const passLabel = f.passCovered ? 'JR Pass全包' : '需自費';
+        const cleanTitle = (f.title || '').replace(/"/g, '""');
+        const cleanFrom = (f.from || '').replace(/"/g, '""');
+        const cleanTo = (f.to || '').replace(/"/g, '""');
+        const cleanType = (f.transitType || '').replace(/"/g, '""');
+        const cleanTypeName = (f.transitTypeName || '').replace(/"/g, '""');
+        const cleanPassNote = (f.passNote || '').replace(/"/g, '""');
+        const cleanNotes = (f.notes || '').replace(/"/g, '""');
 
-        csv += `"${idx + 1}","${dayLabel}","${cleanTitle}","${catLabel}","${tTypeLabel}","${exp.currency || 'JPY'}","${amt}","${passLabel}","${cleanNotes}"\n`;
+        csv += `"${idx + 1}","${dayLabel}","${cleanTitle}","${cleanType}","${cleanTypeName}","${cleanFrom}","${cleanTo}","${amt}","${amtTwo}","${twd}","${passLabel}","${cleanPassNote}","${cleanNotes}"\n`;
       });
 
       const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `Japan_Trip_Full_Budget_Fares_${new Date().toISOString().split('T')[0]}.csv`;
+      a.download = `Japan_Trip_Transit_Fares_${new Date().toISOString().split('T')[0]}.csv`;
       a.click();
       URL.revokeObjectURL(url);
     }
@@ -9193,7 +9485,7 @@
                   <li>岡山機場巴士 (中鐵/岡電)：單程 1,000 円 (可刷 IC 卡)</li>
                   <li>鬼ノ城計程車：總社站往返單程約 3,500 円</li>
                   <li>備中松山城合乘計程車：高梁站往返單程 500 円 (需預約)</li>
-                  <li>湯郷溫泉接駁：林野站至溫泉街旅館大多提供免費專車接送 (計程車約 1,200 円；JR 姫新線 Pass 全包)</li>
+                  <li>津山至鳥取因美線：非 Pass 天數搭乘 JR 因美線單程約 1,170 円</li>
                   <li>皆生溫泉日之丸巴士：米子站往返單程 300 円</li>
                   <li>月山富田城安來市營黃色公車：單程 200 円</li>
                   <li>津和野城觀光登山吊椅纜車：來回 700 円</li>
@@ -10498,16 +10790,38 @@
     }
 
     function resetToDefault() {
-      if (!confirm("確定要強制載入【最新版 V50 行程 (11天大閉環・含白兔神社・無秋芳洞)】嗎？\n\n這將清空瀏覽器舊快取，確保您的畫面與最新檔案 100% 同步！")) return;
+      if (!confirm("確定要重新載入預設行程嗎？\n\n系統已為您全面保護並保留所有已上傳之「JR / 巴士時刻表與乘車附件」，保證不被刪除！")) return;
+      // 備份使用者的交通時刻表與乘車附件
+      const backupTransitAttachments = {};
+      try {
+        (state.itinerary || []).forEach(d => {
+          if (d.transitAttachments && Object.keys(d.transitAttachments).length > 0) {
+            backupTransitAttachments[d.dayNumber] = JSON.parse(JSON.stringify(d.transitAttachments));
+          }
+        });
+      } catch (_) {}
+
       localStorage.removeItem(STORAGE_KEY_SPOTS);
       localStorage.removeItem('jp_castle_itinerary_okayama');
       localStorage.removeItem('jp_castle_itinerary_yonago');
       localStorage.removeItem('jp_castle_itinerary_hiroshima');
       localStorage.removeItem(STORAGE_KEY_ITINERARY);
       localStorage.removeItem(STORAGE_KEY_DELETED_SPOTS);
+      localStorage.removeItem(STORAGE_KEY_TRANSIT_FARES);
       localStorage.removeItem('jp_castle_current_route_plan');
       localStorage.setItem(STORAGE_KEY_ITINERARY_VER, CURRENT_ITINERARY_VER);
       initState();
+
+      // 還原附件
+      if (Object.keys(backupTransitAttachments).length > 0) {
+        state.itinerary.forEach(d => {
+          if (backupTransitAttachments[d.dayNumber]) {
+            if (!d.transitAttachments) d.transitAttachments = {};
+            Object.assign(d.transitAttachments, backupTransitAttachments[d.dayNumber]);
+          }
+        });
+        saveState();
+      }
       renderMainPanel();
       renderMapElements();
       updateMapFilterDropdown();
@@ -10517,7 +10831,7 @@
           fitMapBounds();
         }, 200);
       }
-      alert("✅ 已成功清空快取，並載入最新 V50 行程（共 11 天，已加入白兔神社，已刪除秋吉台・秋芳洞）！");
+      alert("✅ 已成功清空快取，並載入最新 V66 行程（Day 12 備中松山＋吉備路，夜宿岡山站前，JR Pass 精確啟用 7 天）！");
     }
 
     function escapeHtml(str) {
