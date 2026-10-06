@@ -98,7 +98,10 @@
     </div>
     <div class="flex items-center gap-2 text-sm">
       <button onclick="resetToDefault()" class="bg-red-600 hover:bg-red-500 text-white font-bold px-3 py-1.5 rounded flex items-center gap-1.5 transition shadow-md text-xs cursor-pointer border border-red-400 shrink-0" title="若看到舊版行程，點擊此按鈕立即清空瀏覽器快取並載入最新版！">
-        🔄 強制載入最新行程 (清空舊快取 V66)
+        🔄 強制載入最新行程 (清空舊快取 V67)
+      </button>
+      <button onclick="exportWordBooklet()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-3 py-1.5 rounded flex items-center gap-1.5 transition shadow-md text-xs cursor-pointer border border-blue-400 shrink-0" title="一鍵匯出排版好的 Word 小冊子檔案 (.doc / 每日獨立分頁)">
+        <span>📖</span><span>匯出 Word 小冊子</span>
       </button>
       <button id="saveStatusBtn" onclick="manualSaveState()" class="bg-emerald-700/90 hover:bg-emerald-600 text-white font-bold px-3 py-1.5 rounded flex items-center gap-1.5 transition shadow-sm text-xs cursor-pointer border border-emerald-400/60 shrink-0" title="點擊立即確認儲存至瀏覽器 LocalStorage">
         <span id="saveStatusDot" class="w-2 h-2 rounded-full bg-emerald-400"></span>
@@ -10785,6 +10788,227 @@
       const a = document.createElement("a");
       a.href = url;
       a.download = `Japan_100Castles_Itinerary_${planName}_${new Date().toISOString().split('T')[0]}.md`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function exportWordBooklet() {
+      const days = state.itinerary || [];
+      const fares = state.transitFares || [];
+
+      let daysHtml = days.map((day, idx) => {
+        const dNum = day.dayNumber;
+        const dTitle = escapeHtml(day.title || `Day ${dNum}`);
+        const dDate = escapeHtml(day.date || '');
+        const dBase = escapeHtml(day.baseStation || '');
+        const dLodging = escapeHtml(day.lodging || '');
+        const dLoc = escapeHtml(day.lodgingLocation || '');
+        const dRecom = escapeHtml(day.recommendedHotels || '');
+        const dReason = escapeHtml(day.lodgingReason || '');
+        const dNotes = day.notes || '';
+        const passStatus = (dNum >= 3 && dNum <= 9) ? '<span class="tag-pass">🎫 JR Pass 7日券【適用日】(全額免費搭乘指定席)</span>' : '<span class="tag-self">💳 刷交通 IC 卡 / 現金 (非 Pass 天數)</span>';
+
+        // 景點列表表格
+        const spotsForDay = (day.spotIds || []).map(sid => state.spots.find(s => s.id === sid)).filter(Boolean);
+        let spotsTableHtml = '';
+        if (spotsForDay.length > 0) {
+          spotsTableHtml = `
+            <table style="width:100%; border-collapse:collapse; margin-top:6pt; margin-bottom:10pt;">
+              <thead>
+                <tr style="background-color:#2563eb; color:#ffffff;">
+                  <th style="width:5%; padding:5pt; text-align:center;">序</th>
+                  <th style="width:26%; padding:5pt; text-align:left;">景點名稱 (縣別)</th>
+                  <th style="width:23%; padding:5pt; text-align:left;">蓋章處 / 類別</th>
+                  <th style="width:20%; padding:5pt; text-align:left;">開放時間 / 公休</th>
+                  <th style="width:26%; padding:5pt; text-align:left;">交通接駁與提示</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${spotsForDay.map((sp, sIdx) => {
+                  const stampTxt = sp.stampLocation ? `印章：${escapeHtml(sp.stampLocation)}` : '一般參觀';
+                  const stampClass = sp.stampLocation ? 'color:#d97706; font-weight:bold;' : 'color:#64748b;';
+                  const bg = sIdx % 2 === 1 ? 'background-color:#f8fafc;' : 'background-color:#ffffff;';
+                  return `
+                    <tr style="${bg}">
+                      <td style="text-align:center; font-weight:bold; color:#1e3a8a;">${sIdx + 1}</td>
+                      <td><strong>${escapeHtml(sp.name)}</strong><br><span style="font-size:8pt; color:#64748b;">${escapeHtml(sp.prefecture || '')}</span></td>
+                      <td style="${stampClass}">${stampTxt}</td>
+                      <td>${escapeHtml(sp.openHours || '無休')}<br><span style="font-size:8pt; color:#dc2626;">休：${escapeHtml(sp.closedDayText || '無')}</span></td>
+                      <td style="font-size:8pt; color:#475569;">${escapeHtml(sp.transitInfo || '')}</td>
+                    </tr>
+                  `;
+                }).join('')}
+              </tbody>
+            </table>
+          `;
+        }
+
+        // 行程叮嚀段落
+        let notesHtml = '';
+        if (dNotes) {
+          const lines = dNotes.split('\n').map(l => l.trim()).filter(Boolean);
+          notesHtml = lines.map(line => {
+            let color = '#334155';
+            let fw = 'normal';
+            if (line.includes('JR Pass') || line.includes('特急')) { color = '#1d4ed8'; fw = 'bold'; }
+            else if (line.includes('免計程車') || line.includes('07:50') || line.includes('注意')) { color = '#0f172a'; fw = 'bold'; }
+            return `<p style="margin:2pt 0 2pt 8pt; font-size:8.5pt; color:${color}; font-weight:${fw}; line-height:1.45;">${escapeHtml(line)}</p>`;
+          }).join('');
+        }
+
+        // 當日車資表
+        const dayFares = fares.filter(f => f.dayNumber === dNum);
+        let faresTableHtml = '';
+        if (dayFares.length > 0) {
+          faresTableHtml = `
+            <table style="width:100%; border-collapse:collapse; margin-top:6pt; margin-bottom:10pt;">
+              <thead>
+                <tr style="background-color:#334155; color:#ffffff;">
+                  <th style="width:36%; padding:4pt; text-align:left;">乘車區間 / 路線</th>
+                  <th style="width:14%; padding:4pt; text-align:center;">車種</th>
+                  <th style="width:14%; padding:4pt; text-align:right;">金額</th>
+                  <th style="width:16%; padding:4pt; text-align:center;">Pass 狀態</th>
+                  <th style="width:20%; padding:4pt; text-align:left;">乘車備註</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${dayFares.map(f => {
+                  const passTag = f.passCovered ? '<span style="color:#059669; font-weight:bold;">Pass 免費</span>' : '<span style="color:#d97706; font-weight:bold;">⚠️ 需自費</span>';
+                  const amtColor = f.passCovered ? '#059669' : '#dc2626';
+                  return `
+                    <tr>
+                      <td style="font-weight:bold; color:#1e3a8a;">${escapeHtml(f.title || '')}</td>
+                      <td style="text-align:center; color:#64748b;">${escapeHtml(f.transitTypeName || '')}</td>
+                      <td style="text-align:right; font-weight:bold; color:${amtColor};">¥${(f.amount || 0).toLocaleString()}</td>
+                      <td style="text-align:center;">${passTag}</td>
+                      <td style="font-size:7.5pt; color:#64748b;">${escapeHtml(f.notes || '')}</td>
+                    </tr>
+                  `;
+                }).join('')}
+              </tbody>
+            </table>
+          `;
+        }
+
+        return `
+          <div class="day-section">
+            <h2 style="font-size:13pt; color:#1e3a8a; border-bottom:2pt solid #2563eb; padding-bottom:4pt; margin-top:10pt; margin-bottom:6pt;">${dTitle}</h2>
+            
+            <table style="width:100%; border-collapse:collapse; margin-bottom:8pt;">
+              <tr>
+                <td style="width:20%; background-color:#f1f5f9; font-weight:bold; color:#1e3a8a;">🗓️ 日期與樞紐</td>
+                <td>${dDate} ｜ 樞紐站：${dBase} ｜ 票券：${passStatus}</td>
+              </tr>
+              <tr>
+                <td style="background-color:#f1f5f9; font-weight:bold; color:#1e3a8a;">🏨 夜宿地點</td>
+                <td><strong>${dLodging}</strong> (${dLoc})<br><span style="font-size:8pt; color:#64748b;">推薦飯店：${dRecom}</span></td>
+              </tr>
+              <tr>
+                <td style="background-color:#f1f5f9; font-weight:bold; color:#1e3a8a;">💡 入住理由</td>
+                <td style="font-size:8.5pt;">${dReason}</td>
+              </tr>
+            </table>
+
+            <h3 style="font-size:10pt; color:#2563eb; margin:8pt 0 4pt 0;">📍 景點動線與蓋章資訊</h3>
+            ${spotsTableHtml}
+
+            <h3 style="font-size:10pt; color:#2563eb; margin:8pt 0 4pt 0;">⏱️ 詳細交通時刻銜接與行程叮嚀</h3>
+            ${notesHtml}
+
+            <h3 style="font-size:10pt; color:#2563eb; margin:8pt 0 4pt 0;">💴 當日車資明細表</h3>
+            ${faresTableHtml}
+
+            <table style="width:100%; border-collapse:collapse; margin-top:10pt;">
+              <tr>
+                <td style="width:38%; border:1.5pt dashed #94a3b8; background-color:#fafafa; text-align:center; padding:18pt 6pt; color:#94a3b8; font-size:8pt;">
+                  【 日本100名城 / 紀念印章蓋印處 】<br><br><br>(預留實體蓋印方框)
+                </td>
+                <td style="width:62%; border:1pt solid #cbd5e1; background-color:#ffffff; padding:8pt; color:#94a3b8; font-size:8pt; vertical-align:top;">
+                  📝 當日旅行隨手記 / 推薦美饌筆記 / 票根貼附：<br><br><br><br>
+                </td>
+              </tr>
+            </table>
+          </div>
+        `;
+      }).join('<br clear="all" style="page-break-before:always; mso-break-type:section-break">');
+
+      const fullDoc = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+          <meta charset='utf-8'>
+          <title>山陰山陽13天旅行隨身手冊</title>
+          <!--[if gte mso 9]>
+          <xml>
+            <w:WordDocument>
+              <w:View>Print</w:View>
+              <w:Zoom>100</w:Zoom>
+              <w:DoNotOptimizeForBrowser/>
+            </w:WordDocument>
+          </xml>
+          <![endif]-->
+          <style>
+            @page {
+              size: 21.0cm 29.7cm;
+              margin: 1.8cm 1.8cm 1.8cm 1.8cm;
+              mso-page-orientation: portrait;
+            }
+            body {
+              font-family: 'Microsoft JhengHei', '微軟正黑體', sans-serif;
+              font-size: 9.5pt;
+              line-height: 1.45;
+              color: #334155;
+            }
+            td, th {
+              border: 1pt solid #cbd5e1;
+            }
+            .tag-pass { color: #059669; font-weight: bold; }
+            .tag-self { color: #d97706; font-weight: bold; }
+          </style>
+        </head>
+        <body>
+          <!-- 封面 -->
+          <div style="text-align:center; padding-top:40pt; margin-bottom:20pt;">
+            <p style="font-size:12pt; color:#2563eb; font-weight:bold; margin-bottom:6pt;">🇯🇵 2027 嚴選壯遊專屬小冊子</p>
+            <h1 style="font-size:22pt; color:#1e3a8a; margin-bottom:10pt;">山陰山陽 13 天縱走<br>名城・名湯・絕景漫遊隨身手冊</h1>
+            <p style="font-size:10.5pt; color:#64748b; margin-bottom:30pt;">日本100名城巡禮 ｜ 三大名湯 ｜ 日本海極品松葉蟹 ｜ 每日獨立分頁隨身指南</p>
+          </div>
+
+          <table style="width:100%; border-collapse:collapse; margin-bottom:30pt;">
+            <tr>
+              <td style="width:25%; background-color:#f1f5f9; font-weight:bold; color:#1e3a8a; padding:8pt;">📅 旅行日期</td>
+              <td style="padding:8pt;">2027 年 1 月 13 日 (三) ～ 1 月 25 日 (一) 共 13 天 12 夜</td>
+            </tr>
+            <tr>
+              <td style="background-color:#f1f5f9; font-weight:bold; color:#1e3a8a; padding:8pt;">👥 隨行成員</td>
+              <td style="padding:8pt;">獅子 & 方 (雙人自助旅行・大眾運輸精準漫遊)</td>
+            </tr>
+            <tr>
+              <td style="background-color:#f1f5f9; font-weight:bold; color:#1e3a8a; padding:8pt;">✈️ 航班資訊</td>
+              <td style="padding:8pt;">台灣虎航直飛岡山：去程 IT214 (11:30~15:05) ｜ 回程 IT215 (15:55~17:40)</td>
+            </tr>
+            <tr>
+              <td style="background-color:#f1f5f9; font-weight:bold; color:#1e3a8a; padding:8pt;">🎫 鐵路周遊券</td>
+              <td style="padding:8pt;">JR 山陰&山陽鐵路周遊券 7日券【Day 3 ～ Day 9 啟用】</td>
+            </tr>
+            <tr>
+              <td style="background-color:#f1f5f9; font-weight:bold; color:#1e3a8a; padding:8pt;">🆘 緊急電話</td>
+              <td style="padding:8pt;">警察 110 ｜ 救護 119 ｜ 外交部急難救助 +886-800-085-095</td>
+            </tr>
+          </table>
+
+          <br clear="all" style="page-break-before:always; mso-break-type:section-break">
+
+          <!-- 每日內容 (每天獨立分頁) -->
+          ${daysHtml}
+        </body>
+        </html>
+      `;
+
+      const blob = new Blob([fullDoc], { type: 'application/msword;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `山陰山陽13天旅行小冊子_${new Date().toISOString().split('T')[0]}.doc`;
       a.click();
       URL.revokeObjectURL(url);
     }
