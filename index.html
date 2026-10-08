@@ -1367,20 +1367,23 @@
   },
   {
     "id": "onomichi_senkoji",
-    "name": "尾道千光寺公園 & 貓之細道",
-    "category": "nature",
+    "name": "千光寺 (尾道千光寺公園 & 貓之細道)",
     "prefecture": "廣島",
-    "city": "尾道市",
+    "type": "custom",
     "lat": 34.4105,
     "lng": 133.1975,
-    "transitTime": "福山搭 JR 山陽本線 20 分抵尾道站，轉乘公車 5 分抵纜車站登頂",
-    "timeNeeded": "2~2.5 小時",
-    "mustEat": "尾道拉麵 (朱華園/一風堂系)、尾道布丁、瀨戶內檸檬甜點",
-    "reservation": false,
-    "passCovered": true,
-    "passNote": "JR 山陽本線憑 JR Pass 免費搭乘 (千光寺纜車來回 700 円自費)",
-    "officialUrl": "https://www.ononavi.jp/",
-    "notes": "搭乘千光寺山纜車直登展望台，俯瞰尾道水道與向島等瀨戶內海島嶼絕景；沿著巨石參道與貓之細道下山，造訪千光寺巨石石鎚山本堂。"
+    "stayDuration": "2 ~ 2.5 小時",
+    "climbLevel": "scenic",
+    "climbLevelText": "🚡 千光寺山纜車 (來回700円) ｜ 貓之細道石階坡道",
+    "nearestStation": "尾道駅",
+    "stampLocation": "千光寺本堂納經所 (御朱印) ｜ 尾道觀光案內所",
+    "closedDay": "None",
+    "closedDayText": "全年無休",
+    "backupStamp": "千光寺山頂展望台 PEAK ｜ 尾道市立美術館",
+    "openHours": "境內全天自由參訪 (本堂 09:00~17:00 / 纜車 09:00~17:15)",
+    "transitInfo": "JR 尾道站搭乘市內巴士約 5 分至「長江口(千光寺登山口)」，轉搭千光寺山纜車 3 分鐘直達山頂展望台 PEAK；下山步行穿過貓之細道與巨石參道",
+    "reservationUrl": "https://www.senkoji.info/",
+    "notes": "• 【尾道代表名剎・千光寺】：弘法大師開基(806年)，座落於千光寺山半山腰，赤紅本堂舞台懸突遠眺尾道水道與向島絕美海景。\\n• 【千光寺頂上展望台 PEAK】：全新鋼構木造景觀空橋，360度鳥瞰瀨戶內海島嶼與尾道市街全景。\\n• 【貓之細道散策】：自千光寺東側山道蜿蜒向下，經招財貓美術館、貓神社與古民家咖啡館，感受尾道悠閒迷人的坡道風情。\\n• 【美食推薦】：尾道拉麵(朱華園/一平系)、尾道布丁、瀨戶內檸檬甜點。"
   },
   {
     "id": "kurashiki_bikan",
@@ -2806,6 +2809,22 @@
           state.spots.push(JSON.parse(JSON.stringify(ds)));
         } else if (ds.id === 'kenran_dining_gen' || ds.id === 'kenran_amiyaki') {
           existing.transitInfo = ds.transitInfo;
+          existing.notes = ds.notes;
+        } else if (ds.id === 'onomichi_senkoji') {
+          existing.name = ds.name;
+          existing.type = ds.type;
+          existing.prefecture = ds.prefecture;
+          existing.stayDuration = ds.stayDuration;
+          existing.climbLevel = ds.climbLevel;
+          existing.climbLevelText = ds.climbLevelText;
+          existing.nearestStation = ds.nearestStation;
+          existing.stampLocation = ds.stampLocation;
+          existing.closedDay = ds.closedDay;
+          existing.closedDayText = ds.closedDayText;
+          existing.backupStamp = ds.backupStamp;
+          existing.openHours = ds.openHours;
+          existing.transitInfo = ds.transitInfo;
+          existing.reservationUrl = ds.reservationUrl;
           existing.notes = ds.notes;
         }
       });
