@@ -91,14 +91,20 @@
         <h1 class="text-lg font-bold tracking-wide flex items-center gap-2">
           山陰山陽 100名城巡禮路線規劃器
           <span class="text-xs bg-red-600 px-2 py-0.5 rounded font-mono font-normal">12名城+溫泉</span>
-          <span class="text-xs bg-amber-400 text-slate-950 font-black px-2.5 py-0.5 rounded shadow-sm">V66</span>
+          <span class="text-xs bg-amber-400 text-slate-950 font-black px-2.5 py-0.5 rounded shadow-sm">V70</span>
         </h1>
-        <p class="text-xs text-slate-400">D12起點鞆之浦➔岡山放行李➔備中松山・JR Pass 7日券(Day 3~9)・其他天自費・兩人記帳獨立</p>
+        <p class="text-xs text-slate-400">D4宿米子站前・晚餐名店荒磯與太平記・JR Pass 7日券(Day 3~9)・兩人記帳獨立</p>
       </div>
     </div>
     <div class="flex items-center gap-2 text-sm">
       <button onclick="resetToDefault()" class="bg-red-600 hover:bg-red-500 text-white font-bold px-3 py-1.5 rounded flex items-center gap-1.5 transition shadow-md text-xs cursor-pointer border border-red-400 shrink-0" title="若看到舊版行程，點擊此按鈕立即清空瀏覽器快取並載入最新版！">
-        🔄 強制載入最新行程 (清空舊快取 V67)
+        🔄 強制載入最新行程 (清空舊快取 V70)
+      </button>
+      <button onclick="exportTransitImagesToFiles()" class="bg-amber-600 hover:bg-amber-500 text-white font-bold px-3 py-1.5 rounded flex items-center gap-1.5 transition shadow-md text-xs cursor-pointer border border-amber-400 shrink-0" title="將瀏覽器已上傳的時刻表圖片下載為實體圖檔，放入專案 timetables/ 資料夾">
+        <span>🖼️</span><span>導出圖檔至 timetables/</span>
+      </button>
+      <button onclick="exportUpdatedSpotsDataJs()" class="bg-teal-700 hover:bg-teal-600 text-white font-bold px-3 py-1.5 rounded flex items-center gap-1.5 transition shadow-md text-xs cursor-pointer border border-teal-400 shrink-0" title="將最新行程包含實體圖檔設定匯出為 spots_data.js 覆蓋專案檔案">
+        <span>📥</span><span>匯出 spots_data.js</span>
       </button>
       <button onclick="exportWordBooklet()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-3 py-1.5 rounded flex items-center gap-1.5 transition shadow-md text-xs cursor-pointer border border-blue-400 shrink-0" title="一鍵匯出排版好的 Word 小冊子檔案 (.doc / 每日獨立分頁)">
         <span>📖</span><span>匯出 Word 小冊子</span>
@@ -727,7 +733,7 @@
   </div>
 
   <!-- 載入原始景點資料庫 -->
-  <script src="spots_data.js?v=2027_01_13_ROUTE_OPTIMIZE_V63_EXPENSES_RESET"></script>
+  <script src="spots_data.js?v=2027_01_13_ROUTE_V70_YONAGO_DINNER"></script>
 
   <!-- 應用程式主邏輯 -->
   <script>
@@ -738,7 +744,7 @@
     const STORAGE_KEY_ITINERARY = "jp_castles_itinerary_v1";
     const STORAGE_KEY_ITINERARY_VER = "jp_castles_itinerary_ver";
     const STORAGE_KEY_DELETED_SPOTS = "jp_castles_deleted_spots_v1";
-    const CURRENT_ITINERARY_VER = "2027_01_13_ROUTE_V67_D3_WINTER_TOTTORI";
+    const CURRENT_ITINERARY_VER = "2027_01_13_ROUTE_V70_YONAGO_DINNER_ARAISO_TAIHEIKI";
 
     // ==========================================
     // 雙重自包含備援資料庫 (Fallback Database)
@@ -1126,24 +1132,24 @@
     "notes": "名城編號 64。現存十二天守兼國寶五城之一「千鳥城」。二之丸、天守與興雲閣步道平緩好走，基本預留 1 小時（若搭乘護城河堀川遊覽船巡航建議增加至 1.5 小時）。"
   },
   {
-    "id": "kaike_onsen",
-    "name": "皆生溫泉 (米子市)",
+    "id": "yonago_hotel",
+    "name": "米子站前精選飯店 (米子市 / 住宿推薦)",
     "prefecture": "鳥取",
     "type": "lodging",
-    "lat": 35.4578,
-    "lng": 133.3556,
+    "lat": 35.4234,
+    "lng": 133.3364,
     "stayDuration": "夜宿放鬆",
     "climbLevel": "lodging",
-    "climbLevelText": "♨️ 海濱名湯（當日夜宿溫泉放鬆）",
+    "climbLevelText": "🏨 米子站前便利商務/度假飯店",
     "nearestStation": "米子駅",
-    "stampLocation": "溫泉街道 / 飯店設施",
+    "stampLocation": "飯店櫃台",
     "closedDay": "None",
     "closedDayText": "住宿推薦點",
     "backupStamp": "",
-    "openHours": "全天",
-    "transitInfo": "JR 米子駅搭乘路線巴士往皆生溫泉方向約15~20分抵達溫泉街",
-    "reservationUrl": "",
-    "notes": "山陰屈指的海濱溫泉（米子之奧座敷），眺望日本海白沙海岸日落。【寶可夢人孔蓋】：皆生海濱公園（溫泉街旁海濱步道）設有鳥取限定『享受溫泉泡湯的穿山鼠』特色人孔蓋，夜宿泡湯時必拍！享用海鮮會席與高濃度海濱鹽湯。"
+    "openHours": "15:00 Check-in",
+    "transitInfo": "JR 米子站出站步行 1~3 分鐘直達各飯店 (免轉公車、免拉行李！)",
+    "reservationUrl": "https://www.anacrowneplaza-yonago.jp/",
+    "notes": "【住宿推薦地點：JR 米子站周邊徒步圈】\\n• 推薦飯店：ANA Crowne Plaza 米子 (全日空皇冠假日，高品質首選)、米子華盛頓廣場飯店 (站前步行1分)、Super Hotel 米子站前 (附天然溫泉)、東橫INN 米子站前。\\n• 地理優勢：天橋立/伊根舟屋搭特急返回後直接出站入住，免拉行李轉公車；隔日一早自米子站搭山陰本線前往安來(足立美術館/月山富田城)與松江極度順路！"
   },
   {
     "id": "yoshida_koriyama",
@@ -1569,27 +1575,27 @@
     "openHours": "午餐 11:30~14:00 / 晚餐 17:00~21:00 (L.O. 20:00)",
     "transitInfo": "JR 鳥取站北口出站步行僅 4 分鐘 (鳥取市榮町 652，鳥取民藝美術館旁)",
     "reservationUrl": "https://www.tottori-mingei.jp/takumikappou.html",
-    "notes": "【全日本涮涮鍋 (すすぎ鍋/しゃぶしゃぶ) 發祥起源店】！採用最高品質鳥取和牛薄切，搭配民藝陶器裝盛。極度推薦排入【Day 3 午餐】（出鳥取站先吃和牛午餐，再攻鳥取城，傍晚進皆生溫泉，完全不跟當晚溫泉海鮮晚餐衝突！神級排程首選）。"
+    "notes": "【全日本涮涮鍋 (すすぎ鍋/しゃぶしゃぶ) 發祥起源店】！採用最高品質鳥取和牛薄切，搭配民藝陶器裝盛。極度推薦排入【Day 3 午餐】（鳥取城跡與砂丘行程後，回鳥取站享用和牛涮涮鍋元祖午餐，再搭特急直奔城崎溫泉）！"
   },
   {
     "id": "tottori_tsubomi",
-    "name": "鉄板焼 つぼみ (米子鳥取和牛)",
+    "name": "鉄板焼 蕾 つぼみ (鳥取東伯和牛/大山土雞)",
     "prefecture": "鳥取",
     "type": "custom",
-    "lat": 35.432,
-    "lng": 133.334,
+    "lat": 35.4950,
+    "lng": 134.2294,
     "stayDuration": "1.5 小時",
     "climbLevel": "gourmet",
-    "climbLevelText": "🥩 大山黑牛特選鐵板燒（米子角盤町）",
-    "nearestStation": "米子駅",
+    "climbLevelText": "🥩 鳥取在地東伯和牛鐵板燒（末廣溫泉町）",
+    "nearestStation": "鳥取駅",
     "stampLocation": "餐廳櫃台",
     "closedDay": "Sunday",
-    "closedDayText": "週日公休 (或不定休，需預約)",
+    "closedDayText": "週日公休 (若週一為祝日則週日營業、週一公休)",
     "backupStamp": "",
-    "openHours": "午餐 11:30~14:30 / 晚餐 17:30~22:00",
-    "transitInfo": "JR 米子站車程 5 分鐘（搭市內公車至角盤町徒步2分，或從皆生溫泉車程約 10~15 分鐘）",
-    "reservationUrl": "https://teppan-tsubomi.com/menu/",
-    "notes": "米子市區頂級鐵板燒，主打鳥取和牛之王「大山黑牛」牛排。可排在【Day 3 晚餐】。注意：若當晚皆生溫泉旅館訂「一泊二食會席」，晚餐會衝突；若要吃つぼみ，溫泉飯店請訂「純一泊朝食」。"
+    "openHours": "18:00〜23:30 (需預約)",
+    "transitInfo": "JR 鳥取站北口出站步行約 6 分鐘（鳥取市末廣溫泉町 753 かわとビル 2F）",
+    "reservationUrl": "https://teppan-tsubomi.com/",
+    "notes": "鳥取市區頂級預約制鐵板燒名店，主打在地「東伯和牛」頂級牛排與大山土雞（大山どり），採主廚現場鐵板料理。可排在【Day 2 晚餐】（當晚夜宿鳥取站前精選飯店，自飯店步行約 6 分鐘即可抵達享用極品和牛晚餐，需提前一日前預約套餐）。"
   },
   {
     "id": "hiroshima_jinseki",
@@ -2130,6 +2136,46 @@
     "transitInfo": "JR 山陽本線「防府站」天神口 (北口) 步行約 15~20 分鐘；或搭乘防長巴士約 4 分鐘至「防府天滿宮」站下車步行 3 分鐘",
     "reservationUrl": "https://www.hofutenmangu.com/",
     "notes": "與京都北野天滿宮、福岡太宰府天滿宮並列為「日本三大天神」。西元 904 年創建，為日本歷史上最初建立的天滿宮。主祀學問之神菅原道真公，境內古木森森、石階參道氣勢恢宏，早春千株梅花盛開，祈求考運學業與事業亨通靈驗無比。"
+  },
+  {
+    "id": "araiso_yonago",
+    "name": "日本料理 荒磯 本店 (米子站前海鮮割烹)",
+    "prefecture": "鳥取",
+    "type": "custom",
+    "lat": 35.4250,
+    "lng": 133.3347,
+    "stayDuration": "1.5 小時",
+    "climbLevel": "gourmet",
+    "climbLevelText": "🦀 米子老字號松葉蟹/喉黑魚海鮮割烹",
+    "nearestStation": "米子駅",
+    "stampLocation": "餐廳櫃台",
+    "closedDay": "Irregular",
+    "closedDayText": "不定休",
+    "backupStamp": "",
+    "openHours": "午餐 11:30~14:00 / 晚餐 17:00~22:00 (L.O. 21:30)",
+    "transitInfo": "JR 米子站出站步行約 3~4 分鐘 (米子市万能町 162，站前大通直行)",
+    "reservationUrl": "http://araiso.jp/",
+    "notes": "米子站前老字號海鮮日本料理/會席割烹。主打境港直送活松葉蟹、紅楚蟹、白烏賊與極品炭火鹽烤喉黑魚（のどぐろ），精緻海鮮會席與特選御膳皆備。Day 4 宿米子站前晚餐推薦首選，環境高雅舒適。"
+  },
+  {
+    "id": "taiheiki_yonago",
+    "name": "居酒屋 太平記 (米子站前在地名物居酒屋)",
+    "prefecture": "鳥取",
+    "type": "custom",
+    "lat": 35.4239,
+    "lng": 133.3338,
+    "stayDuration": "1.5 小時",
+    "climbLevel": "gourmet",
+    "climbLevelText": "🍶 米子站前超人氣海鮮居酒屋/大山地雞",
+    "nearestStation": "米子駅",
+    "stampLocation": "餐廳櫃台",
+    "closedDay": "None",
+    "closedDayText": "全年無休",
+    "backupStamp": "",
+    "openHours": "17:00〜24:00 (料理・飲品 L.O. 23:30)",
+    "transitInfo": "JR 米子站正對面商圈步行約 2~3 分鐘 (米子市明治町 271 名島大樓 1F)",
+    "reservationUrl": "https://izakayataiheiki.com/",
+    "notes": "米子站前在地人氣第一的山陰鄉土居酒屋！境港當日朝捕活魚生魚片拼盤、名物烤時令鮮魚、大山地雞串燒，搭配鳥取在地地酒（千代むすび、鷹勇等）。氣氛熱絡道地，價格親民，Day 4 晚上抵達米子卸行李後步行即可暢快小酌與品嚐海鮮。"
   }
 ];
     const BUILTIN_ITINERARY_OKAYAMA = [
@@ -2185,18 +2231,20 @@
   },
   {
     "dayNumber": 4,
-    "title": "Day 4：日本三景天橋立 (飛龍觀/傘松公園) ➔ 伊根舟屋 (海上午餐與遊覽船) ➔ 宿皆生溫泉 (海濱夕陽)",
+    "title": "Day 4：日本三景天橋立 (飛龍觀/傘松公園) ➔ 伊根舟屋 (海上午餐與遊覽船) ➔ 宿米子站前 (晚餐 荒磯/太平記)",
     "date": "2027-01-16",
     "baseStation": "城崎溫泉駅 / 天橋立駅 / 伊根灣 / 米子駅",
-    "lodging": "皆生溫泉 海濱旅館 (米子市)",
-    "lodgingLocation": "皆生溫泉海濱 (米子市)",
-    "recommendedHotels": "皆生菊乃家 / 皆生海色湯宿海心 (Umi to Kokoro) / 華水亭 (Kasuiten)",
-    "lodgingReason": "JR Pass 7日券(第2天)！包含京都丹後鐵道全線與長途特急，城崎溫泉出發遊天橋立與伊根舟屋，午後搭特急直達米子，入住山陰名湯皆生溫泉海景旅館，邊賞日本海夕陽邊享用境港極品海鮮！",
-    "notes": "• 【🎫 JR Pass 第2天】：憑 Pass 免費搭乘京都丹後鐵道全線特急及山陰本線特急！\n• 【天橋立・日本三景 (建議預留 2h)】：自城崎溫泉搭京都丹後鐵道前往天橋立，搭纜車上飛龍觀眺望青松沙洲「跨下窺看」天地顛倒絕景，或漫步迴旋橋與白砂青松參道。\n• 【伊根舟屋・海之京都 (預留 2h)】：自天橋立搭丹後路線巴士約 55 分鐘抵達伊根，搭乘伊根灣遊覽船（餵海鷗、賞230棟臨海舟屋群），並於海景餐廳享用鰤魚在地料理。\n• 【傍晚移動至皆生溫泉宿】：午後搭乘特急經福知山/鳥取直達米子站，轉路線巴士 20 分入住「皆生溫泉」海濱和風旅館，沉浸在自日本海湧出的鹽泉（海洋性美肌保溫之湯），享用山陰黑毛和牛與松葉蟹宴席。",
+    "lodging": "米子站前精選飯店 (米子市)",
+    "lodgingLocation": "JR 米子駅周邊 (米子市)",
+    "recommendedHotels": "米子全日空皇冠假日酒店 (ANA Crowne Plaza Yonago) / 米子華盛頓廣場飯店 / 東橫INN 米子站前 / Super Hotel 米子站前",
+    "lodgingReason": "JR Pass 7日券(第2天)！包含京都丹後鐵道全線與長途特急，城崎溫泉出發遊天橋立與伊根舟屋，傍晚搭特急直達米子站，直接出站步行入住站前飯店，免拖行李轉乘公車；隔日晨間前往安來(足立美術館/月山富田城)與松江交通最極速便捷！",
+    "notes": "• 【🎫 JR Pass 第2天】：憑 Pass 免費搭乘京都丹後鐵道全線特急及山陰本線特急！\n• 【天橋立・日本三景 (建議預留 2h)】：自城崎溫泉搭京都丹後鐵道前往天橋立，搭纜車上飛龍觀眺望青松沙洲「跨下窺看」天地顛倒絕景，或漫步迴旋橋與白砂青松參道。\n• 【伊根舟屋・海之京都 (預留 2h)】：自天橋立搭丹後路線巴士約 55 分鐘抵達伊根，搭乘伊根灣遊覽船（餵海鷗、賞230棟臨海舟屋群），並於海景餐廳享用鰤魚在地料理。\n• 【傍晚移動至米子站前宿】：午後搭乘丹鐵與 JR 特急經豐岡/鳥取直達米子站，出站步行 1~3 分鐘即達站前飯店 Check-in 卸下大件行李。\n• 【米子站前名店晚餐雙推薦 (步行 2~4 分鐘直達)】：\n  - 方案 A【日本料理 荒磯 本店】：米子老字號海鮮割烹（万能町），品嚐境港活松葉蟹、紅楚蟹、炭烤喉黑魚（のどぐろ）與海鮮會席。\n  - 方案 B【居酒屋 太平記】：站前商店街超人氣第一居酒屋（明治町），境港當日朝捕活魚生魚片拼盤、大山地雞串燒與在地地酒小酌。",
     "spotIds": [
       "amanohashidate",
       "ine_funaya",
-      "kaike_onsen"
+      "araiso_yonago",
+      "taiheiki_yonago",
+      "yonago_hotel"
     ]
   },
   {
@@ -2416,7 +2464,7 @@
       1: ['okayama_airport', 'chiyagyu_bisai', 'chiyagyu_kuya', 'okayama_aeon', 'okayama_hotel'],
       2: ['kinojo', 'tsuyama', 'tottori_hotel'],
       3: ['tottori', 'tottori_sakyu', 'tottori_takumi', 'kinosaki_onsen'],
-      4: ['amanohashidate', 'ine_funaya', 'kaike_onsen'],
+      4: ['amanohashidate', 'ine_funaya', 'araiso_yonago', 'taiheiki_yonago', 'yonago_hotel'],
       5: ['gassan_toda', 'adachi_museum', 'matsue', 'matsue_horikawa', 'tamatsukuri_onsen'],
       6: ['iwami_ginzan', 'tsuwano_lodging', 'tsuwano'],
       7: ['tsuwano', 'taikodani_inari', 'hagi', 'hagi_lodging'],
@@ -2705,8 +2753,16 @@
         } catch (_) {}
       });
 
+      // ★ 版本差異偵測：若本機儲存之行程版本非最新代碼版本，自動清除過期行程快取，確保平滑升級至 GitHub 最新資料
+      const isVersionMismatch = savedVer && savedVer !== CURRENT_ITINERARY_VER;
+      if (isVersionMismatch) {
+        localStorage.removeItem('jp_castle_itinerary_okayama');
+        localStorage.removeItem(STORAGE_KEY_ITINERARY);
+        localStorage.setItem(STORAGE_KEY_ITINERARY_VER, CURRENT_ITINERARY_VER);
+      }
+
       let loadedItinerary = null;
-      const savedOkayama = localStorage.getItem('jp_castle_itinerary_okayama');
+      const savedOkayama = isVersionMismatch ? null : localStorage.getItem('jp_castle_itinerary_okayama');
       if (savedOkayama) {
         try {
           const parsed = JSON.parse(savedOkayama);
@@ -2766,6 +2822,25 @@
             d3.spotIds = ["tottori", "tottori_sakyu", "tottori_takumi", "kinosaki_onsen"];
           }
         }
+        const d4 = state.itinerary.find(d => d.dayNumber === 4);
+        if (d4) {
+          d4.spotIds = (d4.spotIds || []).map(id => id === 'kaike_onsen' ? 'yonago_hotel' : id);
+          if (!d4.spotIds.includes('araiso_yonago')) {
+            const hotelIdx = d4.spotIds.indexOf('yonago_hotel');
+            if (hotelIdx !== -1) {
+              d4.spotIds.splice(hotelIdx, 0, 'araiso_yonago', 'taiheiki_yonago');
+            } else {
+              d4.spotIds.push('araiso_yonago', 'taiheiki_yonago', 'yonago_hotel');
+            }
+          }
+          d4.title = "Day 4：日本三景天橋立 (飛龍觀/傘松公園) ➔ 伊根舟屋 (海上午餐與遊覽船) ➔ 宿米子站前 (晚餐 荒磯/太平記)";
+          d4.lodging = "米子站前精選飯店 (米子市)";
+          d4.lodgingLocation = "JR 米子駅周邊 (米子市)";
+          d4.recommendedHotels = "米子全日空皇冠假日酒店 (ANA Crowne Plaza Yonago) / 米子華盛頓廣場飯店 / 東橫INN 米子站前 / Super Hotel 米子站前";
+          d4.lodgingReason = "JR Pass 7日券(第2天)！包含京都丹後鐵道全線與長途特急，城崎溫泉出發遊天橋立與伊根舟屋，傍晚搭特急直達米子站，直接出站步行入住站前飯店，免拖行李轉乘公車；隔日晨間前往安來(足立美術館/月山富田城)與松江交通最極速便捷！";
+          d4.baseStation = "城崎溫泉駅 / 天橋立駅 / 伊根灣 / 米子駅";
+          d4.notes = "• 【🎫 JR Pass 第2天】：憑 Pass 免費搭乘京都丹後鐵道全線特急及山陰本線特急！\n• 【天橋立・日本三景 (建議預留 2h)】：自城崎溫泉搭京都丹後鐵道前往天橋立，搭纜車上飛龍觀眺望青松沙洲「跨下窺看」天地顛倒絕景，或漫步迴旋橋與白砂青松參道。\n• 【伊根舟屋・海之京都 (預留 2h)】：自天橋立搭丹後路線巴士約 55 分鐘抵達伊根，搭乘伊根灣遊覽船（餵海鷗、賞230棟臨海舟屋群），並於海景餐廳享用鰤魚在地料理。\n• 【傍晚移動至米子站前宿】：午後搭乘丹鐵與 JR 特急經豐岡/鳥取直達米子站，出站步行 1~3 分鐘即達站前飯店 Check-in 卸下大件行李。\n• 【米子站前名店晚餐雙推薦 (步行 2~4 分鐘直達)】：\n  - 方案 A【日本料理 荒磯 本店】：米子老字號海鮮割烹（万能町），品嚐境港活松葉蟹、紅楚蟹、炭烤喉黑魚（のどぐろ）與海鮮會席。\n  - 方案 B【居酒屋 太平記】：站前商店街超人氣第一居酒屋（明治町），境港當日朝捕活魚生魚片拼盤、大山地雞串燒與在地地酒小酌。";
+        }
       } else {
         state.itinerary = fallbackItinerary;
       }
@@ -2795,18 +2870,46 @@
             day.transitAttachments['tottori_hotel_to_tottori_sakyu'] = JSON.parse(JSON.stringify(oldD3Att));
           }
         }
+        // Day 4 舊皆生附件映射至米子站前飯店
+        if (day.dayNumber === 4 && day.transitAttachments['ine_funaya_to_kaike_onsen']) {
+          const oldD4Att = day.transitAttachments['ine_funaya_to_kaike_onsen'];
+          if (!day.transitAttachments['ine_funaya_to_yonago_hotel'] || !day.transitAttachments['ine_funaya_to_yonago_hotel'].images || day.transitAttachments['ine_funaya_to_yonago_hotel'].images.length === 0) {
+            day.transitAttachments['ine_funaya_to_yonago_hotel'] = JSON.parse(JSON.stringify(oldD4Att));
+          }
+        }
+        // Day 5 舊皆生出發附件映射至米子站前出發
+        if (day.dayNumber === 5 && day.transitAttachments['kaike_onsen_to_gassan_toda']) {
+          const oldD5Att = day.transitAttachments['kaike_onsen_to_gassan_toda'];
+          if (!day.transitAttachments['yonago_hotel_to_gassan_toda'] || !day.transitAttachments['yonago_hotel_to_gassan_toda'].images || day.transitAttachments['yonago_hotel_to_gassan_toda'].images.length === 0) {
+            day.transitAttachments['yonago_hotel_to_gassan_toda'] = JSON.parse(JSON.stringify(oldD5Att));
+          }
+        }
       });
 
-      // 景點庫合流：徹底排除湯郷溫泉，確保納入鳥取站前飯店，且嚴格過濾已刪除景點
+      // 景點庫合流：徹底排除湯郷溫泉與皆生溫泉，確保納入鳥取站前飯店與米子站前飯店，且嚴格過濾已刪除景點
       let initialSpots = savedSpots ? JSON.parse(savedSpots) : [];
-      initialSpots = initialSpots.filter(s => s.id !== 'sakaiminato_mizuki' && s.id !== 'yunogo_onsen');
+      initialSpots = initialSpots.filter(s => s.id !== 'sakaiminato_mizuki' && s.id !== 'yunogo_onsen' && s.id !== 'kaike_onsen');
+      if (!state.deletedSpotIds) state.deletedSpotIds = [];
+      if (!state.deletedSpotIds.includes('kaike_onsen')) state.deletedSpotIds.push('kaike_onsen');
       state.spots = initialSpots;
       fallbackSpots.forEach(ds => {
-        if (ds.id === 'yunogo_onsen') return;
+        if (ds.id === 'yunogo_onsen' || ds.id === 'kaike_onsen') return;
         if (state.deletedSpotIds && state.deletedSpotIds.includes(ds.id)) return;
         const existing = state.spots.find(s => s.id === ds.id);
         if (!existing) {
           state.spots.push(JSON.parse(JSON.stringify(ds)));
+        } else if (ds.id === 'tottori_tsubomi') {
+          existing.name = ds.name;
+          existing.lat = ds.lat;
+          existing.lng = ds.lng;
+          existing.climbLevelText = ds.climbLevelText;
+          existing.nearestStation = ds.nearestStation;
+          existing.openHours = ds.openHours;
+          existing.closedDay = ds.closedDay;
+          existing.closedDayText = ds.closedDayText;
+          existing.transitInfo = ds.transitInfo;
+          existing.reservationUrl = ds.reservationUrl;
+          existing.notes = ds.notes;
         } else if (ds.id === 'kenran_dining_gen' || ds.id === 'kenran_amiyaki') {
           existing.transitInfo = ds.transitInfo;
           existing.notes = ds.notes;
@@ -3225,6 +3328,71 @@
       ],
       
       // === 新增精確鐵道與公路軌跡走廊 (解決路線斷掉問題) ===
+      "ine_funaya_to_araiso_yonago": [
+        [35.6740, 135.2915], // 伊根舟屋
+        [35.6120, 135.2210], // 丹海巴士 沿宮津灣公路
+        [35.5694, 135.1917], // 天橋立駅
+        [35.5250, 135.0350], // 京都丹後鐵道 與謝野/宮津
+        [35.5452, 134.8214], // 豐岡駅 (銜接 JR 山陰本線)
+        [35.6268, 134.8115], // 城崎溫泉駅
+        [35.6310, 134.6250], // 香住 谷川海岸鐵道
+        [35.6480, 134.5380], // 餘部 餘部鐵橋絕景高架
+        [35.6250, 134.4250], // 濱坂 溫泉門戶
+        [35.5800, 134.3300], // 岩美 浦富海岸線
+        [35.4941, 134.2258], // JR 鳥取駅
+        [35.5150, 134.0500], // 末恒 白兔海岸
+        [35.5348, 134.1352], // 青谷海岸
+        [35.4850, 133.9500], // 湯梨濱・松崎
+        [35.4412, 133.8564], // 倉吉駅
+        [35.5100, 133.6800], // 琴浦・赤碕海岸
+        [35.4850, 133.4800], // 大山町海岸・眺望大山
+        [35.4227, 133.3364], // 米子駅
+        [35.4250, 133.3347]  // 荒磯 本店
+      ],
+      "araiso_yonago_to_taiheiki_yonago": [
+        [35.4250, 133.3347], // 荒磯 本店 (万能町)
+        [35.4245, 133.3342],
+        [35.4239, 133.3338]  // 居酒屋 太平記 (明治町)
+      ],
+      "taiheiki_yonago_to_yonago_hotel": [
+        [35.4239, 133.3338], // 居酒屋 太平記
+        [35.4235, 133.3350],
+        [35.4234, 133.3364]  // 米子站前精選飯店
+      ],
+      "araiso_yonago_to_yonago_hotel": [
+        [35.4250, 133.3347], // 荒磯 本店
+        [35.4242, 133.3355],
+        [35.4234, 133.3364]  // 米子站前精選飯店
+      ],
+      "ine_funaya_to_yonago_hotel": [
+        [35.6740, 135.2915], // 伊根舟屋
+        [35.6120, 135.2210], // 丹海巴士 沿宮津灣公路
+        [35.5694, 135.1917], // 天橋立駅
+        [35.5250, 135.0350], // 京都丹後鐵道 與謝野/宮津
+        [35.5452, 134.8214], // 豐岡駅 (銜接 JR 山陰本線)
+        [35.6268, 134.8115], // 城崎溫泉駅
+        [35.6310, 134.6250], // 香住 谷川海岸鐵道
+        [35.6480, 134.5380], // 餘部 餘部鐵橋絕景高架
+        [35.6250, 134.4250], // 濱坂 溫泉門戶
+        [35.5800, 134.3300], // 岩美 浦富海岸線
+        [35.4941, 134.2258], // JR 鳥取駅
+        [35.5150, 134.0500], // 末恒 白兔海岸
+        [35.5348, 134.1352], // 青谷海岸
+        [35.4850, 133.9500], // 湯梨濱・松崎
+        [35.4412, 133.8564], // 倉吉駅
+        [35.5100, 133.6800], // 琴浦・赤碕海岸
+        [35.4850, 133.4800], // 大山町海岸・眺望大山
+        [35.4227, 133.3364], // 米子駅
+        [35.4234, 133.3364]  // 米子站前精選飯店
+      ],
+      "yonago_hotel_to_gassan_toda": [
+        [35.4234, 133.3364], // 米子站前精選飯店
+        [35.4227, 133.3364], // 米子站
+        [35.4312, 133.2514], // 安來站 (山陰本線)
+        [35.3952, 133.2215], // 飯梨川山谷公路 (黃色公車路線)
+        [35.3785, 133.2052], // 廣瀨町
+        [35.3614, 133.1906]  // 月山富田城跡
+      ],
       "ine_funaya_to_kaike_onsen": [
         [35.6740, 135.2915], // 伊根舟屋
         [35.6120, 135.2210], // 丹海巴士 沿宮津灣公路
@@ -5708,6 +5876,41 @@
     // 鐵路交通資料庫 (JR Pass 涵蓋/換乘與真實行車時間)
     // ==========================================
     const TRANSIT_KNOWLEDGE_BASE = {
+      "ine_funaya_to_araiso_yonago": {
+        name: "丹海巴士 + 丹鐵特急 + JR 特急超級松風號 (伊根 ➔ 天橋立 ➔ 豐岡 ➔ 米子站前 荒磯)",
+        time: "約 3 小時 20 分 (特急抵達米子站，步行 3 分直達荒磯)",
+        passCovered: true,
+        passNote: "JR Pass 全包！丹鐵與山陰特急指定席全免費 (丹海巴士單程 400 円自理)",
+        tips: "傍晚特急抵達米子站，出站徒步 3 分鐘即達日本料理荒磯本店，品嚐境港松葉蟹與烤喉黑魚！"
+      },
+      "araiso_yonago_to_taiheiki_yonago": {
+        name: "米子站前商圈 步行悠閒漫步 (万能町 ➔ 明治町商店街)",
+        time: "步行約 2 分鐘 (約 180 公尺)",
+        passCovered: true,
+        passNote: "徒步直達 (免車資)",
+        tips: "兩家名店都在米子站前同一個街區，步行 2 分鐘即可在割烹與居酒屋間自由選擇或續攤！"
+      },
+      "taiheiki_yonago_to_yonago_hotel": {
+        name: "米子站前商圈 步行返回住宿飯店 (明治町 ➔ 站前飯店)",
+        time: "步行約 2~3 分鐘 (出店即達站前)",
+        passCovered: true,
+        passNote: "徒步直達 (免車資)",
+        tips: "居酒屋太平記用餐小酌後，步行 2~3 分鐘即可輕鬆返回站前飯店休息，極致便利！"
+      },
+      "araiso_yonago_to_yonago_hotel": {
+        name: "米子站前商圈 步行返回住宿飯店 (万能町 ➔ 站前飯店)",
+        time: "步行約 2~3 分鐘",
+        passCovered: true,
+        passNote: "徒步直達 (免車資)",
+        tips: "荒磯割烹用餐完畢後，沿站前通步行 3 分鐘即達飯店大廳 Check-in 休息。"
+      },
+      "ine_funaya_to_yonago_hotel": {
+        name: "丹海巴士 + 丹鐵特急 + JR 特急超級松風號 (伊根 ➔ 天橋立 ➔ 豐岡 ➔ 米子站前夜宿)",
+        time: "約 3 小時 20 分 (巴士55分+丹鐵50分+JR特急1小時35分，出站直達飯店)",
+        passCovered: true,
+        passNote: "JR Pass 全包！京都丹後鐵道特急與 JR 山陰本線特急指定席全額免費 (丹海巴士單程 400 円需自理)",
+        tips: "天橋立取行李後搭丹鐵至豐岡無縫換乘 JR 超級松風號直達米子站，出站步行 1~3 分即達站前飯店 Check-in，免拖行李轉公車！"
+      },
       "ine_funaya_to_kaike_onsen": {
         name: "丹海巴士 + 丹鐵特急 + JR 特急超級松風號 (伊根 ➔ 天橋立 ➔ 豐岡 ➔ 米子 ➔ 皆生溫泉)",
         time: "約 3 小時 40 分 (巴士55分+丹鐵50分+JR特急1小時35分+巴士15分)",
@@ -6010,7 +6213,14 @@
         tips: "特急直通米子站，轉公車至皆生海濱公園拍溫泉穿山鼠人孔蓋"
       },
 
-      // Day 4
+      // Day 5
+      "yonago_hotel_to_gassan_toda": {
+        name: "JR 山陰本線 (米子站 ➔ 安來站 9分) + 安來市營黃色巴士 (25分)",
+        time: "合計約 35 分鐘",
+        passCovered: true,
+        passNote: "米子至安來 JR Pass 全包！(安來市營黃色公車 200 円自費)",
+        tips: "晨間自米子站前直接搭 JR 9 分鐘到安來站，轉乘安來黃色公車直達月山富田城，極速順暢！"
+      },
       "kaike_onsen_to_gassan_toda": {
         name: "JR 山陰本線 (米子➔安來 9分) + 安來市營黃色巴士 (25分)",
         time: "合計約 45 分鐘",
@@ -6934,6 +7144,9 @@
                 <span>上傳時刻表縮圖</span>
                 <input type="file" accept="image/*,application/pdf" class="hidden" onchange="handleUploadTransitTimetable(event, ${dayNumber}, '${transitKey}')">
               </label>
+              <button type="button" onclick="promptTransitLocalImage(${dayNumber}, '${transitKey}')" class="bg-white hover:bg-slate-50 text-indigo-700 border border-indigo-200 hover:border-indigo-300 px-1.5 py-0.5 rounded text-[11px] font-bold flex items-center gap-1 shadow-3xs transition" title="連結放置於專案 timetables/ 資料夾中的實體圖檔">
+                <span>🖼️</span><span>連結圖檔</span>
+              </button>
               <button type="button" onclick="promptTransitTimetableLink(${dayNumber}, '${transitKey}')" class="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 px-1.5 py-0.5 rounded text-[11px] font-medium flex items-center gap-0.5 shadow-3xs transition" title="輸入時刻表官網/PDF檔案連結">
                 <span>🔗</span><span>網址</span>
               </button>
@@ -9730,6 +9943,125 @@
       att.link = '';
       saveState();
       renderMainPanel();
+    }
+
+    function promptTransitLocalImage(dayNumber, transitKey) {
+      const filename = prompt('請輸入放置於專案 timetables/ 資料夾中的圖檔檔名或相對路徑：\n(例如：d1_bus.jpg 或 timetables/d1_bus.jpg)');
+      if (!filename || !filename.trim()) return;
+      let cleanPath = filename.trim().replace(/^[\\\/]+/, '');
+      if (!cleanPath.startsWith('timetables/')) {
+        cleanPath = 'timetables/' + cleanPath;
+      }
+      const displayName = prompt('請輸入此圖片的標題名稱 (例如：岡山機場接駁巴士時刻表)：', cleanPath.split('/').pop()) || cleanPath;
+      const att = getOrCreateTransitAttachment(dayNumber, transitKey);
+      if (!att) return;
+      if (!att.images) att.images = [];
+      att.images.push({
+        name: displayName.trim(),
+        url: cleanPath,
+        type: cleanPath.toLowerCase().endsWith('.png') ? 'image/png' : 'image/jpeg',
+        isPdf: cleanPath.toLowerCase().endsWith('.pdf'),
+        uploadedAt: new Date().toLocaleDateString('zh-TW')
+      });
+      saveState({ notify: true });
+      renderMainPanel();
+    }
+
+    function exportTransitImagesToFiles() {
+      let count = 0;
+      const downloadTasks = [];
+      (state.itinerary || []).forEach(day => {
+        if (!day.transitAttachments) return;
+        Object.keys(day.transitAttachments).forEach(key => {
+          const att = day.transitAttachments[key];
+          if (att && Array.isArray(att.images)) {
+            att.images.forEach((img, idx) => {
+              if (img && img.url && img.url.startsWith('data:')) {
+                count++;
+                const isPng = img.type && img.type.includes('png');
+                const ext = isPng ? 'png' : 'jpg';
+                const filename = `d${day.dayNumber}_${key}_${idx + 1}.${ext}`;
+                downloadTasks.push({
+                  dataUrl: img.url,
+                  filename: filename,
+                  imgRef: img,
+                  newPath: `timetables/${filename}`
+                });
+              }
+            });
+          }
+        });
+      });
+
+      if (downloadTasks.length === 0) {
+        alert("目前瀏覽器中沒有以 Base64 上傳的圖片！\n\n您可以直接將時刻表截圖放入專案的「timetables」資料夾中，並在搭乘區間點擊【🖼️ 連結圖檔】進行關聯。");
+        return;
+      }
+
+      if (!confirm(`共找到 ${count} 張已在網頁上傳的時刻表圖片！\n\n點擊「確定」將自動批次下載這些實體圖片檔案。\n下載完成後：\n1. 將所有圖片檔案放進本專案的「timetables」資料夾\n2. 點擊頂部【📥 匯出 spots_data.js】取代本地檔案\n3. Git push 上 GitHub 即可！\n\n是否立即下載？`)) {
+        return;
+      }
+
+      downloadTasks.forEach((task, i) => {
+        setTimeout(() => {
+          const a = document.createElement('a');
+          a.href = task.dataUrl;
+          a.download = task.filename;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+
+          // 自動切換為實體相對路徑
+          task.imgRef.url = task.newPath;
+
+          if (i === downloadTasks.length - 1) {
+            saveState({ notify: true });
+            renderMainPanel();
+            setTimeout(() => {
+              alert(`✅ 全部 ${count} 張圖片已下載完成！\n\n【後續步驟】：\n1. 請將下載的圖檔移入專案內的「timetables」資料夾\n2. 點擊頂部【📥 匯出 spots_data.js】覆蓋專案內的 spots_data.js\n3. 將修改 push 到 GitHub，任何電腦連線就能永久看到圖片！`);
+            }, 500);
+          }
+        }, i * 250);
+      });
+    }
+
+    function exportUpdatedSpotsDataJs() {
+      try {
+        const spotsStr = JSON.stringify(state.spots, null, 2);
+        const itinStr = JSON.stringify(state.itinerary, null, 2);
+        const faresStr = JSON.stringify(state.transitFares || [], null, 2);
+        const expStr = JSON.stringify(state.expenses || [], null, 2);
+        const flightStr = JSON.stringify(typeof FLIGHT_COMPARISON_DATA !== 'undefined' ? FLIGHT_COMPARISON_DATA : [], null, 2);
+
+        const content = `// spots_data.js - 包含實體圖檔路徑的最新資料庫 (自動匯出)\n` +
+          `const DEFAULT_SPOTS = ${spotsStr};\n\n` +
+          `const DEFAULT_ITINERARY = ${itinStr};\n\n` +
+          `const FLIGHT_COMPARISON_DATA = ${flightStr};\n\n` +
+          `const DEFAULT_TRANSIT_FARES = ${faresStr};\n\n` +
+          `const DEFAULT_TRIP_BUDGET = ${expStr};\n\n` +
+          `if (typeof window !== 'undefined') {\n` +
+          `  window.DEFAULT_SPOTS = DEFAULT_SPOTS;\n` +
+          `  window.DEFAULT_ITINERARY = DEFAULT_ITINERARY;\n` +
+          `  window.FLIGHT_COMPARISON_DATA = FLIGHT_COMPARISON_DATA;\n` +
+          `  window.DEFAULT_TRIP_BUDGET = DEFAULT_TRIP_BUDGET;\n` +
+          `  window.DEFAULT_TRANSIT_FARES = DEFAULT_TRANSIT_FARES;\n` +
+          `}\n` +
+          `if (typeof module !== 'undefined' && module.exports) {\n` +
+          `  module.exports = { DEFAULT_SPOTS, DEFAULT_ITINERARY, FLIGHT_COMPARISON_DATA, DEFAULT_TRIP_BUDGET, DEFAULT_TRANSIT_FARES };\n` +
+          `}\n`;
+
+        const blob = new Blob([content], { type: 'application/javascript;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'spots_data.js';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      } catch (err) {
+        alert("匯出 spots_data.js 失敗: " + err.message);
+      }
     }
 
     // ==========================================
