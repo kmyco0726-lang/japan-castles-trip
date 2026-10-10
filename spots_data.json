@@ -516,9 +516,9 @@
       "closedDayText": "住宿推薦點",
       "backupStamp": "",
       "openHours": "全天",
-      "transitInfo": "JR 松江駅搭山陰本線至「玉造溫泉駅」(8分) 轉接駁車5分；或松江站前搭路線巴士直達約25分",
+      "transitInfo": "① 松江城「県民会館前」搭乘一畑巴士 P 路線(玉造線)直達「玉造溫泉」街中心(約32~35分，610円，可刷IC卡)；② 亦可於 JR 松江站搭山陰本線至「玉造溫泉駅」(8分) 轉旅館接駁車 5 分",
       "reservationUrl": "https://tamayado.com/",
-      "notes": "出雲神話八尺瓊勾玉發祥地，日本最古美肌化妝水神湯，沿玉湯川有宮橋、免費足湯與結緣神社。"
+      "notes": "出雲神話八尺瓊勾玉發祥地，日本最古美肌化妝水神湯。交通首選：松江城南側「県民会館前」直接搭一畑巴士 P 路線（玉造線）直達溫泉街中心，免走回松江站轉車！沿玉湯川有宮橋、免費足湯、湯藥師廣場與結緣玉作湯神社。"
     },
     {
       "id": "tomonoura_onsen",
@@ -641,14 +641,14 @@
       "city": "大田市",
       "lat": 35.1054,
       "lng": 132.4385,
-      "transitTime": "JR 大田市站搭石見交通公車 28 分至大森代官所，租電動單車 15 分直達龍源寺間步",
+      "transitTime": "① 玉造溫泉搭特急至 JR 大田市站(約40分，Pass包) ➔ ② 站前搭石見交通巴士至大森(28分，750円) ➔ ③ 租電動輔助自行車騎行約15分(2.3km)直達坑道口",
       "timeNeeded": "3~3.5 小時",
-      "mustEat": "群言堂老宅咖啡、三瓶蕎麥麵、銀山番茶、胡麻豆腐",
+      "mustEat": "群言堂老宅咖啡(庭園午餐/胡麻豆腐)、三瓶手打蕎麥麵、銀山番茶、銀山地酒",
       "reservation": false,
       "passCovered": true,
-      "passNote": "JR 山陰本線全包 (石見交通公車單程約 750 円、電動單車租借 700 円自費)",
+      "passNote": "JR 山陰本線特急 100% 全包！(石見交通公車單程約 750 円、電動單車 2 小時租借約 700 円自費；龍源寺間步門票外國人特惠 400 円)",
       "officialUrl": "https://www.ginzan-wm.jp/",
-      "notes": "聯合國教科文組織世界文化遺產！江戶幕府直轄大森銀山，全盛期白銀產量佔全球三分之一。租借電動單車穿梭森林綠蔭，走入保存最完整且唯一常態開放之「龍源寺間步」坑道（全長273公尺），近距離觀察昔日礦工手鑿鑿痕與排水豎坑；回程漫步大森代官所跡白壁紅瓦老街。"
+      "notes": "【世界文化遺產・石見銀山遺跡與龍源寺間步深度巡禮】\n• 【歷史背景】：16~17 世紀大航海時代產量佔全球三分之一的銀礦重鎮，採環境共生傳統開採技術，無大規模森林砍伐，2007年列名世界遺產。\n• 【交通全動線】：JR 大田市站前搭石見交通「大森・銀山線」巴士於「大森」或「大森代官所跡」下車。因全區禁止私家車進入，推薦於大森租借電動輔助自行車（約700円/2小時），沿林蔭緩坡騎行 15 分鐘（2.3公里）直達「龍源寺間步」坑道口停車場（步行需45分）。\n• 【龍源寺間步坑道 (唯一常態開放)】：坑道全長 273 公尺（江戶手鑿區 157m + 昭和貫通新坑道 116m）。坑內終年恆溫約 10~13℃，近距離清晰可見岩壁上手鑿鑿痕（のみ跡）、垂直排水豎坑、燈明架壁龕與橫向小裂隙「ひ押し」。門票大人 500 円（出示外國護照特惠 400 円）。\n• 【大森老街散策 & 美食】：參觀後單車順坡滑回大森老街，漫步江戶代官所跡與紅瓦白壁古民家聚落。必訪「群言堂 本店」（石見銀山生活文化複合空間，老宅庭園咖啡享用季節里山午餐與限定甜點）。"
     },
     {
       "id": "tsuwano_lodging",
@@ -1504,8 +1504,8 @@
       "lodging": "玉造溫泉 和風旅館 (日本第一美肌神之湯)",
       "lodgingLocation": "玉造溫泉街 (松江市玉湯町)",
       "recommendedHotels": "佳翠苑 皆美 (Kasuen Minami) / 湯之助之宿 長樂園 / 白石家 (Shiraishiya)",
-      "lodgingReason": "JR Pass 7日券(第3天)！松江城遊覽後搭 JR 山陰本線僅 8 分鐘直達玉造溫泉站，旅館專車接駁；享受日本最古天然化妝水美肌神湯，漫步玉湯川宮橋與足湯！",
-      "notes": "• 【🎫 JR Pass 第3天】：涵蓋在來線與特急八雲號指定席！\n• 【月山富田城・戰國五大山城 (停留 2~2.5h)】：清晨自米子搭 JR 山陰本線至安來站，轉搭安來市營黃色巴士攻登戰國名城月山富田城，巡禮山中御殿與本丸天險。\n• 【足立美術館・連續21年日本第一庭園 (停留 1.5h)】：山麓搭黃色公車 8 分鐘直達足立美術館，透過借景枯山水庭園與橫山大觀名畫感受極致美學。\n• 【國寶松江城・現存天守 (停留 1.5h)】：搭足立免費接駁車至安來站，搭特急八雲號 14 分至松江站，搭觀光巴士至松江城登現存天守。\n• 【傍晚前往玉造溫泉 ➔ Check-in】：返回松江站搭乘 JR 山陰本線僅 8 分鐘抵達「玉造溫泉駅」(JR Pass 免費！出站旅館專車接送)，入住和風名宿，享受千年美肌神之湯與島根在地會席晚宴。",
+      "lodgingReason": "JR Pass 7日券(第3天)！松江城遊畢後可直接自南側「県民会館前」搭乘一畑巴士 P 路線(玉造線)直達玉造溫泉街(約35分，610円)免走回車站；或回松江站搭 JR 山陰本線 8 分鐘抵達。夜宿千年神湯享受美肌溫泉與會席料理！",
+      "notes": "• 【🎫 JR Pass 第3天】：涵蓋在來線與特急八雲號指定席！\n• 【月山富田城・戰國五大山城 (停留 2~2.5h)】：清晨自米子搭 JR 山陰本線至安來站，轉搭安來市營黃色巴士攻登戰國名城月山富田城，巡禮山中御殿與本丸天險。\n• 【足立美術館・連續21年日本第一庭園 (停留 1.5h)】：山麓搭黃色公車 8 分鐘直達足立美術館，透過借景枯山水庭園與橫山大觀名畫感受極致美學。\n• 【國寶松江城・現存天守 (停留 1.5h)】：搭足立免費接駁車至安來站，搭特急八雲號 14 分至松江站，搭觀光巴士至松江城登現存天守。\n• 【傍晚前往玉造溫泉 ➔ Check-in (直達巴士首選)】：松江城遊覽後，直接於松江城南側「県民会館前」站牌搭乘一畑巴士「P 路線 - 玉造線」，一車直達終點「玉造溫泉」街中心（約 32~35 分，610 円，可刷 IC 卡），免拖行李走回松江站轉電車！(備案：亦可搭市區公車回松江站，轉乘 JR 山陰本線 8 分抵玉造溫泉站，由旅館接駁車送達)。入住和風名宿，享受千年美肌神之湯與島根在地會席晚宴。",
       "spotIds": [
         "gassan_toda",
         "adachi_museum",
@@ -1522,7 +1522,7 @@
       "lodgingLocation": "津和野城下町 (殿町周邊 / 站前)",
       "recommendedHotels": "津和野 原田屋 (Haradaya) / 若里 (Wakasato) / 益田站前飯店",
       "lodgingReason": "JR Pass 7日券(第4天)！搭乘長途特急スーパーまつかぜ與スーパーおき直達津和野，漫步紅瓦與鯉魚街道，入住小京都和風旅館，次日晨間搭纜車攻津和野城視野最佳。",
-      "notes": "• 【🎫 JR Pass 第4天】：全包山陰兩大特急指定席！\n• 【世界遺產石見銀山・龍源寺間步坑道 (停留 3h)】：搭乘 JR 特急 Super Oki 約 40 分直達「大田市站」，搭石見交通巴士抵大森代官所跡。租借電動單車穿梭森林綠蔭，進入「龍源寺間步」坑道（全長 273 公尺），近距離觀察昔日礦工手鑿岩壁痕跡。\n• 【午後搭特急直奔津和野 ➔ Check-in】：返回大田市站，搭乘 JR 山陰本線/山口線特急直達「津和野站」，入住小京都紅瓦老街和風名宿，品嚐鄉土香魚與在地料理。",
+      "notes": "• 【🎫 JR Pass 第4天】：全包山陰兩大特急指定席！\n• 【世界遺產石見銀山・龍源寺間步坑道 (停留約 3~3.5h)】：\n  - ① 交通接駁：晨間自玉造溫泉搭旅館接駁車至玉造溫泉站，搭乘 JR 特急スーパーまつかぜ約 40 分抵達「大田市站」(Pass 全包)；於站前轉搭石見交通公車（大森・銀山線，約 28 分，單程 750 円）抵達「大森」或「大森代官所跡」。\n  - ② 綠意騎行：於大森租借電動輔助自行車（約 700 円/2小時），沿林蔭緩坡騎行約 15 分鐘（2.3公里）直達「龍源寺間步」坑道口停車場（全區禁行汽車）。\n  - ③ 深入古坑道：步入江戶幕府直轄、世界遺產唯一常態開放的「龍源寺間步」（全長 273 公尺，坑內恆溫 10~13℃），近距離親睹岩壁上保存完好的手鑿痕跡（のみ跡）、垂直排水豎坑與燈明架。\n  - ④ 大森街區與午餐：單車順坡滑回大森老街，漫步紅瓦白壁古民家聚落，推薦於「群言堂 本店」享用里山庭園午餐或手打三瓶蕎麥麵。\n• 【午後搭特急直奔津和野 ➔ Check-in】：搭公車返回大田市站，搭乘特急スーパーおき直達「津和野站」(約 1h40m，Pass 全包)，入住小京都和風名宿，品嚐鄉土香魚與在地料理。",
       "spotIds": [
         "iwami_ginzan",
         "tsuwano_lodging"
@@ -1643,6 +1643,223 @@
       "spotIds": [
         "okayama_airport"
       ]
+    }
+  ],
+  "flights": [
+    {
+      "id": "okayama_tiger",
+      "destination": "岡山 (OKJ)",
+      "destCity": "岡山桃太郎機場 (台北桃園 TPE 直飛)",
+      "airline": "台灣虎航 (Tigerair Taiwan)",
+      "airlineCode": "IT",
+      "flightType": "LCC廉價航空",
+      "aircraft": "A320 / A320neo",
+      "frequency": "每天 1 班天天直飛 (1/13 去 ➔ 1/26 回，0天移動完美吻合)",
+      "travelDates": "1/13 (三) ~ 1/26 (二) [共 14 天 13 晚]",
+      "exactPrice": "NT$ 13,537",
+      "priceRangeWithBaggage": "NT$ 13,537",
+      "pricePeakWithBaggage": "含加購 20kg 托運行李直客價",
+      "outbound": {
+        "flightNo": "IT214",
+        "departure": "11:30 台北桃園 (TPE)",
+        "arrival": "15:05 岡山 (OKJ)",
+        "duration": "2 小時 35 分鐘",
+        "timingType": "午去 (1/13 出發・舒適免天未亮出門)"
+      },
+      "inbound": {
+        "flightNo": "IT215",
+        "departure": "15:55 岡山 (OKJ)",
+        "arrival": "18:05 台北桃園 (TPE)",
+        "duration": "3 小時 10 分鐘",
+        "timingType": "下午回 (1/26 返台・早晨還能攻備中松山城)"
+      },
+      "baggageIncluded": "已包含來回 20kg 托運行李 (約 NT$1,900，已計入票價)",
+      "carryOn": "1件手提 + 1件隨身物品，合計 10kg",
+      "jrPassLink": "機場搭乘中鐵/岡電機場巴士 30 分 (1,000円) 直達岡山站，立即開通山陽&山陰 Pass！",
+      "pros": [
+        "山陰山陽大環線地理幾何中心，南北進出最順暢",
+        "天天直飛不卡班表，回程 15:55 起飛，最後一天早晨還能從容攻登備中松山城",
+        "機場小而美，通關與行李提領極速 (15~20分鐘出關)"
+      ],
+      "cons": [
+        "票價隨日期浮動，熱門賞楓/雪季需提早開票",
+        "機上餐飲與選位需額外加購"
+      ],
+      "officialUrl": "https://www.tigerairtw.com/",
+      "googleFlightsUrl": "https://www.google.com/travel/flights?q=Flights%20to%20OKJ%20from%20TPE",
+      "skyscannerUrl": "https://www.skyscanner.com.tw/transport/flights/tpe/okj/"
+    },
+    {
+      "id": "hiroshima_cal",
+      "destination": "廣島 (HIJ)",
+      "destCity": "廣島機場 (台北桃園 TPE 直飛)",
+      "airline": "中華航空 (China Airlines)",
+      "airlineCode": "CI",
+      "flightType": "傳統全服務航空 (FSC)",
+      "aircraft": "A321neo (全機4K娛樂系統)",
+      "frequency": "每週 6 班 (週二至日皆飛，1/13 去 ➔ 1/26 回完美吻合)",
+      "travelDates": "1/13 (三) ~ 1/26 (二) [共 14 天 13 晚]",
+      "exactPrice": "NT$ 15,038",
+      "priceRangeWithBaggage": "NT$ 15,038",
+      "pricePeakWithBaggage": "傳統航空免費含 23kg 托運行李與餐飲",
+      "outbound": {
+        "flightNo": "CI112",
+        "departure": "07:15 台北桃園 (TPE)",
+        "arrival": "10:35 廣島 (HIJ)",
+        "duration": "2 小時 20 分鐘",
+        "timingType": "早去 (1/13 出發・10:35 即達！第一天直玩廣島)"
+      },
+      "inbound": {
+        "flightNo": "CI113",
+        "departure": "11:35 廣島 (HIJ)",
+        "arrival": "13:15 台北桃園 (TPE)",
+        "duration": "2 小時 40 分鐘",
+        "timingType": "午回 (1/26 返台・下午返抵國門好收心)"
+      },
+      "baggageIncluded": "免費內含 1 件 23kg 托運行李 (傳統全服務航空標配，免加價)",
+      "carryOn": "1件手提 7kg + 1件隨身包",
+      "jrPassLink": "機場搭利木津巴士約 45 分 (1,450円) 直達廣島站，直接啟用 Pass 搭新幹線！",
+      "pros": [
+        "早去優勢巨大！10:35 即抵達廣島，第 1 天下午能直接跑廣島城、原爆圓頂與護國神社",
+        "全服務航空規格：免費含 23kg 行李、熱熱飛機餐飲、個人 4K 影音娛樂系統",
+        "適合廣島起點直接切入山口與島根大環線"
+      ],
+      "cons": [
+        "回程是上午 11:35，最後一天早上需較早前往機場 (約 09:30 到廣島機場)",
+        "週一無班機 (去程 1/13 週三、回程 1/26 週二皆有航班)"
+      ],
+      "officialUrl": "https://www.china-airlines.com/",
+      "googleFlightsUrl": "https://www.google.com/travel/flights?q=Flights%20to%20HIJ%20from%20TPE",
+      "skyscannerUrl": "https://www.skyscanner.com.tw/transport/flights/tpe/hij/"
+    },
+    {
+      "id": "yonago_tiger",
+      "destination": "米子 (YGJ)",
+      "destCity": "米子鬼太郎機場 (台北桃園 TPE 直飛)",
+      "airline": "台灣虎航 (Tigerair Taiwan)",
+      "airlineCode": "IT",
+      "flightType": "LCC廉價航空",
+      "aircraft": "A320 / A320neo",
+      "frequency": "每週 2 班 (僅每週一、五飛航・±2天最佳調度方案)",
+      "travelDates": "1/15 (五) ~ 1/25 (一) [共 11 天 10 晚]",
+      "exactPrice": "NT$ 11,537",
+      "priceRangeWithBaggage": "NT$ 11,537",
+      "pricePeakWithBaggage": "含加購 20kg 托運行李直客價",
+      "outbound": {
+        "flightNo": "IT724",
+        "departure": "13:30 台北桃園 (TPE)",
+        "arrival": "17:00 米子 (YGJ)",
+        "duration": "2 小時 30 分鐘",
+        "timingType": "午去 (1/15 週五出發・去程+2天調度)"
+      },
+      "inbound": {
+        "flightNo": "IT725",
+        "departure": "13:00 米子 (YGJ)",
+        "arrival": "15:15 台北桃園 (TPE)",
+        "duration": "3 小時 15 分鐘",
+        "timingType": "午回 (1/25 週一返台・回程-1天調度)"
+      },
+      "baggageIncluded": "已包含來回 20kg 托運行李 (約 NT$1,900，已計入票價)",
+      "carryOn": "1件手提 + 1件隨身物品，合計 10kg",
+      "jrPassLink": "機場直結 JR 米子空港站，搭 JR 境線 30 分到米子站或 15 分到皆生溫泉！",
+      "pros": [
+        "票價最親民！含行李僅 NT$ 11,537，性價比極高",
+        "直搗山陰核心腹地！下機即是皆生溫泉、出雲大社、松江城門戶",
+        "鬼太郎彩繪候機室與妖怪雕像拍照極具特色"
+      ],
+      "cons": [
+        "受每週僅一、五飛航限制，需由 14 天縮短為 11 天 (1/15~1/25)",
+        "若遇冬季山陰暴雪，航班調度彈性較主要樞紐機場略小"
+      ],
+      "officialUrl": "https://www.tigerairtw.com/",
+      "googleFlightsUrl": "https://www.google.com/travel/flights?q=Flights%20to%20YGJ%20from%20TPE",
+      "skyscannerUrl": "https://www.skyscanner.com.tw/transport/flights/tpe/ygj/"
+    },
+    {
+      "id": "takamatsu_starlux",
+      "destination": "高松 (TAK)",
+      "destCity": "香川高松機場 (台中清泉崗 RMQ 直飛)",
+      "airline": "星宇航空 (STARLUX Airlines)",
+      "airlineCode": "JX",
+      "flightType": "精品全服務航空 (FSC)",
+      "aircraft": "A321neo (精品客艙・個人娛樂)",
+      "frequency": "固定每週航班 (台中直飛高松・中部首選)",
+      "travelDates": "1/13 (三) ~ 1/25 (一) [共 13 天 12 晚]",
+      "exactPrice": "NT$ 15,126",
+      "priceRangeWithBaggage": "NT$ 15,126",
+      "pricePeakWithBaggage": "精品航空免費含 23kg 托運行李與特調餐飲",
+      "outbound": {
+        "flightNo": "JX300",
+        "departure": "08:50 台中清泉崗 (RMQ)",
+        "arrival": "12:20 香川高松 (TAK)",
+        "duration": "2 小時 30 分鐘",
+        "timingType": "早去 (1/13 出發・中午抵四國門戶高松)"
+      },
+      "inbound": {
+        "flightNo": "JX301",
+        "departure": "13:20 香川高松 (TAK)",
+        "arrival": "15:40 台中清泉崗 (RMQ)",
+        "duration": "3 小時 20 分鐘",
+        "timingType": "午回 (1/25 返台・下午返抵台中清泉崗)"
+      },
+      "baggageIncluded": "免費包含 1 件 23kg 托運行李 ＋ 7kg 手提 ＋ 星宇精緻餐飲與特調",
+      "carryOn": "1件手提 7kg + 1件隨身包",
+      "jrPassLink": "【四國➔山陽 53分神速通】：高松站搭乘 JR 瀨戶大橋線「特急 Marine Liner (マリンライナー)」跨海直達岡山站僅 53 分鐘！JR 山陽&山陰 Pass / 瀨戶內 Pass 免費全包！",
+      "pros": [
+        "台中清泉崗 (RMQ) 直飛！中部出發免奔波桃園機場，大幅省下高鐵車資與交通時間",
+        "星宇精品航空：全機 4K 影音娛樂、免費 WiFi、精緻餐飲與特調、23kg 托運",
+        "高松搭 Marine Liner 特急跨海 53 分直達岡山站，無縫切入山陽山陰大閉環路線"
+      ],
+      "cons": [
+        "回程是 13:20，最後一天上午需自岡山搭特急過瀨戶大橋回高松機場 (約 09:30 前往)",
+        "需自高松站搭 53 分特急跨越瀨戶大橋前往岡山"
+      ],
+      "officialUrl": "https://www.starlux-airlines.com/",
+      "googleFlightsUrl": "https://www.google.com/travel/flights?q=Flights%20to%20TAK%20from%20RMQ",
+      "skyscannerUrl": "https://www.skyscanner.com.tw/transport/flights/rmq/tak/"
+    },
+    {
+      "id": "kansai_fsc_lcc",
+      "destination": "關西 (KIX)",
+      "destCity": "大阪關西國際機場 (台北桃園 TPE 直飛)",
+      "airline": "長榮 / 星宇 / 華航 / 樂桃 / 捷星",
+      "airlineCode": "BR / JX / CI / MM / GK",
+      "flightType": "傳統航空 ＆ 廉價航空 多家可選",
+      "aircraft": "A350 / B787 / B777 / A321neo 等",
+      "frequency": "每天 25+ 班密集起降 (1/13 去 ➔ 1/26 回全時段任選)",
+      "travelDates": "1/13 (三) ~ 1/26 (二) [共 14 天 13 晚]",
+      "exactPrice": "廉航 NT$ 9,000 起 / 傳航 NT$ 14,000 起",
+      "priceRangeWithBaggage": "NT$ 9,000 ~ 15,500",
+      "pricePeakWithBaggage": "視各家航空淡旺季與行李促銷而定",
+      "outbound": {
+        "flightNo": "多航班 (例 BR178 / JX820 / MM022)",
+        "departure": "06:30 ~ 14:00 多班自桃園起飛",
+        "arrival": "10:00 ~ 17:30 抵達關西 (KIX)",
+        "duration": "2 小時 20 分鐘 ~ 2 小時 40 分鐘",
+        "timingType": "極早到極晚任選，早去晚回性價比最高"
+      },
+      "inbound": {
+        "flightNo": "多航班 (例 BR129 / JX823 / MM027)",
+        "departure": "14:00 ~ 22:30 多班自關西起飛",
+        "arrival": "16:00 ~ 00:40 抵達台北 (TPE)",
+        "duration": "3 小時 00 分鐘",
+        "timingType": "晚班機多，玩滿最後一天整天"
+      },
+      "baggageIncluded": "傳航含 23kg 托運；廉航加購 20kg 後計算",
+      "carryOn": "7kg ~ 10kg (依各航空規定)",
+      "jrPassLink": "【神級對接】：關西機場憑「JR 山陽&山陰 Pass」搭特急 HARUKA 至新大阪 (50分)，同站轉新幹線至岡山 (45分)，全程 0 元免額外花費！",
+      "pros": [
+        "班次全日本最多，票價促銷最常有，時間選擇完全自由",
+        "「JR 山陽&山陰地區 7 日券」全額免費包含關西機場特急 HARUKA 與新幹線！",
+        "回程若想在心齋橋/難波大血拼或採買伴手禮極其方便"
+      ],
+      "cons": [
+        "關西機場出入境人潮極多，安檢與通關常需排隊 40~60 分鐘",
+        "抵達後需額外搭 1.5 ~ 2 小時特急＋新幹線才能進入岡山/廣島核心景點"
+      ],
+      "officialUrl": "https://www.google.com/travel/flights",
+      "googleFlightsUrl": "https://www.google.com/travel/flights?q=Flights%20to%20KIX%20from%20TPE",
+      "skyscannerUrl": "https://www.skyscanner.com.tw/transport/flights/tpe/kix/"
     }
   ],
   "fares": [
@@ -1961,15 +2178,15 @@
     {
       "id": "fare_d5_8",
       "dayNumber": 5,
-      "title": "松江城 ➔ 松江駅 (市營レイクライン觀光巴士 返回車站)",
-      "from": "松江城",
-      "to": "松江駅",
+      "title": "松江城(県民会館前) ➔ 玉造溫泉 (一畑巴士 P路線-玉造線 直達)",
+      "from": "松江城 (県民会館前)",
+      "to": "玉造溫泉",
       "transitType": "bus",
-      "transitTypeName": "觀光公車",
-      "amount": 210,
+      "transitTypeName": "路線巴士",
+      "amount": 610,
       "passCovered": false,
-      "passNote": "⚠️ 需自費 (非 Pass 範圍)",
-      "notes": "搭觀光巴士返回松江站轉乘電車"
+      "passNote": "⚠️ 需自費 (610 円，可刷 IC 卡)",
+      "notes": "松江城南側「県民会館前」搭乘一畑巴士 P 路線直達玉造溫泉街中心（約 32~35 分），免走回松江站轉車"
     },
     {
       "id": "fare_d5_9",
