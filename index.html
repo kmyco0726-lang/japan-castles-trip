@@ -104,9 +104,9 @@
       </div>
     </div>
     <div class="flex items-center gap-2 text-sm w-full md:w-auto min-w-0 overflow-x-auto no-scrollbar">
-      <!-- 快速切換地圖按鈕 (支援桌機與手機) -->
-      <button id="headerMapToggleBtn" onclick="toggleMapVisibility()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-3 py-1.5 rounded flex items-center gap-1.5 transition shadow-md text-xs cursor-pointer border border-indigo-400 shrink-0" title="顯示或收合地圖以獲得更大瀏覽空間">
-        <span id="headerMapToggleIcon">🗺️</span><span id="headerMapToggleText">收合地圖</span>
+      <!-- 快速切換地圖按鈕 (支援桌機與手機，高對比醒目配色) -->
+      <button id="headerMapToggleBtn" onclick="toggleMapVisibility()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 transition shadow-lg text-xs cursor-pointer border-2 border-amber-200 shrink-0" title="顯示或收合地圖以獲得更大瀏覽空間">
+        <span id="headerMapToggleIcon" class="text-sm">🗺️</span><span id="headerMapToggleText">收合地圖</span>
       </button>
       <button onclick="resetToDefault()" class="bg-red-600 hover:bg-red-500 text-white font-bold px-3 py-1.5 rounded flex items-center gap-1.5 transition shadow-md text-xs cursor-pointer border border-red-400 shrink-0" title="若看到舊版行程，點擊此按鈕立即清空瀏覽器快取並載入最新版！">
         🔄 強制載入最新行程 (清空舊快取 V70)
@@ -154,9 +154,9 @@
         <button id="tabBtnExpenses" onclick="switchTab('expenses')" class="py-3 px-3 sm:px-4 text-center text-slate-600 hover:text-slate-900 shrink-0 flex items-center justify-center gap-1 border-b-2 border-transparent transition">
           <span>💰</span><span>兩人記帳分帳</span>
         </button>
-        <!-- 手機專用地圖快速切換/收合按鈕 -->
-        <button id="mapToggleBtn" onclick="toggleMapVisibility()" class="md:hidden py-3 px-3 text-center text-slate-700 bg-slate-200/80 hover:bg-slate-300 shrink-0 flex items-center justify-center gap-1 border-b-2 border-transparent transition ml-auto font-bold text-xs" title="顯示或隱藏地圖">
-          <span id="mapToggleIcon">🗺️</span><span id="mapToggleText">隱藏地圖</span>
+        <!-- 常駐地圖快速切換/展開/收合按鈕 (桌機與手機皆顯示) -->
+        <button id="mapToggleBtn" onclick="toggleMapVisibility()" class="py-2.5 px-3.5 text-center text-slate-700 bg-slate-200/90 hover:bg-slate-300 shrink-0 flex items-center justify-center gap-1.5 border-b-2 border-transparent transition ml-auto font-bold text-xs cursor-pointer shadow-xs rounded-t" title="顯示或隱藏地圖">
+          <span id="mapToggleIcon">🗺️</span><span id="mapToggleText">收合地圖</span>
         </button>
       </div>
 
@@ -199,6 +199,12 @@
     </div>
 
   </div>
+
+  <!-- 懸浮展開地圖按鈕 (在地圖被收起時，常駐於畫面右側中段，醒目提示) -->
+  <button id="floatingMapExpandBtn" onclick="toggleMapVisibility(true)" class="hidden fixed right-0 top-1/2 -translate-y-1/2 z-[1500] bg-gradient-to-l from-indigo-700 via-indigo-600 to-blue-600 hover:from-indigo-600 hover:to-blue-500 text-white font-black px-3.5 py-4 rounded-l-2xl shadow-[0_10px_25px_rgba(79,70,229,0.5)] flex flex-col items-center gap-2 transition-all transform hover:-translate-x-1 border-t-2 border-b-2 border-l-2 border-indigo-200 cursor-pointer" title="點擊展開地圖面板">
+    <span class="text-xl drop-shadow">🗺️</span>
+    <span class="text-xs [writing-mode:vertical-rl] tracking-widest font-black drop-shadow">展開地圖</span>
+  </button>
 
   <!-- 彈窗：新增自訂景點/住宿 Modal (含自動規劃排程) -->
   <div id="spotModal" class="fixed inset-0 bg-black/50 z-[2000] hidden flex items-center justify-center p-4">
@@ -3301,6 +3307,7 @@
       const hBtn = document.getElementById('headerMapToggleBtn');
       const hIcon = document.getElementById('headerMapToggleIcon');
       const hText = document.getElementById('headerMapToggleText');
+      const floatBtn = document.getElementById('floatingMapExpandBtn');
       if (!panel) return;
 
       if (show) {
@@ -3310,14 +3317,20 @@
           mainPanel.classList.add('md:w-3/5', 'lg:w-[60%]', 'xl:w-[62%]');
         }
         if (btn) {
-          btn.className = "md:hidden py-3 px-3 text-center text-slate-700 bg-slate-200/80 hover:bg-slate-300 shrink-0 flex items-center justify-center gap-1 border-b-2 border-transparent transition ml-auto font-bold text-xs";
+          btn.className = "py-2.5 px-3.5 text-center text-slate-700 bg-slate-200/90 hover:bg-slate-300 shrink-0 flex items-center justify-center gap-1.5 border-b-2 border-transparent transition ml-auto font-bold text-xs cursor-pointer shadow-xs rounded-t";
         }
         if (icon) icon.innerText = "🗺️";
-        if (text) text.innerText = "隱藏地圖";
+        if (text) text.innerText = "收合地圖";
 
-        if (hBtn) hBtn.className = "bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-3 py-1.5 rounded flex items-center gap-1.5 transition shadow-md text-xs cursor-pointer border border-indigo-400 shrink-0";
+        if (hBtn) {
+          hBtn.className = "bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 transition shadow-lg text-xs cursor-pointer border-2 border-amber-200 shrink-0";
+        }
         if (hIcon) hIcon.innerText = "🗺️";
         if (hText) hText.innerText = "收合地圖";
+
+        if (floatBtn) {
+          floatBtn.classList.add('hidden');
+        }
 
         localStorage.setItem('jp_map_hidden', 'false');
         setTimeout(() => {
@@ -3333,14 +3346,20 @@
           mainPanel.classList.add('md:w-full');
         }
         if (btn) {
-          btn.className = "md:hidden py-3 px-3 text-center text-indigo-700 bg-indigo-50 hover:bg-indigo-100 shrink-0 flex items-center justify-center gap-1 border-b-2 border-indigo-600 transition ml-auto font-bold text-xs";
+          btn.className = "py-2.5 px-3.5 text-center text-emerald-800 bg-emerald-100 hover:bg-emerald-200 shrink-0 flex items-center justify-center gap-1.5 border-b-2 border-emerald-600 transition ml-auto font-black text-xs cursor-pointer shadow-sm rounded-t ring-2 ring-emerald-400";
         }
         if (icon) icon.innerText = "🗺️";
         if (text) text.innerText = "展開地圖";
 
-        if (hBtn) hBtn.className = "bg-slate-700 hover:bg-slate-600 text-white font-bold px-3 py-1.5 rounded flex items-center gap-1.5 transition shadow-md text-xs cursor-pointer border border-slate-500 shrink-0";
+        if (hBtn) {
+          hBtn.className = "bg-emerald-600 hover:bg-emerald-500 text-white font-black px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 transition shadow-xl text-xs cursor-pointer border-2 border-emerald-300 shrink-0 ring-2 ring-emerald-300 animate-pulse";
+        }
         if (hIcon) hIcon.innerText = "🗺️";
         if (hText) hText.innerText = "展開地圖";
+
+        if (floatBtn) {
+          floatBtn.classList.remove('hidden');
+        }
 
         localStorage.setItem('jp_map_hidden', 'true');
       }
