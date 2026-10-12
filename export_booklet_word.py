@@ -6,12 +6,113 @@
 
 import os
 import json
+import io
+import base64
+from PIL import Image
 from docx import Document
 from docx.shared import Inches, Pt, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.enum.table import WD_TABLE_ALIGNMENT, WD_ALIGN_VERTICAL
 from docx.oxml import OxmlElement, parse_xml
 from docx.oxml.ns import nsdecls, qn
+
+def get_spot_display_name(sid, spots_map, default_val=None):
+    if not sid:
+        return default_val or ""
+    if sid in spots_map:
+        return spots_map[sid].get('name', sid)
+    name_dict = {
+        'okayama_airport': '岡山桃太郎機場 (OKJ)',
+        'okayama_hotel': '岡山站前飯店',
+        'tottori_hotel': '鳥取站前飯店',
+        'kinosaki_onsen': '城崎溫泉 和風旅館',
+        'ine_funaya': '伊根舟屋聚落',
+        'yonago_hotel': '米子站前精選飯店',
+        'yasugi_lodging': '安來站前精選飯店',
+        'kaike_onsen': '皆生溫泉 海濱旅館',
+        'tamatsukuri_onsen': '玉造溫泉 和風旅館',
+        'hagi_lodging': '萩市區飯店 / 萩溫泉旅館',
+        'shin_yamaguchi_lodging': '新山口住宿',
+        'hiroshima_lodging_d8': '廣島市區飯店',
+        'hiroshima_lodging_d9': '廣島市區飯店',
+        'tomonoura_onsen': '鞆之浦溫泉 遠景之宿',
+        'daishoin': '宮島彌山 大本山 大聖院',
+    }
+    return name_dict.get(sid, default_val or sid)
+
+def get_segment_display_title(key, day, spots_map):
+    d_num = day.get('dayNumber')
+    if key == f'tpe_flight_{d_num}' or 'tpe' in key:
+        return '台灣桃園機場 ➔ 啟程搭機出發'
+    if key == f'okayama_airport_{d_num}':
+        return '抵達岡山桃太郎機場 (IT214 航班)'
+    if key == f'morning_origin_{d_num}':
+        return f"Day {d_num} 晨間出發地 ({day.get('baseStation', '').split(' / ')[0]})"
+    
+    if '_to_' in key:
+        parts = key.split('_to_')
+        from_sid, to_sid = parts[0], parts[1]
+        from_name = get_spot_display_name(from_sid, spots_map, from_sid)
+        to_name = get_spot_display_name(to_sid, spots_map, to_sid)
+        return f"{from_name} ➔ {to_name}"
+        
+    return f"搭乘區間 ({key})"
+
+def insert_timetable_image(doc, img_url, img_name="時刻表縮圖", max_width_in=5.8, max_height_in=4.6):
+    """將時刻表圖檔（支援檔案路徑與 base64 data-url）自適應加入 Word，不超出版面"""
+    stream = None
+    is_stream_obj = False
+    if img_url.startswith('data:'):
+        try:
+            _, b64_str = img_url.split(',', 1)
+            img_bytes = base64.b64decode(b64_str)
+            stream = io.BytesIO(img_bytes)
+            is_stream_obj = True
+        except Exception:
+            return False
+    elif os.path.exists(img_url):
+        stream = img_url
+    else:
+        return False
+
+    try:
+        # 計算等比例縮放避免超出頁面
+        calc_w = Inches(max_width_in)
+        try:
+            with Image.open(stream) as im:
+                orig_w, orig_h = im.size
+                if orig_w > 0 and orig_h > 0:
+                    aspect = orig_h / orig_w
+                    if aspect > (max_height_in / max_width_in):
+                        # 直式長圖：限制高度
+                        calc_w = Inches(max_height_in / aspect)
+                    else:
+                        calc_w = Inches(max_width_in)
+        except Exception:
+            pass
+
+        if is_stream_obj and hasattr(stream, 'seek'):
+            stream.seek(0)
+
+        p = doc.add_paragraph()
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        p.paragraph_format.space_before = Pt(4)
+        p.paragraph_format.space_after = Pt(2)
+        run = p.add_run()
+        run.add_picture(stream, width=calc_w)
+
+        # 圖片檔名標註
+        p_caption = doc.add_paragraph()
+        p_caption.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        p_caption.paragraph_format.space_before = Pt(0)
+        p_caption.paragraph_format.space_after = Pt(4)
+        r_cap = p_caption.add_run(f"📎 附件圖檔：{img_name}")
+        format_run(r_cap, size_pt=7.5, color_rgb=(100, 116, 139))
+        return True
+    except Exception as e:
+        print(f"插入圖檔警告: {img_url}, 原因: {e}")
+        return False
+
 
 def set_cell_background(cell, fill_hex):
     """設定儲存格背景底色"""
@@ -474,45 +575,87 @@ def create_booklet_word():
                 format_run(r_f4, size_pt=7.5, color_rgb=(100, 116, 139))
 
         # ------------------------------------------
-        # 小冊子專用：紀念章戳蓋印處與手寫記事區
+        # JR / 巴士時刻表與乘車附件：內容與圖片
         # ------------------------------------------
-        p_stamp_hdr = doc.add_paragraph()
-        p_stamp_hdr.paragraph_format.space_before = Pt(12)
-        p_stamp_hdr.paragraph_format.space_after = Pt(4)
-        r_sth = p_stamp_hdr.add_run("💮 隨身手冊專區：日本100名城蓋章印框 ＆ 隨行筆記")
-        format_run(r_sth, size_pt=10, bold=True, color_rgb=(100, 116, 139))
+        p_tt_hdr = doc.add_paragraph()
+        p_tt_hdr.paragraph_format.space_before = Pt(12)
+        p_tt_hdr.paragraph_format.space_after = Pt(4)
+        r_tth = p_tt_hdr.add_run("🕒 JR / 巴士時刻表與乘車附件")
+        format_run(r_tth, size_pt=11, bold=True, color_rgb=(37, 99, 235))
 
-        stamp_table = doc.add_table(rows=1, cols=2)
-        stamp_table.alignment = WD_TABLE_ALIGNMENT.CENTER
-        stamp_table.autofit = False
-        st_widths = [Inches(2.4), Inches(4.1)]
+        att_dict = day.get('transitAttachments', {})
+        valid_items = []
+        seen_keys = set()
 
-        # 左側：蓋章方框
-        st_c0 = stamp_table.rows[0].cells[0]
-        st_c0.width = st_widths[0]
-        set_cell_background(st_c0, "FAFAFA")
-        set_cell_margins(st_c0, top=140, bottom=140, left=140, right=140)
-        set_cell_border(st_c0, bottom={'sz': 12, 'val': 'dashed', 'color': '94A3B8'},
-                               top={'sz': 12, 'val': 'dashed', 'color': '94A3B8'},
-                               left={'sz': 12, 'val': 'dashed', 'color': '94A3B8'},
-                               right={'sz': 12, 'val': 'dashed', 'color': '94A3B8'})
-        p_st0 = st_c0.paragraphs[0]
-        p_st0.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        r_st0 = p_st0.add_run("【 百名城 / 紀念印章蓋印處 】\n\n\n\n(預留 6cm x 6cm 印章空間)")
-        format_run(r_st0, size_pt=8.5, color_rgb=(148, 163, 184))
+        # 1. 優先按照 spotIds 景點動線收集附件
+        for s_i, sid in enumerate(spot_ids):
+            prev_id = spot_ids[s_i - 1] if s_i > 0 else None
+            candidate_keys = []
+            if prev_id:
+                candidate_keys.append(f"{prev_id}_to_{sid}")
+            else:
+                if sid == 'okayama_airport':
+                    candidate_keys.extend([f"okayama_airport_{d_num}", f"tpe_flight_{d_num}"])
+                candidate_keys.extend([f"morning_origin_{d_num}", f"start_to_{sid}"])
 
-        # 右側：手寫筆記橫線
-        st_c1 = stamp_table.rows[0].cells[1]
-        st_c1.width = st_widths[1]
-        set_cell_background(st_c1, "FFFFFF")
-        set_cell_margins(st_c1, top=100, bottom=100, left=140, right=140)
-        set_cell_border(st_c1, bottom={'sz': 6, 'val': 'single', 'color': 'CBD5E1'},
-                               top={'sz': 6, 'val': 'single', 'color': 'CBD5E1'},
-                               left={'sz': 6, 'val': 'single', 'color': 'CBD5E1'},
-                               right={'sz': 6, 'val': 'single', 'color': 'CBD5E1'})
-        p_st1 = st_c1.paragraphs[0]
-        r_st1 = p_st1.add_run("📝 當日心得 / 推薦美食記帳 / 票根貼附：\n\n\n\n\n")
-        format_run(r_st1, size_pt=8.5, color_rgb=(148, 163, 184))
+            for ck in candidate_keys:
+                if ck in att_dict and ck not in seen_keys:
+                    item = att_dict[ck]
+                    if (item.get('images') and len(item['images']) > 0) or item.get('notes') or item.get('link'):
+                        seen_keys.add(ck)
+                        valid_items.append((ck, get_segment_display_title(ck, day, spots_map), item))
+
+        # 2. 補充當天其他已上傳/填寫但未包含在上述動線的附件
+        for k, item in att_dict.items():
+            if k not in seen_keys:
+                if (item.get('images') and len(item['images']) > 0) or item.get('notes') or item.get('link'):
+                    seen_keys.add(k)
+                    valid_items.append((k, get_segment_display_title(k, day, spots_map), item))
+
+        if not valid_items:
+            p_none = doc.add_paragraph()
+            p_none.paragraph_format.left_indent = Inches(0.15)
+            p_none.paragraph_format.space_after = Pt(6)
+            r_none = p_none.add_run("（當日各景點以步行、在來線或計程車銜接，無額外時刻表與乘車附件）")
+            format_run(r_none, size_pt=8.5, color_rgb=(148, 163, 184), italic=True)
+        else:
+            for v_idx, (k, seg_title, item) in enumerate(valid_items):
+                # 區間標題
+                p_seg = doc.add_paragraph()
+                p_seg.paragraph_format.space_before = Pt(6)
+                p_seg.paragraph_format.space_after = Pt(2)
+                p_seg.paragraph_format.left_indent = Inches(0.1)
+                r_seg = p_seg.add_run(f"🚅 【搭乘區間】{seg_title}")
+                format_run(r_seg, size_pt=9.5, bold=True, color_rgb=(30, 58, 138))
+
+                # 備忘
+                notes_text = item.get('notes', '').strip()
+                if notes_text:
+                    p_nt = doc.add_paragraph()
+                    p_nt.paragraph_format.space_before = Pt(1)
+                    p_nt.paragraph_format.space_after = Pt(2)
+                    p_nt.paragraph_format.left_indent = Inches(0.25)
+                    r_nt = p_nt.add_run(f"📝 班次備忘：{notes_text}")
+                    format_run(r_nt, size_pt=8.5, color_rgb=(51, 65, 85))
+
+                # 連結
+                link_text = item.get('link', '').strip()
+                if link_text:
+                    p_lk = doc.add_paragraph()
+                    p_lk.paragraph_format.space_before = Pt(1)
+                    p_lk.paragraph_format.space_after = Pt(2)
+                    p_lk.paragraph_format.left_indent = Inches(0.25)
+                    r_lk = p_lk.add_run(f"🔗 時刻表連結：{link_text}")
+                    format_run(r_lk, size_pt=8.0, color_rgb=(37, 99, 235))
+
+                # 圖片
+                imgs = item.get('images', [])
+                if imgs:
+                    for img_obj in imgs:
+                        img_url = img_obj.get('url', '')
+                        img_name = img_obj.get('name', '時刻表縮圖')
+                        if img_url:
+                            insert_timetable_image(doc, img_url, img_name)
 
         # 每一天的結尾：如果不是最後一天，強制分頁！
         if day_idx < len(itinerary) - 1:
