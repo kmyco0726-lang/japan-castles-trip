@@ -635,8 +635,14 @@ def create_booklet_word():
                     p_nt.paragraph_format.space_before = Pt(1)
                     p_nt.paragraph_format.space_after = Pt(2)
                     p_nt.paragraph_format.left_indent = Inches(0.25)
-                    r_nt = p_nt.add_run(f"📝 班次備忘：{notes_text}")
-                    format_run(r_nt, size_pt=8.5, color_rgb=(51, 65, 85))
+                    if '\n' in notes_text:
+                        r_hdr = p_nt.add_run("📝 班次備忘：\n")
+                        format_run(r_hdr, size_pt=8.5, bold=True, color_rgb=(51, 65, 85))
+                        r_nt = p_nt.add_run(notes_text)
+                        format_run(r_nt, size_pt=8.5, color_rgb=(51, 65, 85))
+                    else:
+                        r_nt = p_nt.add_run(f"📝 班次備忘：{notes_text}")
+                        format_run(r_nt, size_pt=8.5, color_rgb=(51, 65, 85))
 
                 # 連結
                 link_text = item.get('link', '').strip()

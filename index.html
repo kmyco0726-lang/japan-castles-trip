@@ -111,6 +111,9 @@
       <button onclick="resetToDefault()" class="bg-red-600 hover:bg-red-500 text-white font-bold px-3 py-1.5 rounded flex items-center gap-1.5 transition shadow-md text-xs cursor-pointer border border-red-400 shrink-0" title="若看到舊版行程，點擊此按鈕立即清空瀏覽器快取並載入最新版！">
         🔄 強制載入最新行程 (清空舊快取 V70)
       </button>
+      <button id="orphanRescueBtn" onclick="openOrphanRescueModal()" style="display:none" class="bg-rose-600 hover:bg-rose-500 text-white font-bold px-3 py-1.5 rounded items-center gap-1.5 transition shadow-md text-xs cursor-pointer border border-rose-300 shrink-0" title="調整景點順序後對不上目前行程的時刻表/乘車附件，可在此掛回正確區間">
+        <span>🧭</span><span id="orphanRescueText">找回遺失附件</span>
+      </button>
       <button onclick="exportTransitImagesToFiles()" class="bg-amber-600 hover:bg-amber-500 text-white font-bold px-3 py-1.5 rounded flex items-center gap-1.5 transition shadow-md text-xs cursor-pointer border border-amber-400 shrink-0" title="將瀏覽器已上傳的時刻表圖片下載為實體圖檔，放入專案 timetables/ 資料夾">
         <span>🖼️</span><span>導出圖檔至 timetables/</span>
       </button>
@@ -769,7 +772,7 @@
     const STORAGE_KEY_ITINERARY = "jp_castles_itinerary_v1";
     const STORAGE_KEY_ITINERARY_VER = "jp_castles_itinerary_ver";
     const STORAGE_KEY_DELETED_SPOTS = "jp_castles_deleted_spots_v1";
-    const CURRENT_ITINERARY_VER = "2027_01_13_ROUTE_V78_USER_EXACT_RESTORE";
+    const CURRENT_ITINERARY_VER = "2027_01_13_ROUTE_V79_HIROSHIMA_RESTORE";
 
     // ==========================================
     // 雙重自包含備援資料庫 (Fallback Database)
@@ -2842,7 +2845,7 @@
         ]
       },
       "iwami_ginzan_to_hagi_lodging": {
-        "notes": "",
+        "notes": "大田市 17:47 ➔ 益田 19:11 (特急スーパーまつかぜ7號) ➔ 益田 19:14 ➔ 東萩 20:27",
         "link": "",
         "images": [
           {
@@ -2927,7 +2930,7 @@
       },
       "motonosumi_jinja_to_hagi": {
         "notes": "元乃隅神社搭計程車回長門古市站 ➔  東萩 13:15, 巴士西回-13:57東萩-萩城跡14:08",
-        "link": "",
+        "link": "https://www.hagishi.com/wp/wp-content/uploads/2023/01/%E3%81%BE%E3%81%81%E3%83%BC%E3%82%8B%E3%83%90%E3%82%B9%E6%99%82%E5%88%BB%E8%A1%A82022.pdf",
         "images": [
           {
             "name": "1791785582351.jpg",
@@ -2982,7 +2985,7 @@
     "title": "Day 9：周防名橋錦帶橋・岩國城 ➔ 宮島世界遺產嚴島神社 ➔ 彌山大本山大聖院 ➔ 宿廣島",
     "transitAttachments": {
       "morning_origin_9": {
-        "notes": "新山口 ➔ 新岩國 (山陽新幹線約28分，JR Pass免費劃位) ➔ 防長巴士15分至錦帶橋；備案：新山口 07:19 ➔ 岩國 09:30 (山陽本線普通車2h11m)",
+        "notes": "新山新山口 07:19 ➔ 岩國 09:30  いわくにバス 10:35-錦帶橋10:55",
         "link": "https://www.jorudan.co.jp/bus/rosen/stoplist/?Ddd=12&Dhh=10&Dmn=35&Dym=202610&jyosya=%E5%B2%A9%E5%9B%BD%E9%A7%85&lid=337159#jump",
         "images": [
           {
@@ -2995,7 +2998,7 @@
         ]
       },
       "shin_yamaguchi_lodging_to_kintaikyo": {
-        "notes": "新山口 ➔ 新岩國 (山陽新幹線約28分，JR Pass免費劃位) ➔ 防長巴士15分至錦帶橋；備案：新山口 07:19 ➔ 岩國 09:30 (山陽本線普通車2h11m)",
+        "notes": "新山新山口 07:19 ➔ 岩國 09:30  いわくにバス 10:35-錦帶橋10:55",
         "link": "https://www.jorudan.co.jp/bus/rosen/stoplist/?Ddd=12&Dhh=10&Dmn=35&Dym=202610&jyosya=%E5%B2%A9%E5%9B%BD%E9%A7%85&lid=337159#jump",
         "images": [
           {
@@ -3008,8 +3011,8 @@
         ]
       },
       "iwakuni_to_itsukushima_jinja": {
-        "notes": "岩國 13:57 ➔ 宮島口 14:19 (山陽本線22分，JR Pass免費) ➔ 宮島棧橋搭JR西日本渡輪10分直達宮島 (JR Pass全包)",
-        "link": "https://jr-miyajimaferry.co.jp/",
+        "notes": "巴士錦帶橋13:17-13:33 岩國 13:57 ➔ 宮島口 14:19 船15分一班",
+        "link": "https://www.jorudan.co.jp/bus/rosen/timetable/%E9%8C%A6%E5%B8%AF%E6%A9%8B%E3%80%94%E3%81%84%E3%82%8F%E3%81%8F%E3%81%AB%E3%83%90%E3%82%B9%E3%80%95/%E6%96%B0%E5%B2%A9%E5%9B%BD%E9%A7%85%E7%B7%9A/%E6%A4%8E%E5%B0%BE%E7%A5%9E%E7%A4%BE/?Dw=1",
         "images": [
           {
             "name": "1791791740539.jpg",
@@ -3021,7 +3024,7 @@
         ]
       },
       "daishoin_to_hiroshima_lodging_d8": {
-        "notes": "大聖院漫步回宮島棧橋搭JR渡輪返宮島口 ➔ 宮島口 17:19 ➔ 廣島 17:52 (山陽本線33分，JR Pass免費) ➔ 抵達廣島站前飯店Check-in",
+        "notes": "宮島口 17:19 ➔ 廣島 17:52",
         "link": "",
         "images": [
           {
@@ -3045,6 +3048,11 @@
             "uploadedAt": "2026/10/12"
           }
         ]
+      },
+      "itsukushima_jinja_to_daishoin": {
+        "notes": "纜車最晚上16:00 最晚下16:30",
+        "link": "",
+        "images": []
       }
     }
   },
@@ -3066,7 +3074,14 @@
       "hiroshima_jinseki",
       "hiroshima_lodging_d9"
     ],
-    "title": "Day 10：廣島和平文化・鯉城與護國神社 ➔ 原爆圓頂 ➔ 廣島和牛晚宴 (宿廣島)"
+    "title": "Day 10：廣島和平文化・鯉城與護國神社 ➔ 原爆圓頂 ➔ 廣島和牛晚宴 (宿廣島)",
+    "transitAttachments": {
+      "hiroshima_lodging_d8_to_hiroshima": {
+        "notes": "ひろしまめいぷる〜ぷ1日乗車券 600日",
+        "link": "https://www.chugoku-jrbus.co.jp/sightseeing/",
+        "images": []
+      }
+    }
   },
   {
     "baseStation": "廣島駅 / 廣島巴士中心 / 福山駅 / 鞆之浦",
@@ -3082,7 +3097,14 @@
       "fukuyama",
       "tomonoura_onsen"
     ],
-    "title": "Day 11：毛利要塞吉田郡山城 ➔ 福山城 ➔ 鞆之浦夕陽溫泉"
+    "title": "Day 11：毛利要塞吉田郡山城 ➔ 福山城 ➔ 鞆之浦夕陽溫泉",
+    "transitAttachments": {
+      "hiroshima_lodging_d9_to_yoshida_koriyama": {
+        "notes": "路面電車①番ホーム ( 紙屋町･市役所経由 ) 　宇品行き「紙屋町東電停」下車 /②番ホーム 宮島行き「紙屋町西電停」下車 /⑥番ホーム 番江波行き「紙屋町西電停」下車//巴士⑧番ホーム／⑧番ホーム／吉田営業所行き 「安芸高田市役所前」下車き 「安芸高田市役所前」下車",
+        "link": "https://www.hiroden.co.jp/bus/route/n-72.html",
+        "images": []
+      }
+    }
   },
   {
     "baseStation": "鞆之浦 / 福山駅 / 岡山駅 / 備中高梁駅 / 備前一宮駅",
@@ -3116,6 +3138,7 @@
     "title": "Day 13：岡山市區漫遊伴手禮 ➔ 岡山桃太郎機場搭機返台 (虎航 IT215)"
   }
 ];
+
     const BUILTIN_DEFAULT_ITINERARY = BUILTIN_ITINERARY_OKAYAMA;
 
     function getEffectiveDefaultSpots() {
@@ -3521,6 +3544,12 @@
         // ★ 一次性升級至 V78_USER_EXACT_RESTORE：
         // 載入已 100% 還原使用者手寫內容的 fallbackItinerary 與 fallbackSpots，
         // 同時若 loadedItinerary 中有使用者新上傳的圖片或新輸入的網址/筆記，也一併保護合併，並徹底清除舊版 base64 膨脹快取
+        // 升版前先留一份完整備份(空間不足時 saveState 會自動回收它)
+        try {
+          if (loadedItinerary) {
+            localStorage.setItem('jp_trip_pre_upgrade_backup', JSON.stringify({ fromVer: savedVer, at: Date.now(), itinerary: loadedItinerary }));
+          }
+        } catch (_) {}
         state.itinerary = JSON.parse(JSON.stringify(fallbackItinerary));
         if (loadedItinerary && Array.isArray(loadedItinerary)) {
           state.itinerary.forEach(day => {
@@ -3536,13 +3565,10 @@
                     day.transitAttachments[k] = userAtt;
                   }
                 } else {
-                  if (!curAtt.link && userAtt.link) curAtt.link = userAtt.link;
-                  if (!curAtt.notes && userAtt.notes && !userAtt.notes.startsWith('方案1：東萩')) {
-                    curAtt.notes = userAtt.notes;
-                  }
-                  if ((!curAtt.images || curAtt.images.length === 0) && userAtt.images && userAtt.images.length > 0) {
-                    curAtt.images = userAtt.images;
-                  }
+                  // ★ 使用者已輸入的內容優先(逐欄位)；只有使用者該欄位為空時才採用新版預設值
+                  if (userAtt.link) curAtt.link = userAtt.link;
+                  if (userAtt.notes && !userAtt.notes.startsWith('方案1：東萩')) curAtt.notes = userAtt.notes;
+                  if (userAtt.images && userAtt.images.length > 0) curAtt.images = userAtt.images;
                 }
               });
             }
@@ -3566,7 +3592,8 @@
 
         localStorage.setItem(STORAGE_KEY_ITINERARY_VER, CURRENT_ITINERARY_VER);
         try { localStorage.removeItem('jp_trip_backup_snapshot'); } catch (e) {}
-        saveState({ skipCloudPush: false });
+        // 升版重置不再自動推上雲端，避免把其他裝置上的資料一起洗掉
+        saveState({ skipCloudPush: true });
       } else {
         // ★ 日常按 F5 重新整理 (savedVer === CURRENT_ITINERARY_VER)：
         // 100% 原封不動信任使用者儲存在 LocalStorage 的資料！絕不以預設值覆蓋使用者的任何修改！
@@ -3634,8 +3661,10 @@
         saveState({ skipCloudPush: false });
         const t = new Date();
         const timeStr = `${String(t.getHours()).padStart(2, '0')}:${String(t.getMinutes()).padStart(2, '0')}:${String(t.getSeconds()).padStart(2, '0')}`;
-        if (text) text.innerText = `💾 已自動儲存 (${timeStr})`;
-        if (dot) dot.className = "w-2 h-2 rounded-full bg-emerald-400";
+        if (window.__lastSaveOk !== false) {
+          if (text) text.innerText = `💾 已自動儲存 (${timeStr})`;
+          if (dot) dot.className = "w-2 h-2 rounded-full bg-emerald-400";
+        }
       }, delay);
     }
 
@@ -3646,9 +3675,15 @@
       if (!text) return;
       const t = new Date();
       const timeStr = `${String(t.getHours()).padStart(2, '0')}:${String(t.getMinutes()).padStart(2, '0')}:${String(t.getSeconds()).padStart(2, '0')}`;
-      text.innerText = customMsg || `💾 已儲存 (${timeStr})`;
+      if (window.__lastSaveOk === false) {
+        text.innerText = "⚠️ 儲存失敗：瀏覽器空間已滿";
+        if (dot) dot.className = "w-2 h-2 rounded-full bg-red-500 animate-pulse";
+        return;
+      }
+      const nearFull = (window.__storageUsedChars || 0) > 3200000;
+      text.innerText = (customMsg || `💾 已儲存 (${timeStr})`) + (nearFull ? " ⚠️ 空間將滿" : "");
       if (dot) {
-        dot.className = "w-2 h-2 rounded-full bg-emerald-400";
+        dot.className = nearFull ? "w-2 h-2 rounded-full bg-amber-400" : "w-2 h-2 rounded-full bg-emerald-400";
       }
     }
 
@@ -3689,56 +3724,94 @@
       if (cloudConfig && cloudConfig.enabled && typeof pushToCloud === 'function') {
         pushToCloud({ silent: true });
       }
+      if (window.__lastSaveOk === false) return; // 失敗時 saveState 已顯示紅色警告，不可再顯示「已確認儲存」
       updateSaveStatusUI("💾 已確認全部儲存");
-      showSaveToast("已確認儲存至瀏覽器與雲端！按 F5 重整保證 100% 不遺失。");
+      showSaveToast("已確認儲存至瀏覽器與雲端！");
     }
 
     function saveState(options = {}) {
       const { skipCloudPush = false, notify = false } = options || {};
       const now = Date.now();
       state.lastModifiedAt = now;
+      let allOk = true;
+      const trySet = (key, val) => {
+        try { localStorage.setItem(key, val); return true; } catch (e) { return false; }
+      };
+      const freeSpace = () => {
+        ['jp_castle_itinerary_okayama', 'jp_trip_backup_snapshot', 'jp_trip_pre_upgrade_backup'].forEach(k => {
+          try { localStorage.removeItem(k); } catch (_) {}
+        });
+      };
       try {
         const itinJson = JSON.stringify(state.itinerary);
         const spotsJson = JSON.stringify(state.spots);
-        if (!skipCloudPush) {
-          localStorage.setItem('jp_trip_local_last_modified', String(now));
-        }
-        localStorage.setItem(STORAGE_KEY_SPOTS, spotsJson);
-        localStorage.setItem(STORAGE_KEY_ITINERARY, itinJson);
-        localStorage.setItem('jp_castle_itinerary_okayama', itinJson);
-        localStorage.setItem(STORAGE_KEY_DELETED_SPOTS, JSON.stringify(state.deletedSpotIds || []));
-        localStorage.setItem(STORAGE_KEY_EXPENSES, JSON.stringify(state.expenses || []));
-        localStorage.setItem(STORAGE_KEY_TRANSIT_FARES, JSON.stringify(state.transitFares || []));
-        localStorage.setItem(STORAGE_KEY_MEMBERS, JSON.stringify(state.members || { a: "獅子", b: "方" }));
-        localStorage.setItem(STORAGE_KEY_EXCHANGE_RATE, String(state.exchangeRate || 0.215));
-        localStorage.setItem(STORAGE_KEY_ITINERARY_VER, CURRENT_ITINERARY_VER);
+        // 舊版會把整份行程重複寫 3 份(含 base64 圖片)，空間很快用完；現在只保留 1 份，並回收舊副本
+        try { localStorage.removeItem('jp_castle_itinerary_okayama'); } catch (_) {}
 
-        try {
-          localStorage.setItem('jp_trip_backup_snapshot', JSON.stringify({
-            itinerary: state.itinerary,
-            spots: state.spots,
-            timestamp: now
-          }));
-        } catch (snapErr) {
-          try { localStorage.removeItem('jp_trip_backup_snapshot'); } catch (_) {}
+        // 最重要的行程(含時刻表附件)最先寫入；失敗就釋放備份空間後重試一次
+        let itinOk = trySet(STORAGE_KEY_ITINERARY, itinJson);
+        if (!itinOk) { freeSpace(); itinOk = trySet(STORAGE_KEY_ITINERARY, itinJson); }
+        let spotsOk = trySet(STORAGE_KEY_SPOTS, spotsJson);
+        if (!spotsOk) { freeSpace(); spotsOk = trySet(STORAGE_KEY_SPOTS, spotsJson); }
+        const smallOk = [
+          trySet(STORAGE_KEY_DELETED_SPOTS, JSON.stringify(state.deletedSpotIds || [])),
+          trySet(STORAGE_KEY_EXPENSES, JSON.stringify(state.expenses || [])),
+          trySet(STORAGE_KEY_TRANSIT_FARES, JSON.stringify(state.transitFares || [])),
+          trySet(STORAGE_KEY_MEMBERS, JSON.stringify(state.members || { a: "獅子", b: "方" })),
+          trySet(STORAGE_KEY_EXCHANGE_RATE, String(state.exchangeRate || 0.215))
+        ].every(Boolean);
+        allOk = itinOk && spotsOk && smallOk;
+
+        if (itinOk) {
+          if (!skipCloudPush) trySet('jp_trip_local_last_modified', String(now));
+          trySet(STORAGE_KEY_ITINERARY_VER, CURRENT_ITINERARY_VER);
+          // 備份快照：不含 base64 圖片、且最多每 30 秒寫一次，避免佔用空間與拖慢輸入
+          if (!window.__lastSnapAt || now - window.__lastSnapAt > 30000) {
+            window.__lastSnapAt = now;
+            try {
+              const snapItin = JSON.parse(itinJson);
+              snapItin.forEach(d => {
+                if (!d || !d.transitAttachments) return;
+                Object.keys(d.transitAttachments).forEach(k => {
+                  const a = d.transitAttachments[k];
+                  if (a && Array.isArray(a.images)) {
+                    a.images = a.images.filter(im => !(im && typeof im.url === 'string' && im.url.startsWith('data:')));
+                  }
+                });
+              });
+              if (!trySet('jp_trip_backup_snapshot', JSON.stringify({ itinerary: snapItin, spots: state.spots, timestamp: now }))) {
+                try { localStorage.removeItem('jp_trip_backup_snapshot'); } catch (_) {}
+              }
+            } catch (_) {}
+          }
+          saveToLocalDiskServer();
         }
-        saveToLocalDiskServer();
       } catch (err) {
-        console.warn("localStorage 儲存異常，自動清理備份快照重試:", err);
-        try {
-          localStorage.removeItem('jp_trip_backup_snapshot');
-          const itinJson = JSON.stringify(state.itinerary);
-          localStorage.setItem(STORAGE_KEY_SPOTS, JSON.stringify(state.spots));
-          localStorage.setItem(STORAGE_KEY_ITINERARY, itinJson);
-          localStorage.setItem('jp_castle_itinerary_okayama', itinJson);
-        } catch (retryErr) {
-          console.error("localStorage 重試仍失敗:", retryErr);
-        }
+        allOk = false;
+        console.error("saveState 發生例外:", err);
       }
+
+      // 統計目前 localStorage 使用量(字元數)，供空間不足提醒
+      try {
+        let total = 0;
+        for (let i = 0; i < localStorage.length; i++) {
+          const k = localStorage.key(i) || '';
+          total += k.length + (localStorage.getItem(k) || '').length;
+        }
+        window.__storageUsedChars = total;
+      } catch (_) {}
+
+      window.__lastSaveOk = allOk;
       updateBadges();
       updateTabButtons();
       updateSaveStatusUI();
-      if (notify) {
+      if (!allOk) {
+        const nowTs = Date.now();
+        if (!window.__lastSaveWarnAt || nowTs - window.__lastSaveWarnAt > 60000) {
+          window.__lastSaveWarnAt = nowTs;
+          setTimeout(() => alert("⚠️ 瀏覽器儲存空間已滿，最新修改『沒有』存進本機！\n\n請立刻處理：\n1. 按頂部【🖼️ 導出圖檔至 timetables/】把已上傳的圖片轉成檔案 (會釋放大量空間)\n2. 若已開啟雲端同步，資料仍會嘗試上傳雲端，但請不要關閉此頁面直到狀態變回綠色。"), 50);
+        }
+      } else if (notify) {
         showSaveToast();
       }
 
@@ -3747,11 +3820,190 @@
       }
     }
 
+    // ==========================================
+    // 交通附件「孤兒」偵測與找回
+    // 附件 key 由「前一景點_to_本景點」組成，調整景點順序後 key 會改變，
+    // 舊附件仍存在但畫面讀不到 → 在此列出並讓使用者掛回正確區間
+    // ==========================================
+    function spotNameById(id) {
+      const s = (state.spots || []).find(x => x.id === id);
+      return s ? s.name : id;
+    }
+    function attHasContent(a) {
+      return !!(a && ((a.notes && String(a.notes).trim()) || a.link || (Array.isArray(a.images) && a.images.length > 0)));
+    }
+    function attImgId(im) {
+      const u = (im && (im.url || im.name)) || '';
+      return u.startsWith('data:') ? 'data:' + u.length + ':' + u.slice(-24) : u;
+    }
+    function attSignature(a) {
+      if (!a) return '';
+      return (a.notes || '') + '|' + (a.link || '') + '|' + (Array.isArray(a.images) ? a.images : []).map(attImgId).join(',');
+    }
+    function orphanTitle(key) {
+      let best = null;
+      (state.spots || []).forEach(s => {
+        const suf = '_to_' + s.id;
+        if (key.endsWith(suf) && key.length > suf.length && (!best || s.id.length > best.id.length)) best = s;
+      });
+      if (best) return spotNameById(key.slice(0, key.length - best.id.length - 4)) + ' ➔ ' + best.name;
+      return key;
+    }
+    function computeDayTransitSegments(day) {
+      const segs = [];
+      const ids = day.spotIds || [];
+      ids.forEach((sid, idx) => {
+        const spot = (state.spots || []).find(s => s.id === sid);
+        if (!spot) return;
+        let key, label;
+        if (idx > 0) {
+          key = `${ids[idx - 1]}_to_${sid}`;
+          label = `${spotNameById(ids[idx - 1])} ➔ ${spot.name}`;
+        } else if (spot.id === 'taoyuan_airport') {
+          key = `taoyuan_airport_${day.dayNumber}`; label = '桃園機場啟程';
+        } else if (spot.id === 'okayama_airport') {
+          key = `okayama_airport_${day.dayNumber}`; label = '岡山機場抵達';
+        } else if (isLodgingSpot(spot)) {
+          key = `morning_origin_${day.dayNumber}`; label = `晨間出發地 (${spot.name})`;
+        } else {
+          const prev = getPreviousDayLodgingSpot(day.dayNumber);
+          key = `${prev ? prev.id : 'start'}_to_${sid}`;
+          label = `${prev ? prev.name : '起點'} ➔ ${spot.name}`;
+        }
+        segs.push({ key, label });
+      });
+      return segs;
+    }
+    function findOrphanTransitAttachments() {
+      const result = [];
+      let fallback = [];
+      try { fallback = getEffectiveDefaultItinerary() || []; } catch (_) {}
+      (state.itinerary || []).forEach(day => {
+        const atts = day.transitAttachments || {};
+        const segs = computeDayTransitSegments(day);
+        const cur = new Set();
+        segs.forEach(sg => { cur.add(sg.key); const alt = TRANSIT_MIRROR_ALIASES[sg.key]; if (alt) cur.add(alt); });
+        const hidden = new Set([...(day.deletedTransitKeys || []), ...(day.completelyHiddenTransitKeys || [])]);
+        const fbDay = fallback.find(d => d.dayNumber === day.dayNumber);
+        Object.keys(atts).forEach(k => {
+          if (cur.has(k) || hidden.has(k) || k.startsWith('tpe_flight_')) return;
+          const a = atts[k];
+          if (!attHasContent(a)) return;
+          // 與內建預設完全相同的備選方案區間不算遺失
+          const fbAtt = fbDay && fbDay.transitAttachments && fbDay.transitAttachments[k];
+          if (fbAtt && attSignature(sanitizeTransitAttachmentObj(fbAtt)) === attSignature(sanitizeTransitAttachmentObj(a))) return;
+          result.push({ dayNumber: day.dayNumber, key: k, att: a, segs });
+        });
+      });
+      return result;
+    }
+    function updateOrphanBadge() {
+      const btn = document.getElementById('orphanRescueBtn');
+      if (!btn) return;
+      const n = findOrphanTransitAttachments().length;
+      btn.style.display = n > 0 ? 'flex' : 'none';
+      const t = document.getElementById('orphanRescueText');
+      if (t) t.innerText = `找回遺失附件 (${n})`;
+    }
+    function closeOrphanRescueModal() {
+      const ov = document.getElementById('orphanRescueOverlay');
+      if (ov) ov.remove();
+    }
+    function openOrphanRescueModal() {
+      let ov = document.getElementById('orphanRescueOverlay');
+      if (!ov) {
+        ov = document.createElement('div');
+        ov.id = 'orphanRescueOverlay';
+        ov.style.cssText = 'position:fixed;inset:0;z-index:99998;background:rgba(15,23,42,.6);display:flex;align-items:center;justify-content:center;padding:12px';
+        ov.addEventListener('click', e => { if (e.target === ov) closeOrphanRescueModal(); });
+        document.body.appendChild(ov);
+      }
+      renderOrphanRescueModal();
+    }
+    function renderOrphanRescueModal() {
+      const ov = document.getElementById('orphanRescueOverlay');
+      if (!ov) return;
+      const orphans = findOrphanTransitAttachments();
+      window.__orphanList = orphans;
+      const esc = (typeof escapeHtml === 'function') ? escapeHtml : (s => String(s));
+      const rows = orphans.map((o, i) => {
+        const a = o.att;
+        const day = state.itinerary.find(d => d.dayNumber === o.dayNumber);
+        const parts = [];
+        if (a.notes && String(a.notes).trim()) parts.push('備註：' + String(a.notes).trim().slice(0, 80));
+        if (a.link) parts.push('時刻表連結');
+        if (Array.isArray(a.images) && a.images.length) parts.push(a.images.length + ' 張圖片');
+        const opts = o.segs.map(sg => {
+          const has = day && day.transitAttachments && attHasContent(day.transitAttachments[sg.key]);
+          return `<option value="${esc(sg.key)}">${esc(sg.label)}${has ? '（已有內容，將合併）' : ''}</option>`;
+        }).join('');
+        return `
+          <div style="border:1px solid #e2e8f0;border-radius:10px;padding:10px;margin-bottom:8px;background:#fff">
+            <div style="font-weight:700;font-size:13px;color:#0f172a">Day ${o.dayNumber}　${esc(orphanTitle(o.key))}</div>
+            <div style="font-size:11px;color:#64748b;margin:3px 0 6px;white-space:pre-wrap;word-break:break-all">${esc(parts.join('　|　'))}</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+              <select id="orphanSel_${i}" style="flex:1;min-width:180px;font-size:12px;padding:4px;border:1px solid #cbd5e1;border-radius:6px">${opts}</select>
+              <button type="button" onclick="rescueOrphanAssign(${i})" style="font-size:12px;font-weight:700;background:#059669;color:#fff;padding:5px 10px;border-radius:6px;cursor:pointer">掛到此區間</button>
+              <button type="button" onclick="rescueOrphanDelete(${i})" style="font-size:12px;background:#fff;color:#be123c;border:1px solid #fda4af;padding:5px 10px;border-radius:6px;cursor:pointer">刪除</button>
+            </div>
+          </div>`;
+      }).join('');
+      ov.innerHTML = `
+        <div style="background:#f8fafc;border-radius:14px;max-width:640px;width:100%;max-height:85vh;overflow:auto;padding:14px;box-shadow:0 20px 50px rgba(0,0,0,.35)">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+            <div style="font-weight:800;font-size:15px">🧭 找回遺失的時刻表 / 乘車附件</div>
+            <button type="button" onclick="closeOrphanRescueModal()" style="font-size:18px;color:#64748b;cursor:pointer">✕</button>
+          </div>
+          <div style="font-size:11px;color:#64748b;margin-bottom:10px;line-height:1.5">
+            調整景點順序後，原本綁在舊區間的附件會對不上目前的行程。資料並沒有被刪除，請替每筆選擇目前行程中正確的搭乘區間後按「掛到此區間」。
+          </div>
+          ${rows || '<div style="text-align:center;padding:24px;color:#059669;font-weight:700">目前沒有遺失的附件 🎉</div>'}
+        </div>`;
+    }
+    function rescueOrphanAssign(i) {
+      const o = (window.__orphanList || [])[i];
+      if (!o) return;
+      const sel = document.getElementById('orphanSel_' + i);
+      if (!sel || !sel.value) return;
+      const day = state.itinerary.find(d => d.dayNumber === o.dayNumber);
+      if (!day || !day.transitAttachments) return;
+      const src = day.transitAttachments[o.key];
+      if (!attHasContent(src)) return;
+      const tgt = getOrCreateTransitAttachment(o.dayNumber, sel.value);
+      if (!tgt) return;
+      if (src.notes) {
+        tgt.notes = tgt.notes ? (tgt.notes.includes(src.notes) ? tgt.notes : tgt.notes + '\n' + src.notes) : src.notes;
+      }
+      if (src.link && !tgt.link) tgt.link = src.link;
+      if (Array.isArray(src.images) && src.images.length) {
+        tgt.images = tgt.images || [];
+        src.images.forEach(im => {
+          const id = attImgId(im);
+          if (!tgt.images.some(x => attImgId(x) === id)) tgt.images.push(im);
+        });
+      }
+      mirrorTransitAttachmentKey(o.dayNumber, sel.value);
+      delete day.transitAttachments[o.key];
+      saveState({ notify: true });
+      renderMainPanel();
+      renderOrphanRescueModal();
+    }
+    function rescueOrphanDelete(i) {
+      const o = (window.__orphanList || [])[i];
+      if (!o) return;
+      if (!confirm(`確定永久刪除「Day ${o.dayNumber} ${orphanTitle(o.key)}」的附件資料嗎？`)) return;
+      const day = state.itinerary.find(d => d.dayNumber === o.dayNumber);
+      if (day && day.transitAttachments) delete day.transitAttachments[o.key];
+      saveState({ notify: true });
+      renderOrphanRescueModal();
+    }
+
     function updateBadges() {
       const dayBadge = document.getElementById("totalDaysBadge");
       const spotBadge = document.getElementById("totalSpotsBadge");
       if (dayBadge) dayBadge.innerText = state.itinerary.length;
       if (spotBadge) spotBadge.innerText = state.spots.length;
+      try { updateOrphanBadge(); } catch (_) {}
     }
 
     // ==========================================
@@ -7975,7 +8227,9 @@
       'morning_origin_8': 'hagi_lodging_to_motonosumi_jinja',
       'hagi_lodging_to_motonosumi_jinja': 'morning_origin_8',
       'taikodani_inari_to_kaike_onsen': 'tsuwano_to_kaike_onsen',
-      'tsuwano_to_kaike_onsen': 'taikodani_inari_to_kaike_onsen'
+      'tsuwano_to_kaike_onsen': 'taikodani_inari_to_kaike_onsen',
+      'morning_origin_11': 'hiroshima_lodging_d9_to_yoshida_koriyama',
+      'hiroshima_lodging_d9_to_yoshida_koriyama': 'morning_origin_11'
     };
 
     function getEffectiveTransitAttachment(day, transitKey) {
@@ -8003,19 +8257,21 @@
       const att = transitAtt || { notes: '', images: [], link: '' };
       const images = att.images || [];
       const title = labelText || 'JR / 巴士時刻表縮圖與乘車附件';
+      const noteLines = (att.notes || '').split('\n').length;
+      const initialHeight = Math.max(34, Math.min(300, noteLines * 22 + 10));
 
       return `
-        <div class="mt-2 pt-2 border-t border-slate-200/80 space-y-1.5 bg-slate-50/80 -mx-1 px-2.5 py-2 rounded-lg border border-slate-200/70">
-          <div class="flex items-center justify-between gap-1.5 flex-wrap">
-            <span class="font-bold text-slate-800 text-[11px] flex items-center gap-1">
+        <div class="mt-2 pt-2 border-t border-slate-200/80 space-y-2 bg-slate-50/80 -mx-1 px-2.5 py-2 rounded-lg border border-slate-200/70">
+          <div class="flex items-center justify-between gap-1 flex-wrap">
+            <span class="font-bold text-slate-800 text-[11px] sm:text-xs flex items-center gap-1">
               <span>🕒</span>
               <span>${escapeHtml(title)}：</span>
-              ${images.length > 0 ? `<span class="bg-indigo-100 text-indigo-800 font-bold px-1.5 py-0.2 rounded-full text-[10px]">${images.length} 份資料</span>` : ''}
+              ${images.length > 0 ? `<span class="bg-indigo-100 text-indigo-800 font-bold px-1.5 py-0.2 rounded-full text-[10px]">${images.length} 圖</span>` : ''}
             </span>
-            <div class="flex items-center gap-1.5">
-              <label class="cursor-pointer bg-white hover:bg-slate-50 text-indigo-700 hover:text-indigo-800 border border-indigo-200 hover:border-indigo-300 px-2 py-0.5 rounded text-[11px] font-bold flex items-center gap-1 shadow-3xs transition">
+            <div class="flex items-center gap-1 shrink-0">
+              <label class="cursor-pointer bg-white hover:bg-slate-50 text-indigo-700 hover:text-indigo-800 border border-indigo-200 hover:border-indigo-300 px-2 py-0.5 rounded text-[11px] font-bold flex items-center gap-1 shadow-3xs transition" title="上傳時刻表縮圖截圖或 PDF">
                 <span>📎</span>
-                <span>上傳時刻表縮圖</span>
+                <span>上傳圖檔</span>
                 <input type="file" accept="image/*,application/pdf" class="hidden" onchange="handleUploadTransitTimetable(event, ${dayNumber}, '${transitKey}')">
               </label>
               <button type="button" onclick="promptTransitLocalImage(${dayNumber}, '${transitKey}')" class="bg-white hover:bg-slate-50 text-indigo-700 border border-indigo-200 hover:border-indigo-300 px-1.5 py-0.5 rounded text-[11px] font-bold flex items-center gap-1 shadow-3xs transition" title="連結放置於專案 timetables/ 資料夾中的實體圖檔">
@@ -8027,53 +8283,50 @@
             </div>
           </div>
 
-          <!-- 班次備忘輸入框與外部時刻表連結 -->
-          <div class="flex items-center gap-1.5 flex-wrap">
-            <div class="flex-1 min-w-[200px] flex items-center gap-1.5 bg-white border border-slate-300 rounded px-2 py-1 shadow-3xs focus-within:border-indigo-500">
-              <span class="text-slate-400 text-xs">📝</span>
-              <input type="text" value="${escapeHtml(att.notes || '')}" 
-                oninput="updateTransitNotes(${dayNumber}, '${transitKey}', this.value)" 
+          <!-- 班次備忘輸入框 (手機版 100% 滿版、字體放大、清晰易讀、支援 Enter 換行) -->
+          <div class="flex flex-col gap-1.5">
+            <div class="w-full flex items-start gap-1.5 bg-white border border-slate-300 rounded-lg p-2 shadow-3xs focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-300/40 transition">
+              <span class="text-slate-400 text-xs mt-0.5 select-none shrink-0" title="可按 Enter 換行分段">📝</span>
+              <textarea 
+                rows="${Math.max(1, noteLines)}"
+                style="height: ${initialHeight}px; min-height: 34px;"
+                oninput="updateTransitNotes(${dayNumber}, '${transitKey}', this.value); autoResizeTransitTextarea(this);" 
                 onchange="updateTransitNotes(${dayNumber}, '${transitKey}', this.value)" 
-                placeholder="預定搭乘班次/時刻備忘 (例如: 09:12 特急やくも / 14:35 くる梨巴士)..." 
-                class="w-full text-[11px] text-slate-800 placeholder-slate-400 bg-transparent outline-none">
+                placeholder="預定搭乘班次/時刻備忘 (可直接按 Enter 鍵換行分段)..." 
+                class="w-full text-xs sm:text-[11px] text-slate-800 placeholder-slate-400 bg-transparent outline-none resize-y leading-relaxed font-sans">${escapeHtml(att.notes || '')}</textarea>
             </div>
             ${att.link ? `
-              <a href="${escapeHtml(att.link)}" target="_blank" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 px-2 py-1 rounded text-[11px] font-bold flex items-center gap-1 shrink-0">
-                <span>📄</span><span>查看時刻表 ↗</span>
-              </a>
-              <button type="button" onclick="clearTransitLink(${dayNumber}, '${transitKey}')" class="text-slate-400 hover:text-red-600 text-xs p-1" title="清除連結">✕</button>
+              <div class="flex items-center gap-1.5 w-full">
+                <a href="${escapeHtml(att.link)}" target="_blank" class="flex-1 inline-flex items-center justify-center gap-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 px-2.5 py-1 rounded text-xs font-bold shadow-3xs transition truncate">
+                  <span>📄</span><span class="truncate">查看時刻表官網 ↗</span>
+                </a>
+                <button type="button" onclick="clearTransitLink(${dayNumber}, '${transitKey}')" class="text-slate-400 hover:text-red-600 px-2 py-1 text-xs border border-slate-200 rounded hover:bg-slate-50 transition cursor-pointer shrink-0" title="清除連結">✕ 清除</button>
+              </div>
             ` : ''}
           </div>
 
-          <!-- 時刻表縮圖卡片群 / 保留空間 -->
+          <!-- 時刻表縮圖卡片群 (僅在有上傳圖檔時渲染，無圖檔不佔用畫面空間) -->
           ${images.length > 0 ? `
-            <div class="flex flex-wrap items-start gap-2 pt-1">
+            <div class="flex flex-wrap items-start gap-2 pt-1 border-t border-slate-200/60">
               ${images.map((img, imgIdx) => `
                 <div class="relative group border border-slate-300 bg-white rounded-lg p-1 shadow-3xs flex flex-col items-center">
-                  <div class="w-20 h-16 bg-slate-100 rounded overflow-hidden cursor-pointer relative" onclick="openImageViewer('${escapeHtml(img.url)}', '${escapeHtml(img.name || '時刻表縮圖')}')">
+                  <div class="w-18 h-14 sm:w-20 sm:h-16 bg-slate-100 rounded overflow-hidden cursor-pointer relative" onclick="openImageViewer('${escapeHtml(img.url)}', '${escapeHtml(img.name || '時刻表縮圖')}')">
                     <img src="${img.url}" class="w-full h-full object-cover transition group-hover:scale-105" alt="${escapeHtml(img.name || '時刻表')}">
                     <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-[10px] font-bold">
                       🔍 放大
                     </div>
                   </div>
-                  <div class="w-20 text-[9px] text-slate-600 truncate mt-1 text-center font-mono" title="${escapeHtml(img.name)}">${escapeHtml(img.name)}</div>
-                  <button type="button" onclick="removeTransitImage(${dayNumber}, '${transitKey}', ${imgIdx})" class="absolute -top-1.5 -right-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-full w-4 h-4 text-[10px] font-bold flex items-center justify-center shadow-xs" title="刪除此縮圖">✕</button>
+                  <div class="w-18 sm:w-20 text-[9px] text-slate-600 truncate mt-1 text-center font-mono" title="${escapeHtml(img.name)}">${escapeHtml(img.name)}</div>
+                  <button type="button" onclick="removeTransitImage(${dayNumber}, '${transitKey}', ${imgIdx})" class="absolute -top-1.5 -right-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-full w-4 h-4 text-[10px] font-bold flex items-center justify-center shadow-xs cursor-pointer" title="刪除此縮圖">✕</button>
                 </div>
               `).join('')}
-              <label class="cursor-pointer border border-dashed border-indigo-200 hover:border-indigo-400 bg-indigo-50/40 hover:bg-indigo-50 rounded-lg w-20 h-16 flex flex-col items-center justify-center text-indigo-600 transition text-[10px]" title="上傳更多時刻表縮圖">
+              <label class="cursor-pointer border border-dashed border-indigo-200 hover:border-indigo-400 bg-indigo-50/40 hover:bg-indigo-50 rounded-lg w-18 h-14 sm:w-20 sm:h-16 flex flex-col items-center justify-center text-indigo-600 transition text-[10px]" title="上傳更多時刻表縮圖">
                 <span>➕</span>
                 <span>加縮圖</span>
                 <input type="file" accept="image/*,application/pdf" class="hidden" onchange="handleUploadTransitTimetable(event, ${dayNumber}, '${transitKey}')">
               </label>
             </div>
-          ` : `
-            <!-- 保留空間上傳提示 -->
-            <label class="cursor-pointer border border-dashed border-slate-300 hover:border-indigo-400 bg-white/80 hover:bg-indigo-50/60 rounded-lg py-2 px-3 flex items-center justify-center gap-2 text-slate-500 hover:text-indigo-600 transition">
-              <span class="text-sm">📷</span>
-              <span class="text-[11px] font-medium">保留空間：點此上傳 JR / 巴士時刻表縮圖截圖或 PDF 附件</span>
-              <input type="file" accept="image/*,application/pdf" class="hidden" onchange="handleUploadTransitTimetable(event, ${dayNumber}, '${transitKey}')">
-            </label>
-          `}
+          ` : ''}
         </div>
       `;
     }
@@ -10742,8 +10995,8 @@
       reader.onload = function(e) {
         const img = new Image();
         img.onload = function() {
-          const maxWidth = 1600;
-          const maxHeight = 1600;
+          const maxWidth = 1400;
+          const maxHeight = 1400;
           let width = img.width;
           let height = img.height;
 
@@ -10764,7 +11017,7 @@
           ctx.drawImage(img, 0, 0, width, height);
 
           // JPEG 0.82 壓縮，既保留時刻表文字高清晰度，又大幅縮減體積至 100KB 左右
-          const dataUrl = canvas.toDataURL('image/jpeg', 0.82);
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.78);
           callback({
             name: file.name,
             url: dataUrl,
@@ -10810,6 +11063,12 @@
       mirrorTransitAttachmentKey(dayNumber, transitKey);
       saveState({ notify: true });
       renderMainPanel();
+    }
+
+    function autoResizeTransitTextarea(el) {
+      if (!el) return;
+      el.style.height = 'auto';
+      el.style.height = Math.max(34, el.scrollHeight) + 'px';
     }
 
     function updateTransitNotes(dayNumber, transitKey, notes) {
@@ -12527,14 +12786,18 @@
             const url = `${getEffectiveDbUrl()}/rooms/${roomKey}.json`;
             const payload = getSyncPayload();
             try {
-              fetch(url, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload),
-                keepalive: true
-              });
-              cloudConfig.lastSyncedAt = payload.updatedAt;
-              saveCloudConfig();
+              const bodyStr = JSON.stringify(payload);
+              // keepalive 請求上限 64KB：超過就不送，也不可標記為「已同步」(舊版會假同步)，下次開啟會自動比對上傳
+              if (new Blob([bodyStr]).size < 60000) {
+                fetch(url, {
+                  method: "PUT",
+                  headers: { "Content-Type": "application/json" },
+                  body: bodyStr,
+                  keepalive: true
+                }).then(r => {
+                  if (r && r.ok) { cloudConfig.lastSyncedAt = payload.updatedAt; saveCloudConfig(); }
+                }).catch(() => {});
+              }
             } catch (e) {}
           }
         }
