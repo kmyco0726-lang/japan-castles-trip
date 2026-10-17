@@ -761,7 +761,7 @@
   </div>
 
   <!-- 載入原始景點資料庫 -->
-  <script src="spots_data.js?v=2027_01_13_ROUTE_V78_USER_EXACT_RESTORE"></script>
+  <script src="spots_data.js?v=2027_01_13_ROUTE_V80_TEXTAREA_ENTER"></script>
 
   <!-- 應用程式主邏輯 -->
   <script>
@@ -772,7 +772,7 @@
     const STORAGE_KEY_ITINERARY = "jp_castles_itinerary_v1";
     const STORAGE_KEY_ITINERARY_VER = "jp_castles_itinerary_ver";
     const STORAGE_KEY_DELETED_SPOTS = "jp_castles_deleted_spots_v1";
-    const CURRENT_ITINERARY_VER = "2027_01_13_ROUTE_V79_HIROSHIMA_RESTORE";
+    const CURRENT_ITINERARY_VER = "2027_01_13_ROUTE_V80_TEXTAREA_ENTER";
 
     // ==========================================
     // 雙重自包含備援資料庫 (Fallback Database)
@@ -3100,8 +3100,23 @@
     "title": "Day 11：毛利要塞吉田郡山城 ➔ 福山城 ➔ 鞆之浦夕陽溫泉",
     "transitAttachments": {
       "hiroshima_lodging_d9_to_yoshida_koriyama": {
-        "notes": "路面電車①番ホーム ( 紙屋町･市役所経由 ) 　宇品行き「紙屋町東電停」下車 /②番ホーム 宮島行き「紙屋町西電停」下車 /⑥番ホーム 番江波行き「紙屋町西電停」下車//巴士⑧番ホーム／⑧番ホーム／吉田営業所行き 「安芸高田市役所前」下車き 「安芸高田市役所前」下車",
+        "notes": "路面電車 (約需15分)\n①番ホーム ( 紙屋町･市役所経由 ) 　宇品行き「紙屋町東電停」下車 \n②番ホーム 宮島行き「紙屋町西電停」下車 \n⑥番ホーム 番江波行き「紙屋町西電停」下車\n\n巴士 ⑧番ホーム／吉田営業所行き 「安芸高田市役所前」下車 (7:15-8:56)",
         "link": "https://www.hiroden.co.jp/bus/route/n-72.html",
+        "images": []
+      },
+      "morning_origin_11": {
+        "notes": "路面電車 (約需15分)\n①番ホーム ( 紙屋町･市役所経由 ) 　宇品行き「紙屋町東電停」下車 \n②番ホーム 宮島行き「紙屋町西電停」下車 \n⑥番ホーム 番江波行き「紙屋町西電停」下車\n\n巴士 ⑧番ホーム／吉田営業所行き 「安芸高田市役所前」下車 (7:15-8:56)",
+        "link": "https://www.hiroden.co.jp/bus/route/n-72.html",
+        "images": []
+      },
+      "yoshida_koriyama_to_fukuyama": {
+        "notes": "巴士回廣島 10:42-12:16",
+        "link": "",
+        "images": []
+      },
+      "fukuyama_to_tomonoura_onsen": {
+        "notes": "JR 福山站南口 5號公車\n鞆鐵巴士（トモテツバス）的「鞆線」（開往「鞆の浦」或「鞆港」方向）\n或飯店接送",
+        "link": "",
         "images": []
       }
     }
@@ -3121,7 +3136,29 @@
       "kibitsu_jinja",
       "okayama_hotel"
     ],
-    "title": "Day 12：鞆之浦晨光 ➔ 福山新幹線 ➔ 岡山 ➔ 天空之城備中松山城 ➔ 桃太郎吉備路傳說 ➔ 宿岡山站前"
+    "title": "Day 12：鞆之浦晨光 ➔ 福山新幹線 ➔ 岡山 ➔ 天空之城備中松山城 ➔ 桃太郎吉備路傳說 ➔ 宿岡山站前",
+    "transitAttachments": {
+      "tomonoura_onsen_to_bitchu_matsuyama": {
+        "notes": "巴士回車站 7:18-7:51\nJR 8:29-9:49\n10:00計程車預約 https://www.asoview.com/item/activity/pln3000045984/",
+        "link": "https://tomotetsu.co.jp/cont/wp-content/uploads/2026/09/1.20261001jikoku-tomo.pdf",
+        "images": []
+      },
+      "morning_origin_12": {
+        "notes": "巴士回車站 7:18-7:51\nJR 8:29-9:49\n10:00計程車預約 https://www.asoview.com/item/activity/pln3000045984/",
+        "link": "https://tomotetsu.co.jp/cont/wp-content/uploads/2026/09/1.20261001jikoku-tomo.pdf",
+        "images": []
+      },
+      "fukuyama_to_bitchu_matsuyama": {
+        "notes": "巴士回車站 7:18-7:51\nJR 8:29-9:49\n10:00計程車預約 https://www.asoview.com/item/activity/pln3000045984/",
+        "link": "https://tomotetsu.co.jp/cont/wp-content/uploads/2026/09/1.20261001jikoku-tomo.pdf",
+        "images": []
+      },
+      "bitchu_matsuyama_to_kibitsuhiko_jinja": {
+        "notes": "",
+        "link": "",
+        "images": []
+      }
+    }
   },
   {
     "baseStation": "岡山駅 / 岡山桃太郎機場 (OKJ)",
@@ -3610,8 +3647,15 @@
             const fbDay = fallbackItinerary.find(d => d.dayNumber === day.dayNumber);
             if (fbDay && fbDay.transitAttachments) {
               Object.keys(fbDay.transitAttachments).forEach(k => {
+                const fbAtt = sanitizeTransitAttachmentObj(fbDay.transitAttachments[k]);
                 if (day.transitAttachments[k] === undefined) {
-                  day.transitAttachments[k] = sanitizeTransitAttachmentObj(fbDay.transitAttachments[k]);
+                  day.transitAttachments[k] = fbAtt;
+                } else {
+                  // ★ 若使用者端目前的備忘或連結為空，自動補充預設值，保證跨瀏覽器或新分頁不丟失已建檔資料
+                  const cur = day.transitAttachments[k];
+                  if ((!cur.notes || !cur.notes.trim()) && fbAtt.notes) cur.notes = fbAtt.notes;
+                  if ((!cur.link || !cur.link.trim()) && fbAtt.link) cur.link = fbAtt.link;
+                  if ((!cur.images || cur.images.length === 0) && fbAtt.images && fbAtt.images.length > 0) cur.images = fbAtt.images;
                 }
               });
             }
@@ -8229,7 +8273,10 @@
       'taikodani_inari_to_kaike_onsen': 'tsuwano_to_kaike_onsen',
       'tsuwano_to_kaike_onsen': 'taikodani_inari_to_kaike_onsen',
       'morning_origin_11': 'hiroshima_lodging_d9_to_yoshida_koriyama',
-      'hiroshima_lodging_d9_to_yoshida_koriyama': 'morning_origin_11'
+      'hiroshima_lodging_d9_to_yoshida_koriyama': 'morning_origin_11',
+      'morning_origin_12': 'tomonoura_onsen_to_bitchu_matsuyama',
+      'tomonoura_onsen_to_bitchu_matsuyama': 'morning_origin_12',
+      'fukuyama_to_bitchu_matsuyama': 'tomonoura_onsen_to_bitchu_matsuyama'
     };
 
     function getEffectiveTransitAttachment(day, transitKey) {
@@ -8258,7 +8305,7 @@
       const images = att.images || [];
       const title = labelText || 'JR / 巴士時刻表縮圖與乘車附件';
       const noteLines = (att.notes || '').split('\n').length;
-      const initialHeight = Math.max(34, Math.min(300, noteLines * 22 + 10));
+      const initialHeight = Math.max(52, Math.min(320, Math.max(2, noteLines) * 22 + 12));
 
       return `
         <div class="mt-2 pt-2 border-t border-slate-200/80 space-y-2 bg-slate-50/80 -mx-1 px-2.5 py-2 rounded-lg border border-slate-200/70">
@@ -8283,13 +8330,15 @@
             </div>
           </div>
 
-          <!-- 班次備忘輸入框 (手機版 100% 滿版、字體放大、清晰易讀、支援 Enter 換行) -->
+          <!-- 班次備忘輸入框 (手機版/電腦版均支援 Enter 換行分段，手機鍵盤顯示換行鍵) -->
           <div class="flex flex-col gap-1.5">
             <div class="w-full flex items-start gap-1.5 bg-white border border-slate-300 rounded-lg p-2 shadow-3xs focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-300/40 transition">
-              <span class="text-slate-400 text-xs mt-0.5 select-none shrink-0" title="可按 Enter 換行分段">📝</span>
+              <span class="text-slate-400 text-xs mt-0.5 select-none shrink-0" title="可直接按 Enter 鍵換行分段">📝</span>
               <textarea 
-                rows="${Math.max(1, noteLines)}"
-                style="height: ${initialHeight}px; min-height: 34px;"
+                rows="${Math.max(2, noteLines)}"
+                enterkeyhint="enter"
+                style="height: ${initialHeight}px; min-height: 52px; white-space: pre-wrap;"
+                onkeydown="if(event.key === 'Enter') { setTimeout(() => autoResizeTransitTextarea(this), 0); }"
                 oninput="updateTransitNotes(${dayNumber}, '${transitKey}', this.value); autoResizeTransitTextarea(this);" 
                 onchange="updateTransitNotes(${dayNumber}, '${transitKey}', this.value)" 
                 placeholder="預定搭乘班次/時刻備忘 (可直接按 Enter 鍵換行分段)..." 
@@ -11068,7 +11117,8 @@
     function autoResizeTransitTextarea(el) {
       if (!el) return;
       el.style.height = 'auto';
-      el.style.height = Math.max(34, el.scrollHeight) + 'px';
+      const extra = (el.value && el.value.endsWith('\n')) ? 24 : 0;
+      el.style.height = Math.max(52, el.scrollHeight + extra) + 'px';
     }
 
     function updateTransitNotes(dayNumber, transitKey, notes) {
@@ -12505,7 +12555,7 @@
                 <div style="font-weight:bold; color:#1e3a8a; font-size:9.5pt; margin-bottom:3pt;">
                   🚅 【搭乘區間】${escapeHtml(title)}
                 </div>
-                ${notes ? `<p style="font-size:8.5pt; color:#334155; margin:2pt 0 2pt 4pt;"><strong>📝 班次備忘：</strong>${escapeHtml(notes)}</p>` : ''}
+                ${notes ? `<p style="font-size:8.5pt; color:#334155; margin:2pt 0 2pt 4pt; white-space: pre-wrap; line-height: 1.5;"><strong>📝 班次備忘：</strong>${escapeHtml(notes)}</p>` : ''}
                 ${link ? `<p style="font-size:8pt; color:#2563eb; margin:2pt 0 2pt 4pt;"><strong>🔗 時刻表連結：</strong><a href="${escapeHtml(link)}" target="_blank" style="color:#2563eb; text-decoration:underline;">${escapeHtml(link)}</a></p>` : ''}
                 ${imagesHtml}
               </div>
