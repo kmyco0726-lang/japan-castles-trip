@@ -587,6 +587,22 @@ def create_booklet_word():
         valid_items = []
         seen_keys = set()
 
+        alias_groups = [
+            {'tomonoura_onsen_to_bitchu_matsuyama', f'morning_origin_{d_num}', 'fukuyama_to_bitchu_matsuyama'},
+            {'okayama_hotel_to_okayama_airport', f'morning_origin_{d_num}', f'okayama_airport_{d_num}', f'tpe_flight_{d_num}'},
+            {'shin_yamaguchi_lodging_to_kintaikyo', f'morning_origin_{d_num}'},
+            {'hagi_lodging_to_motonosumi_jinja', f'morning_origin_{d_num}'},
+            {'taikodani_inari_to_kaike_onsen', 'tsuwano_to_kaike_onsen'},
+            {'yasugi_lodging_to_gassan_toda', 'yonago_hotel_to_gassan_toda'},
+            {'hiroshima_lodging_d9_to_yoshida_koriyama', f'morning_origin_{d_num}'}
+        ]
+
+        def mark_seen(key):
+            seen_keys.add(key)
+            for grp in alias_groups:
+                if key in grp:
+                    seen_keys.update(grp)
+
         # 1. 優先按照 spotIds 景點動線收集附件
         for s_i, sid in enumerate(spot_ids):
             prev_id = spot_ids[s_i - 1] if s_i > 0 else None
@@ -595,21 +611,32 @@ def create_booklet_word():
                 candidate_keys.append(f"{prev_id}_to_{sid}")
             else:
                 if sid == 'okayama_airport':
-                    candidate_keys.extend([f"okayama_airport_{d_num}", f"tpe_flight_{d_num}"])
+                    if d_num == 1:
+                        candidate_keys.extend([f"tpe_flight_{d_num}", f"okayama_airport_{d_num}"])
+                    else:
+                        candidate_keys.extend(["okayama_hotel_to_okayama_airport", f"morning_origin_{d_num}", f"okayama_airport_{d_num}"])
                 candidate_keys.extend([f"morning_origin_{d_num}", f"start_to_{sid}"])
+                if d_num == 12:
+                    candidate_keys.extend(["tomonoura_onsen_to_bitchu_matsuyama", "fukuyama_to_bitchu_matsuyama"])
 
             for ck in candidate_keys:
                 if ck in att_dict and ck not in seen_keys:
                     item = att_dict[ck]
                     if (item.get('images') and len(item['images']) > 0) or item.get('notes') or item.get('link'):
-                        seen_keys.add(ck)
-                        valid_items.append((ck, get_segment_display_title(ck, day, spots_map), item))
+                        mark_seen(ck)
+                        if d_num == 12 and ck in {'tomonoura_onsen_to_bitchu_matsuyama', f'morning_origin_{d_num}', 'fukuyama_to_bitchu_matsuyama'}:
+                            title = "鞆之浦溫泉 ➔ 福山 ➔ 備中松山城 (晨間出發接駁)"
+                        elif d_num == 13:
+                            title = "岡山站西口 ➔ 岡山桃太郎機場 (機場利木津巴士直達)"
+                        else:
+                            title = get_segment_display_title(ck, day, spots_map)
+                        valid_items.append((ck, title, item))
 
         # 2. 補充當天其他已上傳/填寫但未包含在上述動線的附件
         for k, item in att_dict.items():
             if k not in seen_keys:
                 if (item.get('images') and len(item['images']) > 0) or item.get('notes') or item.get('link'):
-                    seen_keys.add(k)
+                    mark_seen(k)
                     valid_items.append((k, get_segment_display_title(k, day, spots_map), item))
 
         if not valid_items:

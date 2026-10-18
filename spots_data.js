@@ -1,4 +1,4 @@
-// spots_data.js - 預設景點與車站資料庫
+// spots_data.js - 獨立資料來源
 const DEFAULT_SPOTS = [
   {
     "id": "taoyuan_airport",
@@ -2013,9 +2013,17 @@ const DEFAULT_ITINERARY = [
         ]
       },
       "matsue_to_tamatsukuri_onsen": {
-        "notes": "一般路線公車16:41-17:19 P路線-玉造線-県民会館前上車 終點玉造溫泉630 日",
-        "link": "https://matsue-bus.jp/wp-content/uploads/2026/03/onsen-tmatsukuri-time.pdf",
-        "images": []
+        "notes": "松江 ➔ 玉造溫泉 (JR山陰本線 快速/普通車 5~8 分鐘)\n班次：16:45 ➔ 16:50 / 16:54 ➔ 17:02",
+        "link": "",
+        "images": [
+          {
+            "name": "1791626567066.jpg",
+            "url": "timetables/d6_matsue_to_tamatsukuri_onsen_1.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/10"
+          }
+        ]
       },
       "tamatsukuri_yu_jinja_to_tamatsukuri_onsen": {
         "notes": "一般路線公車16:41-17:19 P路線-玉造線-県民会館前上車 終點玉造溫泉630 日",
@@ -2322,9 +2330,32 @@ const DEFAULT_ITINERARY = [
     "title": "Day 11：毛利要塞吉田郡山城 ➔ 福山城 ➔ 鞆之浦夕陽溫泉",
     "transitAttachments": {
       "hiroshima_lodging_d9_to_yoshida_koriyama": {
-        "notes": "路面電車①番ホーム ( 紙屋町･市役所経由 ) 　宇品行き「紙屋町東電停」下車 /②番ホーム 宮島行き「紙屋町西電停」下車 /⑥番ホーム 番江波行き「紙屋町西電停」下車//巴士⑧番ホーム／⑧番ホーム／吉田営業所行き 「安芸高田市役所前」下車き 「安芸高田市役所前」下車",
-        "link": "https://www.hiroden.co.jp/bus/route/n-72.html",
-        "images": []
+        "notes": "路面電車 (約需15分)\n①番ホーム ( 紙屋町･市役所経由 ) 　宇品行き「紙屋町東電停」下車 \n②番ホーム 宮島行き「紙屋町西電停」下車 \n⑥番ホーム 番江波行き「紙屋町西電停」下車\n\n巴士 ⑧番ホーム／⑧番ホーム／吉田営業所行き 「安芸高田市役所前」下車き 「安芸高田市役所前」下車(7:15-8:56)",
+        "images": [],
+        "link": "https://www.hiroden.co.jp/bus/route/n-72.html"
+      },
+      "fukuyama_to_tomonoura_onsen": {
+        "notes": "JR 福山站南口 5號公車\n鞆鐵巴士（トモテツバス）的「鞆線」（開往「鞆の浦」或「鞆港」方向）\n或飯店接送",
+        "images": [],
+        "link": ""
+      },
+      "morning_origin_11": {
+        "notes": "路面電車 (約需15分)\n①番ホーム ( 紙屋町･市役所経由 ) 　宇品行き「紙屋町東電停」下車 \n②番ホーム 宮島行き「紙屋町西電停」下車 \n⑥番ホーム 番江波行き「紙屋町西電停」下車\n\n巴士 ⑧番ホーム／⑧番ホーム／吉田営業所行き 「安芸高田市役所前」下車き 「安芸高田市役所前」下車(7:15-8:56)",
+        "images": [],
+        "link": "https://www.hiroden.co.jp/bus/route/n-72.html"
+      },
+      "yoshida_koriyama_to_fukuyama": {
+        "notes": "廣島 ➔ 福山 (山陽新幹線 さくら 550號，僅 23 分鐘，自由席 ¥2,530)\n12:33 廣島發 ➔ 12:56 抵達福山",
+        "link": "",
+        "images": [
+          {
+            "name": "1792206433056.jpg",
+            "url": "timetables/d11_hiroshima_to_fukuyama_1.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          }
+        ]
       }
     }
   },
@@ -2343,7 +2374,108 @@ const DEFAULT_ITINERARY = [
       "kibitsu_jinja",
       "okayama_hotel"
     ],
-    "title": "Day 12：鞆之浦晨光 ➔ 福山新幹線 ➔ 岡山 ➔ 天空之城備中松山城 ➔ 桃太郎吉備路傳說 ➔ 宿岡山站前"
+    "title": "Day 12：鞆之浦晨光 ➔ 福山新幹線 ➔ 岡山 ➔ 天空之城備中松山城 ➔ 桃太郎吉備路傳說 ➔ 宿岡山站前",
+    "transitAttachments": {
+      "tomonoura_onsen_to_bitchu_matsuyama": {
+        "notes": "巴士回車站 7:18-7:51\nJR 8:29-9:49 (備用班次 9:31-10:47)\n10:00計程車預約 https://www.asoview.com/item/activity/pln3000045984/",
+        "link": "https://tomotetsu.co.jp/cont/wp-content/uploads/2026/09/1.20261001jikoku-tomo.pdf",
+        "images": [
+          {
+            "name": "1792209376728.jpg",
+            "url": "timetables/d12_tomonoura_to_bitchu_matsuyama_1.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          },
+          {
+            "name": "1792208889852.jpg",
+            "url": "timetables/d12_tomonoura_to_bitchu_matsuyama_2.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          }
+        ]
+      },
+      "morning_origin_12": {
+        "notes": "巴士回車站 7:18-7:51\nJR 8:29-9:49 (備用班次 9:31-10:47)\n10:00計程車預約 https://www.asoview.com/item/activity/pln3000045984/",
+        "link": "https://tomotetsu.co.jp/cont/wp-content/uploads/2026/09/1.20261001jikoku-tomo.pdf",
+        "images": [
+          {
+            "name": "1792209376728.jpg",
+            "url": "timetables/d12_tomonoura_to_bitchu_matsuyama_1.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          },
+          {
+            "name": "1792208889852.jpg",
+            "url": "timetables/d12_tomonoura_to_bitchu_matsuyama_2.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          }
+        ]
+      },
+      "fukuyama_to_bitchu_matsuyama": {
+        "notes": "巴士回車站 7:18-7:51\nJR 8:29-9:49 (備用班次 9:31-10:47)\n10:00計程車預約 https://www.asoview.com/item/activity/pln3000045984/",
+        "link": "https://tomotetsu.co.jp/cont/wp-content/uploads/2026/09/1.20261001jikoku-tomo.pdf",
+        "images": [
+          {
+            "name": "1792209376728.jpg",
+            "url": "timetables/d12_tomonoura_to_bitchu_matsuyama_1.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          },
+          {
+            "name": "1792208889852.jpg",
+            "url": "timetables/d12_tomonoura_to_bitchu_matsuyama_2.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          }
+        ]
+      },
+      "bitchu_matsuyama_to_kibitsuhiko_jinja": {
+        "notes": "備中高梁 ➔ 備前一宮 (JR 伯備線 + 吉備線)\n路線1: 13:10 ➔ 14:03 (特急 53分, ¥2,170)\n路線2: 12:48 ➔ 14:03 (普通車 1小時15分, ¥680)",
+        "link": "https://transit.yahoo.co.jp/search/result?from=%E5%82%99%E4%B8%AD%E9%AB%98%E6%A2%81&to=%E5%82%99%E5%89%8D%E4%B8%80%E5%AE%AE",
+        "images": [
+          {
+            "name": "1792242039636.jpg",
+            "url": "timetables/d12_bitchu_matsuyama_to_kibitsuhiko_1.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          }
+        ]
+      },
+      "kibitsuhiko_jinja_to_kibitsu_jinja": {
+        "notes": "備前一宮 ➔ 吉備津 (JR 吉備線 / 桃太郎線，車程僅 3 分鐘，單程 ¥150)\n班次：15:04 / 15:34 / 16:04 (每半小時一班)\n亦可沿吉備路自行車道步行或騎單車 (約 2km，悠閒散策 25 分鐘)",
+        "link": "",
+        "images": [
+          {
+            "name": "1792242236767.jpg",
+            "url": "timetables/d12_kibitsuhiko_to_kibitsu_1.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          }
+        ]
+      },
+      "kibitsu_jinja_to_okayama_hotel": {
+        "notes": "吉備津 ➔ 岡山站 (JR 吉備線 / 桃太郎線 直達，車程 18 分鐘，單程 ¥210)\n班次：16:47 ➔ 17:05 / 17:17 ➔ 17:35 / 17:47 ➔ 18:05\n出站直通站前飯店 Check-in！",
+        "link": "https://transit.yahoo.co.jp/search/result?from=%E5%90%89%E5%82%99%E6%B4%A5&to=%E5%B2%A1%E5%B1%B1",
+        "images": [
+          {
+            "name": "1792242347783.jpg",
+            "url": "timetables/d12_kibitsu_to_okayama_1.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          }
+        ]
+      }
+    }
   },
   {
     "baseStation": "岡山駅 / 岡山桃太郎機場 (OKJ)",
@@ -2357,1032 +2489,68 @@ const DEFAULT_ITINERARY = [
     "spotIds": [
       "okayama_airport"
     ],
-    "title": "Day 13：岡山市區漫遊伴手禮 ➔ 岡山桃太郎機場搭機返台 (虎航 IT215)"
+    "title": "Day 13：岡山市區漫遊伴手禮 ➔ 岡山桃太郎機場搭機返台 (虎航 IT215)",
+    "transitAttachments": {
+      "okayama_hotel_to_okayama_airport": {
+        "notes": "岡山站西口 ➔ 岡山桃太郎機場 (中鐵/岡電 利木津巴士，車程約 30 分鐘，單程 ¥1,000)\n班次：12:05 ➔ 12:35 / 13:35 ➔ 14:05 (完美銜接 15:55 虎航 IT 215 登機報到！)",
+        "link": "",
+        "images": [
+          {
+            "name": "1792242497253.jpg",
+            "url": "timetables/d13_okayama_to_airport_bus_1.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          },
+          {
+            "name": "1792242457470.jpg",
+            "url": "timetables/d13_okayama_to_airport_bus_2.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          }
+        ]
+      },
+      "morning_origin_13": {
+        "notes": "岡山站西口 ➔ 岡山桃太郎機場 (中鐵/岡電 利木津巴士，車程約 30 分鐘，單程 ¥1,000)\n班次：12:05 ➔ 12:35 / 13:35 ➔ 14:05 (完美銜接 15:55 虎航 IT 215 登機報到！)",
+        "link": "",
+        "images": [
+          {
+            "name": "1792242497253.jpg",
+            "url": "timetables/d13_okayama_to_airport_bus_1.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          },
+          {
+            "name": "1792242457470.jpg",
+            "url": "timetables/d13_okayama_to_airport_bus_2.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          }
+        ]
+      },
+      "okayama_airport_13": {
+        "notes": "岡山站西口 ➔ 岡山桃太郎機場 (中鐵/岡電 利木津巴士，車程約 30 分鐘，單程 ¥1,000)\n班次：12:05 ➔ 12:35 / 13:35 ➔ 14:05 (完美銜接 15:55 虎航 IT 215 登機報到！)",
+        "link": "",
+        "images": [
+          {
+            "name": "1792242497253.jpg",
+            "url": "timetables/d13_okayama_to_airport_bus_1.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          },
+          {
+            "name": "1792242457470.jpg",
+            "url": "timetables/d13_okayama_to_airport_bus_2.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          }
+        ]
+      }
+    }
   }
 ];
-
-const FLIGHT_COMPARISON_DATA = [
-  {
-    id: "okayama_tiger",
-    destination: "岡山 (OKJ)",
-    destCity: "岡山桃太郎機場 (台北桃園 TPE 直飛)",
-    airline: "台灣虎航 (Tigerair Taiwan)",
-    airlineCode: "IT",
-    flightType: "LCC廉價航空",
-    aircraft: "A320 / A320neo",
-    frequency: "每天 1 班天天直飛 (1/13 去 ➔ 1/26 回，0天移動完美吻合)",
-    travelDates: "1/13 (三) ~ 1/26 (二) [共 14 天 13 晚]",
-    exactPrice: "NT$ 13,537",
-    priceRangeWithBaggage: "NT$ 13,537",
-    pricePeakWithBaggage: "含加購 20kg 托運行李直客價",
-    outbound: {
-      flightNo: "IT214",
-      departure: "11:30 台北桃園 (TPE)",
-      arrival: "15:05 岡山 (OKJ)",
-      duration: "2 小時 35 分鐘",
-      timingType: "午去 (1/13 出發・舒適免天未亮出門)"
-    },
-    inbound: {
-      flightNo: "IT215",
-      departure: "15:55 岡山 (OKJ)",
-      arrival: "18:05 台北桃園 (TPE)",
-      duration: "3 小時 10 分鐘",
-      timingType: "下午回 (1/26 返台・早晨還能攻備中松山城)"
-    },
-    baggageIncluded: "已包含來回 20kg 托運行李 (約 NT$1,900，已計入票價)",
-    carryOn: "1件手提 + 1件隨身物品，合計 10kg",
-    jrPassLink: "機場搭乘中鐵/岡電機場巴士 30 分 (1,000円) 直達岡山站，立即開通山陽&山陰 Pass！",
-    pros: [
-      "山陰山陽大環線地理幾何中心，南北進出最順暢",
-      "天天直飛不卡班表，回程 15:55 起飛，最後一天早晨還能從容攻登備中松山城",
-      "機場小而美，通關與行李提領極速 (15~20分鐘出關)"
-    ],
-    cons: [
-      "票價隨日期浮動，熱門賞楓/雪季需提早開票",
-      "機上餐飲與選位需額外加購"
-    ],
-    officialUrl: "https://www.tigerairtw.com/",
-    googleFlightsUrl: "https://www.google.com/travel/flights?q=Flights%20to%20OKJ%20from%20TPE",
-    skyscannerUrl: "https://www.skyscanner.com.tw/transport/flights/tpe/okj/"
-  },
-  {
-    id: "hiroshima_cal",
-    destination: "廣島 (HIJ)",
-    destCity: "廣島機場 (台北桃園 TPE 直飛)",
-    airline: "中華航空 (China Airlines)",
-    airlineCode: "CI",
-    flightType: "傳統全服務航空 (FSC)",
-    aircraft: "A321neo (全機4K娛樂系統)",
-    frequency: "每週 6 班 (週二至日皆飛，1/13 去 ➔ 1/26 回完美吻合)",
-    travelDates: "1/13 (三) ~ 1/26 (二) [共 14 天 13 晚]",
-    exactPrice: "NT$ 15,038",
-    priceRangeWithBaggage: "NT$ 15,038",
-    pricePeakWithBaggage: "傳統航空免費含 23kg 托運行李與餐飲",
-    outbound: {
-      flightNo: "CI112",
-      departure: "07:15 台北桃園 (TPE)",
-      arrival: "10:35 廣島 (HIJ)",
-      duration: "2 小時 20 分鐘",
-      timingType: "早去 (1/13 出發・10:35 即達！第一天直玩廣島)"
-    },
-    inbound: {
-      flightNo: "CI113",
-      departure: "11:35 廣島 (HIJ)",
-      arrival: "13:15 台北桃園 (TPE)",
-      duration: "2 小時 40 分鐘",
-      timingType: "午回 (1/26 返台・下午返抵國門好收心)"
-    },
-    baggageIncluded: "免費內含 1 件 23kg 托運行李 (傳統全服務航空標配，免加價)",
-    carryOn: "1件手提 7kg + 1件隨身包",
-    jrPassLink: "機場搭利木津巴士約 45 分 (1,450円) 直達廣島站，直接啟用 Pass 搭新幹線！",
-    pros: [
-      "早去優勢巨大！10:35 即抵達廣島，第 1 天下午能直接跑廣島城、原爆圓頂與護國神社",
-      "全服務航空規格：免費含 23kg 行李、熱熱飛機餐飲、個人 4K 影音娛樂系統",
-      "適合廣島起點直接切入山口與島根大環線"
-    ],
-    cons: [
-      "回程是上午 11:35，最後一天早上需較早前往機場 (約 09:30 到廣島機場)",
-      "週一無班機 (去程 1/13 週三、回程 1/26 週二皆有航班)"
-    ],
-    officialUrl: "https://www.china-airlines.com/",
-    googleFlightsUrl: "https://www.google.com/travel/flights?q=Flights%20to%20HIJ%20from%20TPE",
-    skyscannerUrl: "https://www.skyscanner.com.tw/transport/flights/tpe/hij/"
-  },
-  {
-    id: "yonago_tiger",
-    destination: "米子 (YGJ)",
-    destCity: "米子鬼太郎機場 (台北桃園 TPE 直飛)",
-    airline: "台灣虎航 (Tigerair Taiwan)",
-    airlineCode: "IT",
-    flightType: "LCC廉價航空",
-    aircraft: "A320 / A320neo",
-    frequency: "每週 2 班 (僅每週一、五飛航・±2天最佳調度方案)",
-    travelDates: "1/15 (五) ~ 1/25 (一) [共 11 天 10 晚]",
-    exactPrice: "NT$ 11,537",
-    priceRangeWithBaggage: "NT$ 11,537",
-    pricePeakWithBaggage: "含加購 20kg 托運行李直客價",
-    outbound: {
-      flightNo: "IT724",
-      departure: "13:30 台北桃園 (TPE)",
-      arrival: "17:00 米子 (YGJ)",
-      duration: "2 小時 30 分鐘",
-      timingType: "午去 (1/15 週五出發・去程+2天調度)"
-    },
-    inbound: {
-      flightNo: "IT725",
-      departure: "13:00 米子 (YGJ)",
-      arrival: "15:15 台北桃園 (TPE)",
-      duration: "3 小時 15 分鐘",
-      timingType: "午回 (1/25 週一返台・回程-1天調度)"
-    },
-    baggageIncluded: "已包含來回 20kg 托運行李 (約 NT$1,900，已計入票價)",
-    carryOn: "1件手提 + 1件隨身物品，合計 10kg",
-    jrPassLink: "機場直結 JR 米子空港站，搭 JR 境線 30 分到米子站或 15 分到皆生溫泉！",
-    pros: [
-      "票價最親民！含行李僅 NT$ 11,537，性價比極高",
-      "直搗山陰核心腹地！下機即是皆生溫泉、出雲大社、松江城門戶",
-      "鬼太郎彩繪候機室與妖怪雕像拍照極具特色"
-    ],
-    cons: [
-      "受每週僅一、五飛航限制，需由 14 天縮短為 11 天 (1/15~1/25)",
-      "若遇冬季山陰暴雪，航班調度彈性較主要樞紐機場略小"
-    ],
-    officialUrl: "https://www.tigerairtw.com/",
-    googleFlightsUrl: "https://www.google.com/travel/flights?q=Flights%20to%20YGJ%20from%20TPE",
-    skyscannerUrl: "https://www.skyscanner.com.tw/transport/flights/tpe/ygj/"
-  },
-  {
-    id: "takamatsu_starlux",
-    destination: "高松 (TAK)",
-    destCity: "香川高松機場 (台中清泉崗 RMQ 直飛)",
-    airline: "星宇航空 (STARLUX Airlines)",
-    airlineCode: "JX",
-    flightType: "精品全服務航空 (FSC)",
-    aircraft: "A321neo (精品客艙・個人娛樂)",
-    frequency: "固定每週航班 (台中直飛高松・中部首選)",
-    travelDates: "1/13 (三) ~ 1/25 (一) [共 13 天 12 晚]",
-    exactPrice: "NT$ 15,126",
-    priceRangeWithBaggage: "NT$ 15,126",
-    pricePeakWithBaggage: "精品航空免費含 23kg 托運行李與特調餐飲",
-    outbound: {
-      flightNo: "JX300",
-      departure: "08:50 台中清泉崗 (RMQ)",
-      arrival: "12:20 香川高松 (TAK)",
-      duration: "2 小時 30 分鐘",
-      timingType: "早去 (1/13 出發・中午抵四國門戶高松)"
-    },
-    inbound: {
-      flightNo: "JX301",
-      departure: "13:20 香川高松 (TAK)",
-      arrival: "15:40 台中清泉崗 (RMQ)",
-      duration: "3 小時 20 分鐘",
-      timingType: "午回 (1/25 返台・下午返抵台中清泉崗)"
-    },
-    baggageIncluded: "免費包含 1 件 23kg 托運行李 ＋ 7kg 手提 ＋ 星宇精緻餐飲與特調",
-    carryOn: "1件手提 7kg + 1件隨身包",
-    jrPassLink: "【四國➔山陽 53分神速通】：高松站搭乘 JR 瀨戶大橋線「特急 Marine Liner (マリンライナー)」跨海直達岡山站僅 53 分鐘！JR 山陽&山陰 Pass / 瀨戶內 Pass 免費全包！",
-    pros: [
-      "台中清泉崗 (RMQ) 直飛！中部出發免奔波桃園機場，大幅省下高鐵車資與交通時間",
-      "星宇精品航空：全機 4K 影音娛樂、免費 WiFi、精緻餐飲與特調、23kg 托運",
-      "高松搭 Marine Liner 特急跨海 53 分直達岡山站，無縫切入山陽山陰大閉環路線"
-    ],
-    cons: [
-      "回程是 13:20，最後一天上午需自岡山搭特急過瀨戶大橋回高松機場 (約 09:30 前往)",
-      "需自高松站搭 53 分特急跨越瀨戶大橋前往岡山"
-    ],
-    officialUrl: "https://www.starlux-airlines.com/",
-    googleFlightsUrl: "https://www.google.com/travel/flights?q=Flights%20to%20TAK%20from%20RMQ",
-    skyscannerUrl: "https://www.skyscanner.com.tw/transport/flights/rmq/tak/"
-  },
-  {
-    id: "kansai_fsc_lcc",
-    destination: "關西 (KIX)",
-    destCity: "大阪關西國際機場 (台北桃園 TPE 直飛)",
-    airline: "長榮 / 星宇 / 華航 / 樂桃 / 捷星",
-    airlineCode: "BR / JX / CI / MM / GK",
-    flightType: "傳統航空 ＆ 廉價航空 多家可選",
-    aircraft: "A350 / B787 / B777 / A321neo 等",
-    frequency: "每天 25+ 班密集起降 (1/13 去 ➔ 1/26 回全時段任選)",
-    travelDates: "1/13 (三) ~ 1/26 (二) [共 14 天 13 晚]",
-    exactPrice: "廉航 NT$ 9,000 起 / 傳航 NT$ 14,000 起",
-    priceRangeWithBaggage: "NT$ 9,000 ~ 15,500",
-    pricePeakWithBaggage: "視各家航空淡旺季與行李促銷而定",
-    outbound: {
-      flightNo: "多航班 (例 BR178 / JX820 / MM022)",
-      departure: "06:30 ~ 14:00 多班自桃園起飛",
-      arrival: "10:00 ~ 17:30 抵達關西 (KIX)",
-      duration: "2 小時 20 分鐘 ~ 2 小時 40 分鐘",
-      timingType: "極早到極晚任選，早去晚回性價比最高"
-    },
-    inbound: {
-      flightNo: "多航班 (例 BR129 / JX823 / MM027)",
-      departure: "14:00 ~ 22:30 多班自關西起飛",
-      arrival: "16:00 ~ 00:40 抵達台北 (TPE)",
-      duration: "3 小時 00 分鐘",
-      timingType: "晚班機多，玩滿最後一天整天"
-    },
-    baggageIncluded: "傳航含 23kg 托運；廉航加購 20kg 後計算",
-    carryOn: "7kg ~ 10kg (依各航空規定)",
-    jrPassLink: "【神級對接】：關西機場憑「JR 山陽&山陰 Pass」搭特急 HARUKA 至新大阪 (50分)，同站轉新幹線至岡山 (45分)，全程 0 元免額外花費！",
-    pros: [
-      "班次全日本最多，票價促銷最常有，時間選擇完全自由",
-      "「JR 山陽&山陰地區 7 日券」全額免費包含關西機場特急 HARUKA 與新幹線！",
-      "回程若想在心齋橋/難波大血拼或採買伴手禮極其方便"
-    ],
-    cons: [
-      "關西機場出入境人潮極多，安檢與通關常需排隊 40~60 分鐘",
-      "抵達後需額外搭 1.5 ~ 2 小時特急＋新幹線才能進入岡山/廣島核心景點"
-    ],
-    officialUrl: "https://www.google.com/travel/flights",
-    googleFlightsUrl: "https://www.google.com/travel/flights?q=Flights%20to%20KIX%20from%20TPE",
-    skyscannerUrl: "https://www.skyscanner.com.tw/transport/flights/tpe/kix/"
-  }
-];
-
-// ==========================================
-// 預設全行程車資與旅行開銷明細資料庫 (精確列出每一趟車資、住宿、餐飲美食與門票)
-// 不論 JR Pass 是否包含皆忠實統計，並標註車種 (電車/巴士/計程車/纜車渡輪) 與 Pass 涵蓋狀態
-// ==========================================
-// ==========================================
-// 全行程真實交通車資資料庫 (Transit Fares Database)
-// 精確對齊目前 13 天行程全部車資明細，不含住宿、餐飲、購物
-// ==========================================
-const DEFAULT_TRANSIT_FARES = [
-  {
-    "id": "fare_d1_1",
-    "dayNumber": 1,
-    "title": "岡山桃太郎機場 ➔ 岡山站西口 (機場利木津巴士)",
-    "from": "岡山桃太郎機場",
-    "to": "岡山駅西口",
-    "transitType": "bus",
-    "transitTypeName": "機場巴士",
-    "amount": 1000,
-    "passCovered": false,
-    "passNote": "不使用 Pass (自費 ¥1,000)",
-    "notes": "非 Pass 天數・岡電/中鐵巴士，車程約30分鐘，持IC卡或現金購票直達西口"
-  },
-  {
-    "id": "fare_d2_1",
-    "dayNumber": 2,
-    "title": "岡山駅 ➔ 總社駅 (JR 吉備線)",
-    "from": "岡山駅",
-    "to": "總社駅",
-    "transitType": "train",
-    "transitTypeName": "電車",
-    "amount": 420,
-    "passCovered": false,
-    "passNote": "不使用 Pass (自費 ¥420)",
-    "notes": "非 Pass 天數・JR 吉備線約 35 分直達總社站，刷 ICOCA 乘車"
-  },
-  {
-    "id": "fare_d2_2",
-    "dayNumber": 2,
-    "title": "總社駅 ➔ 鬼城山遊客中心 (鬼之城 預約計程車往返每人分攤)",
-    "from": "總社駅",
-    "to": "鬼之城",
-    "transitType": "taxi",
-    "transitTypeName": "預約計程車",
-    "amount": 3500,
-    "passCovered": false,
-    "passNote": "不使用 Pass (自費 ¥3,500)",
-    "notes": "整車來回約 7,000 円，兩人分攤每人 3,500 円，約定司機接送"
-  },
-  {
-    "id": "fare_d2_3",
-    "dayNumber": 2,
-    "title": "總社駅 ➔ 津山駅 (JR 吉備線/津山線 往津山城)",
-    "from": "總社駅",
-    "to": "津山駅",
-    "transitType": "train",
-    "transitTypeName": "電車",
-    "amount": 1680,
-    "passCovered": false,
-    "passNote": "不使用 Pass (自費 ¥1,680)",
-    "notes": "非 Pass 天數・搭乘快速列車直達津山，購票/刷 IC 卡"
-  },
-  {
-    "id": "fare_d2_4",
-    "dayNumber": 2,
-    "title": "津山駅 ➔ 津山城 (鶴山公園 市內公車ごんごバス)",
-    "from": "津山駅",
-    "to": "津山城",
-    "transitType": "bus",
-    "transitTypeName": "路線公車",
-    "amount": 200,
-    "passCovered": false,
-    "passNote": "不使用 Pass (自費 ¥200)",
-    "notes": "津山市內公車單程 200 円 (亦可徒步約10分)"
-  },
-  {
-    "id": "fare_d2_5",
-    "dayNumber": 2,
-    "title": "津山駅 ➔ 鳥取駅 (JR 因美線普通車 或 經智頭特急スーパーいなば)",
-    "from": "津山駅",
-    "to": "鳥取駅",
-    "transitType": "train",
-    "transitTypeName": "電車",
-    "amount": 1170,
-    "passCovered": false,
-    "passNote": "不使用 Pass (自費 ¥1,170)",
-    "notes": "非 Pass 天數・搭乘 JR 因美線直達鳥取站"
-  },
-  {
-    "id": "fare_d2_6",
-    "dayNumber": 2,
-    "title": "鳥取駅 ➔ 鳥取站前飯店 (步行即達)",
-    "from": "鳥取駅",
-    "to": "鳥取站前飯店",
-    "transitType": "walk",
-    "transitTypeName": "徒步",
-    "amount": 0,
-    "passCovered": true,
-    "passNote": "徒步 (0 円)",
-    "notes": "出站徒步 1~3 分鐘進飯店辦理 Check-in"
-  },
-  {
-    "id": "fare_d3_1",
-    "dayNumber": 3,
-    "title": "鳥取駅 ➔ 鳥取城/久松公園 (日之丸巴士 北園團地線 免計程車)",
-    "from": "鳥取駅",
-    "to": "鳥取城 (県庁日赤前)",
-    "transitType": "bus",
-    "transitTypeName": "路線公車",
-    "amount": 170,
-    "passCovered": false,
-    "passNote": "⚠️ 需自費 (非 Pass 範圍)",
-    "notes": "07:50 鳥取站發車 ➔ 07:55 抵県庁日赤前 (170 円)，下車步行 4-5 分於 08:00 前抵達鳥取城久松公園 (免搭計程車)"
-  },
-  {
-    "id": "fare_d3_2",
-    "dayNumber": 3,
-    "title": "鳥取城(県庁日赤前) ➔ 鳥取砂丘 (日之丸巴士 砂丘線 39系統)",
-    "from": "鳥取城 (県庁日赤前)",
-    "to": "鳥取砂丘 (砂丘センター/砂丘会館)",
-    "transitType": "bus",
-    "transitTypeName": "路線公車",
-    "amount": 390,
-    "passCovered": false,
-    "passNote": "⚠️ 需自費 (非 Pass 範圍)",
-    "notes": "09:47 県庁日赤前搭車 ➔ 10:00 抵砂丘センター展望台 / 10:02 抵砂丘会館 (390 円)"
-  },
-  {
-    "id": "fare_d3_3",
-    "dayNumber": 3,
-    "title": "鳥取砂丘 觀光吊椅纜車 (單程/見晴之丘下滑至砂丘入口)",
-    "from": "砂丘センター展望台",
-    "to": "砂丘平地入口",
-    "transitType": "cablecar",
-    "transitTypeName": "觀光纜車",
-    "amount": 300,
-    "passCovered": false,
-    "passNote": "⚠️ 需自費 (非 Pass 範圍)",
-    "notes": "搭乘單程吊椅纜車（300 円，車程 5 分鐘），面向雪白砂丘與日本海全景往下溜，不走回頭路 (若遇強風運休則省下)"
-  },
-  {
-    "id": "fare_d3_4",
-    "dayNumber": 3,
-    "title": "鳥取砂丘 ➔ 鳥取駅 (日之丸巴士 砂丘線 39系統 返站)",
-    "from": "鳥取砂丘 (砂丘会館)",
-    "to": "鳥取駅",
-    "transitType": "bus",
-    "transitTypeName": "路線公車",
-    "amount": 390,
-    "passCovered": false,
-    "passNote": "⚠️ 需自費 (非 Pass 範圍)",
-    "notes": "11:20 砂丘会館搭車 ➔ 11:42 直達鳥取駅 (390 円)"
-  },
-  {
-    "id": "fare_d3_5",
-    "dayNumber": 3,
-    "title": "鳥取駅 ➔ たくみ割烹店 ➔ 鳥取駅 (午餐徒步)",
-    "from": "鳥取駅",
-    "to": "たくみ割烹店",
-    "transitType": "walk",
-    "transitTypeName": "徒步",
-    "amount": 0,
-    "passCovered": true,
-    "passNote": "徒步 (0 円)",
-    "notes": "出站徒步 4 分鐘抵達榮町「たくみ割烹店」，11:47~12:47 享用和牛元祖涮涮鍋午餐 (整整 1 小時)"
-  },
-  {
-    "id": "fare_d3_6",
-    "dayNumber": 3,
-    "title": "鳥取駅 ➔ 城崎溫泉駅 (JR 特急はまかぜ4號 直達 或 普通車)",
-    "from": "鳥取駅",
-    "to": "城崎溫泉駅",
-    "transitType": "train",
-    "transitTypeName": "特急指定席",
-    "amount": 2330,
-    "passCovered": true,
-    "passNote": "🎫 JR Pass (第1天) ✅ 全額包含 (0元)",
-    "notes": "12:56 搭特急はまかぜ4號直達城崎溫泉駅 (14:11 到達，免轉車！JR Pass 免費搭乘)；備案搭 13:33 普通車 (15:15~15:30 到達)"
-  },
-  {
-    "id": "fare_d4_1",
-    "dayNumber": 4,
-    "title": "城崎溫泉駅 ➔ 天橋立駅 (京都丹後鐵道 特急/快速直通)",
-    "from": "城崎溫泉駅",
-    "to": "天橋立駅",
-    "transitType": "train",
-    "transitTypeName": "電車/特急",
-    "amount": 1220,
-    "passCovered": true,
-    "passNote": "🎫 JR Pass (第2天) ✅ 全額包含 (0元)",
-    "notes": "JR Pass 7日券 包含京都丹後鐵道全線，0 元免補票"
-  },
-  {
-    "id": "fare_d4_2",
-    "dayNumber": 4,
-    "title": "天橋立 飛龍觀登山吊椅/空中纜車 (來回票)",
-    "from": "天橋立駅",
-    "to": "天橋立飛龍觀",
-    "transitType": "cable_ferry",
-    "transitTypeName": "觀光纜車",
-    "amount": 850,
-    "passCovered": false,
-    "passNote": "⚠️ 需自費 (非 Pass 範圍)",
-    "notes": "搭乘空中單人吊椅或展望纜車登飛龍觀展望台眺望跨下窺看絕景"
-  },
-  {
-    "id": "fare_d4_3",
-    "dayNumber": 4,
-    "title": "天橋立駅 ➔ 伊根舟屋 (丹海路線巴士來回)",
-    "from": "天橋立駅",
-    "to": "伊根舟屋",
-    "transitType": "bus",
-    "transitTypeName": "路線公車",
-    "amount": 800,
-    "passCovered": false,
-    "passNote": "⚠️ 需自費 (非 Pass 範圍)",
-    "notes": "丹後海陸交通伊根線公車，單程約 55 分鐘直達伊根灣舟屋群"
-  },
-  {
-    "id": "fare_d4_4",
-    "dayNumber": 4,
-    "title": "伊根灣舟屋遊覽船 (海上巡航餵海鷗)",
-    "from": "伊根舟屋",
-    "to": "伊根灣",
-    "transitType": "cable_ferry",
-    "transitTypeName": "觀光遊覽船",
-    "amount": 1000,
-    "passCovered": false,
-    "passNote": "⚠️ 需自費 (非 Pass 範圍)",
-    "notes": "約 25 分鐘環灣巡航，近距離飽覽 230 棟舟屋群並體驗海鷗餵食"
-  },
-  {
-    "id": "fare_d4_5",
-    "dayNumber": 4,
-    "title": "天橋立駅 ➔ 米子駅 (京都丹後鐵道轉 JR 特急山陰本線)",
-    "from": "天橋立駅",
-    "to": "米子駅",
-    "transitType": "train",
-    "transitTypeName": "特急指定席",
-    "amount": 5830,
-    "passCovered": true,
-    "passNote": "🎫 JR Pass (第2天) ✅ 全額包含 (0元)",
-    "notes": "長途特急全包，丹後鐵道及山陰特急全額免補票"
-  },
-  {
-    "id": "fare_d5_2",
-    "dayNumber": 5,
-    "title": "米子駅 ➔ 安來駅 (JR 山陰本線 普通車)",
-    "from": "米子駅",
-    "to": "安來駅",
-    "transitType": "train",
-    "transitTypeName": "電車",
-    "amount": 240,
-    "passCovered": true,
-    "passNote": "🎫 JR Pass (第3天) ✅ 全額包含 (0元)",
-    "notes": "JR 山陰本線約 9 分鐘直達安來站"
-  },
-  {
-    "id": "fare_d5_3",
-    "dayNumber": 5,
-    "title": "安來駅 ➔ 月山富田城 (安來市營黃色巴士)",
-    "from": "安來駅",
-    "to": "月山富田城",
-    "transitType": "bus",
-    "transitTypeName": "市營巴士",
-    "amount": 200,
-    "passCovered": false,
-    "passNote": "⚠️ 需自費 (非 Pass 範圍)",
-    "notes": "安來市營黃色公車廣瀨線約 25 分至廣瀨病院前下車登月山富田城"
-  },
-  {
-    "id": "fare_d5_4",
-    "dayNumber": 5,
-    "title": "月山富田城 ➔ 足立美術館 (安來市營黃色巴士)",
-    "from": "月山富田城",
-    "to": "足立美術館",
-    "transitType": "bus",
-    "transitTypeName": "市營巴士",
-    "amount": 200,
-    "passCovered": false,
-    "passNote": "⚠️ 需自費 (非 Pass 範圍)",
-    "notes": "安來市營黃色公車約 8 分鐘串聯名城與日本第一庭園足立美術館"
-  },
-  {
-    "id": "fare_d5_5",
-    "dayNumber": 5,
-    "title": "足立美術館 ➔ 安來駅 (足立美術館免費接駁車)",
-    "from": "足立美術館",
-    "to": "安來駅",
-    "transitType": "bus",
-    "transitTypeName": "免費接駁車",
-    "amount": 0,
-    "passCovered": true,
-    "passNote": "免費接駁專車 (0 円)",
-    "notes": "參觀完畢搭美術館免費專車約 20 分直達安來站前"
-  },
-  {
-    "id": "fare_d5_6",
-    "dayNumber": 5,
-    "title": "安來駅 ➔ 松江駅 (JR 山陰本線 特急やくも 指定席)",
-    "from": "安來駅",
-    "to": "松江駅",
-    "transitType": "train",
-    "transitTypeName": "特急指定席",
-    "amount": 1590,
-    "passCovered": true,
-    "passNote": "🎫 JR Pass (第3天) ✅ 全額包含 (0元)",
-    "notes": "特急八雲號約 14 分直達松江站，Pass 免費搭乘"
-  },
-  {
-    "id": "fare_d5_7",
-    "dayNumber": 5,
-    "title": "松江駅 ➔ 松江城大手前 (松江市營レイクライン觀光巴士)",
-    "from": "松江駅",
-    "to": "松江城",
-    "transitType": "bus",
-    "transitTypeName": "觀光公車",
-    "amount": 210,
-    "passCovered": false,
-    "passNote": "⚠️ 需自費 (非 Pass 範圍)",
-    "notes": "搭 Lakeline 觀光巴士約 10 分直達松江城大手前"
-  },
-  {
-    "id": "fare_d5_8",
-    "dayNumber": 5,
-    "title": "松江城(県民会館前) ➔ 玉造溫泉 (一畑巴士 P路線-玉造線 直達)",
-    "from": "松江城 (県民会館前)",
-    "to": "玉造溫泉",
-    "transitType": "bus",
-    "transitTypeName": "路線巴士",
-    "amount": 610,
-    "passCovered": false,
-    "passNote": "⚠️ 需自費 (610 円，可刷 IC 卡)",
-    "notes": "松江城南側「県民会館前」搭乘一畑巴士 P 路線直達玉造溫泉街中心（約 32~35 分），免走回松江站轉車"
-  },
-  {
-    "id": "fare_d5_9",
-    "dayNumber": 5,
-    "title": "松江駅 ➔ 玉造溫泉駅 (JR 山陰本線)",
-    "from": "松江駅",
-    "to": "玉造溫泉駅",
-    "transitType": "train",
-    "transitTypeName": "電車",
-    "amount": 200,
-    "passCovered": true,
-    "passNote": "🎫 JR Pass (第3天) ✅ 全額包含 (0元)",
-    "notes": "JR 山陰本線僅 8 分鐘抵玉造溫泉站"
-  },
-  {
-    "id": "fare_d5_10",
-    "dayNumber": 5,
-    "title": "玉造溫泉駅 ➔ 溫泉旅館街 (旅館免費專車接送)",
-    "from": "玉造溫泉駅",
-    "to": "玉造溫泉",
-    "transitType": "bus",
-    "transitTypeName": "旅館接駁車",
-    "amount": 0,
-    "passCovered": true,
-    "passNote": "旅館免費接送專車 (0 円)",
-    "notes": "出站旅館專車 5 分鐘接駁進溫泉街"
-  },
-  {
-    "id": "fare_d6_1",
-    "dayNumber": 6,
-    "title": "溫泉旅館 ➔ 玉造溫泉駅 (旅館免費送站)",
-    "from": "玉造溫泉",
-    "to": "玉造溫泉駅",
-    "transitType": "bus",
-    "transitTypeName": "旅館接駁車",
-    "amount": 0,
-    "passCovered": true,
-    "passNote": "旅館免費接駁 (0 円)",
-    "notes": "退房後旅館專車免費送至玉造溫泉站"
-  },
-  {
-    "id": "fare_d6_2",
-    "dayNumber": 6,
-    "title": "玉造溫泉駅 ➔ 大田市駅 (JR 山陰本線 特急スーパーまつかぜ 指定席)",
-    "from": "玉造溫泉駅",
-    "to": "大田市駅",
-    "transitType": "train",
-    "transitTypeName": "特急指定席",
-    "amount": 2230,
-    "passCovered": true,
-    "passNote": "🎫 JR Pass (第4天) ✅ 全額包含 (0元)",
-    "notes": "特急列車約 40 分直達大田市站，世界遺產石見銀山門戶"
-  },
-  {
-    "id": "fare_d6_3",
-    "dayNumber": 6,
-    "title": "大田市駅 ➔ 石見銀山大森代官所 (石見交通路線巴士來回)",
-    "from": "大田市駅",
-    "to": "石見銀山",
-    "transitType": "bus",
-    "transitTypeName": "路線公車",
-    "amount": 1520,
-    "passCovered": false,
-    "passNote": "⚠️ 需自費 (非 Pass 範圍)",
-    "notes": "大田市站前搭石見交通巴士約 28 分鐘至大森代官所跡"
-  },
-  {
-    "id": "fare_d6_4",
-    "dayNumber": 6,
-    "title": "石見銀山大森街區 ➔ 龍源寺間步 (電動自行車往返租借)",
-    "from": "石見銀山",
-    "to": "龍源寺間步",
-    "transitType": "cable_ferry",
-    "transitTypeName": "電動單車租借",
-    "amount": 800,
-    "passCovered": false,
-    "passNote": "⚠️ 需自費 (非 Pass 範圍)",
-    "notes": "代官所旁租借電動腳踏車往返龍源寺間步坑道 (車程約15分)"
-  },
-  {
-    "id": "fare_d6_5",
-    "dayNumber": 6,
-    "title": "大田市駅 ➔ 津和野駅 (JR 山陰本線/山口線 特急スーパーおき 指定席)",
-    "from": "大田市駅",
-    "to": "津和野駅",
-    "transitType": "train",
-    "transitTypeName": "特急指定席",
-    "amount": 4280,
-    "passCovered": true,
-    "passNote": "🎫 JR Pass (第4天) ✅ 全額包含 (0元)",
-    "notes": "特急スーパーおき約 1 小時 40 分直達山陰小京都津和野，Pass 全包"
-  },
-  {
-    "id": "fare_d7_1",
-    "dayNumber": 7,
-    "title": "津和野城跡觀光登山纜車 (觀光リフト來回票)",
-    "from": "津和野駅",
-    "to": "津和野城跡",
-    "transitType": "cable_ferry",
-    "transitTypeName": "登山纜車",
-    "amount": 700,
-    "passCovered": false,
-    "passNote": "⚠️ 需自費 (非 Pass 範圍)",
-    "notes": "搭乘單人觀光リフト吊椅約 5 分直登津和野城山麓步道口"
-  },
-  {
-    "id": "fare_d7_2",
-    "dayNumber": 7,
-    "title": "津和野駅 ➔ 益田駅 ➔ 東萩駅 (JR 山口線轉山陰本線)",
-    "from": "津和野駅",
-    "to": "東萩駅",
-    "transitType": "train",
-    "transitTypeName": "電車",
-    "amount": 1850,
-    "passCovered": true,
-    "passNote": "🎫 JR Pass (第5天) ✅ 全額包含 (0元)",
-    "notes": "津和野搭山口線至益田轉山陰本線至東萩站，Pass 全包"
-  },
-  {
-    "id": "fare_d7_3",
-    "dayNumber": 7,
-    "title": "東萩駅 ➔ 萩市區/溫泉旅館 (萩循環まぁーる巴士)",
-    "from": "東萩駅",
-    "to": "萩市區",
-    "transitType": "bus",
-    "transitTypeName": "循環公車",
-    "amount": 100,
-    "passCovered": false,
-    "passNote": "⚠️ 需自費 (非 Pass 範圍)",
-    "notes": "萩市內循環巴士均一票價 100 円"
-  },
-  {
-    "id": "fare_d8_1",
-    "dayNumber": 8,
-    "title": "東萩駅 ➔ 長門古市駅 (JR 山陰本線)",
-    "from": "東萩駅",
-    "to": "長門古市駅",
-    "transitType": "train",
-    "transitTypeName": "電車",
-    "amount": 510,
-    "passCovered": true,
-    "passNote": "🎫 JR Pass (第6天) ✅ 全額包含 (0元)",
-    "notes": "JR 山陰本線至長門古市站，元乃隅神社轉乘樞紐"
-  },
-  {
-    "id": "fare_d8_2",
-    "dayNumber": 8,
-    "title": "長門古市駅 ➔ 元乃隅神社 (預約計程車往返每人分攤)",
-    "from": "長門古市駅",
-    "to": "元乃隅神社",
-    "transitType": "taxi",
-    "transitTypeName": "預約計程車",
-    "amount": 2500,
-    "passCovered": false,
-    "passNote": "⚠️ 需自費 (非 Pass 範圍)",
-    "notes": "整車來回約 5,000 円，兩人分攤每人 2,500 円"
-  },
-  {
-    "id": "fare_d8_3",
-    "dayNumber": 8,
-    "title": "長門古市駅 ➔ 東萩駅 (JR 山陰本線 返回萩市)",
-    "from": "長門古市駅",
-    "to": "東萩駅",
-    "transitType": "train",
-    "transitTypeName": "電車",
-    "amount": 510,
-    "passCovered": true,
-    "passNote": "🎫 JR Pass (第6天) ✅ 全額包含 (0元)",
-    "notes": "搭 JR 山陰本線返回東萩站漫步萩城跡與城下町"
-  },
-  {
-    "id": "fare_d8_4",
-    "dayNumber": 8,
-    "title": "萩市區 ➔ 萩城跡指月公園 (萩循環巴士來回)",
-    "from": "萩市區",
-    "to": "萩城跡",
-    "transitType": "bus",
-    "transitTypeName": "循環公車",
-    "amount": 200,
-    "passCovered": false,
-    "passNote": "⚠️ 需自費 (非 Pass 範圍)",
-    "notes": "搭萩循環まぁーる西回線至萩城跡・指月公園入口下車"
-  },
-  {
-    "id": "fare_d8_5",
-    "dayNumber": 8,
-    "title": "東萩駅 / 萩巴士中心 ➔ 新山口駅 (中國 JR 巴士 Super Hagi 直達特急巴士)",
-    "from": "東萩駅",
-    "to": "新山口駅",
-    "transitType": "bus",
-    "transitTypeName": "特急巴士",
-    "amount": 1800,
-    "passCovered": true,
-    "passNote": "🎫 JR Pass (第6天) ✅ 全額包含 (0元)",
-    "notes": "憑 JR Pass 7日券 免費搭乘直達特急巴士 (原價 1,800 円全免)"
-  },
-  {
-    "id": "fare_d9_1",
-    "dayNumber": 9,
-    "title": "新山口駅 ➔ 新岩國駅 (山陽新幹線 こだま/ひかり 指定席)",
-    "from": "新山口駅",
-    "to": "新岩國駅",
-    "transitType": "train",
-    "transitTypeName": "新幹線",
-    "amount": 3210,
-    "passCovered": true,
-    "passNote": "🎫 JR Pass (第7天) ✅ 全額包含 (0元)",
-    "notes": "山陽新幹線極速 28 分抵新岩國站，Pass 全包指定席"
-  },
-  {
-    "id": "fare_d9_2",
-    "dayNumber": 9,
-    "title": "新岩國駅 ➔ 錦帶橋 (防長交通路線巴士)",
-    "from": "新岩國駅",
-    "to": "錦帶橋",
-    "transitType": "bus",
-    "transitTypeName": "路線公車",
-    "amount": 360,
-    "passCovered": false,
-    "passNote": "⚠️ 需自費 (非 Pass 範圍)",
-    "notes": "新岩國站前搭防長巴士約 15 分直達錦帶橋巴士中心"
-  },
-  {
-    "id": "fare_d9_3",
-    "dayNumber": 9,
-    "title": "錦帶橋 ➔ 岩國城空中纜車 (橫山登山纜車來回票)",
-    "from": "錦帶橋",
-    "to": "岩國城",
-    "transitType": "cable_ferry",
-    "transitTypeName": "空中纜車",
-    "amount": 560,
-    "passCovered": false,
-    "passNote": "⚠️ 需自費 (非 Pass 範圍)",
-    "notes": "自山麓站搭空中纜車約 3 分登上橫山頂峰岩國城天守"
-  },
-  {
-    "id": "fare_d9_4",
-    "dayNumber": 9,
-    "title": "錦帶橋 ➔ JR 岩國駅 (防長交通路線巴士)",
-    "from": "錦帶橋",
-    "to": "岩國駅",
-    "transitType": "bus",
-    "transitTypeName": "路線公車",
-    "amount": 310,
-    "passCovered": false,
-    "passNote": "⚠️ 需自費 (非 Pass 範圍)",
-    "notes": "錦帶橋公車中心搭防長巴士約 20 分抵 JR 岩國站"
-  },
-  {
-    "id": "fare_d9_5",
-    "dayNumber": 9,
-    "title": "JR 岩國駅 ➔ 宮島口駅 (JR 山陽本線)",
-    "from": "岩國駅",
-    "to": "宮島口駅",
-    "transitType": "train",
-    "transitTypeName": "電車",
-    "amount": 420,
-    "passCovered": true,
-    "passNote": "🎫 JR Pass (第7天) ✅ 全額包含 (0元)",
-    "notes": "JR 山陽本線約 23 分抵宮島口站"
-  },
-  {
-    "id": "fare_d9_6",
-    "dayNumber": 9,
-    "title": "宮島口 ➔ 宮島棧橋 (JR 西日本宮島渡輪往返 + 宮島訪問稅)",
-    "from": "宮島口",
-    "to": "嚴島神社",
-    "transitType": "cable_ferry",
-    "transitTypeName": "渡輪",
-    "amount": 500,
-    "passCovered": false,
-    "passNote": "渡輪 Pass 全免 (原價400円)，自費繳納訪問稅 100 円",
-    "notes": "憑 Pass 搭 JR 渡輪享大鳥居接近航線，進島自費繳納 100 円訪問稅"
-  },
-  {
-    "id": "fare_d9_7",
-    "dayNumber": 9,
-    "title": "宮島口駅 ➔ 廣島駅 (JR 山陽本線 返廣島站連住)",
-    "from": "宮島口駅",
-    "to": "廣島駅",
-    "transitType": "train",
-    "transitTypeName": "電車",
-    "amount": 420,
-    "passCovered": true,
-    "passNote": "🎫 JR Pass (第7天) ✅ 全額包含 (0元)",
-    "notes": "JR Pass 7日券啟用最後一趟！山陽本線約 25 分直達廣島站"
-  },
-  {
-    "id": "fare_d10_1",
-    "dayNumber": 10,
-    "title": "廣島市內巡迴 廣電路面電車 (廣島駅 ➔ 廣島城 / 原爆圓頂 / 本通)",
-    "from": "廣島駅",
-    "to": "廣島市區",
-    "transitType": "train",
-    "transitTypeName": "路面電車",
-    "amount": 440,
-    "passCovered": false,
-    "passNote": "不使用 Pass (自費 ¥440)",
-    "notes": "非 Pass 天數・廣島電鐵市內電車單程 220 円，刷 IC 卡乘車"
-  },
-  {
-    "id": "fare_d11_1",
-    "dayNumber": 11,
-    "title": "廣島巴士中心 ➔ 安藝高田 吉田出張所 (吉田郡山城 廣電/備北客運來回)",
-    "from": "廣島巴士中心",
-    "to": "吉田郡山城",
-    "transitType": "bus",
-    "transitTypeName": "高速客運",
-    "amount": 2920,
-    "passCovered": false,
-    "passNote": "不使用 Pass (自費 ¥2,920)",
-    "notes": "非 Pass 天數・廣島巴士中心 9 號月台搭高田南部線客運往返"
-  },
-  {
-    "id": "fare_d11_2",
-    "dayNumber": 11,
-    "title": "廣島駅 ➔ 福山駅 (山陽新幹線 のぞみ/さくら 自由席)",
-    "from": "廣島駅",
-    "to": "福山駅",
-    "transitType": "train",
-    "transitTypeName": "新幹線自由席",
-    "amount": 3740,
-    "passCovered": false,
-    "passNote": "不使用 Pass (自費自由席 ¥3,740)",
-    "notes": "非 Pass 天數・自費購買新幹線自由席僅需 3,740 円 (23分極速抵達福山)"
-  },
-  {
-    "id": "fare_d11_3",
-    "dayNumber": 11,
-    "title": "福山駅南口 ➔ 鞆之浦溫泉 (鞆鐵道路線巴士)",
-    "from": "福山駅",
-    "to": "鞆之浦溫泉",
-    "transitType": "bus",
-    "transitTypeName": "路線公車",
-    "amount": 560,
-    "passCovered": false,
-    "passNote": "不使用 Pass (自費 ¥560)",
-    "notes": "福山站南口搭鞆鐵道巴士約 30 分直達鞆之浦海景溫泉街"
-  },
-  {
-    "id": "fare_d12_1",
-    "dayNumber": 12,
-    "title": "鞆之浦溫泉 ➔ 福山駅 (鞆鐵道路線巴士 返回福山站)",
-    "from": "鞆之浦溫泉",
-    "to": "福山駅",
-    "transitType": "bus",
-    "transitTypeName": "路線公車",
-    "amount": 560,
-    "passCovered": false,
-    "passNote": "不使用 Pass (自費 ¥560)",
-    "notes": "晨間搭路線巴士約 30 分鐘返回福山站銜接新幹線"
-  },
-  {
-    "id": "fare_d12_2",
-    "dayNumber": 12,
-    "title": "福山駅 ➔ 岡山駅 (山陽新幹線 自由席 返回岡山放行李)",
-    "from": "福山駅",
-    "to": "岡山駅",
-    "transitType": "train",
-    "transitTypeName": "新幹線自由席",
-    "amount": 1770,
-    "passCovered": false,
-    "passNote": "不使用 Pass (自費自由席 ¥1,770)",
-    "notes": "非 Pass 天數・自費搭新幹線自由席僅 1,770 円 (16分抵岡山站)"
-  },
-  {
-    "id": "fare_d12_3",
-    "dayNumber": 12,
-    "title": "岡山駅 ➔ 備中高梁駅 (JR 伯備線 普通車/特急 往備中松山城)",
-    "from": "岡山駅",
-    "to": "備中高梁駅",
-    "transitType": "train",
-    "transitTypeName": "電車",
-    "amount": 860,
-    "passCovered": false,
-    "passNote": "不使用 Pass (自費普通車 ¥860)",
-    "notes": "非 Pass 天數・搭乘伯備線普通車僅 860 円 (若搭特急自由席為 1,500 円)"
-  },
-  {
-    "id": "fare_d12_4",
-    "dayNumber": 12,
-    "title": "備中高梁駅前 ➔ 鞴峠 (備中松山城 觀光乘合計程車往返)",
-    "from": "備中高梁駅",
-    "to": "備中松山城",
-    "transitType": "taxi",
-    "transitTypeName": "觀光乘合計程車",
-    "amount": 2000,
-    "passCovered": false,
-    "passNote": "不使用 Pass (自費 ¥2,000)",
-    "notes": "高梁市觀光協會合乘計程車，單程 1,000 円，來回 2,000 円，需預約"
-  },
-  {
-    "id": "fare_d12_5",
-    "dayNumber": 12,
-    "title": "備中高梁駅 ➔ 備前一宮駅 (JR 伯備線/吉備線 往吉備津彥神社)",
-    "from": "備中高梁駅",
-    "to": "備前一宮駅",
-    "transitType": "train",
-    "transitTypeName": "電車",
-    "amount": 770,
-    "passCovered": false,
-    "passNote": "不使用 Pass (自費 ¥770)",
-    "notes": "非 Pass 天數・搭 JR 伯備線至總社轉吉備線至備前一宮"
-  },
-  {
-    "id": "fare_d12_6",
-    "dayNumber": 12,
-    "title": "備前一宮駅 ➔ 吉備津駅 (JR 吉備線 往吉備津神社)",
-    "from": "備前一宮駅",
-    "to": "吉備津駅",
-    "transitType": "train",
-    "transitTypeName": "電車",
-    "amount": 150,
-    "passCovered": false,
-    "passNote": "不使用 Pass (自費 ¥150)",
-    "notes": "非 Pass 天數・JR 吉備線 1 站直達，參拜國寶大迴廊"
-  },
-  {
-    "id": "fare_d12_7",
-    "dayNumber": 12,
-    "title": "吉備津駅 ➔ 岡山駅 (JR 吉備線 返回岡山站市區住宿)",
-    "from": "吉備津駅",
-    "to": "岡山駅",
-    "transitType": "train",
-    "transitTypeName": "電車",
-    "amount": 210,
-    "passCovered": false,
-    "passNote": "不使用 Pass (自費 ¥210)",
-    "notes": "非 Pass 天數・JR 吉備線 17 分返回岡山站，夜宿岡山站前"
-  },
-  {
-    "id": "fare_d13_1",
-    "dayNumber": 13,
-    "title": "岡山駅西口 ➔ 岡山桃太郎機場 (機場利木津巴士 返台登機)",
-    "from": "岡山駅西口",
-    "to": "岡山桃太郎機場",
-    "transitType": "bus",
-    "transitTypeName": "機場巴士",
-    "amount": 1000,
-    "passCovered": false,
-    "passNote": "不使用 Pass (自費 ¥1,000)",
-    "notes": "岡山站西口 21 號月台搭利木津巴士直達機場，搭乘虎航 IT215 返台"
-  }
-];
-
-const DEFAULT_TRIP_BUDGET = [
-  {
-    "id": "expense_flight_ticket_fang",
-    "dayNumber": null,
-    "date": "2026-10-01",
-    "title": "獅子幫方出了機票",
-    "category": "transit",
-    "transitType": "plane",
-    "amount": 12037,
-    "currency": "TWD",
-    "paidBy": "a",
-    "paymentMethod": "card",
-    "splitType": "a_for_b",
-    "notes": "獅子幫方出機票 12,037 台幣 (由獅子全額代墊)"
-  }
-];
-
-if (typeof window !== 'undefined') {
-  window.DEFAULT_SPOTS = DEFAULT_SPOTS;
-  window.DEFAULT_ITINERARY = DEFAULT_ITINERARY;
-  window.FLIGHT_COMPARISON_DATA = FLIGHT_COMPARISON_DATA;
-  window.DEFAULT_TRIP_BUDGET = DEFAULT_TRIP_BUDGET;
-  window.DEFAULT_TRANSIT_FARES = DEFAULT_TRANSIT_FARES;
-}
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { DEFAULT_SPOTS, DEFAULT_ITINERARY, FLIGHT_COMPARISON_DATA, DEFAULT_TRIP_BUDGET, DEFAULT_TRANSIT_FARES };
-}
-
-

@@ -772,7 +772,7 @@
     const STORAGE_KEY_ITINERARY = "jp_castles_itinerary_v1";
     const STORAGE_KEY_ITINERARY_VER = "jp_castles_itinerary_ver";
     const STORAGE_KEY_DELETED_SPOTS = "jp_castles_deleted_spots_v1";
-    const CURRENT_ITINERARY_VER = "2027_01_13_ROUTE_V80_TEXTAREA_ENTER";
+    const CURRENT_ITINERARY_VER = "2027_01_13_ROUTE_V82_ALL_TIMETABLE_IMAGES_RESTORE";
 
     // ==========================================
     // 雙重自包含備援資料庫 (Fallback Database)
@@ -2791,9 +2791,17 @@
         ]
       },
       "matsue_to_tamatsukuri_onsen": {
-        "notes": "一般路線公車16:41-17:19 P路線-玉造線-県民会館前上車 終點玉造溫泉630 日",
-        "link": "https://matsue-bus.jp/wp-content/uploads/2026/03/onsen-tmatsukuri-time.pdf",
-        "images": []
+        "notes": "松江 ➔ 玉造溫泉 (JR山陰本線 快速/普通車 5~8 分鐘)\n班次：16:45 ➔ 16:50 / 16:54 ➔ 17:02",
+        "link": "",
+        "images": [
+          {
+            "name": "1791626567066.jpg",
+            "url": "timetables/d6_matsue_to_tamatsukuri_onsen_1.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/10"
+          }
+        ]
       },
       "tamatsukuri_yu_jinja_to_tamatsukuri_onsen": {
         "notes": "一般路線公車16:41-17:19 P路線-玉造線-県民会館前上車 終點玉造溫泉630 日",
@@ -3100,24 +3108,32 @@
     "title": "Day 11：毛利要塞吉田郡山城 ➔ 福山城 ➔ 鞆之浦夕陽溫泉",
     "transitAttachments": {
       "hiroshima_lodging_d9_to_yoshida_koriyama": {
-        "notes": "路面電車 (約需15分)\n①番ホーム ( 紙屋町･市役所経由 ) 　宇品行き「紙屋町東電停」下車 \n②番ホーム 宮島行き「紙屋町西電停」下車 \n⑥番ホーム 番江波行き「紙屋町西電停」下車\n\n巴士 ⑧番ホーム／吉田営業所行き 「安芸高田市役所前」下車 (7:15-8:56)",
-        "link": "https://www.hiroden.co.jp/bus/route/n-72.html",
-        "images": []
-      },
-      "morning_origin_11": {
-        "notes": "路面電車 (約需15分)\n①番ホーム ( 紙屋町･市役所経由 ) 　宇品行き「紙屋町東電停」下車 \n②番ホーム 宮島行き「紙屋町西電停」下車 \n⑥番ホーム 番江波行き「紙屋町西電停」下車\n\n巴士 ⑧番ホーム／吉田営業所行き 「安芸高田市役所前」下車 (7:15-8:56)",
-        "link": "https://www.hiroden.co.jp/bus/route/n-72.html",
-        "images": []
-      },
-      "yoshida_koriyama_to_fukuyama": {
-        "notes": "巴士回廣島 10:42-12:16",
-        "link": "",
-        "images": []
+        "notes": "路面電車 (約需15分)\n①番ホーム ( 紙屋町･市役所経由 ) 　宇品行き「紙屋町東電停」下車 \n②番ホーム 宮島行き「紙屋町西電停」下車 \n⑥番ホーム 番江波行き「紙屋町西電停」下車\n\n巴士 ⑧番ホーム／⑧番ホーム／吉田営業所行き 「安芸高田市役所前」下車き 「安芸高田市役所前」下車(7:15-8:56)",
+        "images": [],
+        "link": "https://www.hiroden.co.jp/bus/route/n-72.html"
       },
       "fukuyama_to_tomonoura_onsen": {
         "notes": "JR 福山站南口 5號公車\n鞆鐵巴士（トモテツバス）的「鞆線」（開往「鞆の浦」或「鞆港」方向）\n或飯店接送",
+        "images": [],
+        "link": ""
+      },
+      "morning_origin_11": {
+        "notes": "路面電車 (約需15分)\n①番ホーム ( 紙屋町･市役所経由 ) 　宇品行き「紙屋町東電停」下車 \n②番ホーム 宮島行き「紙屋町西電停」下車 \n⑥番ホーム 番江波行き「紙屋町西電停」下車\n\n巴士 ⑧番ホーム／⑧番ホーム／吉田営業所行き 「安芸高田市役所前」下車き 「安芸高田市役所前」下車(7:15-8:56)",
+        "images": [],
+        "link": "https://www.hiroden.co.jp/bus/route/n-72.html"
+      },
+      "yoshida_koriyama_to_fukuyama": {
+        "notes": "廣島 ➔ 福山 (山陽新幹線 さくら 550號，僅 23 分鐘，自由席 ¥2,530)\n12:33 廣島發 ➔ 12:56 抵達福山",
         "link": "",
-        "images": []
+        "images": [
+          {
+            "name": "1792206433056.jpg",
+            "url": "timetables/d11_hiroshima_to_fukuyama_1.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          }
+        ]
       }
     }
   },
@@ -3139,24 +3155,103 @@
     "title": "Day 12：鞆之浦晨光 ➔ 福山新幹線 ➔ 岡山 ➔ 天空之城備中松山城 ➔ 桃太郎吉備路傳說 ➔ 宿岡山站前",
     "transitAttachments": {
       "tomonoura_onsen_to_bitchu_matsuyama": {
-        "notes": "巴士回車站 7:18-7:51\nJR 8:29-9:49\n10:00計程車預約 https://www.asoview.com/item/activity/pln3000045984/",
+        "notes": "巴士回車站 7:18-7:51\nJR 8:29-9:49 (備用班次 9:31-10:47)\n10:00計程車預約 https://www.asoview.com/item/activity/pln3000045984/",
         "link": "https://tomotetsu.co.jp/cont/wp-content/uploads/2026/09/1.20261001jikoku-tomo.pdf",
-        "images": []
+        "images": [
+          {
+            "name": "1792209376728.jpg",
+            "url": "timetables/d12_tomonoura_to_bitchu_matsuyama_1.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          },
+          {
+            "name": "1792208889852.jpg",
+            "url": "timetables/d12_tomonoura_to_bitchu_matsuyama_2.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          }
+        ]
       },
       "morning_origin_12": {
-        "notes": "巴士回車站 7:18-7:51\nJR 8:29-9:49\n10:00計程車預約 https://www.asoview.com/item/activity/pln3000045984/",
+        "notes": "巴士回車站 7:18-7:51\nJR 8:29-9:49 (備用班次 9:31-10:47)\n10:00計程車預約 https://www.asoview.com/item/activity/pln3000045984/",
         "link": "https://tomotetsu.co.jp/cont/wp-content/uploads/2026/09/1.20261001jikoku-tomo.pdf",
-        "images": []
+        "images": [
+          {
+            "name": "1792209376728.jpg",
+            "url": "timetables/d12_tomonoura_to_bitchu_matsuyama_1.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          },
+          {
+            "name": "1792208889852.jpg",
+            "url": "timetables/d12_tomonoura_to_bitchu_matsuyama_2.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          }
+        ]
       },
       "fukuyama_to_bitchu_matsuyama": {
-        "notes": "巴士回車站 7:18-7:51\nJR 8:29-9:49\n10:00計程車預約 https://www.asoview.com/item/activity/pln3000045984/",
+        "notes": "巴士回車站 7:18-7:51\nJR 8:29-9:49 (備用班次 9:31-10:47)\n10:00計程車預約 https://www.asoview.com/item/activity/pln3000045984/",
         "link": "https://tomotetsu.co.jp/cont/wp-content/uploads/2026/09/1.20261001jikoku-tomo.pdf",
-        "images": []
+        "images": [
+          {
+            "name": "1792209376728.jpg",
+            "url": "timetables/d12_tomonoura_to_bitchu_matsuyama_1.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          },
+          {
+            "name": "1792208889852.jpg",
+            "url": "timetables/d12_tomonoura_to_bitchu_matsuyama_2.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          }
+        ]
       },
       "bitchu_matsuyama_to_kibitsuhiko_jinja": {
-        "notes": "",
+        "notes": "備中高梁 ➔ 備前一宮 (JR 伯備線 + 吉備線)\n路線1: 13:10 ➔ 14:03 (特急 53分, ¥2,170)\n路線2: 12:48 ➔ 14:03 (普通車 1小時15分, ¥680)",
+        "link": "https://transit.yahoo.co.jp/search/result?from=%E5%82%99%E4%B8%AD%E9%AB%98%E6%A2%81&to=%E5%82%99%E5%89%8D%E4%B8%80%E5%AE%AE",
+        "images": [
+          {
+            "name": "1792242039636.jpg",
+            "url": "timetables/d12_bitchu_matsuyama_to_kibitsuhiko_1.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          }
+        ]
+      },
+      "kibitsuhiko_jinja_to_kibitsu_jinja": {
+        "notes": "備前一宮 ➔ 吉備津 (JR 吉備線 / 桃太郎線，車程僅 3 分鐘，單程 ¥150)\n班次：15:04 / 15:34 / 16:04 (每半小時一班)\n亦可沿吉備路自行車道步行或騎單車 (約 2km，悠閒散策 25 分鐘)",
         "link": "",
-        "images": []
+        "images": [
+          {
+            "name": "1792242236767.jpg",
+            "url": "timetables/d12_kibitsuhiko_to_kibitsu_1.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          }
+        ]
+      },
+      "kibitsu_jinja_to_okayama_hotel": {
+        "notes": "吉備津 ➔ 岡山站 (JR 吉備線 / 桃太郎線 直達，車程 18 分鐘，單程 ¥210)\n班次：16:47 ➔ 17:05 / 17:17 ➔ 17:35 / 17:47 ➔ 18:05\n出站直通站前飯店 Check-in！",
+        "link": "https://transit.yahoo.co.jp/search/result?from=%E5%90%89%E5%82%99%E6%B4%A5&to=%E5%B2%A1%E5%B1%B1",
+        "images": [
+          {
+            "name": "1792242347783.jpg",
+            "url": "timetables/d12_kibitsu_to_okayama_1.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          }
+        ]
       }
     }
   },
@@ -3172,7 +3267,69 @@
     "spotIds": [
       "okayama_airport"
     ],
-    "title": "Day 13：岡山市區漫遊伴手禮 ➔ 岡山桃太郎機場搭機返台 (虎航 IT215)"
+    "title": "Day 13：岡山市區漫遊伴手禮 ➔ 岡山桃太郎機場搭機返台 (虎航 IT215)",
+    "transitAttachments": {
+      "okayama_hotel_to_okayama_airport": {
+        "notes": "岡山站西口 ➔ 岡山桃太郎機場 (中鐵/岡電 利木津巴士，車程約 30 分鐘，單程 ¥1,000)\n班次：12:05 ➔ 12:35 / 13:35 ➔ 14:05 (完美銜接 15:55 虎航 IT 215 登機報到！)",
+        "link": "",
+        "images": [
+          {
+            "name": "1792242497253.jpg",
+            "url": "timetables/d13_okayama_to_airport_bus_1.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          },
+          {
+            "name": "1792242457470.jpg",
+            "url": "timetables/d13_okayama_to_airport_bus_2.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          }
+        ]
+      },
+      "morning_origin_13": {
+        "notes": "岡山站西口 ➔ 岡山桃太郎機場 (中鐵/岡電 利木津巴士，車程約 30 分鐘，單程 ¥1,000)\n班次：12:05 ➔ 12:35 / 13:35 ➔ 14:05 (完美銜接 15:55 虎航 IT 215 登機報到！)",
+        "link": "",
+        "images": [
+          {
+            "name": "1792242497253.jpg",
+            "url": "timetables/d13_okayama_to_airport_bus_1.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          },
+          {
+            "name": "1792242457470.jpg",
+            "url": "timetables/d13_okayama_to_airport_bus_2.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          }
+        ]
+      },
+      "okayama_airport_13": {
+        "notes": "岡山站西口 ➔ 岡山桃太郎機場 (中鐵/岡電 利木津巴士，車程約 30 分鐘，單程 ¥1,000)\n班次：12:05 ➔ 12:35 / 13:35 ➔ 14:05 (完美銜接 15:55 虎航 IT 215 登機報到！)",
+        "link": "",
+        "images": [
+          {
+            "name": "1792242497253.jpg",
+            "url": "timetables/d13_okayama_to_airport_bus_1.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          },
+          {
+            "name": "1792242457470.jpg",
+            "url": "timetables/d13_okayama_to_airport_bus_2.jpg",
+            "type": "image/jpeg",
+            "isPdf": false,
+            "uploadedAt": "2026/10/17"
+          }
+        ]
+      }
+    }
   }
 ];
 
@@ -3415,7 +3572,16 @@
       '1791785943600.jpg': 'timetables/d8_tamae_to_shin_yamaguchi_1.jpg',
       '1791791176996.jpg': 'timetables/d9_shin_yamaguchi_to_iwakuni_1.jpg',
       '1791791740539.jpg': 'timetables/d9_iwakuni_to_miyajimaguchi_1.jpg',
-      '1791792530678.jpg': 'timetables/d9_miyajimaguchi_to_hiroshima_1.jpg'
+      '1791792530678.jpg': 'timetables/d9_miyajimaguchi_to_hiroshima_1.jpg',
+      '1792209376728.jpg': 'timetables/d12_tomonoura_to_bitchu_matsuyama_1.jpg',
+      '1792208889852.jpg': 'timetables/d12_tomonoura_to_bitchu_matsuyama_2.jpg',
+      '1792242039636.jpg': 'timetables/d12_bitchu_matsuyama_to_kibitsuhiko_1.jpg',
+      '1792242236767.jpg': 'timetables/d12_kibitsuhiko_to_kibitsu_1.jpg',
+      '1792242347783.jpg': 'timetables/d12_kibitsu_to_okayama_1.jpg',
+      '1792242497253.jpg': 'timetables/d13_okayama_to_airport_bus_1.jpg',
+      '1792242457470.jpg': 'timetables/d13_okayama_to_airport_bus_2.jpg',
+      '1792206433056.jpg': 'timetables/d11_hiroshima_to_fukuyama_1.jpg',
+      '1791626567066.jpg': 'timetables/d6_matsue_to_tamatsukuri_onsen_1.jpg'
     };
 
     function sanitizeTransitAttachmentObj(att) {
@@ -3450,7 +3616,11 @@
         ['shin_yamaguchi_lodging_to_kintaikyo', 'morning_origin_9'],
         ['hagi_lodging_to_motonosumi_jinja', 'morning_origin_8'],
         ['taikodani_inari_to_kaike_onsen', 'tsuwano_to_kaike_onsen'],
-        ['yasugi_lodging_to_gassan_toda', 'yonago_hotel_to_gassan_toda']
+        ['yasugi_lodging_to_gassan_toda', 'yonago_hotel_to_gassan_toda'],
+        ['tomonoura_onsen_to_bitchu_matsuyama', 'morning_origin_12'],
+        ['tomonoura_onsen_to_bitchu_matsuyama', 'fukuyama_to_bitchu_matsuyama'],
+        ['morning_origin_12', 'fukuyama_to_bitchu_matsuyama'],
+        ['hiroshima_lodging_d9_to_yoshida_koriyama', 'morning_origin_11']
       ];
       pairs.forEach(([k1, k2]) => {
         const a1 = day.transitAttachments[k1];
@@ -8493,15 +8663,19 @@
                 </div>
               `;
             } else {
+              const morningAtt = getEffectiveTransitAttachment(day, morningKey);
               transitCardHeaderHtml = `
-                <div class="bg-amber-50 border border-amber-300 rounded-xl p-2.5 text-xs text-amber-950 flex items-center justify-between shadow-2xs">
-                  <span class="font-bold flex items-center gap-1.5"><span>🌅</span><span>晨間出發地：${escapeHtml(spot.name)} (昨夜名湯住宿)</span></span>
-                  <div class="flex items-center gap-1.5 shrink-0">
-                    <span class="text-[11px] bg-amber-100 text-amber-900 font-bold px-2 py-0.5 rounded border border-amber-300">今日旅程由此啟程</span>
-                    <button type="button" onclick="deleteTransitSegment(${day.dayNumber}, '${morningKey}')" class="text-amber-500 hover:text-rose-600 hover:bg-rose-50 px-1.5 py-0.5 rounded border border-amber-200 hover:border-rose-300 transition text-[10px] flex items-center gap-0.5 cursor-pointer" title="隱藏此出發提示">
-                      <span>🗑️</span><span>隱藏</span>
-                    </button>
+                <div class="bg-amber-50 border border-amber-300 rounded-xl p-2.5 text-xs text-amber-950 space-y-2 shadow-2xs">
+                  <div class="flex items-center justify-between">
+                    <span class="font-bold flex items-center gap-1.5"><span>🌅</span><span>晨間出發地：${escapeHtml(spot.name)} (昨夜名湯住宿)</span></span>
+                    <div class="flex items-center gap-1.5 shrink-0">
+                      <span class="text-[11px] bg-amber-100 text-amber-900 font-bold px-2 py-0.5 rounded border border-amber-300">今日旅程由此啟程</span>
+                      <button type="button" onclick="deleteTransitSegment(${day.dayNumber}, '${morningKey}')" class="text-amber-500 hover:text-rose-600 hover:bg-rose-50 px-1.5 py-0.5 rounded border border-amber-200 hover:border-rose-300 transition text-[10px] flex items-center gap-0.5 cursor-pointer" title="隱藏此出發提示">
+                        <span>🗑️</span><span>隱藏</span>
+                      </button>
+                    </div>
                   </div>
+                  ${renderTransitAttachmentsBlock(day.dayNumber, morningKey, morningAtt, '晨間出發／移動接駁時刻表與乘車附件')}
                 </div>
               `;
             }
