@@ -1514,10 +1514,12 @@ window.INITIAL_SPOTS_DATA = {
       "title": "Day 1：抵達岡山・機場 ➔ 住宿 ➔ 和牛 ➔ 逛街",
       "transitAttachments": {
         "okayama_airport_1": {
-          "link": "",
-          "notes": ""
+          "notes": "",
+          "images": [],
+          "link": ""
         },
         "okayama_airport_to_chiyagyu_kuya": {
+          "notes": "",
           "images": [
             {
               "isPdf": false,
@@ -1541,8 +1543,7 @@ window.INITIAL_SPOTS_DATA = {
               "url": "timetables/d1_okayama_airport_to_chiyagyu_kuya_3.jpg"
             }
           ],
-          "link": "",
-          "notes": ""
+          "link": ""
         }
       }
     },
@@ -1564,6 +1565,7 @@ window.INITIAL_SPOTS_DATA = {
       "title": "Day 2：吉備古國名城鬼之城 ➔ 津山城 ➔ 抵達鳥取站前夜宿",
       "transitAttachments": {
         "chiyagyu_bisai_to_tsuyama": {
+          "notes": "13:05/14:06/15:08 一小時一班",
           "images": [
             {
               "isPdf": false,
@@ -1573,10 +1575,10 @@ window.INITIAL_SPOTS_DATA = {
               "url": "timetables/d2_chiyagyu_bisai_to_tsuyama_1.jpg"
             }
           ],
-          "link": "",
-          "notes": "13:05/14:06/15:08 一小時一班"
+          "link": ""
         },
         "kinojo_to_chiyagyu_bisai": {
+          "notes": "",
           "images": [
             {
               "isPdf": false,
@@ -1586,10 +1588,10 @@ window.INITIAL_SPOTS_DATA = {
               "url": "timetables/d2_kinojo_to_chiyagyu_bisai_1.jpg"
             }
           ],
-          "link": "",
-          "notes": ""
+          "link": ""
         },
         "kinojo_to_tsuyama": {
+          "notes": "",
           "images": [
             {
               "isPdf": false,
@@ -1599,10 +1601,10 @@ window.INITIAL_SPOTS_DATA = {
               "url": "timetables/d2_kinojo_to_tsuyama_1.jpg"
             }
           ],
-          "link": "",
-          "notes": ""
+          "link": ""
         },
         "okayama_hotel_to_kinojo": {
+          "notes": "",
           "images": [
             {
               "isPdf": false,
@@ -1612,10 +1614,10 @@ window.INITIAL_SPOTS_DATA = {
               "url": "timetables/d2_okayama_hotel_to_kinojo_1.jpg"
             }
           ],
-          "link": "",
-          "notes": ""
+          "link": ""
         },
         "tsuyama_to_chiyagyu_bisai": {
+          "notes": "",
           "images": [
             {
               "isPdf": false,
@@ -1625,10 +1627,10 @@ window.INITIAL_SPOTS_DATA = {
               "url": "timetables/d2_tsuyama_to_chiyagyu_bisai_1.jpg"
             }
           ],
-          "link": "",
-          "notes": ""
+          "link": ""
         },
         "tsuyama_to_tottori_hotel": {
+          "notes": "",
           "images": [
             {
               "isPdf": false,
@@ -1638,10 +1640,10 @@ window.INITIAL_SPOTS_DATA = {
               "url": "timetables/d2_tsuyama_to_tottori_hotel_1.jpg"
             }
           ],
-          "link": "",
-          "notes": ""
+          "link": ""
         },
         "tsuyama_to_yunogo_onsen": {
+          "notes": "飯店可能5點才會到",
           "images": [
             {
               "isPdf": false,
@@ -1651,8 +1653,7 @@ window.INITIAL_SPOTS_DATA = {
               "url": "timetables/d2_tsuyama_to_yunogo_onsen_1.jpg"
             }
           ],
-          "link": "",
-          "notes": "飯店可能5點才會到"
+          "link": ""
         }
       }
     },
@@ -1674,22 +1675,27 @@ window.INITIAL_SPOTS_DATA = {
       "title": "Day 3：晨遊鳥取城跡 ➔ 冬季鳥取砂丘 (展望台/吊椅纜車) ➔ 和牛元祖「たくみ割烹店」午餐 ➔ 特急直達宿城崎溫泉",
       "transitAttachments": {
         "hakuto_jinja_to_tottori": {
-          "link": "",
-          "notes": "9:20-9:52"
+          "notes": "9:20-9:52",
+          "images": [],
+          "link": ""
         },
         "hakuto_jinja_to_tottori_takumi": {
-          "link": "",
-          "notes": "15:34-16:17"
+          "notes": "15:34-16:17",
+          "images": [],
+          "link": ""
         },
         "tottori_hotel_to_hakuto_jinja": {
-          "link": "",
-          "notes": "8:15-8:54 白兔神社9:00開 【41】白兔海岸線/https://hinomarubus.co.jp/wp/wp-content/uploads/2022/03/41%E5%B9%B3%E6%97%A5.pdf"
+          "notes": "8:15-8:54 白兔神社9:00開 【41】白兔海岸線/https://hinomarubus.co.jp/wp/wp-content/uploads/2022/03/41%E5%B9%B3%E6%97%A5.pdf",
+          "images": [],
+          "link": ""
         },
         "tottori_hotel_to_tottori": {
-          "link": "https://hinomarubus.co.jp/timetable_route/2661/",
-          "notes": "(44-47)湖山池線 鳥取駅\t7:35-西町\t7:42"
+          "notes": "(44-47)湖山池線 鳥取駅\t7:35-西町\t7:42",
+          "images": [],
+          "link": "https://hinomarubus.co.jp/timetable_route/2661/"
         },
         "tottori_hotel_to_tottori_sakyu": {
+          "notes": "11:30 巴士11:51 抵達「砂之美術館前」鳥取砂丘線・39號",
           "images": [
             {
               "isPdf": false,
@@ -1699,18 +1705,20 @@ window.INITIAL_SPOTS_DATA = {
               "url": "timetables/d3_tottori_hotel_to_tottori_sakyu_1.jpg"
             }
           ],
-          "link": "",
-          "notes": "11:30 巴士11:51 抵達「砂之美術館前」鳥取砂丘線・39號"
+          "link": ""
         },
         "tottori_sakyu_to_tottori": {
-          "link": "",
-          "notes": "11:20-11:35/12:00-12:15"
+          "notes": "11:20-11:35/12:00-12:15",
+          "images": [],
+          "link": ""
         },
         "tottori_sakyu_to_tottori_takumi": {
-          "link": "https://hinomarubus.co.jp/timetable_route/4185/",
-          "notes": "沙丘會館搭車回車站(39) 11:20 -11:42"
+          "notes": "沙丘會館搭車回車站(39) 11:20 -11:42",
+          "images": [],
+          "link": "https://hinomarubus.co.jp/timetable_route/4185/"
         },
         "tottori_takumi_to_kinosaki_onsen": {
+          "notes": "13:33→15:28",
           "images": [
             {
               "isPdf": false,
@@ -1720,18 +1728,20 @@ window.INITIAL_SPOTS_DATA = {
               "url": "timetables/d3_tottori_takumi_to_kinosaki_onsen_1.jpg"
             }
           ],
-          "link": "",
-          "notes": "13:33→15:28"
+          "link": ""
         },
         "tottori_to_hakuto_jinja": {
-          "link": "",
-          "notes": "【41】白兔海岸線（往鹿野營業所方向）13:22-13:56 /15:02-15:32 "
+          "notes": "【41】白兔海岸線（往鹿野營業所方向）13:22-13:56 /15:02-15:32 ",
+          "images": [],
+          "link": ""
         },
         "tottori_to_tottori_sakyu": {
-          "link": "https://hinomarubus.co.jp/timetable_route/4185/",
-          "notes": "(39)鳥取砂丘線 西町9:47-砂丘センター展望台10:00 買票搭纜車下去沙丘入口 馬之背 "
+          "notes": "(39)鳥取砂丘線 西町9:47-砂丘センター展望台10:00 買票搭纜車下去沙丘入口 馬之背 ",
+          "images": [],
+          "link": "https://hinomarubus.co.jp/timetable_route/4185/"
         },
         "yunogo_onsen_to_tottori_sakyu": {
+          "notes": "11:30 巴士11:51 抵達「砂之美術館前」鳥取砂丘線・39號",
           "images": [
             {
               "isPdf": false,
@@ -1741,8 +1751,7 @@ window.INITIAL_SPOTS_DATA = {
               "url": "timetables/d3_yunogo_onsen_to_tottori_sakyu_1.jpg"
             }
           ],
-          "link": "",
-          "notes": "11:30 巴士11:51 抵達「砂之美術館前」鳥取砂丘線・39號"
+          "link": ""
         }
       }
     },
@@ -1768,7 +1777,6 @@ window.INITIAL_SPOTS_DATA = {
       "transitAttachments": {
         "kinosaki_onsen_to_amanohashidate": {
           "notes": "7:06-8:45",
-          "link": "",
           "images": [
             {
               "name": "1791510298995.jpg",
@@ -1777,16 +1785,16 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/9"
             }
-          ]
+          ],
+          "link": ""
         },
         "amanohashidate_to_ine_funaya": {
-          "notes": "編號 5 或 7 的伊根線/蒲入線-天橋立纜車11:24-伊根灣巡游觀光船 日出站11:53(不能使用IC) 船1200円\n伊根の遊覧船と天橋立ケーブル・登山バスがセットに 料金 大人：1,800円",
-          "link": "https://www.tankai.jp/tw/bus/tankai-bus/",
-          "images": []
+          "notes": "編號 5 或 7 的伊根線/蒲入線-天橋立纜車11:24-伊根灣巡游觀光船 日出站11:53(不能使用IC) 船1200円///伊根の遊覧船と天橋立ケーブル・登山バスがセットに 料金 大人：1,800円",
+          "images": [],
+          "link": "https://www.tankai.jp/tw/bus/tankai-bus/"
         },
         "ine_funaya_to_araiso_yonago": {
-          "notes": "巴士13:09-14:05天橋立駅  \n14:34-19:47米子",
-          "link": "https://www.tankai.jp/tw/bus/tankai-bus/",
+          "notes": "巴士13:09-14:05天橋立駅  14:34-19:47米子",
           "images": [
             {
               "name": "1791510665840.jpg",
@@ -1795,11 +1803,11 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/9"
             }
-          ]
+          ],
+          "link": "https://www.tankai.jp/tw/bus/tankai-bus/"
         },
         "ine_funaya_to_yonago_hotel": {
           "notes": "11:39.13:09伊根湾めぐり・日出-12:32.14:02天橋立駅,第一班車坐回岡山了",
-          "link": "",
           "images": [
             {
               "name": "1791510665840.jpg",
@@ -1808,11 +1816,11 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/9"
             }
-          ]
+          ],
+          "link": ""
         },
         "ine_funaya_to_kaike_onsen": {
           "notes": "11:39.13:09伊根湾めぐり・日出-12:32.14:02天橋立駅,第一班車坐回岡山了",
-          "link": "",
           "images": [
             {
               "name": "1791510665840.jpg",
@@ -1821,7 +1829,8 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/9"
             }
-          ]
+          ],
+          "link": ""
         }
       }
     },
@@ -1842,8 +1851,7 @@ window.INITIAL_SPOTS_DATA = {
       ],
       "transitAttachments": {
         "yonago_hotel_to_tsuwano": {
-          "notes": "",
-          "link": "",
+          "notes": "米子 06:00 ➔ 津和野 09:15 (特急スーパーおき1號直達，車程3h15m，Pass全包)",
           "images": [
             {
               "name": "1791762314517.jpg",
@@ -1852,11 +1860,11 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/12"
             }
-          ]
+          ],
+          "link": ""
         },
         "yonago_hotel_to_taikodani_inari": {
           "notes": "",
-          "link": "",
           "images": [
             {
               "name": "1791762314517.jpg",
@@ -1865,21 +1873,21 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/12"
             }
-          ]
+          ],
+          "link": ""
         },
         "tsuwano_to_taikodani_inari": {
           "notes": "纜車9：00～16：30",
-          "link": "",
-          "images": []
+          "images": [],
+          "link": ""
         },
         "taikodani_inari_to_tsuwano": {
           "notes": "纜車9：00～16：30",
-          "link": "",
-          "images": []
+          "images": [],
+          "link": ""
         },
         "taikodani_inari_to_kaike_onsen": {
           "notes": "17:18-17:37\t皆生温泉観光センター",
-          "link": "https://hinomarubus.co.jp/timetable_route/2956/?tab=3#up-bus",
           "images": [
             {
               "name": "1791764861443.jpg",
@@ -1888,11 +1896,11 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/12"
             }
-          ]
+          ],
+          "link": "https://hinomarubus.co.jp/timetable_route/2956/?tab=3#up-bus"
         },
         "tsuwano_to_kaike_onsen": {
           "notes": "17:18-17:37\t皆生温泉観光センター",
-          "link": "https://hinomarubus.co.jp/timetable_route/2956/?tab=3#up-bus",
           "images": [
             {
               "name": "1791764861443.jpg",
@@ -1901,7 +1909,129 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/12"
             }
-          ]
+          ],
+          "link": "https://hinomarubus.co.jp/timetable_route/2956/?tab=3#up-bus"
+        },
+        "tsuwano_to_yasugi_lodging": {
+          "notes": "傍晚津和野站搭特急スーパーおき直達安來站",
+          "images": [],
+          "link": ""
+        },
+        "iwami_ginzan_to_hagi_lodging": {
+          "notes": "大田市 17:47 ➔ 益田 19:11 (特急スーパーまつかぜ7號) ➔ 益田 19:14 ➔ 東萩 20:27 (JR山陰本線)，Pass全包",
+          "images": [
+            {
+              "isPdf": false,
+              "name": "大田市➔益田➔東萩 山陰本線特急與各停時刻表",
+              "type": "image/jpeg",
+              "uploadedAt": "2026/10/12",
+              "url": "timetables/d7_ohdashi_to_higashihagi_1.jpg"
+            }
+          ],
+          "link": ""
+        },
+        "izumo_taisha_to_iwami_ginzan": {
+          "notes": "出雲市搭特急至大田市站，轉石見交通巴士至大森(石見銀山)",
+          "images": [],
+          "link": "https://iwamigroup.jp/publics/index/48/"
+        },
+        "tamatsukuri_onsen_to_izumo_taisha": {
+          "notes": "晨間玉造溫泉搭JR至出雲市站，轉一畑巴士直達出雲大社正門",
+          "images": [],
+          "link": "https://www.ichibata.co.jp/bus/rosen/taisha.html"
+        },
+        "adachi_museum_to_matsue": {
+          "notes": "免費巴士(售票前方桌子可以拿整理卷)12:55-13:15.13:30-13:50  //松江巴士 14:00-14:13/",
+          "images": [
+            {
+              "isPdf": false,
+              "name": "1791624714329.jpg",
+              "type": "image/jpeg",
+              "uploadedAt": "2026/10/10",
+              "url": "timetables/d5_adachi_museum_to_matsue_1.jpg"
+            }
+          ],
+          "link": "https://matsue-bus.jp/lakeline"
+        },
+        "adachi_museum_to_matsue_horikawa": {
+          "notes": "售票處旁有免費接駁整理卷12:00-12:20/12:30-12:50",
+          "images": [
+            {
+              "isPdf": false,
+              "name": "1791635914662.jpg",
+              "type": "image/jpeg",
+              "uploadedAt": "2026/10/10",
+              "url": "timetables/d6_adachi_museum_to_matsue_horikawa_1.jpg"
+            }
+          ],
+          "link": "https://www.adachi-museum.or.jp/shuttle-bus"
+        },
+        "gassan_toda_to_adachi_museum": {
+          "notes": "10:32-10:39/11:20-11:29鷺の湯温泉・足立美術館前",
+          "images": [],
+          "link": "https://www.city.yasugi.shimane.jp/kurashi/sumai/yellow-bus/zikokusaisinn.html"
+        },
+        "kaike_onsen_to_gassan_toda": {
+          "notes": "皆生公車至米子站，JR 9分至安來，搭黃色巴士9:12-9:38至月山入口",
+          "images": [
+            {
+              "isPdf": false,
+              "name": "1791624714329.jpg",
+              "type": "image/jpeg",
+              "uploadedAt": "2026/10/10",
+              "url": "timetables/d5_adachi_museum_to_matsue_1.jpg"
+            }
+          ],
+          "link": "https://www.city.yasugi.shimane.jp/"
+        },
+        "matsue_horikawa_to_matsue": {
+          "notes": "13:00-13:13/",
+          "images": [],
+          "link": "https://matsue-bus.jp/lakeline"
+        },
+        "matsue_to_tamatsukuri_onsen": {
+          "notes": "一般路線公車16:41-17:19 P路線-玉造線-県民会館前上車 終點玉造溫泉630 日幣",
+          "images": [],
+          "link": "https://bus.ichibata.co.jp/media/b07b520813bcc98fef75e7927c466e5f.pdf"
+        },
+        "matsue_to_tamatsukuri_yu_jinja": {
+          "notes": "一般巴士P路線 玉造線-国宝松江城県庁前15:39-16:19(一小時一班)/循環巴士15:13-15:48",
+          "images": [
+            {
+              "isPdf": false,
+              "name": "1791636411145.jpg",
+              "type": "image/jpeg",
+              "uploadedAt": "2026/10/10",
+              "url": "timetables/d6_matsue_to_tamatsukuri_yu_jinja_1.jpg"
+            }
+          ],
+          "link": "https://matsue-bus.jp/rosen_time_list2026/rosen_root_p_2026"
+        },
+        "yasugi_lodging_to_gassan_toda": {
+          "notes": "安來站搭黃色公車9:12-9:38至月山入口 (由安來站前直接出發極速便捷)",
+          "images": [
+            {
+              "isPdf": false,
+              "name": "1791519808986.jpg",
+              "type": "image/jpeg",
+              "uploadedAt": "2026/10/9",
+              "url": "timetables/d5_yonago_hotel_to_gassan_toda_1.jpg"
+            }
+          ],
+          "link": "https://www.city.yasugi.shimane.jp/kurashi/sumai/yellow-bus/"
+        },
+        "yonago_hotel_to_gassan_toda": {
+          "notes": "安來站搭黃色公車9:12-9:38至月山入口 (由安來站前直接出發極速便捷)",
+          "images": [
+            {
+              "isPdf": false,
+              "name": "1791519808986.jpg",
+              "type": "image/jpeg",
+              "uploadedAt": "2026/10/9",
+              "url": "timetables/d5_yonago_hotel_to_gassan_toda_1.jpg"
+            }
+          ],
+          "link": "https://www.city.yasugi.shimane.jp/kurashi/sumai/yellow-bus/"
         }
       }
     },
@@ -1925,8 +2055,7 @@ window.INITIAL_SPOTS_DATA = {
       ],
       "transitAttachments": {
         "kaike_onsen_to_gassan_toda": {
-          "notes": "皆生回米子巴士7:44-8:03 \nJR8:28-8:36  \n黃色巴士9:12-9:38月山入口",
-          "link": "https://www.city.yasugi.shimane.jp/kurashi/sumai/yellow-bus/zikokusaisinn.data/3yonagohirose-0.pdf",
+          "notes": "皆生回米子巴士7:44-8:03 JR8:28-8:36  黃色巴士9:12-9:38月山入口",
           "images": [
             {
               "name": "1791766343354.jpg",
@@ -1935,11 +2064,11 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/12"
             }
-          ]
+          ],
+          "link": "https://www.city.yasugi.shimane.jp/kurashi/sumai/yellow-bus/zikokusaisinn.data/3yonagohirose-0.pdf"
         },
         "yonago_hotel_to_gassan_toda": {
           "notes": "巴士9:12-9:38月山入口",
-          "link": "https://www.city.yasugi.shimane.jp/kurashi/sumai/yellow-bus/",
           "images": [
             {
               "name": "1791519808986.jpg",
@@ -1948,11 +2077,11 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/9"
             }
-          ]
+          ],
+          "link": "https://www.city.yasugi.shimane.jp/kurashi/sumai/yellow-bus/"
         },
         "yasugi_lodging_to_gassan_toda": {
           "notes": "巴士9:12-9:38月山入口",
-          "link": "https://www.city.yasugi.shimane.jp/kurashi/sumai/yellow-bus/",
           "images": [
             {
               "name": "1791519808986.jpg",
@@ -1961,16 +2090,16 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/9"
             }
-          ]
+          ],
+          "link": "https://www.city.yasugi.shimane.jp/kurashi/sumai/yellow-bus/"
         },
         "gassan_toda_to_adachi_museum": {
           "notes": "市立病院前 10:35-10:39/11:20-11:29鷺の湯温泉・足立美術館前",
-          "link": "https://www.city.yasugi.shimane.jp/kurashi/sumai/yellow-bus/zikokusaisinn.html",
-          "images": []
+          "images": [],
+          "link": "https://www.city.yasugi.shimane.jp/kurashi/sumai/yellow-bus/zikokusaisinn.html"
         },
         "adachi_museum_to_matsue_horikawa": {
           "notes": "售票處旁有免費接駁整理卷11:30-11:50/12:00-12:20/",
-          "link": "https://www.adachi-museum.or.jp/shuttle-bus",
           "images": [
             {
               "name": "1791635914662.jpg",
@@ -1979,11 +2108,11 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/10"
             }
-          ]
+          ],
+          "link": "https://www.adachi-museum.or.jp/shuttle-bus"
         },
         "adachi_museum_to_matsue": {
           "notes": "免費巴士(售票前方桌子可以拿整理卷)12:55-13:15.13:30-13:50  //松江巴士 14:00-14:13/",
-          "link": "https://matsue-bus.jp/lakeline",
           "images": [
             {
               "name": "1791624714329.jpg",
@@ -1992,16 +2121,16 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/10"
             }
-          ]
+          ],
+          "link": "https://matsue-bus.jp/lakeline"
         },
         "matsue_horikawa_to_matsue": {
           "notes": "13:00-13:13/",
-          "link": "https://matsue-bus.jp/lakeline",
-          "images": []
+          "images": [],
+          "link": "https://matsue-bus.jp/lakeline"
         },
         "matsue_to_tamatsukuri_yu_jinja": {
           "notes": "一般巴士P路線 玉造線-国宝松江城県庁前15:39-16:19(一小時一班)/循環巴士15:13-15:48",
-          "link": "https://matsue-bus.jp/rosen_time_list2026/rosen_root_p_2026",
           "images": [
             {
               "name": "1791636411145.jpg",
@@ -2010,11 +2139,11 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/10"
             }
-          ]
+          ],
+          "link": "https://matsue-bus.jp/rosen_time_list2026/rosen_root_p_2026"
         },
         "matsue_to_tamatsukuri_onsen": {
           "notes": "一般路線公車16:41-17:19 P路線-玉造線-県民会館前上車 終點玉造溫泉630 日",
-          "link": "https://matsue-bus.jp/wp-content/uploads/2026/03/onsen-tmatsukuri-time.pdf",
           "images": [
             {
               "name": "1791626567066.jpg",
@@ -2023,12 +2152,80 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/10"
             }
-          ]
+          ],
+          "link": "https://matsue-bus.jp/wp-content/uploads/2026/03/onsen-tmatsukuri-time.pdf"
         },
         "tamatsukuri_yu_jinja_to_tamatsukuri_onsen": {
           "notes": "一般路線公車16:41-17:19 P路線-玉造線-県民会館前上車 終點玉造溫泉630 日",
-          "link": "https://matsue-bus.jp/wp-content/uploads/2026/03/onsen-tmatsukuri-time.pdf",
-          "images": []
+          "images": [],
+          "link": "https://matsue-bus.jp/wp-content/uploads/2026/03/onsen-tmatsukuri-time.pdf"
+        },
+        "tsuwano_to_kaike_onsen": {
+          "notes": "17:18-17:37\t皆生温泉観光センター",
+          "images": [
+            {
+              "isPdf": false,
+              "name": "津和野➔米子 特急スーパーおき4號時刻表",
+              "type": "image/jpeg",
+              "uploadedAt": "2026/10/12",
+              "url": "timetables/d5_tsuwano_to_yonago_1.jpg"
+            }
+          ],
+          "link": "https://hinomarubus.co.jp/timetable_route/2956/?tab=3#up-bus"
+        },
+        "tsuwano_to_yasugi_lodging": {
+          "notes": "傍晚津和野站搭特急スーパーおき直達安來站",
+          "images": [],
+          "link": ""
+        },
+        "yonago_hotel_to_tsuwano": {
+          "notes": "米子 06:00 ➔ 津和野 09:15 (特急スーパーおき1號直達，車程3h15m，Pass全包)",
+          "images": [
+            {
+              "isPdf": false,
+              "name": "米子➔津和野 特急スーパーおき1號時刻表",
+              "type": "image/jpeg",
+              "uploadedAt": "2026/10/12",
+              "url": "timetables/d5_yonago_to_tsuwano_1.jpg"
+            }
+          ],
+          "link": ""
+        },
+        "iwami_ginzan_to_hagi_lodging": {
+          "notes": "大田市 17:47 ➔ 益田 19:11 (特急スーパーまつかぜ7號) ➔ 益田 19:14 ➔ 東萩 20:27 (JR山陰本線)，Pass全包",
+          "images": [
+            {
+              "isPdf": false,
+              "name": "大田市➔益田➔東萩 山陰本線特急與各停時刻表",
+              "type": "image/jpeg",
+              "uploadedAt": "2026/10/12",
+              "url": "timetables/d7_ohdashi_to_higashihagi_1.jpg"
+            }
+          ],
+          "link": ""
+        },
+        "izumo_taisha_to_iwami_ginzan": {
+          "notes": "出雲市搭特急至大田市站，轉石見交通巴士至大森(石見銀山)",
+          "images": [],
+          "link": "https://iwamigroup.jp/publics/index/48/"
+        },
+        "tamatsukuri_onsen_to_izumo_taisha": {
+          "notes": "晨間玉造溫泉搭JR至出雲市站，轉一畑巴士直達出雲大社正門",
+          "images": [],
+          "link": "https://www.ichibata.co.jp/bus/rosen/taisha.html"
+        },
+        "taikodani_inari_to_kaike_onsen": {
+          "notes": "17:18-17:37\t皆生温泉観光センター",
+          "images": [
+            {
+              "isPdf": false,
+              "name": "津和野➔米子 特急スーパーおき4號時刻表",
+              "type": "image/jpeg",
+              "uploadedAt": "2026/10/12",
+              "url": "timetables/d5_tsuwano_to_yonago_1.jpg"
+            }
+          ],
+          "link": "https://hinomarubus.co.jp/timetable_route/2956/?tab=3#up-bus"
         }
       }
     },
@@ -2050,7 +2247,6 @@ window.INITIAL_SPOTS_DATA = {
       "transitAttachments": {
         "tamatsukuri_onsen_to_izumo_taisha": {
           "notes": " 一畑バス 大社・日御碕線 1 號乘車處 公車 9:00-9:27/9:40-10:16",
-          "link": "https://bus.ichibata.co.jp/media/41b388560b1ef8c2ff8bdac82ed7509c.pdf",
           "images": [
             {
               "name": "1791708459748.jpg",
@@ -2059,11 +2255,11 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/11"
             }
-          ]
+          ],
+          "link": "https://bus.ichibata.co.jp/media/41b388560b1ef8c2ff8bdac82ed7509c.pdf"
         },
         "izumo_taisha_to_iwami_ginzan": {
-          "notes": "一畑巴士11:40-12:18/12:20-12:49　\n石見交通14:02-14:35 http://iwamigroup.jp/files/lib/1/259/202605020731205618.pdf",
-          "link": "https://bus.ichibata.co.jp/media/b07b520813bcc98fef75e7927c466e5f.pdf",
+          "notes": "一畑巴士11:40-12:18/12:20-12:49　/石見交通14:02-14:35 http://iwamigroup.jp/files/lib/1/259/202605020731205618.pdf",
           "images": [
             {
               "name": "1791710402295.jpg",
@@ -2072,11 +2268,11 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/11"
             }
-          ]
+          ],
+          "link": "https://bus.ichibata.co.jp/media/b07b520813bcc98fef75e7927c466e5f.pdf"
         },
         "iwami_ginzan_to_hagi_lodging": {
           "notes": "大田市 17:47 ➔ 益田 19:11 (特急スーパーまつかぜ7號) ➔ 益田 19:14 ➔ 東萩 20:27",
-          "link": "",
           "images": [
             {
               "name": "1791766653820.jpg",
@@ -2085,11 +2281,11 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/12"
             }
-          ]
+          ],
+          "link": ""
         },
         "iwami_ginzan_to_tsuwano_lodging": {
           "notes": "巴士16:26-16:59",
-          "link": "",
           "images": [
             {
               "name": "1791712386686.jpg",
@@ -2098,7 +2294,145 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/11"
             }
-          ]
+          ],
+          "link": ""
+        },
+        "adachi_museum_to_matsue": {
+          "notes": "免費巴士(售票前方桌子可以拿整理卷)12:55-13:15.13:30-13:50  //松江巴士 14:00-14:13/",
+          "images": [
+            {
+              "isPdf": false,
+              "name": "1791624714329.jpg",
+              "type": "image/jpeg",
+              "uploadedAt": "2026/10/10",
+              "url": "timetables/d5_adachi_museum_to_matsue_1.jpg"
+            }
+          ],
+          "link": "https://matsue-bus.jp/lakeline"
+        },
+        "adachi_museum_to_matsue_horikawa": {
+          "notes": "售票處旁有免費接駁整理卷12:00-12:20/12:30-12:50",
+          "images": [
+            {
+              "isPdf": false,
+              "name": "1791635914662.jpg",
+              "type": "image/jpeg",
+              "uploadedAt": "2026/10/10",
+              "url": "timetables/d6_adachi_museum_to_matsue_horikawa_1.jpg"
+            }
+          ],
+          "link": "https://www.adachi-museum.or.jp/shuttle-bus"
+        },
+        "gassan_toda_to_adachi_museum": {
+          "notes": "10:32-10:39/11:20-11:29鷺の湯温泉・足立美術館前",
+          "images": [],
+          "link": "https://www.city.yasugi.shimane.jp/kurashi/sumai/yellow-bus/zikokusaisinn.html"
+        },
+        "kaike_onsen_to_gassan_toda": {
+          "notes": "皆生公車至米子站，JR 9分至安來，搭黃色巴士9:12-9:38至月山入口",
+          "images": [
+            {
+              "isPdf": false,
+              "name": "1791624714329.jpg",
+              "type": "image/jpeg",
+              "uploadedAt": "2026/10/10",
+              "url": "timetables/d5_adachi_museum_to_matsue_1.jpg"
+            }
+          ],
+          "link": "https://www.city.yasugi.shimane.jp/"
+        },
+        "matsue_horikawa_to_matsue": {
+          "notes": "13:00-13:13/",
+          "images": [],
+          "link": "https://matsue-bus.jp/lakeline"
+        },
+        "matsue_to_tamatsukuri_onsen": {
+          "notes": "一般路線公車16:41-17:19 P路線-玉造線-県民会館前上車 終點玉造溫泉630 日幣",
+          "images": [],
+          "link": "https://bus.ichibata.co.jp/media/b07b520813bcc98fef75e7927c466e5f.pdf"
+        },
+        "matsue_to_tamatsukuri_yu_jinja": {
+          "notes": "一般巴士P路線 玉造線-国宝松江城県庁前15:39-16:19(一小時一班)/循環巴士15:13-15:48",
+          "images": [
+            {
+              "isPdf": false,
+              "name": "1791636411145.jpg",
+              "type": "image/jpeg",
+              "uploadedAt": "2026/10/10",
+              "url": "timetables/d6_matsue_to_tamatsukuri_yu_jinja_1.jpg"
+            }
+          ],
+          "link": "https://matsue-bus.jp/rosen_time_list2026/rosen_root_p_2026"
+        },
+        "yasugi_lodging_to_gassan_toda": {
+          "notes": "安來站搭黃色公車9:12-9:38至月山入口 (由安來站前直接出發極速便捷)",
+          "images": [
+            {
+              "isPdf": false,
+              "name": "1791519808986.jpg",
+              "type": "image/jpeg",
+              "uploadedAt": "2026/10/9",
+              "url": "timetables/d5_yonago_hotel_to_gassan_toda_1.jpg"
+            }
+          ],
+          "link": "https://www.city.yasugi.shimane.jp/kurashi/sumai/yellow-bus/"
+        },
+        "yonago_hotel_to_gassan_toda": {
+          "notes": "安來站搭黃色公車9:12-9:38至月山入口 (由安來站前直接出發極速便捷)",
+          "images": [
+            {
+              "isPdf": false,
+              "name": "1791519808986.jpg",
+              "type": "image/jpeg",
+              "uploadedAt": "2026/10/9",
+              "url": "timetables/d5_yonago_hotel_to_gassan_toda_1.jpg"
+            }
+          ],
+          "link": "https://www.city.yasugi.shimane.jp/kurashi/sumai/yellow-bus/"
+        },
+        "tsuwano_to_kaike_onsen": {
+          "notes": "17:18-17:37\t皆生温泉観光センター",
+          "images": [
+            {
+              "isPdf": false,
+              "name": "津和野➔米子 特急スーパーおき4號時刻表",
+              "type": "image/jpeg",
+              "uploadedAt": "2026/10/12",
+              "url": "timetables/d5_tsuwano_to_yonago_1.jpg"
+            }
+          ],
+          "link": "https://hinomarubus.co.jp/timetable_route/2956/?tab=3#up-bus"
+        },
+        "tsuwano_to_yasugi_lodging": {
+          "notes": "傍晚津和野站搭特急スーパーおき直達安來站",
+          "images": [],
+          "link": ""
+        },
+        "yonago_hotel_to_tsuwano": {
+          "notes": "米子 06:00 ➔ 津和野 09:15 (特急スーパーおき1號直達，車程3h15m，Pass全包)",
+          "images": [
+            {
+              "isPdf": false,
+              "name": "米子➔津和野 特急スーパーおき1號時刻表",
+              "type": "image/jpeg",
+              "uploadedAt": "2026/10/12",
+              "url": "timetables/d5_yonago_to_tsuwano_1.jpg"
+            }
+          ],
+          "link": ""
+        },
+        "taikodani_inari_to_kaike_onsen": {
+          "notes": "17:18-17:37\t皆生温泉観光センター",
+          "images": [
+            {
+              "isPdf": false,
+              "name": "津和野➔米子 特急スーパーおき4號時刻表",
+              "type": "image/jpeg",
+              "uploadedAt": "2026/10/12",
+              "url": "timetables/d5_tsuwano_to_yonago_1.jpg"
+            }
+          ],
+          "link": "https://hinomarubus.co.jp/timetable_route/2956/?tab=3#up-bus"
         }
       }
     },
@@ -2120,47 +2454,46 @@ window.INITIAL_SPOTS_DATA = {
       "transitAttachments": {
         "morning_origin_8": {
           "notes": "",
-          "link": "",
           "images": [
-            {
-              "name": "1791775417052.jpg",
-              "url": "timetables/d8_higashihagi_to_nagatofuruichi_1.jpg",
-              "type": "image/jpeg",
-              "isPdf": false,
-              "uploadedAt": "2026/10/12"
-            },
             {
               "name": "1791785522141.jpg",
               "url": "timetables/d8_higashihagi_to_nagatofuruichi_2.jpg",
               "type": "image/jpeg",
               "isPdf": false,
               "uploadedAt": "2026/10/12"
+            },
+            {
+              "name": "1791775417052.jpg",
+              "url": "timetables/d8_higashihagi_to_nagatofuruichi_1.jpg",
+              "type": "image/jpeg",
+              "isPdf": false,
+              "uploadedAt": "2026/10/12"
             }
-          ]
+          ],
+          "link": ""
         },
         "hagi_lodging_to_motonosumi_jinja": {
           "notes": "",
-          "link": "",
           "images": [
-            {
-              "name": "1791775417052.jpg",
-              "url": "timetables/d8_higashihagi_to_nagatofuruichi_1.jpg",
-              "type": "image/jpeg",
-              "isPdf": false,
-              "uploadedAt": "2026/10/12"
-            },
             {
               "name": "1791785522141.jpg",
               "url": "timetables/d8_higashihagi_to_nagatofuruichi_2.jpg",
               "type": "image/jpeg",
               "isPdf": false,
               "uploadedAt": "2026/10/12"
+            },
+            {
+              "name": "1791775417052.jpg",
+              "url": "timetables/d8_higashihagi_to_nagatofuruichi_1.jpg",
+              "type": "image/jpeg",
+              "isPdf": false,
+              "uploadedAt": "2026/10/12"
             }
-          ]
+          ],
+          "link": ""
         },
         "motonosumi_jinja_to_hagi": {
-          "notes": "元乃隅神社搭計程車回長門古市站 ➔  東萩 13:15, \n巴士西回-13:57東萩-萩城跡14:08",
-          "link": "https://www.hagishi.com/wp/wp-content/uploads/2023/01/%E3%81%BE%E3%81%81%E3%83%BC%E3%82%8B%E3%83%90%E3%82%B9%E6%99%82%E5%88%BB%E8%A1%A82022.pdf",
+          "notes": "元乃隅神社搭計程車回長門古市站 ➔  東萩 13:15,\n 巴士西回-13:57東萩-萩城跡14:08",
           "images": [
             {
               "name": "1791785582351.jpg",
@@ -2169,11 +2502,11 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/12"
             }
-          ]
+          ],
+          "link": "https://www.hagishi.com/wp/wp-content/uploads/2023/01/%E3%81%BE%E3%81%81%E3%83%BC%E3%82%8B%E3%83%90%E3%82%B9%E6%99%82%E5%88%BB%E8%A1%A82022.pdf"
         },
         "hagi_to_shin_yamaguchi_lodging": {
-          "notes": "巴士城跡16:23-16:28玉江 16:55 ➔ 新山口 21:35",
-          "link": "https://www.hagishi.com/wp/wp-content/uploads/2023/01/%E3%81%BE%E3%81%81%E3%83%BC%E3%82%8B%E3%83%90%E3%82%B9%E6%99%82%E5%88%BB%E8%A1%A82022.pdf",
+          "notes": "巴士城跡16:23-16:28\n玉江 16:55 ➔ 新山口 21:35",
           "images": [
             {
               "name": "1791785943600.jpg",
@@ -2182,17 +2515,18 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/12"
             }
-          ]
+          ],
+          "link": "https://www.hagishi.com/wp/wp-content/uploads/2023/01/%E3%81%BE%E3%81%81%E3%83%BC%E3%82%8B%E3%83%90%E3%82%B9%E6%99%82%E5%88%BB%E8%A1%A82022.pdf"
         },
         "hagi_lodging_to_hagi": {
           "notes": "西回-W6東荻駛前7:57-W13荻城跡8:08",
-          "link": "https://www.hagishi.com/wp/wp-content/uploads/2023/01/%E3%81%BE%E3%81%81%E3%83%BC%E3%82%8B%E3%83%90%E3%82%B9%E6%99%82%E5%88%BB%E8%A1%A82022.pdf",
-          "images": []
+          "images": [],
+          "link": "https://www.hagishi.com/wp/wp-content/uploads/2023/01/%E3%81%BE%E3%81%81%E3%83%BC%E3%82%8B%E3%83%90%E3%82%B9%E6%99%82%E5%88%BB%E8%A1%A82022.pdf"
         },
         "hagi_to_motonosumi_jinja": {
           "notes": "西回-9:38-玉江駛前9:43",
-          "link": "",
-          "images": []
+          "images": [],
+          "link": ""
         }
       }
     },
@@ -2215,8 +2549,7 @@ window.INITIAL_SPOTS_DATA = {
       "title": "Day 9：周防名橋錦帶橋・岩國城 ➔ 宮島世界遺產嚴島神社 ➔ 彌山大本山大聖院 ➔ 宿廣島",
       "transitAttachments": {
         "morning_origin_9": {
-          "notes": "新山口 ➔ 新岩國➔ 防長巴士15分至錦帶橋；\n備案：新山口 07:19 ➔ 岩國 09:30 \n9:47- 巴士時刻表找不到 行駛時間約15-20分",
-          "link": "https://www.jorudan.co.jp/bus/rosen/stoplist/?Ddd=12&Dhh=10&Dmn=35&Dym=202610&jyosya=%E5%B2%A9%E5%9B%BD%E9%A7%85&lid=337159#jump",
+          "notes": "新山新山口 07:19 ➔ 岩國 09:30 \n いわくにバス 10:35-錦帶橋10:55",
           "images": [
             {
               "name": "1791791176996.jpg",
@@ -2225,11 +2558,11 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/12"
             }
-          ]
+          ],
+          "link": "https://www.jorudan.co.jp/bus/rosen/stoplist/?Ddd=12&Dhh=10&Dmn=35&Dym=202610&jyosya=%E5%B2%A9%E5%9B%BD%E9%A7%85&lid=337159#jump"
         },
         "shin_yamaguchi_lodging_to_kintaikyo": {
-          "notes": "新山口 ➔ 新岩國➔ 防長巴士15分至錦帶橋；\n備案：新山口 07:19 ➔ 岩國 09:30 \n9:47- 巴士時刻表找不到 行駛時間約15-20分",
-          "link": "https://www.jorudan.co.jp/bus/rosen/stoplist/?Ddd=12&Dhh=10&Dmn=35&Dym=202610&jyosya=%E5%B2%A9%E5%9B%BD%E9%A7%85&lid=337159#jump",
+          "notes": "新山新山口 07:19 ➔ 岩國 09:30 \n いわくにバス 10:35-錦帶橋10:55",
           "images": [
             {
               "name": "1791791176996.jpg",
@@ -2238,11 +2571,11 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/12"
             }
-          ]
+          ],
+          "link": "https://www.jorudan.co.jp/bus/rosen/stoplist/?Ddd=12&Dhh=10&Dmn=35&Dym=202610&jyosya=%E5%B2%A9%E5%9B%BD%E9%A7%85&lid=337159#jump"
         },
         "iwakuni_to_itsukushima_jinja": {
-          "notes": "岩國 13:57 ➔ 宮島口 14:19   宮島棧橋搭JR西日本渡輪10分直達宮島 \n船班15分一班 行駛10分",
-          "link": "https://jr-miyajimaferry.co.jp/",
+          "notes": "巴士錦帶橋13:17-13:33 \n岩國 13:57 ➔ 宮島口 14:19 \n船15分一班",
           "images": [
             {
               "name": "1791791740539.jpg",
@@ -2251,11 +2584,11 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/12"
             }
-          ]
+          ],
+          "link": "https://www.jorudan.co.jp/bus/rosen/timetable/%E9%8C%A6%E5%B8%AF%E6%A9%8B%E3%80%94%E3%81%84%E3%82%8F%E3%81%8F%E3%81%AB%E3%83%90%E3%82%B9%E3%80%95/%E6%96%B0%E5%B2%A9%E5%9B%BD%E9%A7%85%E7%B7%9A/%E6%A4%8E%E5%B0%BE%E7%A5%9E%E7%A4%BE/?Dw=1"
         },
         "daishoin_to_hiroshima_lodging_d8": {
-          "notes": "宮島口 17:19 ➔ 廣島 17:52 ",
-          "link": "",
+          "notes": "宮島口 17:19 ➔ 廣島 17:52",
           "images": [
             {
               "name": "1791792530678.jpg",
@@ -2264,11 +2597,11 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/12"
             }
-          ]
+          ],
+          "link": ""
         },
         "itsukushima_jinja_to_hiroshima_lodging_d8": {
           "notes": "大聖院漫步回宮島棧橋搭JR渡輪返宮島口 ➔ 宮島口 17:19 ➔ 廣島 17:52 (山陽本線33分，JR Pass免費) ➔ 抵達廣島站前飯店Check-in",
-          "link": "",
           "images": [
             {
               "name": "1791792530678.jpg",
@@ -2277,12 +2610,13 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/12"
             }
-          ]
+          ],
+          "link": ""
         },
         "itsukushima_jinja_to_daishoin": {
           "notes": "纜車最晚上16:00 最晚下16:30",
-          "link": "",
-          "images": []
+          "images": [],
+          "link": ""
         }
       }
     },
@@ -2308,8 +2642,8 @@ window.INITIAL_SPOTS_DATA = {
       "transitAttachments": {
         "hiroshima_lodging_d8_to_hiroshima": {
           "notes": "ひろしまめいぷる〜ぷ1日乗車券 600日",
-          "link": "https://www.chugoku-jrbus.co.jp/sightseeing/",
-          "images": []
+          "images": [],
+          "link": "https://www.chugoku-jrbus.co.jp/sightseeing/"
         }
       }
     },
@@ -2330,7 +2664,7 @@ window.INITIAL_SPOTS_DATA = {
       "title": "Day 11：毛利要塞吉田郡山城 ➔ 福山城 ➔ 鞆之浦夕陽溫泉",
       "transitAttachments": {
         "hiroshima_lodging_d9_to_yoshida_koriyama": {
-          "notes": "路面電車 (約需15分)\n①番ホーム ( 紙屋町･市役所経由 ) 　宇品行き「紙屋町東電停」下車 \n②番ホーム 宮島行き「紙屋町西電停」下車 \n⑥番ホーム 番江波行き「紙屋町西電停」下車\n\n巴士 ⑧番ホーム／⑧番ホーム／吉田営業所行き 「安芸高田市役所前」下車き 「安芸高田市役所前」下車(7:15-8:56)",
+          "notes": "路面電車\n①番ホーム ( 紙屋町･市役所経由 ) 　宇品行き「紙屋町東電停」下車 \n②番ホーム 宮島行き「紙屋町西電停」下車 \n⑥番ホーム 番江波行き「紙屋町西電停」下車\n\n巴士\n⑧番ホーム／吉田営業所行き 「安芸高田市役所前」下車き 「安芸高田市役所前」下車",
           "images": [],
           "link": "https://www.hiroden.co.jp/bus/route/n-72.html"
         },
@@ -2340,13 +2674,12 @@ window.INITIAL_SPOTS_DATA = {
           "link": ""
         },
         "morning_origin_11": {
-          "notes": "路面電車 (約需15分)\n①番ホーム ( 紙屋町･市役所経由 ) 　宇品行き「紙屋町東電停」下車 \n②番ホーム 宮島行き「紙屋町西電停」下車 \n⑥番ホーム 番江波行き「紙屋町西電停」下車\n\n巴士 ⑧番ホーム／⑧番ホーム／吉田営業所行き 「安芸高田市役所前」下車き 「安芸高田市役所前」下車(7:15-8:56)",
+          "notes": "路面電車\n①番ホーム ( 紙屋町･市役所経由 ) 　宇品行き「紙屋町東電停」下車 \n②番ホーム 宮島行き「紙屋町西電停」下車 \n⑥番ホーム 番江波行き「紙屋町西電停」下車\n\n巴士\n⑧番ホーム／吉田営業所行き 「安芸高田市役所前」下車き 「安芸高田市役所前」下車",
           "images": [],
           "link": "https://www.hiroden.co.jp/bus/route/n-72.html"
         },
         "yoshida_koriyama_to_fukuyama": {
           "notes": "巴士回廣島 10:42-12:16\n",
-          "link": "",
           "images": [
             {
               "name": "1792206433056.jpg",
@@ -2355,7 +2688,8 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/17"
             }
-          ]
+          ],
+          "link": ""
         }
       }
     },
@@ -2378,7 +2712,6 @@ window.INITIAL_SPOTS_DATA = {
       "transitAttachments": {
         "tomonoura_onsen_to_bitchu_matsuyama": {
           "notes": "巴士回車站 7:18-7:51\nJR 8:29-9:49\n10:00計程車預約 https://www.asoview.com/item/activity/pln3000045984/",
-          "link": "https://tomotetsu.co.jp/cont/wp-content/uploads/2026/09/1.20261001jikoku-tomo.pdf",
           "images": [
             {
               "name": "1792209376728.jpg",
@@ -2394,11 +2727,11 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/17"
             }
-          ]
+          ],
+          "link": "https://tomotetsu.co.jp/cont/wp-content/uploads/2026/09/1.20261001jikoku-tomo.pdf"
         },
         "morning_origin_12": {
           "notes": "巴士回車站 7:18-7:51\nJR 8:29-9:49\n10:00計程車預約 https://www.asoview.com/item/activity/pln3000045984/",
-          "link": "https://tomotetsu.co.jp/cont/wp-content/uploads/2026/09/1.20261001jikoku-tomo.pdf",
           "images": [
             {
               "name": "1792209376728.jpg",
@@ -2414,11 +2747,11 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/17"
             }
-          ]
+          ],
+          "link": "https://tomotetsu.co.jp/cont/wp-content/uploads/2026/09/1.20261001jikoku-tomo.pdf"
         },
         "fukuyama_to_bitchu_matsuyama": {
           "notes": "巴士回車站 7:18-7:51\nJR 8:29-9:49\n10:00計程車預約 https://www.asoview.com/item/activity/pln3000045984/",
-          "link": "https://tomotetsu.co.jp/cont/wp-content/uploads/2026/09/1.20261001jikoku-tomo.pdf",
           "images": [
             {
               "name": "1792209376728.jpg",
@@ -2434,11 +2767,11 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/17"
             }
-          ]
+          ],
+          "link": "https://tomotetsu.co.jp/cont/wp-content/uploads/2026/09/1.20261001jikoku-tomo.pdf"
         },
         "bitchu_matsuyama_to_kibitsuhiko_jinja": {
           "notes": "",
-          "link": "",
           "images": [
             {
               "name": "1792242039636.jpg",
@@ -2447,11 +2780,11 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/17"
             }
-          ]
+          ],
+          "link": "https://transit.yahoo.co.jp/search/result?from=%E5%82%99%E4%B8%AD%E9%AB%98%E6%A2%81&to=%E5%82%99%E5%89%8D%E4%B8%80%E5%AE%AE"
         },
         "kibitsuhiko_jinja_to_kibitsu_jinja": {
           "notes": "",
-          "link": "",
           "images": [
             {
               "name": "1792242236767.jpg",
@@ -2460,11 +2793,11 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/17"
             }
-          ]
+          ],
+          "link": ""
         },
         "kibitsu_jinja_to_okayama_hotel": {
           "notes": "",
-          "link": "",
           "images": [
             {
               "name": "1792242347783.jpg",
@@ -2473,7 +2806,8 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/17"
             }
-          ]
+          ],
+          "link": "https://transit.yahoo.co.jp/search/result?from=%E5%90%89%E5%82%99%E6%B4%A5&to=%E5%B2%A1%E5%B1%B1"
         }
       }
     },
@@ -2493,7 +2827,6 @@ window.INITIAL_SPOTS_DATA = {
       "transitAttachments": {
         "okayama_hotel_to_okayama_airport": {
           "notes": "",
-          "link": "",
           "images": [
             {
               "name": "1792242497253.jpg",
@@ -2509,11 +2842,11 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/17"
             }
-          ]
+          ],
+          "link": ""
         },
         "morning_origin_13": {
           "notes": "",
-          "link": "",
           "images": [
             {
               "name": "1792242497253.jpg",
@@ -2529,27 +2862,28 @@ window.INITIAL_SPOTS_DATA = {
               "isPdf": false,
               "uploadedAt": "2026/10/17"
             }
-          ]
+          ],
+          "link": ""
         },
         "okayama_airport_13": {
           "notes": "",
-          "link": "",
           "images": [
-            {
-              "name": "1792242497253.jpg",
-              "url": "timetables/d13_okayama_to_airport_bus_1.jpg",
-              "type": "image/jpeg",
-              "isPdf": false,
-              "uploadedAt": "2026/10/17"
-            },
             {
               "name": "1792242457470.jpg",
               "url": "timetables/d13_okayama_to_airport_bus_2.jpg",
               "type": "image/jpeg",
               "isPdf": false,
               "uploadedAt": "2026/10/17"
+            },
+            {
+              "name": "1792242497253.jpg",
+              "url": "timetables/d13_okayama_to_airport_bus_1.jpg",
+              "type": "image/jpeg",
+              "isPdf": false,
+              "uploadedAt": "2026/10/17"
             }
-          ]
+          ],
+          "link": ""
         }
       }
     }
@@ -3571,16 +3905,3 @@ window.INITIAL_SPOTS_DATA = {
   ],
   "updatedAt": 1792202130023
 };
-
-if (typeof window !== 'undefined') {
-  window.DEFAULT_ITINERARY = window.INITIAL_SPOTS_DATA.itinerary;
-  window.DEFAULT_SPOTS = window.INITIAL_SPOTS_DATA.spots;
-}
-
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = {
-    DEFAULT_SPOTS: window.INITIAL_SPOTS_DATA.spots,
-    DEFAULT_ITINERARY: window.INITIAL_SPOTS_DATA.itinerary,
-    INITIAL_SPOTS_DATA: window.INITIAL_SPOTS_DATA
-  };
-}
