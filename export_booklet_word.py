@@ -204,7 +204,7 @@ def create_booklet_word():
     p_title.paragraph_format.space_before = Pt(10)
     p_title.paragraph_format.space_after = Pt(12)
     p_title.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r_title = p_title.add_run("山陰山陽 13 天縱走\n名城・名湯・絕景漫遊手冊")
+    r_title = p_title.add_run("山陰山陽 14 天縱走\n名城・名湯・絕景漫遊手冊")
     format_run(r_title, size_pt=24, bold=True, color_rgb=(30, 58, 138))
 
     p_sub = doc.add_paragraph()
@@ -219,9 +219,9 @@ def create_booklet_word():
     card_table.autofit = False
 
     info_data = [
-        ("📅 旅行日期", "2027 年 1 月 13 日 (三) ～ 1 月 25 日 (一) 共 13 天 12 夜"),
+        ("📅 旅行日期", "2027 年 1 月 12 日 (二) ～ 1 月 25 日 (一) 共 14 天 13 夜"),
         ("👥 隨行成員", "獅子 & 方 (雙人自助旅行・全程大眾運輸)"),
-        ("✈️ 國際航班", "台灣虎航直飛岡山\n去程 IT214：01/13 11:30 TPE ➔ 15:05 OKJ\n回程 IT215：01/25 15:55 OKJ ➔ 17:40 TPE"),
+        ("✈️ 國際航班", "台灣虎航直飛岡山\n去程 IT214：2027/01/12 台北(桃園) 11:30 ➔ 岡山 15:05\n回程 IT215：2027/01/25 岡山 15:55 ➔ 台北(桃園) 17:40"),
         ("🎫 交通周遊券", "JR 山陰&山陽鐵路周遊券 7日券\n【Day 3 ～ Day 9 正式啟用】含山陰特急/丹後鐵道/智頭急行指定席"),
         ("🏯 攻城重點", "鬼之城、津山城、鳥取城、月山富田城、松江城(國寶)、津和野城、萩城、岩國城、廣島城、吉田郡山城、福山城、備中松山城"),
         ("🆘 緊急聯絡", "日本報警：110 ｜ 救護火警：119\n外交部旅外急難求助：+886-800-085-095\n台北駐大阪經濟文化辦事處：+81-6-6227-8623")
@@ -267,7 +267,7 @@ def create_booklet_word():
     p_ov_title = doc.add_paragraph()
     p_ov_title.paragraph_format.space_before = Pt(10)
     p_ov_title.paragraph_format.space_after = Pt(12)
-    r_ov_t = p_ov_title.add_run("📋 13 天行程大綱與夜宿速查表")
+    r_ov_t = p_ov_title.add_run("📋 14 天行程大綱與夜宿速查表")
     format_run(r_ov_t, size_pt=16, bold=True, color_rgb=(30, 58, 138))
 
     ov_table = doc.add_table(rows=1, cols=4)
@@ -605,10 +605,11 @@ def create_booklet_word():
                     seen_keys.update(grp)
 
         prev_day_lodging_id = None
-        if day_idx > 0:
-            prev_sids = itinerary[day_idx - 1].get('spotIds', [])
+        for p_idx in range(day_idx - 1, -1, -1):
+            prev_sids = itinerary[p_idx].get('spotIds', [])
             if prev_sids:
                 prev_day_lodging_id = prev_sids[-1]
+                break
 
         active_spot_set = set(spot_ids)
         if prev_day_lodging_id:
@@ -619,14 +620,14 @@ def create_booklet_word():
             prev_id = spot_ids[s_i - 1] if s_i > 0 else prev_day_lodging_id
             candidate_keys = []
             if s_i == 0 and sid == 'okayama_airport':
-                if d_num == 13:
+                if d_num == 14:
                     candidate_keys.extend(["okayama_hotel_to_okayama_airport", f"morning_origin_{d_num}", f"okayama_airport_{d_num}"])
                 else:
                     candidate_keys.extend([f"tpe_flight_{d_num}", f"okayama_airport_{d_num}"])
             if prev_id:
                 candidate_keys.append(f"{prev_id}_to_{sid}")
             if s_i == 0:
-                if d_num == 12:
+                if d_num in (12, 13):
                     candidate_keys.extend(["tomonoura_onsen_to_bitchu_matsuyama", "fukuyama_to_bitchu_matsuyama"])
                 candidate_keys.extend([f"morning_origin_{d_num}", f"start_to_{sid}"])
 
@@ -642,10 +643,10 @@ def create_booklet_word():
                                 seen_day_imgs.add(u)
                                 dedup_imgs.append(im)
                         if dedup_imgs or item.get('notes') or item.get('link'):
-                            if d_num == 12 and ck in {'tomonoura_onsen_to_bitchu_matsuyama', f'morning_origin_{d_num}', 'fukuyama_to_bitchu_matsuyama'}:
+                            if d_num in (12, 13) and ck in {'tomonoura_onsen_to_bitchu_matsuyama', f'morning_origin_{d_num}', 'fukuyama_to_bitchu_matsuyama'}:
                                 title = "鞆之浦溫泉 ➔ 福山 ➔ 備中松山城 (晨間出發接駁)"
-                            elif d_num == 13:
-                                title = "岡山站西口 ➔ 岡山桃太郎機場 (機場利木津巴士直達)"
+                            elif d_num == 14:
+                                title = "岡山站西口 ➔ 岡山桃太郎機場 (機場利木津巴士直達・2027/01/25 IT215)"
                             else:
                                 title = get_segment_display_title(ck, day, spots_map)
                             new_item = dict(item)
@@ -732,7 +733,7 @@ def create_booklet_word():
             doc.add_page_break()
 
     # 儲存檔案
-    output_filename = "山陰山陽13天旅行小冊子.docx"
+    output_filename = "山陰山陽14天旅行小冊子.docx"
     doc.save(output_filename)
     print(f"成功產生 Word 小冊子：{output_filename}")
 

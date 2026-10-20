@@ -1,4 +1,3 @@
-// spots_data.js - 包含實體圖檔路徑的最新資料庫 (還原手寫與實體圖檔)
 window.INITIAL_SPOTS_DATA = {
   "spots": [
     {
@@ -19,7 +18,7 @@ window.INITIAL_SPOTS_DATA = {
       "openHours": "虎航櫃檯 09:00 開櫃 (起飛前2.5小時)",
       "transitInfo": "台北車站搭乘桃園機場捷運直達車約 35 分鐘直達 A12 第一航廈站 (或國光客運 1819 直達)",
       "reservationUrl": "https://www.tigerairtw.com/zh-tw/",
-      "notes": "• 【✈️ 台灣虎航 IT 214 航班】：台北桃園 (TPE) ➔ 岡山桃太郎 (OKJ)，11:30 起飛，15:05 抵達岡山。\\n• 【第一航廈 (T1) 報到手續】：起飛前 2.5 小時 (09:00) 於 1 樓出境大廳虎航櫃檯開櫃辦理登機證與行李託運；起飛前 45 分鐘 (10:45) 準時嚴格關櫃！\\n• 【行李須知】：手提行李每人合計最多 2 件總重不超過 10kg；行動電源請隨身攜帶嚴禁託運。\\n• 【通關登機】：安檢與證照查驗後，建議起飛前 30 分鐘 (11:00) 抵達第一航廈候機室準備登機。"
+      "notes": "• 【✈️ 台灣虎航 IT214 航班 (2027/01/12)】：台北(桃園) (TPE) ➔ 岡山 (OKJ)，11:30 起飛，15:05 抵達岡山。\n• 【第一航廈 (T1) 報到手續】：起飛前 2.5 小時 (09:00) 於 1 樓出境大廳虎航櫃檯開櫃辦理登機證與行李託運；起飛前 45 分鐘 (10:45) 準時嚴格關櫃！\n• 【行李須知】：手提行李每人合計最多 2 件總重不超過 10kg；行動電源請隨身攜帶嚴禁託運。\n• 【通關登機】：安檢與證照查驗後，建議起飛前 30 分鐘 (11:00) 抵達第一航廈候機室準備登機。"
     },
     {
       "id": "kinosaki_onsen",
@@ -79,7 +78,7 @@ window.INITIAL_SPOTS_DATA = {
       "openHours": "15:00 Check-in",
       "transitInfo": "JR 岡山站中央改札口直結 (Sunste 岡山 西館 5F，出剪票口徒步 1 分鐘即達，免淋雨)",
       "reservationUrl": "",
-      "notes": "【已訂住宿：VIA INN 岡山 (ヴィアイン岡山 / JR西日本集團)】\n• 位置：JR 岡山站中央改札口直結（さんすて岡山 西館 5F），出站 1 分鐘即達。\n• 優勢：D1 抵達與 D12 回程皆住此處，車站直結零距離，放下大件行李即可輕鬆逛 AEON 與享用千屋牛。"
+      "notes": "【已訂住宿：VIA INN 岡山 (ヴィアイン岡山 / JR西日本集團)】\n• 位置：JR 岡山站中央改札口直結（さんすて岡山 西館 5F），出站 1 分鐘即達。\n• 優勢：D1 抵達與 D12~D13 回程皆住此處，車站直結零距離，放下大件行李即可輕鬆逛 AEON 與享用千屋牛。"
     },
     {
       "id": "matsue_lodging",
@@ -143,7 +142,7 @@ window.INITIAL_SPOTS_DATA = {
     },
     {
       "id": "hiroshima_lodging_d8",
-      "name": "Via Inn Hiroshima Shinkansenguchi (廣島連住 D9)",
+      "name": "Via Inn Hiroshima Shinkansenguchi (廣島連住 D10)",
       "prefecture": "廣島",
       "type": "lodging",
       "lat": 34.398,
@@ -163,7 +162,7 @@ window.INITIAL_SPOTS_DATA = {
     },
     {
       "id": "hiroshima_lodging_d9",
-      "name": "Via Inn Hiroshima Shinkansenguchi (廣島連住 D10)",
+      "name": "Via Inn Hiroshima Shinkansenguchi (廣島連住 D11)",
       "prefecture": "廣島",
       "type": "lodging",
       "lat": 34.398,
@@ -710,7 +709,7 @@ window.INITIAL_SPOTS_DATA = {
       "openHours": "全天 (配合航班營運)",
       "transitInfo": "出關後於巴士乘車處搭乘「岡山駅西口行」中鐵/岡電機場巴士直達岡山車站 (約30分，單程 1,000 円)",
       "reservationUrl": "https://www.okayama-airport.org/access/bus",
-      "notes": "台灣虎航直飛起降機場。入境後搭乘直達巴士直奔岡山站前商圈，展開壯遊！"
+      "notes": "台灣虎航直飛起降機場（去程：2027/01/12 台北(桃園) ➔ 岡山 IT214；回程：2027/01/25 岡山 ➔ 台北(桃園) IT215）。入境後搭乘直達巴士直奔岡山站前商圈，展開壯遊！"
     },
     {
       "id": "chiyagyu_bisai",
@@ -1491,12 +1490,32 @@ window.INITIAL_SPOTS_DATA = {
       "transitInfo": "JR 米子站前搭乘日之丸路線巴士約 15~20 分鐘直達皆生溫泉街中心 (單程約 300 円)",
       "reservationUrl": "https://www.kaike-onsen.com/",
       "notes": "【住宿推薦地點：皆生溫泉海濱溫泉街】\\n• 推薦飯店：皆生 菊乃家 (Kikunoya，海景露天風呂)、皆生游月 (Yugetsu，頂級海景無邊際溫泉)、華水亭 (Kasuitei)。\\n• 順路理由：D5 結束津和野行程後搭特急直達米子，轉公車 15 分進駐皆生溫泉，換穿浴衣享受湧自日本海海底的鹽化物化妝水神湯與海鮮晚宴；隔日清晨自皆生出發攻登月山富田城交通順暢！"
+    },
+    {
+      "id": "akiyoshidai_akiyoshido",
+      "name": "秋吉台・秋芳洞 (日本最大級喀斯特高原＆鐘乳石洞)",
+      "prefecture": "山口",
+      "type": "custom",
+      "lat": 34.2272,
+      "lng": 131.3023,
+      "stayDuration": "2 小時",
+      "climbLevel": "scenic",
+      "climbLevelText": "🏞️ 日本最大級鐘乳石洞・特別天然紀念物百枚皿絕景",
+      "nearestStation": "新山口駅 / 山口駅",
+      "stampLocation": "秋芳洞觀光中心 / 售票處",
+      "closedDay": "None",
+      "closedDayText": "全年無休",
+      "backupStamp": "",
+      "openHours": "08:30 - 16:30 (冬季 12月~2月，閉洞 17:30)",
+      "transitInfo": "JR「新山口站」北口巴士總站搭乘防長巴士約 40 分鐘直達「秋芳洞」站；回程可搭中國 JR 巴士「秋吉線」(憑 JR Pass 免費) 直達山口站・香山公園五重塔前",
+      "reservationUrl": "https://karusuto.com/",
+      "notes": "日本規模最大的鐘乳石洞（特別天然紀念物），洞內觀光路線長約 1 公里，四季恆溫 17℃ 冬暖夏涼！必看「百枚皿」、「黃金柱」、「千町田」等億萬年地下奇景；由洞內搭電梯直上地表，即可飽覽日本最大喀斯特石灰岩草原「秋吉台」壯闊景致。"
     }
   ],
   "itinerary": [
     {
       "baseStation": "岡山桃太郎機場 / 岡山駅",
-      "date": "2027-01-13",
+      "date": "2027-01-12",
       "dayNumber": 1,
       "deletedTransitKeys": [
         "chiyagyu_kuya_to_okayama_aeon",
@@ -1505,7 +1524,7 @@ window.INITIAL_SPOTS_DATA = {
       "lodging": "VIA INN 岡山",
       "lodgingLocation": "JR 岡山駅中央改札口直結 (Sunste 西館 5F)",
       "lodgingReason": "機場利木津巴士直達西口；千屋牛備彩在格蘭比亞2F；站前直通 AEON 商圈；次日往總社攻鬼之城起點極方便。",
-      "notes": "• 【班機抵達】：台灣虎航 IT214 於 15:05 準時降落岡山桃太郎機場 (OKJ)。出關搭中鐵/岡電機場巴士約 30 分鐘直達岡山站西口 (單程 1,000 円)。\n• 【住宿 Check-in】：進駐岡山站前飯店辦理入住手續並放下大件行李。\n• 【和牛晚餐 (岡山千屋牛)】：前往岡山格蘭比亞 2F 直結之「鉄板焼 備彩」，零距離品嚐日本最古老血統和牛——岡山千屋牛頂級鐵板燒。\n• 【商圈漫遊 & 逛街】：餐後漫步西日本最大級「AEON Mall Okayama」(營業至 21:00，350間店鋪) 採買藥妝物資，早點休息為明日名城漫遊儲備體力！",
+      "notes": "• 【班機抵達】：2027/01/12 台灣虎航 IT214（台北(桃園) 11:30 ➔ 岡山 15:05）準時降落岡山桃太郎機場 (OKJ)。出關搭中鐵/岡電機場巴士約 30 分鐘直達岡山站西口 (單程 1,000 円)。\n• 【住宿 Check-in】：進駐岡山站前飯店辦理入住手續並放下大件行李。\n• 【和牛晚餐 (岡山千屋牛)】：前往岡山格蘭比亞 2F 直結之「鉄板焼 備彩」，零距離品嚐日本最古老血統和牛——岡山千屋牛頂級鐵板燒。\n• 【商圈漫遊 & 逛街】：餐後漫步西日本最大級「AEON Mall Okayama」(營業至 21:00，350間店鋪) 採買藥妝物資，早點休息為明日名城漫遊儲備體力！",
       "recommendedHotels": "VIA INN 岡山 (ヴィアイン岡山・JR岡山站直結徒步1分)",
       "spotIds": [
         "okayama_airport",
@@ -1516,7 +1535,7 @@ window.INITIAL_SPOTS_DATA = {
       "title": "Day 1：抵達岡山・機場 ➔ 住宿 ➔ 和牛 ➔ 逛街",
       "transitAttachments": {
         "okayama_airport_1": {
-          "notes": "",
+          "notes": "台北(桃園) ➔ 岡山 IT214 (2027/01/12 11:30 - 15:05)",
           "images": [],
           "link": ""
         },
@@ -1551,7 +1570,7 @@ window.INITIAL_SPOTS_DATA = {
     },
     {
       "baseStation": "岡山駅 / 津山駅 / 鳥取駅",
-      "date": "2027-01-14",
+      "date": "2027-01-13",
       "dayNumber": 2,
       "lodging": "APA飯店 鳥取車站前",
       "lodgingLocation": "JR 鳥取駅南口徒步 2 分鐘",
@@ -1661,7 +1680,7 @@ window.INITIAL_SPOTS_DATA = {
     },
     {
       "baseStation": "鳥取駅 / 城崎溫泉駅",
-      "date": "2027-01-15",
+      "date": "2027-01-14",
       "dayNumber": 3,
       "lodging": "城崎溫泉 和風旅館 (七大外湯巡禮/松葉蟹)",
       "lodgingLocation": "城崎溫泉街 (兵庫縣豐岡市)",
@@ -1759,7 +1778,7 @@ window.INITIAL_SPOTS_DATA = {
     },
     {
       "baseStation": "城崎溫泉駅 / 天橋立駅 / 伊根灣 / 米子駅",
-      "date": "2027-01-16",
+      "date": "2027-01-15",
       "dayNumber": 4,
       "deletedTransitKeys": [
         "araiso_yonago_to_yonago_hotel"
@@ -1839,7 +1858,7 @@ window.INITIAL_SPOTS_DATA = {
     {
       "dayNumber": 5,
       "title": "Day 5：晨間特急直奔山陰小京都津和野・城下町與纜車山城 ➔ 太皷谷稻成神社 ➔ 傍晚返回米子 ➔ 宿皆生溫泉",
-      "date": "2027-01-17",
+      "date": "2027-01-16",
       "baseStation": "米子駅 / 津和野駅 / 皆生溫泉",
       "lodging": "皆生溫泉 海濱和風溫泉旅館 (米子市)",
       "lodgingLocation": "皆生溫泉街 (鳥取縣米子市皆生溫泉)",
@@ -2040,7 +2059,7 @@ window.INITIAL_SPOTS_DATA = {
     {
       "dayNumber": 6,
       "title": "Day 6：戰國月山富田城 ➔ 足立美術館 ➔ 國寶松江城 ➔ 宿玉造溫泉",
-      "date": "2027-01-18",
+      "date": "2027-01-17",
       "baseStation": "皆生溫泉 / 米子駅 / 安來駅 / 松江駅 / 玉造溫泉駅",
       "lodging": "玉造溫泉 和風旅館 (日本第一美肌神之湯)",
       "lodgingLocation": "玉造溫泉街 (松江市玉湯町)",
@@ -2234,7 +2253,7 @@ window.INITIAL_SPOTS_DATA = {
     {
       "dayNumber": 7,
       "title": "Day 7：出雲大社參拜 ➔ 大田市世界遺產石見銀山・龍源寺間步 ➔ 大森街區散策 ➔ 特急直奔東萩 (宿萩市)",
-      "date": "2027-01-19",
+      "date": "2027-01-18",
       "baseStation": "玉造溫泉駅 / 出雲市駅 / 大田市駅 / 益田駅 / 東萩駅",
       "lodging": "萩市區飯店 / 萩溫泉旅館",
       "lodgingLocation": "萩市區 / 萩城下町 / 菊濱海濱溫泉",
@@ -2440,9 +2459,9 @@ window.INITIAL_SPOTS_DATA = {
     },
     {
       "baseStation": "東萩駅 / 長門市駅 / 新山口駅",
-      "date": "2027-01-20",
+      "date": "2027-01-19",
       "dayNumber": 8,
-      "lodging": "Comfort Hotel Shin Yamaguchi",
+      "lodging": "Comfort Hotel Shin Yamaguchi (連住第1晚)",
       "lodgingLocation": "JR 新山口駅北口徒步 1 分鐘",
       "lodgingReason": "JR Pass 7日券(第6天)！晨遊元乃隅千本鳥居與長門絕壁，下午漫步世界遺產萩城；傍晚搭直達特急巴士「超級萩號 (Super Hagi)」直奔新幹線樞紐新山口站，次日晨間搭新幹線攻錦帶橋與宮島極致省時！",
       "notes": "• 【🎫 JR Pass 第6天】：涵蓋山陰本線及中國 JR 巴士 Super Hagi 直達特急客運(免費搭乘)！\n• 【元乃隅神社・百廿三座鳥居絕壁 (建議預留 1.5h)】：晨間自萩出發前往長門市，搭乘計程車直達面臨日本海懸崖之元乃隅神社，走過 123 座紅色鳥居。\n• 【萩城跡・指月公園與古民家聚落 (建議預留 1.5h)】：午後返回萩市區，走訪長州藩毛利家指月城（100名城）、松下村塾與白壁土藏城下町。\n• 【直達特急巴士直奔新山口】：自東萩站或萩巴士中心搭乘中國 JR 巴士「Super Hagi 號」(約 60 分鐘，JR Pass 免費搭乘) 直抵新幹線樞紐新山口站，入住站前飯店。",
@@ -2533,9 +2552,48 @@ window.INITIAL_SPOTS_DATA = {
       }
     },
     {
+      "dayNumber": 9,
+      "date": "2027-01-20",
+      "title": "Day 9：日本最大鐘乳洞秋芳洞・秋吉台喀斯特高原 ➔ 國寶瑠璃光寺五重塔 ➔ 防府天滿宮 ➔ 宿新山口",
+      "spotIds": [
+        "akiyoshidai_akiyoshido",
+        "rurikoji_pagoda",
+        "hofu_tenmangu",
+        "shin_yamaguchi_lodging"
+      ],
+      "baseStation": "新山口 / 山口 / 防府",
+      "lodging": "Comfort Hotel Shin Yamaguchi (連住第2晚)",
+      "lodgingLocation": "新山口站北口（在來線口）步行 2 分鐘（新山口連住免搬大行李！）",
+      "recommendedHotels": "Comfort Hotel Shin Yamaguchi",
+      "lodgingReason": "新山口站前連住第 2 晚（免搬大件行李！），作為暢遊秋吉台・秋芳洞、山口市國寶五重塔與防府天滿宮的放射狀核心樞紐，明早無縫搭乘 08:29 列車前往岩國錦帶橋！",
+      "notes": "【JR Pass 第 7 天（最後一天）】\n• 上午：自新山口站北口巴士站搭乘防長巴士（08:40 發 ➔ 09:20 達秋芳洞，單程 ¥1,290 自費），深入日本最大鐘乳石洞「秋芳洞」（冬季恆溫 17℃ 超溫暖！欣賞百枚皿、黃金柱），搭洞內電梯上「秋吉台展望台」俯瞰壯闊喀斯特高原。\n• 中午：自秋芳洞搭乘「中國 JR 巴士・秋吉線」（憑 JR 山陰&山陽周遊券免費搭乘！）直達山口市「香山公園五重塔前」，參拜日本三大名塔之一「國寶・瑠璃光寺五重塔」與大內文化街區。\n• 下午：由山口站搭 JR 山口線回新山口轉 JR 山陽本線至「防府站」（JR 全程憑 Pass 免費），參拜日本最初天滿宮、三大天神之一「防府天滿宮」。\n• 傍晚：由防府站搭 JR 山陽本線（15 分鐘，Pass 免費）返回新山口站，續住 Comfort Hotel Shin Yamaguchi。",
+      "transitAttachments": {
+        "shin_yamaguchi_lodging_to_akiyoshidai_akiyoshido": {
+          "notes": "新山口駅北口 ➔ 秋芳洞 (防長巴士 約40分)",
+          "images": [],
+          "link": "https://karusuto.com/access/"
+        },
+        "akiyoshidai_akiyoshido_to_rurikoji_pagoda": {
+          "notes": "秋芳洞 ➔ 香山公園五重塔前 (中國JR巴士秋吉線・憑JR Pass免費搭乘)",
+          "images": [],
+          "link": ""
+        },
+        "rurikoji_pagoda_to_hofu_tenmangu": {
+          "notes": "山口駅 ➔ 新山口駅 ➔ 防府駅 (JR山口線+山陽本線・憑JR Pass免費)",
+          "images": [],
+          "link": ""
+        },
+        "hofu_tenmangu_to_shin_yamaguchi_lodging": {
+          "notes": "防府駅 ➔ 新山口駅 (JR山陽本線 約15分・憑JR Pass免費)",
+          "images": [],
+          "link": ""
+        }
+      }
+    },
+    {
       "baseStation": "新山口駅 / 新岩國駅 / 岩國駅 / 宮島口駅 / 廣島駅",
       "date": "2027-01-21",
-      "dayNumber": 9,
+      "dayNumber": 10,
       "lodging": "Via Inn Hiroshima Shinkansenguchi (連住第1晚)",
       "lodgingLocation": "JR 廣島駅北口 (新幹線口) 徒步 3 分鐘",
       "lodgingReason": "JR Pass 7日券啟用最後一天(第7天)！新山口搭新幹線僅 28 分到新岩國，錦帶橋＋纜車攻岩國城；午後順路直達宮島口搭渡輪參拜嚴島神社與名剎大聖院；傍晚進駐廣島連住 2 晚，徹底免搬行李！",
@@ -2548,21 +2606,8 @@ window.INITIAL_SPOTS_DATA = {
         "daishoin",
         "hiroshima_lodging_d8"
       ],
-      "title": "Day 9：周防名橋錦帶橋・岩國城 ➔ 宮島世界遺產嚴島神社 ➔ 彌山大本山大聖院 ➔ 宿廣島",
+      "title": "Day 10：周防名橋錦帶橋・岩國城 ➔ 宮島世界遺產嚴島神社 ➔ 彌山大本山大聖院 ➔ 宿廣島",
       "transitAttachments": {
-        "morning_origin_9": {
-          "notes": "新山新山口 07:19 ➔ 岩國 09:30 \n いわくにバス 10:35-錦帶橋10:55",
-          "images": [
-            {
-              "name": "1791791176996.jpg",
-              "url": "timetables/d9_shin_yamaguchi_to_iwakuni_1.jpg",
-              "type": "image/jpeg",
-              "isPdf": false,
-              "uploadedAt": "2026/10/12"
-            }
-          ],
-          "link": "https://www.jorudan.co.jp/bus/rosen/stoplist/?Ddd=12&Dhh=10&Dmn=35&Dym=202610&jyosya=%E5%B2%A9%E5%9B%BD%E9%A7%85&lid=337159#jump"
-        },
         "shin_yamaguchi_lodging_to_kintaikyo": {
           "notes": "新山新山口 07:19 ➔ 岩國 09:30 \n いわくにバス 10:35-錦帶橋10:55",
           "images": [
@@ -2619,13 +2664,26 @@ window.INITIAL_SPOTS_DATA = {
           "notes": "纜車最晚上16:00 最晚下16:30",
           "images": [],
           "link": ""
+        },
+        "morning_origin_10": {
+          "notes": "新山新山口 07:19 ➔ 岩國 09:30 \n いわくにバス 10:35-錦帶橋10:55",
+          "images": [
+            {
+              "name": "1791791176996.jpg",
+              "url": "timetables/d9_shin_yamaguchi_to_iwakuni_1.jpg",
+              "type": "image/jpeg",
+              "isPdf": false,
+              "uploadedAt": "2026/10/12"
+            }
+          ],
+          "link": "https://www.jorudan.co.jp/bus/rosen/stoplist/?Ddd=12&Dhh=10&Dmn=35&Dym=202610&jyosya=%E5%B2%A9%E5%9B%BD%E9%A7%85&lid=337159#jump"
         }
       }
     },
     {
       "baseStation": "廣島駅 / 原爆圓頂前 / 本通商圈",
       "date": "2027-01-22",
-      "dayNumber": 10,
+      "dayNumber": 11,
       "lodging": "Via Inn Hiroshima Shinkansenguchi (連住第2晚)",
       "lodgingLocation": "JR 廣島駅北口 (新幹線口) 徒步 3 分鐘",
       "lodgingReason": "【⚠️ 不使用 Pass (全自費)】廣島市區深度一日漫遊，利用廣島電鐵路面電車 (均一價 220 円)；連住同間飯店免收行李，夜晚享用廣島特選頂級和牛盛宴。",
@@ -2640,7 +2698,7 @@ window.INITIAL_SPOTS_DATA = {
         "hiroshima_jinseki",
         "hiroshima_lodging_d9"
       ],
-      "title": "Day 10：廣島和平文化・鯉城與護國神社 ➔ 原爆圓頂 ➔ 廣島和牛晚宴 (宿廣島)",
+      "title": "Day 11：廣島和平文化・鯉城與護國神社 ➔ 原爆圓頂 ➔ 廣島和牛晚宴 (宿廣島)",
       "transitAttachments": {
         "hiroshima_lodging_d8_to_hiroshima": {
           "notes": "ひろしまめいぷる〜ぷ1日乗車券 600日",
@@ -2652,7 +2710,7 @@ window.INITIAL_SPOTS_DATA = {
     {
       "baseStation": "廣島駅 / 廣島巴士中心 / 福山駅 / 鞆之浦",
       "date": "2027-01-23",
-      "dayNumber": 11,
+      "dayNumber": 12,
       "lodging": "鞆之浦溫泉 海景旅館 (福山市)",
       "lodgingLocation": "鞆之浦古港 / 仙醉島海景露天風呂",
       "lodgingReason": "【⚠️ 不使用 Pass (全自費)】廣島搭高速客運登吉田郡山城；下午搭新幹線自由席 23 分至福山城；福山站轉公車直達鞆之浦古港海景露天溫泉，享用瀨戶內海海鮮料理。",
@@ -2663,7 +2721,7 @@ window.INITIAL_SPOTS_DATA = {
         "fukuyama",
         "tomonoura_onsen"
       ],
-      "title": "Day 11：毛利要塞吉田郡山城 ➔ 福山城 ➔ 鞆之浦夕陽溫泉",
+      "title": "Day 12：毛利要塞吉田郡山城 ➔ 福山城 ➔ 鞆之浦夕陽溫泉",
       "transitAttachments": {
         "hiroshima_lodging_d9_to_yoshida_koriyama": {
           "notes": "路面電車\n①番ホーム ( 紙屋町･市役所経由 ) 　宇品行き「紙屋町東電停」下車 \n②番ホーム 宮島行き「紙屋町西電停」下車 \n⑥番ホーム 番江波行き「紙屋町西電停」下車\n\n巴士\n⑧番ホーム／吉田営業所行き 「安芸高田市役所前」下車き 「安芸高田市役所前」下車",
@@ -2674,11 +2732,6 @@ window.INITIAL_SPOTS_DATA = {
           "notes": "JR 福山站南口 5號公車\n鞆鐵巴士（トモテツバス）的「鞆線」（開往「鞆の浦」或「鞆港」方向）\n或飯店接送",
           "images": [],
           "link": ""
-        },
-        "morning_origin_11": {
-          "notes": "路面電車\n①番ホーム ( 紙屋町･市役所経由 ) 　宇品行き「紙屋町東電停」下車 \n②番ホーム 宮島行き「紙屋町西電停」下車 \n⑥番ホーム 番江波行き「紙屋町西電停」下車\n\n巴士\n⑧番ホーム／吉田営業所行き 「安芸高田市役所前」下車き 「安芸高田市役所前」下車",
-          "images": [],
-          "link": "https://www.hiroden.co.jp/bus/route/n-72.html"
         },
         "yoshida_koriyama_to_fukuyama": {
           "notes": "巴士回廣島 10:42-12:16\n",
@@ -2692,16 +2745,21 @@ window.INITIAL_SPOTS_DATA = {
             }
           ],
           "link": ""
+        },
+        "morning_origin_12": {
+          "notes": "路面電車\n①番ホーム ( 紙屋町･市役所経由 ) 　宇品行き「紙屋町東電停」下車 \n②番ホーム 宮島行き「紙屋町西電停」下車 \n⑥番ホーム 番江波行き「紙屋町西電停」下車\n\n巴士\n⑧番ホーム／吉田営業所行き 「安芸高田市役所前」下車き 「安芸高田市役所前」下車",
+          "images": [],
+          "link": "https://www.hiroden.co.jp/bus/route/n-72.html"
         }
       }
     },
     {
       "baseStation": "鞆之浦 / 福山駅 / 岡山駅 / 備中高梁駅 / 備前一宮駅",
       "date": "2027-01-24",
-      "dayNumber": 12,
+      "dayNumber": 13,
       "lodging": "VIA INN 岡山",
       "lodgingLocation": "JR 岡山駅中央改札口直結 (Sunste 西館 5F)",
-      "lodgingReason": "【⚠️ 不使用 Pass (全自費)】今日移動備中松山城！晨間自鞆之浦經福山搭新幹線僅 16 分回岡山飯店放下行李；輕裝攻現存最高天守備中松山城與吉備津神社；今晚夜宿岡山站前，明日去機場極速從容！",
+      "lodgingReason": "【⚠️ 不使用 Pass (全自費)】今日移動備中松山城！晨間自鞆之浦經福山搭新幹線僅 16 分回岡山飯店放下行李；輕裝攻現存最高天守備中松山城與吉備津神社；今晚起連住岡山站前，行程極速從容！",
       "notes": "• 【⚠️ 今日不使用 Pass】：福山到岡山新幹線自由席僅 1,770 円；岡山往備中高梁搭普通車僅 860 円 (特急自由席 1,500 円)，吉備線 150~210 円，直接購票/刷 IC 卡最經濟實惠！\n• 【09:00~10:15 鞆之浦 ➔ 福山 ➔ 岡山】：搭公車至福山站，搭新幹線自由席 16 分鐘極速直達岡山站，站前飯店 Check-in 卸下大件行李。\n• 【天空之城・備中松山城 (停留 2~2.5h)】：自岡山站搭 JR 伯備線至備中高梁站。搭乘觀光合乘計程車直達鞴峠登上海拔 430 公尺之現存最高天守備中松山城，巧遇貓城主「三十郎」！\n• 【吉備路桃太郎傳說・吉備津彥神社 & 吉備津神社 (停留 1.5h)】：下午搭 JR 伯備線/吉備線至備前一宮與吉備津站，走訪桃太郎原型神話之吉備津彥神社與擁有 398 公尺木造壯觀大迴廊之國寶吉備津神社。\n• 【傍晚返岡山採買 & 宿岡山】：返回岡山站，前往唐吉訶德、AEON Mall 與車站一番街採購名產，夜宿岡山站前！",
       "recommendedHotels": "VIA INN 岡山 (ヴィアイン岡山・JR岡山站直結徒步1分)",
       "spotIds": [
@@ -2710,29 +2768,9 @@ window.INITIAL_SPOTS_DATA = {
         "kibitsu_jinja",
         "okayama_hotel"
       ],
-      "title": "Day 12：鞆之浦晨光 ➔ 福山新幹線 ➔ 岡山 ➔ 天空之城備中松山城 ➔ 桃太郎吉備路傳說 ➔ 宿岡山站前",
+      "title": "Day 13：鞆之浦晨光 ➔ 福山新幹線 ➔ 岡山 ➔ 天空之城備中松山城 ➔ 桃太郎吉備路傳說 ➔ 宿岡山站前",
       "transitAttachments": {
         "tomonoura_onsen_to_bitchu_matsuyama": {
-          "notes": "巴士回車站 7:18-7:51\nJR 8:29-9:49\n10:00計程車預約 https://www.asoview.com/item/activity/pln3000045984/",
-          "images": [
-            {
-              "name": "1792209376728.jpg",
-              "url": "timetables/d12_tomonoura_to_bitchu_matsuyama_1.jpg",
-              "type": "image/jpeg",
-              "isPdf": false,
-              "uploadedAt": "2026/10/17"
-            },
-            {
-              "name": "1792208889852.jpg",
-              "url": "timetables/d12_tomonoura_to_bitchu_matsuyama_2.jpg",
-              "type": "image/jpeg",
-              "isPdf": false,
-              "uploadedAt": "2026/10/17"
-            }
-          ],
-          "link": "https://tomotetsu.co.jp/cont/wp-content/uploads/2026/09/1.20261001jikoku-tomo.pdf"
-        },
-        "morning_origin_12": {
           "notes": "巴士回車站 7:18-7:51\nJR 8:29-9:49\n10:00計程車預約 https://www.asoview.com/item/activity/pln3000045984/",
           "images": [
             {
@@ -2810,25 +2848,45 @@ window.INITIAL_SPOTS_DATA = {
             }
           ],
           "link": "https://transit.yahoo.co.jp/search/result?from=%E5%90%89%E5%82%99%E6%B4%A5&to=%E5%B2%A1%E5%B1%B1"
+        },
+        "morning_origin_13": {
+          "notes": "巴士回車站 7:18-7:51\nJR 8:29-9:49\n10:00計程車預約 https://www.asoview.com/item/activity/pln3000045984/",
+          "images": [
+            {
+              "name": "1792209376728.jpg",
+              "url": "timetables/d12_tomonoura_to_bitchu_matsuyama_1.jpg",
+              "type": "image/jpeg",
+              "isPdf": false,
+              "uploadedAt": "2026/10/17"
+            },
+            {
+              "name": "1792208889852.jpg",
+              "url": "timetables/d12_tomonoura_to_bitchu_matsuyama_2.jpg",
+              "type": "image/jpeg",
+              "isPdf": false,
+              "uploadedAt": "2026/10/17"
+            }
+          ],
+          "link": "https://tomotetsu.co.jp/cont/wp-content/uploads/2026/09/1.20261001jikoku-tomo.pdf"
         }
       }
     },
     {
       "baseStation": "岡山駅 / 岡山桃太郎機場 (OKJ)",
       "date": "2027-01-25",
-      "dayNumber": 13,
+      "dayNumber": 14,
       "lodging": "返抵台灣溫暖的家",
-      "lodgingLocation": "台北桃園國際機場 (TPE)",
-      "lodgingReason": "搭乘台灣虎航 IT 215 班機，15:55 起飛，17:40 抵達台北桃園第一航廈。",
-      "notes": "• 【悠閒早餐與市區最後採買】：因前晚已住在岡山站前，完全不必跨縣趕路，在車站一番街輕鬆補買岡山白桃甜點與伴手禮。\n• 【13:00 利木津巴士直達機場】：岡山站西口巴士乘車處搭乘中鐵/岡電機場巴士 (約30分鐘，單程 1,000 円自費) 直達岡山桃太郎機場 (OKJ)。\n• 【13:45 虎航櫃檯報到手續 & ✈️ 返台】：起飛前 2 小時辦理登機與行李託運，搭乘 15:55 起飛班機 (IT215) 於 17:40 順利返抵台灣桃園第一航廈 (TPE)，13天山陰山陽100名城、日本三景、世界遺產石見銀山與名湯巡禮圓滿成功！",
+      "lodgingLocation": "台北(桃園)國際機場 (TPE)",
+      "lodgingReason": "2027/01/25 搭乘台灣虎航 IT215 班機（岡山 ➔ 台北(桃園)），15:55 起飛，17:40 抵達台北(桃園)第一航廈。",
+      "notes": "• 【悠閒早餐與市區最後採買】：因前晚已住在岡山站前，完全不必跨縣趕路，在車站一番街輕鬆補買岡山白桃甜點與伴手禮。\n• 【13:00 利木津巴士直達機場】：岡山站西口巴士乘車處搭乘中鐵/岡電機場巴士 (約30分鐘，單程 1,000 円自費) 直達岡山桃太郎機場 (OKJ)。\n• 【13:45 虎航櫃檯報到手續 & ✈️ 返台】：起飛前 2 小時辦理登機與行李託運，2027/01/25 搭乘 15:55 起飛班機 (IT215，岡山 ➔ 台北(桃園)) 於 17:40 順利返抵台灣桃園第一航廈 (TPE)，14天山陰山陽100名城、日本三景、世界遺產石見銀山與名湯巡禮圓滿成功！",
       "recommendedHotels": "無 (返抵國門)",
       "spotIds": [
         "okayama_airport"
       ],
-      "title": "Day 13：岡山市區漫遊伴手禮 ➔ 岡山桃太郎機場搭機返台 (虎航 IT215)",
+      "title": "Day 14：岡山市區漫遊伴手禮 ➔ 岡山桃太郎機場搭機返台 (2027/01/25 虎航 IT215)",
       "transitAttachments": {
         "okayama_hotel_to_okayama_airport": {
-          "notes": "",
+          "notes": "岡山 ➔ 台北(桃園) IT215 (2027/01/25 15:55 - 17:40)",
           "images": [
             {
               "name": "1792242497253.jpg",
@@ -2847,8 +2905,8 @@ window.INITIAL_SPOTS_DATA = {
           ],
           "link": ""
         },
-        "morning_origin_13": {
-          "notes": "",
+        "morning_origin_14": {
+          "notes": "岡山 ➔ 台北(桃園) IT215 (2027/01/25 15:55 - 17:40)",
           "images": [
             {
               "name": "1792242497253.jpg",
@@ -2867,8 +2925,8 @@ window.INITIAL_SPOTS_DATA = {
           ],
           "link": ""
         },
-        "okayama_airport_13": {
-          "notes": "",
+        "okayama_airport_14": {
+          "notes": "岡山 ➔ 台北(桃園) IT215 (2027/01/25 15:55 - 17:40)",
           "images": [
             {
               "name": "1792242457470.jpg",
@@ -2899,24 +2957,30 @@ window.INITIAL_SPOTS_DATA = {
       "airlineCode": "IT",
       "flightType": "LCC廉價航空",
       "aircraft": "A320 / A320neo",
-      "frequency": "每天 1 班天天直飛 (1/13 去 ➔ 1/26 回，0天移動完美吻合)",
-      "travelDates": "1/13 (三) ~ 1/26 (二) [共 14 天 13 晚]",
+      "frequency": "每天 1 班天天直飛 (2027/01/12 去 ➔ 2027/01/25 回，0天移動完美吻合)",
+      "travelDates": "2027/01/12 (二) ~ 2027/01/25 (一) [共 14 天 13 晚]",
       "exactPrice": "NT$ 13,537",
       "priceRangeWithBaggage": "NT$ 13,537",
       "pricePeakWithBaggage": "含加購 20kg 托運行李直客價",
       "outbound": {
         "flightNo": "IT214",
-        "departure": "11:30 台北桃園 (TPE)",
-        "arrival": "15:05 岡山 (OKJ)",
+        "date": "2027/01/12",
+        "from": "台北(桃園)",
+        "to": "岡山",
+        "departure": "2027/01/12 11:30 台北(桃園) (TPE)",
+        "arrival": "2027/01/12 15:05 岡山 (OKJ)",
         "duration": "2 小時 35 分鐘",
-        "timingType": "午去 (1/13 出發・舒適免天未亮出門)"
+        "timingType": "午去 (2027/01/12 出發・舒適免天未亮出門)"
       },
       "inbound": {
         "flightNo": "IT215",
-        "departure": "15:55 岡山 (OKJ)",
-        "arrival": "18:05 台北桃園 (TPE)",
-        "duration": "3 小時 10 分鐘",
-        "timingType": "下午回 (1/26 返台・早晨還能攻備中松山城)"
+        "date": "2027/01/25",
+        "from": "岡山",
+        "to": "台北(桃園)",
+        "departure": "2027/01/25 15:55 岡山 (OKJ)",
+        "arrival": "2027/01/25 17:40 台北(桃園) (TPE)",
+        "duration": "2 小時 45 分鐘",
+        "timingType": "下午回 (2027/01/25 返台)"
       },
       "baggageIncluded": "已包含來回 20kg 托運行李 (約 NT$1,900，已計入票價)",
       "carryOn": "1件手提 + 1件隨身物品，合計 10kg",
@@ -3642,8 +3706,60 @@ window.INITIAL_SPOTS_DATA = {
       "notes": "憑 JR Pass 7日券 免費搭乘直達特急巴士 (原價 1,800 円全免)"
     },
     {
-      "id": "fare_d9_1",
+      "id": "fare_d9_yamaguchi_1",
       "dayNumber": 9,
+      "transitType": "bus",
+      "transitTypeName": "防長巴士",
+      "title": "新山口駅 ➔ 秋芳洞 (防長交通路線巴士)",
+      "from": "新山口駅",
+      "to": "秋芳洞",
+      "amount": 1290,
+      "passCovered": false,
+      "passNote": "防長巴士非 JR 路線，單程自費 1,290 円",
+      "notes": "新山口站北口巴士站搭車約 40 分鐘直達秋芳洞"
+    },
+    {
+      "id": "fare_d9_yamaguchi_2",
+      "dayNumber": 9,
+      "transitType": "bus",
+      "transitTypeName": "中國JR巴士",
+      "title": "秋芳洞 ➔ 香山公園五重塔前・山口駅 (中國JR巴士秋吉線)",
+      "from": "秋芳洞",
+      "to": "山口駅",
+      "amount": 1210,
+      "passCovered": true,
+      "passNote": "JR Pass 第 7 天免費涵蓋 (中國 JR 巴士秋吉線全包)",
+      "notes": "由秋芳洞直達山口市國寶瑠璃光寺五重塔"
+    },
+    {
+      "id": "fare_d9_yamaguchi_3",
+      "dayNumber": 9,
+      "transitType": "train",
+      "transitTypeName": "JR在來線",
+      "title": "山口駅 ➔ 新山口駅 ➔ 防府駅 (JR山口線+山陽本線)",
+      "from": "山口駅",
+      "to": "防府駅",
+      "amount": 590,
+      "passCovered": true,
+      "passNote": "JR Pass 第 7 天免費涵蓋",
+      "notes": "前往日本三大天神防府天滿宮參拜"
+    },
+    {
+      "id": "fare_d9_yamaguchi_4",
+      "dayNumber": 9,
+      "transitType": "train",
+      "transitTypeName": "JR山陽本線",
+      "title": "防府駅 ➔ 新山口駅 (JR山陽本線)",
+      "from": "防府駅",
+      "to": "新山口駅",
+      "amount": 330,
+      "passCovered": true,
+      "passNote": "JR Pass 第 7 天免費涵蓋",
+      "notes": "15 分鐘返回新山口站前飯店連住第 2 晚"
+    },
+    {
+      "id": "fare_d9_1",
+      "dayNumber": 10,
       "title": "新山口駅 ➔ 新岩國駅 (山陽新幹線 こだま/ひかり 指定席)",
       "from": "新山口駅",
       "to": "新岩國駅",
@@ -3656,7 +3772,7 @@ window.INITIAL_SPOTS_DATA = {
     },
     {
       "id": "fare_d9_2",
-      "dayNumber": 9,
+      "dayNumber": 10,
       "title": "新岩國駅 ➔ 錦帶橋 (防長交通路線巴士)",
       "from": "新岩國駅",
       "to": "錦帶橋",
@@ -3669,7 +3785,7 @@ window.INITIAL_SPOTS_DATA = {
     },
     {
       "id": "fare_d9_3",
-      "dayNumber": 9,
+      "dayNumber": 10,
       "title": "錦帶橋 ➔ 岩國城空中纜車 (橫山登山纜車來回票)",
       "from": "錦帶橋",
       "to": "岩國城",
@@ -3682,7 +3798,7 @@ window.INITIAL_SPOTS_DATA = {
     },
     {
       "id": "fare_d9_4",
-      "dayNumber": 9,
+      "dayNumber": 10,
       "title": "錦帶橋 ➔ JR 岩國駅 (防長交通路線巴士)",
       "from": "錦帶橋",
       "to": "岩國駅",
@@ -3695,7 +3811,7 @@ window.INITIAL_SPOTS_DATA = {
     },
     {
       "id": "fare_d9_5",
-      "dayNumber": 9,
+      "dayNumber": 10,
       "title": "JR 岩國駅 ➔ 宮島口駅 (JR 山陽本線)",
       "from": "岩國駅",
       "to": "宮島口駅",
@@ -3708,7 +3824,7 @@ window.INITIAL_SPOTS_DATA = {
     },
     {
       "id": "fare_d9_6",
-      "dayNumber": 9,
+      "dayNumber": 10,
       "title": "宮島口 ➔ 宮島棧橋 (JR 西日本宮島渡輪往返 + 宮島訪問稅)",
       "from": "宮島口",
       "to": "嚴島神社",
@@ -3721,7 +3837,7 @@ window.INITIAL_SPOTS_DATA = {
     },
     {
       "id": "fare_d9_7",
-      "dayNumber": 9,
+      "dayNumber": 10,
       "title": "宮島口駅 ➔ 廣島駅 (JR 山陽本線 返廣島站連住)",
       "from": "宮島口駅",
       "to": "廣島駅",
@@ -3734,7 +3850,7 @@ window.INITIAL_SPOTS_DATA = {
     },
     {
       "id": "fare_d10_1",
-      "dayNumber": 10,
+      "dayNumber": 11,
       "title": "廣島市內巡迴 廣電路面電車 (廣島駅 ➔ 廣島城 / 原爆圓頂 / 本通)",
       "from": "廣島駅",
       "to": "廣島市區",
@@ -3747,7 +3863,7 @@ window.INITIAL_SPOTS_DATA = {
     },
     {
       "id": "fare_d11_1",
-      "dayNumber": 11,
+      "dayNumber": 12,
       "title": "廣島巴士中心 ➔ 安藝高田 吉田出張所 (吉田郡山城 廣電/備北客運來回)",
       "from": "廣島巴士中心",
       "to": "吉田郡山城",
@@ -3760,7 +3876,7 @@ window.INITIAL_SPOTS_DATA = {
     },
     {
       "id": "fare_d11_2",
-      "dayNumber": 11,
+      "dayNumber": 12,
       "title": "廣島駅 ➔ 福山駅 (山陽新幹線 のぞみ/さくら 自由席)",
       "from": "廣島駅",
       "to": "福山駅",
@@ -3773,7 +3889,7 @@ window.INITIAL_SPOTS_DATA = {
     },
     {
       "id": "fare_d11_3",
-      "dayNumber": 11,
+      "dayNumber": 12,
       "title": "福山駅南口 ➔ 鞆之浦溫泉 (鞆鐵道路線巴士)",
       "from": "福山駅",
       "to": "鞆之浦溫泉",
@@ -3786,7 +3902,7 @@ window.INITIAL_SPOTS_DATA = {
     },
     {
       "id": "fare_d12_1",
-      "dayNumber": 12,
+      "dayNumber": 13,
       "title": "鞆之浦溫泉 ➔ 福山駅 (鞆鐵道路線巴士 返回福山站)",
       "from": "鞆之浦溫泉",
       "to": "福山駅",
@@ -3799,7 +3915,7 @@ window.INITIAL_SPOTS_DATA = {
     },
     {
       "id": "fare_d12_2",
-      "dayNumber": 12,
+      "dayNumber": 13,
       "title": "福山駅 ➔ 岡山駅 (山陽新幹線 自由席 返回岡山放行李)",
       "from": "福山駅",
       "to": "岡山駅",
@@ -3812,7 +3928,7 @@ window.INITIAL_SPOTS_DATA = {
     },
     {
       "id": "fare_d12_3",
-      "dayNumber": 12,
+      "dayNumber": 13,
       "title": "岡山駅 ➔ 備中高梁駅 (JR 伯備線 普通車/特急 往備中松山城)",
       "from": "岡山駅",
       "to": "備中高梁駅",
@@ -3825,7 +3941,7 @@ window.INITIAL_SPOTS_DATA = {
     },
     {
       "id": "fare_d12_4",
-      "dayNumber": 12,
+      "dayNumber": 13,
       "title": "備中高梁駅前 ➔ 鞴峠 (備中松山城 觀光乘合計程車往返)",
       "from": "備中高梁駅",
       "to": "備中松山城",
@@ -3838,7 +3954,7 @@ window.INITIAL_SPOTS_DATA = {
     },
     {
       "id": "fare_d12_5",
-      "dayNumber": 12,
+      "dayNumber": 13,
       "title": "備中高梁駅 ➔ 備前一宮駅 (JR 伯備線/吉備線 往吉備津彥神社)",
       "from": "備中高梁駅",
       "to": "備前一宮駅",
@@ -3851,7 +3967,7 @@ window.INITIAL_SPOTS_DATA = {
     },
     {
       "id": "fare_d12_6",
-      "dayNumber": 12,
+      "dayNumber": 13,
       "title": "備前一宮駅 ➔ 吉備津駅 (JR 吉備線 往吉備津神社)",
       "from": "備前一宮駅",
       "to": "吉備津駅",
@@ -3864,7 +3980,7 @@ window.INITIAL_SPOTS_DATA = {
     },
     {
       "id": "fare_d12_7",
-      "dayNumber": 12,
+      "dayNumber": 13,
       "title": "吉備津駅 ➔ 岡山駅 (JR 吉備線 返回岡山站市區住宿)",
       "from": "吉備津駅",
       "to": "岡山駅",
@@ -3877,7 +3993,7 @@ window.INITIAL_SPOTS_DATA = {
     },
     {
       "id": "fare_d13_1",
-      "dayNumber": 13,
+      "dayNumber": 14,
       "title": "岡山駅西口 ➔ 岡山桃太郎機場 (機場利木津巴士 返台登機)",
       "from": "岡山駅西口",
       "to": "岡山桃太郎機場",
@@ -3886,7 +4002,7 @@ window.INITIAL_SPOTS_DATA = {
       "amount": 1000,
       "passCovered": false,
       "passNote": "不使用 Pass (自費 ¥1,000)",
-      "notes": "岡山站西口 21 號月台搭利木津巴士直達機場，搭乘虎航 IT215 返台"
+      "notes": "岡山站西口 21 號月台搭利木津巴士直達機場，搭乘 2027/01/25 虎航 IT215 (岡山 ➔ 台北(桃園)) 返台"
     }
   ],
   "budget": [
@@ -3907,3 +4023,8 @@ window.INITIAL_SPOTS_DATA = {
   ],
   "updatedAt": 1792202130023
 };
+const DEFAULT_SPOTS = window.INITIAL_SPOTS_DATA.spots;
+const DEFAULT_ITINERARY = window.INITIAL_SPOTS_DATA.itinerary;
+const FLIGHT_COMPARISON_DATA = window.INITIAL_SPOTS_DATA.flights;
+const DEFAULT_TRANSIT_FARES = window.INITIAL_SPOTS_DATA.fares;
+const DEFAULT_TRIP_BUDGET = window.INITIAL_SPOTS_DATA.budget;
