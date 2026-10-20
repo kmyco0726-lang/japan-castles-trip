@@ -23,18 +23,18 @@ def get_spot_display_name(sid, spots_map, default_val=None):
         return spots_map[sid].get('name', sid)
     name_dict = {
         'okayama_airport': '岡山桃太郎機場 (OKJ)',
-        'okayama_hotel': '岡山站前飯店',
-        'tottori_hotel': '鳥取站前飯店',
+        'okayama_hotel': 'VIA INN 岡山',
+        'tottori_hotel': 'APA飯店 鳥取車站前',
         'kinosaki_onsen': '城崎溫泉 和風旅館',
         'ine_funaya': '伊根舟屋聚落',
-        'yonago_hotel': '米子站前精選飯店',
+        'yonago_hotel': 'Hotel Harvest In Yonago',
         'yasugi_lodging': '安來站前精選飯店',
         'kaike_onsen': '皆生溫泉 海濱旅館',
         'tamatsukuri_onsen': '玉造溫泉 和風旅館',
         'hagi_lodging': '萩市區飯店 / 萩溫泉旅館',
-        'shin_yamaguchi_lodging': '新山口住宿',
-        'hiroshima_lodging_d8': '廣島市區飯店',
-        'hiroshima_lodging_d9': '廣島市區飯店',
+        'shin_yamaguchi_lodging': 'Comfort Hotel Shin Yamaguchi',
+        'hiroshima_lodging_d8': 'Via Inn Hiroshima Shinkansenguchi',
+        'hiroshima_lodging_d9': 'Via Inn Hiroshima Shinkansenguchi',
         'tomonoura_onsen': '鞆之浦溫泉 遠景之宿',
         'daishoin': '宮島彌山 大本山 大聖院',
     }
@@ -586,6 +586,7 @@ def create_booklet_word():
         att_dict = day.get('transitAttachments', {})
         valid_items = []
         seen_keys = set()
+        seen_day_imgs = set()
 
         alias_groups = [
             {'tomonoura_onsen_to_bitchu_matsuyama', f'morning_origin_{d_num}', 'fukuyama_to_bitchu_matsuyama'},
@@ -603,41 +604,77 @@ def create_booklet_word():
                 if key in grp:
                     seen_keys.update(grp)
 
+        prev_day_lodging_id = None
+        if day_idx > 0:
+            prev_sids = itinerary[day_idx - 1].get('spotIds', [])
+            if prev_sids:
+                prev_day_lodging_id = prev_sids[-1]
+
+        active_spot_set = set(spot_ids)
+        if prev_day_lodging_id:
+            active_spot_set.add(prev_day_lodging_id)
+
         # 1. 優先按照 spotIds 景點動線收集附件
         for s_i, sid in enumerate(spot_ids):
-            prev_id = spot_ids[s_i - 1] if s_i > 0 else None
+            prev_id = spot_ids[s_i - 1] if s_i > 0 else prev_day_lodging_id
             candidate_keys = []
+            if s_i == 0 and sid == 'okayama_airport':
+                if d_num == 13:
+                    candidate_keys.extend(["okayama_hotel_to_okayama_airport", f"morning_origin_{d_num}", f"okayama_airport_{d_num}"])
+                else:
+                    candidate_keys.extend([f"tpe_flight_{d_num}", f"okayama_airport_{d_num}"])
             if prev_id:
                 candidate_keys.append(f"{prev_id}_to_{sid}")
-            else:
-                if sid == 'okayama_airport':
-                    if d_num == 1:
-                        candidate_keys.extend([f"tpe_flight_{d_num}", f"okayama_airport_{d_num}"])
-                    else:
-                        candidate_keys.extend(["okayama_hotel_to_okayama_airport", f"morning_origin_{d_num}", f"okayama_airport_{d_num}"])
-                candidate_keys.extend([f"morning_origin_{d_num}", f"start_to_{sid}"])
+            if s_i == 0:
                 if d_num == 12:
                     candidate_keys.extend(["tomonoura_onsen_to_bitchu_matsuyama", "fukuyama_to_bitchu_matsuyama"])
+                candidate_keys.extend([f"morning_origin_{d_num}", f"start_to_{sid}"])
 
             for ck in candidate_keys:
                 if ck in att_dict and ck not in seen_keys:
                     item = att_dict[ck]
                     if (item.get('images') and len(item['images']) > 0) or item.get('notes') or item.get('link'):
                         mark_seen(ck)
-                        if d_num == 12 and ck in {'tomonoura_onsen_to_bitchu_matsuyama', f'morning_origin_{d_num}', 'fukuyama_to_bitchu_matsuyama'}:
-                            title = "鞆之浦溫泉 ➔ 福山 ➔ 備中松山城 (晨間出發接駁)"
-                        elif d_num == 13:
-                            title = "岡山站西口 ➔ 岡山桃太郎機場 (機場利木津巴士直達)"
-                        else:
-                            title = get_segment_display_title(ck, day, spots_map)
-                        valid_items.append((ck, title, item))
+                        dedup_imgs = []
+                        for im in item.get('images', []):
+                            u = im.get('url', '')
+                            if u and u not in seen_day_imgs:
+                                seen_day_imgs.add(u)
+                                dedup_imgs.append(im)
+                        if dedup_imgs or item.get('notes') or item.get('link'):
+                            if d_num == 12 and ck in {'tomonoura_onsen_to_bitchu_matsuyama', f'morning_origin_{d_num}', 'fukuyama_to_bitchu_matsuyama'}:
+                                title = "鞆之浦溫泉 ➔ 福山 ➔ 備中松山城 (晨間出發接駁)"
+                            elif d_num == 13:
+                                title = "岡山站西口 ➔ 岡山桃太郎機場 (機場利木津巴士直達)"
+                            else:
+                                title = get_segment_display_title(ck, day, spots_map)
+                            new_item = dict(item)
+                            new_item['images'] = dedup_imgs
+                            valid_items.append((ck, title, new_item))
 
-        # 2. 補充當天其他已上傳/填寫但未包含在上述動線的附件
+        # 2. 補充當天相關但未包含在上述動線順序的時刻表附件（過濾跨日殘留與重複圖片）
         for k, item in att_dict.items():
             if k not in seen_keys:
+                belongs = False
+                if '_to_' in k:
+                    f_sid, t_sid = k.split('_to_', 1)
+                    belongs = (f_sid in active_spot_set and t_sid in active_spot_set)
+                elif k.endswith(f'_{d_num}'):
+                    belongs = True
+                if not belongs:
+                    continue
                 if (item.get('images') and len(item['images']) > 0) or item.get('notes') or item.get('link'):
                     mark_seen(k)
-                    valid_items.append((k, get_segment_display_title(k, day, spots_map), item))
+                    dedup_imgs = []
+                    for im in item.get('images', []):
+                        u = im.get('url', '')
+                        if u and u not in seen_day_imgs:
+                            seen_day_imgs.add(u)
+                            dedup_imgs.append(im)
+                    if dedup_imgs:
+                        new_item = dict(item)
+                        new_item['images'] = dedup_imgs
+                        valid_items.append((k, get_segment_display_title(k, day, spots_map), new_item))
 
         if not valid_items:
             p_none = doc.add_paragraph()

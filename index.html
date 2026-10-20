@@ -763,8 +763,9 @@
     </div>
   </div>
 
-  <!-- 載入原始景點資料庫 -->
-  <script src="spots_data.js?v=2027_01_13_ROUTE_V84_FORCE_ALIGN_LOCAL_STORAGE"></script>
+  <!-- 載入原始景點資料庫與時刻表圖片 Base64 離線庫 -->
+  <script src="spots_data.js?v=2027_01_13_ROUTE_V85_HOTEL_UPDATES"></script>
+  <script src="timetables_b64.js"></script>
 
   <!-- 應用程式主邏輯 -->
   <script>
@@ -775,7 +776,7 @@
     const STORAGE_KEY_ITINERARY = "jp_castles_itinerary_v1";
     const STORAGE_KEY_ITINERARY_VER = "jp_castles_itinerary_ver";
     const STORAGE_KEY_DELETED_SPOTS = "jp_castles_deleted_spots_v1";
-    const CURRENT_ITINERARY_VER = "2027_01_13_ROUTE_V84_FORCE_ALIGN_LOCAL_STORAGE";
+    const CURRENT_ITINERARY_VER = "2027_01_13_ROUTE_V85_HOTEL_UPDATES";
 
     // ==========================================
     // 雙重自包含備援資料庫 (Fallback Database)
@@ -844,23 +845,23 @@
   },
   {
     "id": "okayama_hotel",
-    "name": "岡山站前飯店 (住宿 Check-in)",
+    "name": "VIA INN 岡山 (岡山站直結)",
     "prefecture": "岡山",
     "type": "lodging",
     "lat": 34.6655,
     "lng": 133.9185,
     "stayDuration": "夜宿",
     "climbLevel": "lodging",
-    "climbLevelText": "🏨 站前市區住宿 (Check-in 寄放行李)",
+    "climbLevelText": "🏨 JR 岡山站直結住宿 (VIA INN 岡山)",
     "nearestStation": "岡山駅",
     "stampLocation": "",
     "closedDay": "None",
     "closedDayText": "全年無休",
     "backupStamp": "",
     "openHours": "15:00 Check-in",
-    "transitInfo": "岡山桃太郎機場搭乘中鐵/岡電機場巴士約 30 分直達岡山站西口 (單程 1,000 円，徒步 1~3 分進飯店)",
+    "transitInfo": "JR 岡山站中央改札口直結 (Sunste 岡山 西館 5F，出剪票口徒步 1 分鐘即達，免淋雨)",
     "reservationUrl": "",
-    "notes": "岡山站直結或站前精選飯店（如 Hotel Granvia Okayama / Daiwa Roynet / Mitsui Garden），交通樞紐核心，放下大件行李後即可輕鬆空手出門逛街與享用和牛。"
+    "notes": "【已訂住宿：VIA INN 岡山 (ヴィアイン岡山 / JR西日本集團)】\n• 位置：JR 岡山站中央改札口直結（さんすて岡山 西館 5F），出站 1 分鐘即達。\n• 優勢：D1 抵達與 D12 回程皆住此處，車站直結零距離，放下大件行李即可輕鬆逛 AEON 與享用千屋牛。"
   },
   {
     "id": "matsue_lodging",
@@ -904,81 +905,81 @@
   },
   {
     "id": "shin_yamaguchi_lodging",
-    "name": "新山口站前飯店 (住宿建議)",
+    "name": "Comfort Hotel Shin Yamaguchi (新山口)",
     "prefecture": "山口",
     "type": "lodging",
     "lat": 34.0934,
     "lng": 131.3986,
     "stayDuration": "夜宿放鬆",
     "climbLevel": "lodging",
-    "climbLevelText": "🏨 新幹線樞紐住宿 (建議：新山口康福飯店 / 燦路都新山口)",
+    "climbLevelText": "🏨 新山口站前住宿 (Comfort Hotel Shin Yamaguchi)",
     "nearestStation": "新山口駅",
     "stampLocation": "飯店櫃檯",
     "closedDay": "None",
     "closedDayText": "住宿推薦點",
     "backupStamp": "",
     "openHours": "15:00 Check-in",
-    "transitInfo": "萩市搭防長巴士直達新山口站北口；出站即進飯店",
+    "transitInfo": "JR 新山口站北口徒步 1 分鐘即達（附免費早餐）",
     "reservationUrl": "",
-    "notes": "【住宿建議地點：JR 新山口駅 新幹線口】\\n• 推薦飯店：新山口康福飯店 (Comfort Hotel，出站1分)、燦路都新山口飯店 (Hotel Sunroute，站前即達)。\\n• 順路理由：防長巴士下車即抵站前飯店；新山口為山陽新幹線大站，隔天清晨極速搭新幹線直奔新岩國/宮島，零行李負擔。"
+    "notes": "【已訂住宿：Comfort Hotel Shin Yamaguchi (コンフォートホテル新山口)】\n• 位置：JR 新山口站北口徒步 1 分鐘。\n• 順路理由：自萩市搭車抵達新山口站後出站 1 分鐘即達飯店；新山口為山陽新幹線樞紐，隔天清晨極速搭新幹線直奔岩國錦帶橋與宮島，零行李負擔。"
   },
   {
     "id": "hiroshima_lodging_d8",
-    "name": "廣島站前飯店 (D8 住宿建議)",
+    "name": "Via Inn Hiroshima Shinkansenguchi (廣島連住 D9)",
     "prefecture": "廣島",
     "type": "lodging",
     "lat": 34.398,
     "lng": 132.476,
     "stayDuration": "夜宿放鬆",
     "climbLevel": "lodging",
-    "climbLevelText": "🏨 廣島市區直通住宿 (建議：廣島格蘭比亞 / 喜來登 / ANA)",
+    "climbLevelText": "🏨 廣島站北口住宿 (Via Inn Hiroshima Shinkansenguchi)",
     "nearestStation": "広島駅",
     "stampLocation": "飯店櫃檯",
     "closedDay": "None",
     "closedDayText": "住宿推薦點",
     "backupStamp": "",
     "openHours": "15:00 Check-in",
-    "transitInfo": "宮島口搭 JR 山陽本線 25 分直達廣島站，北口直通飯店",
+    "transitInfo": "JR 廣島站北口（新幹線口）徒步 3 分鐘即達（附設大浴場「紅葉之湯」）",
     "reservationUrl": "",
-    "notes": "【住宿建議地點：JR 廣島駅周邊 或 八丁堀商圈】\\n• 推薦飯店：廣島格蘭比亞大飯店 (廣島站北口直通)、廣島喜來登大飯店 (站旁直結)、廣島ANA皇冠假日酒店。\\n• 順路理由：宮島口搭 JR 直達廣島站，直接進駐市中心大飯店，次日參觀廣島城與和平公園完全免換飯店。"
+    "notes": "【已訂住宿：Via Inn Hiroshima Shinkansenguchi (ヴィアイン広島新幹線口)】\n• 位置：JR 廣島站北口（新幹線口）徒步約 3 分鐘，館內附設大浴場「紅葉之湯」。\n• 順路理由：宮島口搭 JR 山陽本線 28 分直達廣島站，出北口 3 分鐘即入住；D9、D10 連住兩晚完全免換飯店。"
   },
   {
     "id": "hiroshima_lodging_d9",
-    "name": "廣島站前飯店 (D9 連住第2晚)",
+    "name": "Via Inn Hiroshima Shinkansenguchi (廣島連住 D10)",
     "prefecture": "廣島",
     "type": "lodging",
     "lat": 34.398,
     "lng": 132.476,
     "stayDuration": "夜宿放鬆",
     "climbLevel": "lodging",
-    "climbLevelText": "🏨 廣島市區連住 (同 D8 飯店，零行李負擔)",
+    "climbLevelText": "🏨 廣島站北口連住 (Via Inn Hiroshima Shinkansenguchi)",
     "nearestStation": "広島駅",
     "stampLocation": "飯店櫃檯",
     "closedDay": "None",
     "closedDayText": "住宿推薦點",
     "backupStamp": "",
     "openHours": "全天連住",
-    "transitInfo": "市區徒步或搭路面電車即達",
+    "transitInfo": "JR 廣島站北口（新幹線口）徒步 3 分鐘（連住第 2 晚，零行李負擔）",
     "reservationUrl": "",
-    "notes": "【住宿建議地點：JR 廣島駅周邊 (連住免搬行李)】\\n• 推薦飯店：同 Day 8 飯店 (連住 2 晚，徹底擺脫換飯店與拖行李疲累)。\\n• 順路理由：全日市區輕鬆漫步，晚間在廣島站 21F 享用神石和牛鐵板燒，步行或電車即刻回房休息。"
+    "notes": "【已訂住宿：Via Inn Hiroshima Shinkansenguchi (ヴィアイン広島新幹線口・連住第2晚)】\n• 位置：JR 廣島站北口（新幹線口）徒步約 3 分鐘（與 D9 同一間飯店連住）。\n• 順路理由：連住 2 晚徹底免除收行李與換飯店疲累，市區巡禮與廣島站晚餐後直接回房泡大浴場休息。"
   },
   {
     "id": "okayama_hotel_d11",
-    "name": "岡山站前飯店 (D11 住宿建議)",
+    "name": "VIA INN 岡山 (岡山站直結)",
     "prefecture": "岡山",
     "type": "lodging",
     "lat": 34.6655,
     "lng": 133.9185,
     "stayDuration": "夜宿放鬆",
     "climbLevel": "lodging",
-    "climbLevelText": "🏨 岡山站前市區住宿 (建議：格蘭比亞 / 大和Roynet / 三井花園)",
+    "climbLevelText": "🏨 JR 岡山站直結住宿 (VIA INN 岡山)",
     "nearestStation": "岡山駅",
     "stampLocation": "飯店櫃檯",
     "closedDay": "None",
     "closedDayText": "住宿推薦點",
     "backupStamp": "",
     "openHours": "15:00 Check-in",
-    "transitInfo": "福山搭新幹線 16 分直達岡山站；站前徒步 1~3 分即達",
+    "transitInfo": "JR 岡山站中央改札口直結 (Sunste 岡山 西館 5F，出剪票口徒步 1 分鐘即達)",
     "reservationUrl": "",
     "notes": "【住宿建議地點：JR 岡山駅東口 (岡山市區)】\\n• 推薦飯店：岡山格蘭比亞大飯店 (直結)、大和Roynet飯店岡山站前、三井花園飯店岡山。\\n• 順路理由：福山搭新幹線僅 16 分鐘極速返抵岡山寄放大行李，轉吉備線參拜桃太郎兩大社極順路，傍晚在站前一番街採買免稅伴手禮。"
   },
@@ -1124,23 +1125,23 @@
   },
   {
     "id": "yonago_hotel",
-    "name": "米子站前精選飯店 (米子市 / 住宿推薦)",
+    "name": "Hotel Harvest In Yonago (米子站前)",
     "prefecture": "鳥取",
     "type": "lodging",
     "lat": 35.4234,
     "lng": 133.3364,
     "stayDuration": "夜宿放鬆",
     "climbLevel": "lodging",
-    "climbLevelText": "🏨 米子站前便利商務/度假飯店",
+    "climbLevelText": "🏨 米子站前住宿 (Hotel Harvest In Yonago)",
     "nearestStation": "米子駅",
     "stampLocation": "飯店櫃台",
     "closedDay": "None",
     "closedDayText": "住宿推薦點",
     "backupStamp": "",
     "openHours": "15:00 Check-in",
-    "transitInfo": "JR 米子站出站步行 1~3 分鐘直達各飯店 (免轉公車、免拉行李！)",
+    "transitInfo": "JR 米子站出站徒步 1 分鐘直達（緊鄰米子站與巴士總站）",
     "reservationUrl": "https://www.anacrowneplaza-yonago.jp/",
-    "notes": "【住宿推薦地點：JR 米子站周邊徒步圈】\\n• 推薦飯店：ANA Crowne Plaza 米子 (全日空皇冠假日，高品質首選)、米子華盛頓廣場飯店 (站前步行1分)、Super Hotel 米子站前 (附天然溫泉)、東橫INN 米子站前。\\n• 地理優勢：天橋立/伊根舟屋搭特急返回後直接出站入住，免拉行李轉公車；隔日一早自米子站搭山陰本線前往安來(足立美術館/月山富田城)與松江極度順路！"
+    "notes": "【已訂住宿：Hotel Harvest In Yonago (ホテルハーベストイン米子)】\n• 位置：JR 米子站南口旁徒步 1 分鐘。\n• 地理優勢：伊根舟屋與境港行程結束返回米子站後，出站 1 分鐘即入住休息；隔天一早自米子站搭特急前往津和野極度順路！"
   },
   {
     "id": "yasugi_lodging",
@@ -1284,23 +1285,23 @@
   },
   {
     "id": "tottori_hotel",
-    "name": "鳥取站前飯店 (住宿建議)",
+    "name": "APA飯店 鳥取車站前",
     "prefecture": "鳥取",
     "type": "lodging",
     "lat": 35.4941,
     "lng": 134.2258,
     "stayDuration": "夜宿放鬆",
     "climbLevel": "lodging",
-    "climbLevelText": "🏨 站前市區住宿 (建議：鳥取站前格林豪泰 / 莫里斯 / 超級酒店)",
+    "climbLevelText": "🏨 鳥取站前住宿 (APA飯店 鳥取車站前)",
     "nearestStation": "鳥取駅",
     "stampLocation": "飯店櫃檯",
     "closedDay": "None",
     "closedDayText": "住宿推薦點",
     "backupStamp": "",
     "openHours": "15:00 Check-in",
-    "transitInfo": "JR 因美線/智頭急行抵達鳥取站，北口/南口出站徒步 1~3 分即達各飯店；隔天清晨直奔砂丘零負擔",
+    "transitInfo": "JR 鳥取站南口出站徒步 2 分鐘即達；隔天清晨直奔鳥取城與砂丘零負擔",
     "reservationUrl": "",
-    "notes": "【住宿建議地點：JR 鳥取駅前】\\n• 推薦飯店：鳥取站前格林豪泰酒店 (Green Hotel Tottori，北口徒步2分)、鳥取站前超級酒店 (Super Hotel，出站2分)、鳥取市區莫里斯飯店 (Tottori City Hotel)。\\n• 順路理由：津山攻城後搭 JR 因美線直奔鳥取站，夜宿站前放下行李；隔天一早免拉車，出飯店即到鳥取站前巴士站搭車前往鳥取砂丘！"
+    "notes": "【已訂住宿：APA飯店 鳥取車站前 (アパホテル〈鳥取駅前〉)】\n• 位置：JR 鳥取站南口徒步 2 分鐘。\n• 順路理由：津山攻城後搭 JR 因美線直抵鳥取站，出站 2 分鐘即入住放下行李；隔天一早免拉車，直接從鳥取站前搭巴士前往鳥取城與鳥取砂丘！"
   },
   {
     "id": "tamatsukuri_onsen",
@@ -1421,7 +1422,7 @@
   },
   {
     "id": "okayama_hotel_d12",
-    "name": "岡山站前飯店 (D12 住宿)",
+    "name": "VIA INN 岡山 (岡山站直結)",
     "category": "lodging",
     "prefecture": "岡山",
     "city": "岡山市",
@@ -1433,7 +1434,9 @@
     "reservation": true,
     "passCovered": true,
     "passNote": "JR 岡山站交通極為便利",
-    "notes": "最後一晚進駐岡山樞紐站前飯店，整理戰利品行李，次日悠閒搭利木津巴士直達機場。"
+    "notes": "最後一晚進駐岡山樞紐站前飯店，整理戰利品行李，次日悠閒搭利木津巴士直達機場。",
+    "climbLevelText": "🏨 JR 岡山站直結住宿 (VIA INN 岡山)",
+    "transitInfo": "JR 岡山站中央改札口直結 (Sunste 岡山 西館 5F，出剪票口徒步 1 分鐘即達)"
   },
   {
     "id": "iwami_ginzan",
@@ -2281,11 +2284,11 @@
       "chiyagyu_kuya_to_okayama_aeon",
       "okayama_aeon_to_okayama_hotel"
     ],
-    "lodging": "岡山站前飯店 (格蘭比亞 / 大和Roynet / 三井花園)",
-    "lodgingLocation": "JR 岡山駅東口 / 站前商圈",
+    "lodging": "VIA INN 岡山",
+    "lodgingLocation": "JR 岡山駅中央改札口直結 (Sunste 西館 5F)",
     "lodgingReason": "機場利木津巴士直達西口；千屋牛備彩在格蘭比亞2F；站前直通 AEON 商圈；次日往總社攻鬼之城起點極方便。",
     "notes": "• 【班機抵達】：台灣虎航 IT214 於 15:05 準時降落岡山桃太郎機場 (OKJ)。出關搭中鐵/岡電機場巴士約 30 分鐘直達岡山站西口 (單程 1,000 円)。\n• 【住宿 Check-in】：進駐岡山站前飯店辦理入住手續並放下大件行李。\n• 【和牛晚餐 (岡山千屋牛)】：前往岡山格蘭比亞 2F 直結之「鉄板焼 備彩」，零距離品嚐日本最古老血統和牛——岡山千屋牛頂級鐵板燒。\n• 【商圈漫遊 & 逛街】：餐後漫步西日本最大級「AEON Mall Okayama」(營業至 21:00，350間店鋪) 採買藥妝物資，早點休息為明日名城漫遊儲備體力！",
-    "recommendedHotels": "岡山格蘭比亞大飯店 (車站直結) / 大和Roynet飯店岡山站前 (徒步2分) / 三井花園飯店岡山",
+    "recommendedHotels": "VIA INN 岡山 (ヴィアイン岡山・JR岡山站直結徒步1分)",
     "spotIds": [
       "okayama_airport",
       "chiyagyu_kuya",
@@ -2332,11 +2335,11 @@
     "baseStation": "岡山駅 / 津山駅 / 鳥取駅",
     "date": "2027-01-14",
     "dayNumber": 2,
-    "lodging": "鳥取站前精選飯店 (鳥取市)",
-    "lodgingLocation": "鳥取駅前 (鳥取市)",
+    "lodging": "APA飯店 鳥取車站前",
+    "lodgingLocation": "JR 鳥取駅南口徒步 2 分鐘",
     "lodgingReason": "津山城攻城後搭乘 JR 因美線直達鳥取站夜宿站前飯店，省去偏遠溫泉拉車；隔天早晨零負擔從鳥取站直接啟程前往鳥取砂丘！",
     "notes": "• 【鬼ノ城・登山步道 (建議預留 1.5~2h)】：晨間自岡山搭 JR 吉備線至總社站，搭計程車約 30 分攻登古代神秘山城鬼ノ城。山頂西門石垣與步道巡禮視野極佳，下車時務必先與司機約定下山回程時間！\n• 【津山城・平山城 (基本預留 1h)】：午後搭 JR 津山線至津山站，步行 10 分攻登津山城（鶴山公園備中櫓，園區平緩好走）。\n• 【前往鳥取站前宿】：津山城參觀後返回津山站，搭乘 JR 因美線經智頭直奔鳥取站（普通車約 1.5~2h，或搭乘特急超級因幡號），出站步行 1~3 分即達站前飯店 Check-in 卸下大件行李，晚上可在鳥取市區悠閒晚餐休息。",
-    "recommendedHotels": "鳥取站前格林豪泰酒店 (Green Hotel) / 鳥取站前超級酒店 (Super Hotel) / 鳥取市區莫里斯飯店",
+    "recommendedHotels": "APA飯店 鳥取車站前 (アパホテル〈鳥取駅前〉)",
     "spotIds": [
       "kinojo",
       "chiyagyu_bisai",
@@ -2543,11 +2546,11 @@
     "deletedTransitKeys": [
       "araiso_yonago_to_yonago_hotel"
     ],
-    "lodging": "米子站前精選飯店 (米子市)",
-    "lodgingLocation": "JR 米子駅周邊 (米子市)",
+    "lodging": "Hotel Harvest In Yonago",
+    "lodgingLocation": "JR 米子駅徒步 1 分鐘",
     "lodgingReason": "JR Pass 7日券(第2天)！包含京都丹後鐵道全線與長途特急，城崎溫泉出發遊天橋立與伊根舟屋，傍晚搭特急直達米子站，直接出站步行入住站前飯店，免拖行李轉乘公車；隔日晨間前往安來(足立美術館/月山富田城)與松江交通最極速便捷！",
     "notes": "• 【🎫 JR Pass 第2天】：憑 Pass 免費搭乘京都丹後鐵道全線特急及山陰本線特急！\n• 【天橋立・日本三景 (建議預留 2h)】：自城崎溫泉搭京都丹後鐵道前往天橋立，搭纜車上飛龍觀眺望青松沙洲「跨下窺看」天地顛倒絕景，或漫步迴旋橋與白砂青松參道。\n• 【伊根舟屋・海之京都 (預留 2h)】：自天橋立搭丹後路線巴士約 55 分鐘抵達伊根，搭乘伊根灣遊覽船（餵海鷗、賞230棟臨海舟屋群），並於海景餐廳享用鰤魚在地料理。\n• 【傍晚移動至米子站前宿】：午後搭乘丹鐵與 JR 特急經豐岡/鳥取直達米子站，出站步行 1~3 分鐘即達站前飯店 Check-in 卸下大件行李。\n• 【米子站前名店晚餐雙推薦 (步行 2~4 分鐘直達)】：\n  - 方案 A【日本料理 荒磯 本店】：米子老字號海鮮割烹（万能町），品嚐境港活松葉蟹、紅楚蟹、炭烤喉黑魚（のどぐろ）與海鮮會席。\n  - 方案 B【居酒屋 太平記】：站前商店街超人氣第一居酒屋（明治町），境港當日朝捕活魚生魚片拼盤、大山地雞串燒與在地地酒小酌。",
-    "recommendedHotels": "米子全日空皇冠假日酒店 (ANA Crowne Plaza Yonago) / 米子華盛頓廣場飯店 / 東橫INN 米子站前 / Super Hotel 米子站前",
+    "recommendedHotels": "Hotel Harvest In Yonago (ホテルハーベストイン米子)",
     "spotIds": [
       "amanohashidate",
       "ine_funaya",
@@ -3221,11 +3224,11 @@
     "baseStation": "東萩駅 / 長門市駅 / 新山口駅",
     "date": "2027-01-20",
     "dayNumber": 8,
-    "lodging": "新山口站前飯店 (住宿建議)",
-    "lodgingLocation": "JR 新山口駅南口(新幹線口) / 北口 (Comfort Hotel / 東橫INN)",
+    "lodging": "Comfort Hotel Shin Yamaguchi",
+    "lodgingLocation": "JR 新山口駅北口徒步 1 分鐘",
     "lodgingReason": "JR Pass 7日券(第6天)！晨遊元乃隅千本鳥居與長門絕壁，下午漫步世界遺產萩城；傍晚搭直達特急巴士「超級萩號 (Super Hagi)」直奔新幹線樞紐新山口站，次日晨間搭新幹線攻錦帶橋與宮島極致省時！",
     "notes": "• 【🎫 JR Pass 第6天】：涵蓋山陰本線及中國 JR 巴士 Super Hagi 直達特急客運(免費搭乘)！\n• 【元乃隅神社・百廿三座鳥居絕壁 (建議預留 1.5h)】：晨間自萩出發前往長門市，搭乘計程車直達面臨日本海懸崖之元乃隅神社，走過 123 座紅色鳥居。\n• 【萩城跡・指月公園與古民家聚落 (建議預留 1.5h)】：午後返回萩市區，走訪長州藩毛利家指月城（100名城）、松下村塾與白壁土藏城下町。\n• 【直達特急巴士直奔新山口】：自東萩站或萩巴士中心搭乘中國 JR 巴士「Super Hagi 號」(約 60 分鐘，JR Pass 免費搭乘) 直抵新幹線樞紐新山口站，入住站前飯店。",
-    "recommendedHotels": "Comfort Hotel 新山口 / 東橫INN 新山口駅南口 / 國際飯店山口",
+    "recommendedHotels": "Comfort Hotel Shin Yamaguchi (コンフォートホテル新山口)",
     "spotIds": [
       "motonosumi_jinja",
       "hagi",
@@ -3315,11 +3318,11 @@
     "baseStation": "新山口駅 / 新岩國駅 / 岩國駅 / 宮島口駅 / 廣島駅",
     "date": "2027-01-21",
     "dayNumber": 9,
-    "lodging": "廣島站前飯店 (D9 連住第1晚)",
-    "lodgingLocation": "JR 廣島駅南口 / 站前商圈 (喜來登 / 格蘭比亞)",
+    "lodging": "Via Inn Hiroshima Shinkansenguchi (連住第1晚)",
+    "lodgingLocation": "JR 廣島駅北口 (新幹線口) 徒步 3 分鐘",
     "lodgingReason": "JR Pass 7日券啟用最後一天(第7天)！新山口搭新幹線僅 28 分到新岩國，錦帶橋＋纜車攻岩國城；午後順路直達宮島口搭渡輪參拜嚴島神社與名剎大聖院；傍晚進駐廣島連住 2 晚，徹底免搬行李！",
     "notes": "• 【🎫 JR Pass 第7天 (今日最後一日使用)】：山陽新幹線、JR山陽本線及JR宮島渡輪全額涵蓋，發揮 Pass 最終最高價值！\n• 【錦帶橋 & 岩國城・木造五連拱橋與纜車天守 (預留 2h)】：晨間自新山口搭新幹線至新岩國站，轉公車抵日本三大名橋「錦帶橋」，走過木造五連拱橋面；搭乘纜車登上橫山頂峰岩國城天守。\n• 【宮島・嚴島神社・海上大鳥居 (預留 2h)】：搭乘 JR 山陽本線至宮島口，憑 JR Pass 免費搭乘 JR 西日本宮島渡輪直擊海上鳥居視角，漫步世界遺產國寶神社迴廊。\n• 【宮島彌山・大本山大聖院 (預留約 1h)】：自嚴島神社出口沿瀧町小路漫步約 5~10 分鐘抵達宮島最古名剎「大聖院」（真言宗御室派大本山）。參拜遍照窟（四國八十八箇所砂踏靈場）、五百羅漢與摩尼車祈福，清幽靈氣視野絕佳。\n• 【傍晚進駐廣島站前飯店 (連住第 1 晚)】：漫步商店街採買伴手禮回碼頭搭渡輪返宮島口，搭 JR 25 分返抵廣島站，入住站前飯店，晚餐享用在地人氣廣島燒。",
-    "recommendedHotels": "廣島喜來登大飯店 (車站直結) / 廣島格蘭比亞大飯店 (北口直結) / 廣島大和Roynet飯店",
+    "recommendedHotels": "Via Inn Hiroshima Shinkansenguchi (ヴィアイン広島新幹線口・附大浴場)",
     "spotIds": [
       "kintaikyo",
       "iwakuni",
@@ -3405,11 +3408,11 @@
     "baseStation": "廣島駅 / 原爆圓頂前 / 本通商圈",
     "date": "2027-01-22",
     "dayNumber": 10,
-    "lodging": "廣島站前飯店 (D10 連住第2晚)",
-    "lodgingLocation": "JR 廣島駅 (南口/北口站前飯店)",
+    "lodging": "Via Inn Hiroshima Shinkansenguchi (連住第2晚)",
+    "lodgingLocation": "JR 廣島駅北口 (新幹線口) 徒步 3 分鐘",
     "lodgingReason": "【⚠️ 不使用 Pass (全自費)】廣島市區深度一日漫遊，利用廣島電鐵路面電車 (均一價 220 円)；連住同間飯店免收行李，夜晚享用廣島特選頂級和牛盛宴。",
     "notes": "• 【⚠️ 今日起不使用 JR Pass】：廣島市區景點集中，搭路面電車單程僅 220 円，直接刷 IC 卡即可。\n• 【廣島城・毛利輝元名城與廣島護國神社 (預留 1.5h)】：晨間搭路面電車前往廣島城，登黑木雕漆復原天守（鯉城），並參拜境內鎮守之廣島護國神社。\n• 【寶可夢中心廣島 & 本通商圈採買 (預留 1.5h)】：至 SOGO 廣島店 6F 探訪 Pokemon Center Hiroshima，採買鯉魚王限定周邊。\n• 【世界遺產原爆圓頂 & 和平紀念資料館 (預留 2h)】：走訪原爆圓頂歷史遺跡，漫步和平紀念公園慰靈碑，走進和平紀念資料館深思和平歷史真諦。\n• 【廣島特選和牛晚宴 (預留 1.5h)】：晚餐預約「青ひげ」品嚐廣島在地頂級「廣島牛・神石牛」牛排，或至格蘭比亞 21F 鉄板焼 神石享用高空和牛套餐！",
-    "recommendedHotels": "廣島喜來登大飯店 / 廣島格蘭比亞大飯店",
+    "recommendedHotels": "Via Inn Hiroshima Shinkansenguchi (ヴィアイン広島新幹線口・連住免搬行李)",
     "spotIds": [
       "hiroshima",
       "hiroshima_gokoku_jinja",
@@ -3478,11 +3481,11 @@
     "baseStation": "鞆之浦 / 福山駅 / 岡山駅 / 備中高梁駅 / 備前一宮駅",
     "date": "2027-01-24",
     "dayNumber": 12,
-    "lodging": "岡山站前飯店 (格蘭比亞 / 大和Roynet / 三井花園)",
-    "lodgingLocation": "JR 岡山駅東口 / 站前商圈",
+    "lodging": "VIA INN 岡山",
+    "lodgingLocation": "JR 岡山駅中央改札口直結 (Sunste 西館 5F)",
     "lodgingReason": "【⚠️ 不使用 Pass (全自費)】今日移動備中松山城！晨間自鞆之浦經福山搭新幹線僅 16 分回岡山飯店放下行李；輕裝攻現存最高天守備中松山城與吉備津神社；今晚夜宿岡山站前，明日去機場極速從容！",
     "notes": "• 【⚠️ 今日不使用 Pass】：福山到岡山新幹線自由席僅 1,770 円；岡山往備中高梁搭普通車僅 860 円 (特急自由席 1,500 円)，吉備線 150~210 円，直接購票/刷 IC 卡最經濟實惠！\n• 【09:00~10:15 鞆之浦 ➔ 福山 ➔ 岡山】：搭公車至福山站，搭新幹線自由席 16 分鐘極速直達岡山站，站前飯店 Check-in 卸下大件行李。\n• 【天空之城・備中松山城 (停留 2~2.5h)】：自岡山站搭 JR 伯備線至備中高梁站。搭乘觀光合乘計程車直達鞴峠登上海拔 430 公尺之現存最高天守備中松山城，巧遇貓城主「三十郎」！\n• 【吉備路桃太郎傳說・吉備津彥神社 & 吉備津神社 (停留 1.5h)】：下午搭 JR 伯備線/吉備線至備前一宮與吉備津站，走訪桃太郎原型神話之吉備津彥神社與擁有 398 公尺木造壯觀大迴廊之國寶吉備津神社。\n• 【傍晚返岡山採買 & 宿岡山】：返回岡山站，前往唐吉訶德、AEON Mall 與車站一番街採購名產，夜宿岡山站前！",
-    "recommendedHotels": "岡山格蘭比亞大飯店 (車站直結) / 大和Roynet飯店岡山站前 (徒步2分) / 三井花園飯店岡山",
+    "recommendedHotels": "VIA INN 岡山 (ヴィアイン岡山・JR岡山站直結徒步1分)",
     "spotIds": [
       "bitchu_matsuyama",
       "kibitsuhiko_jinja",
@@ -4158,6 +4161,7 @@
         }
 
         localStorage.setItem(STORAGE_KEY_ITINERARY_VER, CURRENT_ITINERARY_VER);
+        localStorage.setItem('jp_trip_local_last_modified', String(Date.now()));
         try { localStorage.removeItem('jp_trip_backup_snapshot'); } catch (e) {}
         // 升版重置不再自動推上雲端，避免把其他裝置上的資料一起洗掉
         saveState({ skipCloudPush: true });
@@ -7022,11 +7026,11 @@
         'rurikoji_pagoda': '瑠璃光寺五重塔',
         'hofu_tenmangu': '防府天滿宮',
         'okayama_aeon': 'AEON採買',
-        'okayama_hotel': '宿岡山',
+        'okayama_hotel': 'VIA INN 岡山',
         'okayama_hotel_d11': '宿岡山',
         'kinojo': '鬼ノ城',
         'tsuyama': '津山城',
-        'tottori_hotel': '宿鳥取站前',
+        'tottori_hotel': 'APA飯店 鳥取車站前',
         'yunogo_onsen': '湯郷溫泉',
         'tottori': '鳥取城',
         'tottori_sakyu': '鳥取砂丘',
@@ -7049,12 +7053,12 @@
         'hagi_lodging': '宿萩市',
         'motonosumi_jinja': '元乃隅神社',
         'hagi': '萩城',
-        'shin_yamaguchi_lodging': '宿新山口',
+        'shin_yamaguchi_lodging': 'Comfort Hotel Shin Yamaguchi',
         'iwakuni': '岩國城',
         'itsukushima_jinja': '嚴島神社',
         'daishoin': '大聖院',
-        'hiroshima_lodging_d8': '宿廣島',
-        'hiroshima_lodging_d9': '宿廣島',
+        'hiroshima_lodging_d8': 'Via Inn Hiroshima Shinkansenguchi',
+        'hiroshima_lodging_d9': 'Via Inn Hiroshima Shinkansenguchi',
         'hiroshima': '廣島城',
         'hiroshima_gokoku_jinja': '廣島護國神社',
         'pokemon_center_hiroshima': '寶可夢中心',
@@ -11605,6 +11609,8 @@
             name: file.name,
             url: dataUrl,
             type: 'image/jpeg',
+            width: width,
+            height: height,
             isPdf: false,
             uploadedAt: new Date().toLocaleDateString('zh-TW')
           });
@@ -12903,6 +12909,94 @@
       const days = state.itinerary || [];
       const fares = state.transitFares || [];
 
+      const mhtmlParts = [];
+      const mhtmlMetaByUrl = new Map();
+      let imgSeq = 0;
+
+      const resolveEmbeddedImage = (imgObj) => {
+        const rawUrl = (imgObj && imgObj.url ? imgObj.url : '').trim();
+        if (!rawUrl) return null;
+        if (mhtmlMetaByUrl.has(rawUrl)) return mhtmlMetaByUrl.get(rawUrl);
+
+        let b64 = '';
+        let mime = (imgObj && imgObj.type) || 'image/jpeg';
+        let origW = (imgObj && imgObj.width) || 0;
+        let origH = (imgObj && imgObj.height) || 0;
+
+        if (rawUrl.startsWith('data:')) {
+          const commaIdx = rawUrl.indexOf(',');
+          if (commaIdx !== -1) {
+            const header = rawUrl.slice(0, commaIdx);
+            const m = header.match(/^data:([^;,]+)/i);
+            if (m && m[1]) mime = m[1];
+            b64 = rawUrl.slice(commaIdx + 1).replace(/\s+/g, '');
+          }
+        } else if (typeof window !== 'undefined' && window.TIMETABLES_IMAGE_DB) {
+          const cleanKey = rawUrl.replace(/^\.\//, '').replace(/\\/g, '/');
+          const entry = window.TIMETABLES_IMAGE_DB[cleanKey] || window.TIMETABLES_IMAGE_DB[rawUrl];
+          if (entry && entry.b64) {
+            b64 = entry.b64.replace(/\s+/g, '');
+            mime = entry.mime || 'image/jpeg';
+            origW = entry.w || origW;
+            origH = entry.h || origH;
+          }
+        }
+
+        if (!origW || !origH) {
+          try {
+            const domImgs = document.querySelectorAll('img');
+            for (let i = 0; i < domImgs.length; i++) {
+              const attrSrc = domImgs[i].getAttribute('src') || '';
+              if (attrSrc === rawUrl && domImgs[i].naturalWidth > 0 && domImgs[i].naturalHeight > 0) {
+                origW = domImgs[i].naturalWidth;
+                origH = domImgs[i].naturalHeight;
+                break;
+              }
+            }
+          } catch (_) {}
+        }
+
+        let dispW = origW || 520;
+        let dispH = origH || 360;
+        const maxW = 540;
+        const maxH = 440;
+        if (dispW > maxW) {
+          dispH = Math.round(dispH * (maxW / dispW));
+          dispW = maxW;
+        }
+        if (dispH > maxH) {
+          dispW = Math.round(dispW * (maxH / dispH));
+          dispH = maxH;
+        }
+        const dispWPt = Math.round(dispW * 0.75);
+        const dispHPt = Math.round(dispH * 0.75);
+
+        if (!b64) {
+          const fallback = { mhtmlSrc: rawUrl, dispW, dispH, dispWPt, dispHPt };
+          mhtmlMetaByUrl.set(rawUrl, fallback);
+          return fallback;
+        }
+
+        imgSeq++;
+        const ext = mime.toLowerCase().includes('png') ? 'png' : 'jpg';
+        const mhtmlSrc = `file:///C:/Booklet/images/img_${imgSeq}.${ext}`;
+        const chunkedLines = [];
+        for (let i = 0; i < b64.length; i += 76) {
+          chunkedLines.push(b64.slice(i, i + 76));
+        }
+        mhtmlParts.push(
+          `------=_NextPart_Booklet_2027\r\n` +
+          `Content-Location: ${mhtmlSrc}\r\n` +
+          `Content-Transfer-Encoding: base64\r\n` +
+          `Content-Type: ${mime}\r\n\r\n` +
+          `${chunkedLines.join('\r\n')}\r\n`
+        );
+
+        const meta = { mhtmlSrc, dispW, dispH, dispWPt, dispHPt };
+        mhtmlMetaByUrl.set(rawUrl, meta);
+        return meta;
+      };
+
       let daysHtml = days.map((day, idx) => {
         const dNum = day.dayNumber;
         const dTitle = escapeHtml(day.title || `Day ${dNum}`);
@@ -13001,6 +13095,27 @@
         const attDict = day.transitAttachments || {};
         const validAttItems = [];
         const seenAttKeys = new Set();
+        const seenDayImgUrls = new Set();
+
+        const aliasGroups = [
+          new Set(['tomonoura_onsen_to_bitchu_matsuyama', `morning_origin_${dNum}`, 'fukuyama_to_bitchu_matsuyama']),
+          new Set(['okayama_hotel_to_okayama_airport', `morning_origin_${dNum}`, `okayama_airport_${dNum}`, `tpe_flight_${dNum}`]),
+          new Set(['shin_yamaguchi_lodging_to_kintaikyo', `morning_origin_${dNum}`]),
+          new Set(['hagi_lodging_to_motonosumi_jinja', `morning_origin_${dNum}`]),
+          new Set(['taikodani_inari_to_kaike_onsen', 'tsuwano_to_kaike_onsen']),
+          new Set(['yasugi_lodging_to_gassan_toda', 'yonago_hotel_to_gassan_toda']),
+          new Set(['hiroshima_lodging_d9_to_yoshida_koriyama', `morning_origin_${dNum}`])
+        ];
+
+        const markAttSeen = (k) => {
+          seenAttKeys.add(k);
+          if (typeof TRANSIT_MIRROR_ALIASES !== 'undefined' && TRANSIT_MIRROR_ALIASES[k]) {
+            seenAttKeys.add(TRANSIT_MIRROR_ALIASES[k]);
+          }
+          aliasGroups.forEach(grp => {
+            if (grp.has(k)) grp.forEach(gk => seenAttKeys.add(gk));
+          });
+        };
 
         const getSpotName = (sid) => {
           if (!sid) return '';
@@ -13008,18 +13123,18 @@
           if (sp) return sp.name;
           const map = {
             'okayama_airport': '岡山桃太郎機場 (OKJ)',
-            'okayama_hotel': '岡山站前飯店',
-            'tottori_hotel': '鳥取站前飯店',
+            'okayama_hotel': 'VIA INN 岡山',
+            'tottori_hotel': 'APA飯店 鳥取車站前',
             'kinosaki_onsen': '城崎溫泉 和風旅館',
             'ine_funaya': '伊根舟屋聚落',
-            'yonago_hotel': '米子站前精選飯店',
+            'yonago_hotel': 'Hotel Harvest In Yonago',
             'yasugi_lodging': '安來站前精選飯店',
             'kaike_onsen': '皆生溫泉 海濱旅館',
             'tamatsukuri_onsen': '玉造溫泉 和風旅館',
             'hagi_lodging': '萩市區飯店 / 萩溫泉旅館',
-            'shin_yamaguchi_lodging': '新山口住宿',
-            'hiroshima_lodging_d8': '廣島市區飯店',
-            'hiroshima_lodging_d9': '廣島市區飯店',
+            'shin_yamaguchi_lodging': 'Comfort Hotel Shin Yamaguchi',
+            'hiroshima_lodging_d8': 'Via Inn Hiroshima Shinkansenguchi',
+            'hiroshima_lodging_d9': 'Via Inn Hiroshima Shinkansenguchi',
             'tomonoura_onsen': '鞆之浦溫泉 遠景之宿',
             'daishoin': '宮島彌山 大本山 大聖院'
           };
@@ -13027,6 +13142,12 @@
         };
 
         const getSegTitle = (k) => {
+          if (dNum === 12 && (k === 'tomonoura_onsen_to_bitchu_matsuyama' || k === `morning_origin_${dNum}` || k === 'fukuyama_to_bitchu_matsuyama')) {
+            return '鞆之浦溫泉 ➔ 福山 ➔ 備中松山城 (晨間出發接駁)';
+          }
+          if (dNum === 13) {
+            return '岡山站西口 ➔ 岡山桃太郎機場 (機場利木津巴士直達)';
+          }
           if (k === `tpe_flight_${dNum}` || k.includes('tpe')) return '台灣桃園機場 ➔ 啟程搭機出發';
           if (k === `okayama_airport_${dNum}`) return '抵達岡山桃太郎機場 (IT214 航班)';
           if (k === `morning_origin_${dNum}`) return `Day ${dNum} 晨間出發地 (${(day.baseStation || '').split(' / ')[0]})`;
@@ -13038,34 +13159,73 @@
         };
 
         const spotIds = day.spotIds || [];
+        const prevDayLodgingSpot = dNum > 1 ? getPreviousDayLodgingSpot(dNum) : null;
+        const prevDayLodgingId = prevDayLodgingSpot ? prevDayLodgingSpot.id : null;
+        const activeDaySpotSet = new Set(spotIds);
+        if (prevDayLodgingId) activeDaySpotSet.add(prevDayLodgingId);
+
         for (let sIdx = 0; sIdx < spotIds.length; sIdx++) {
           const sid = spotIds[sIdx];
-          const prevSid = sIdx > 0 ? spotIds[sIdx - 1] : null;
+          const prevSid = sIdx > 0 ? spotIds[sIdx - 1] : prevDayLodgingId;
           const candidates = [];
+          if (sIdx === 0 && sid === 'okayama_airport') {
+            if (dNum === 13) {
+              candidates.push('okayama_hotel_to_okayama_airport', `morning_origin_${dNum}`, `okayama_airport_${dNum}`);
+            } else {
+              candidates.push(`tpe_flight_${dNum}`, `okayama_airport_${dNum}`);
+            }
+          }
           if (prevSid) {
             candidates.push(`${prevSid}_to_${sid}`);
-          } else {
-            if (sid === 'okayama_airport') candidates.push(`okayama_airport_${dNum}`, `tpe_flight_${dNum}`);
+          }
+          if (sIdx === 0) {
+            if (dNum === 12) candidates.push('tomonoura_onsen_to_bitchu_matsuyama', 'fukuyama_to_bitchu_matsuyama');
             candidates.push(`morning_origin_${dNum}`, `start_to_${sid}`);
           }
+
           for (const ck of candidates) {
-            if (attDict[ck] && !seenAttKeys.has(ck)) {
-              const item = attDict[ck];
-              if ((item.images && item.images.length > 0) || item.notes || item.link) {
-                seenAttKeys.add(ck);
-                validAttItems.push({ key: ck, title: getSegTitle(ck), item });
+            if (!seenAttKeys.has(ck)) {
+              const item = typeof getEffectiveTransitAttachment === 'function'
+                ? getEffectiveTransitAttachment(day, ck)
+                : attDict[ck];
+              if (item && ((item.images && item.images.length > 0) || item.notes || item.link)) {
+                markAttSeen(ck);
+                const dedupImgs = (item.images || []).filter(im => {
+                  if (!im || !im.url || seenDayImgUrls.has(im.url)) return false;
+                  seenDayImgUrls.add(im.url);
+                  return true;
+                });
+                if (dedupImgs.length > 0 || item.notes || item.link) {
+                  validAttItems.push({ key: ck, title: getSegTitle(ck), item: { ...item, images: dedupImgs } });
+                }
               }
             }
           }
         }
 
-        // 補充其他已上傳但未在上述動線的附件
+        // 補充當日相關但未在上述動線順序中的時刻表附件（過濾跨日殘留與重複圖片）
         Object.keys(attDict).forEach(k => {
           if (!seenAttKeys.has(k)) {
+            let belongsToDay = false;
+            if (k.includes('_to_')) {
+              const [fSid, tSid] = k.split('_to_');
+              belongsToDay = activeDaySpotSet.has(fSid) && activeDaySpotSet.has(tSid);
+            } else if (k.endsWith(`_${dNum}`)) {
+              belongsToDay = true;
+            }
+            if (!belongsToDay) return;
+
             const item = attDict[k];
-            if ((item.images && item.images.length > 0) || item.notes || item.link) {
-              seenAttKeys.add(k);
-              validAttItems.push({ key: k, title: getSegTitle(k), item });
+            if (item && ((item.images && item.images.length > 0) || item.notes || item.link)) {
+              markAttSeen(k);
+              const dedupImgs = (item.images || []).filter(im => {
+                if (!im || !im.url || seenDayImgUrls.has(im.url)) return false;
+                seenDayImgUrls.add(im.url);
+                return true;
+              });
+              if (dedupImgs.length > 0) {
+                validAttItems.push({ key: k, title: getSegTitle(k), item: { ...item, images: dedupImgs } });
+              }
             }
           }
         });
@@ -13085,12 +13245,16 @@
             if (images.length > 0) {
               imagesHtml = `
                 <div style="margin-top:6pt;">
-                  ${images.map(img => `
-                    <div style="text-align:center; margin:6pt 0;">
-                      <img src="${escapeHtml(img.url)}" style="max-width:520pt; max-height:420pt; border:1pt solid #cbd5e1; border-radius:4pt; display:inline-block;" alt="${escapeHtml(img.name || '時刻表縮圖')}">
-                      <p style="font-size:7.5pt; color:#64748b; margin:2pt 0 4pt 0;">📎 附件圖檔：${escapeHtml(img.name || '時刻表縮圖')}</p>
-                    </div>
-                  `).join('')}
+                  ${images.map(img => {
+                    const meta = resolveEmbeddedImage(img);
+                    if (!meta) return '';
+                    return `
+                      <div style="text-align:center; margin:6pt 0;">
+                        <img src="${escapeHtml(meta.mhtmlSrc)}" width="${meta.dispW}" height="${meta.dispH}" style="width:${meta.dispWPt}pt; height:${meta.dispHPt}pt; border:1pt solid #cbd5e1; display:inline-block;" alt="${escapeHtml(img.name || '時刻表縮圖')}">
+                        <p style="font-size:7.5pt; color:#64748b; margin:2pt 0 4pt 0;">📎 附件圖檔：${escapeHtml(img.name || '時刻表縮圖')}</p>
+                      </div>
+                    `;
+                  }).join('')}
                 </div>
               `;
             }
@@ -13142,79 +13306,89 @@
         `;
       }).join('<br clear="all" style="page-break-before:always; mso-break-type:section-break">');
 
-      const fullDoc = `
-        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-        <head>
-          <meta charset='utf-8'>
-          <title>山陰山陽13天旅行隨身手冊</title>
-          <!--[if gte mso 9]>
-          <xml>
-            <w:WordDocument>
-              <w:View>Print</w:View>
-              <w:Zoom>100</w:Zoom>
-              <w:DoNotOptimizeForBrowser/>
-            </w:WordDocument>
-          </xml>
-          <![endif]-->
-          <style>
-            @page {
-              size: 21.0cm 29.7cm;
-              margin: 1.8cm 1.8cm 1.8cm 1.8cm;
-              mso-page-orientation: portrait;
-            }
-            body {
-              font-family: 'Microsoft JhengHei', '微軟正黑體', sans-serif;
-              font-size: 9.5pt;
-              line-height: 1.45;
-              color: #334155;
-            }
-            td, th {
-              border: 1pt solid #cbd5e1;
-            }
-            .tag-pass { color: #059669; font-weight: bold; }
-            .tag-self { color: #d97706; font-weight: bold; }
-          </style>
-        </head>
-        <body>
-          <!-- 封面 -->
-          <div style="text-align:center; padding-top:40pt; margin-bottom:20pt;">
-            <p style="font-size:12pt; color:#2563eb; font-weight:bold; margin-bottom:6pt;">🇯🇵 2027 嚴選壯遊專屬小冊子</p>
-            <h1 style="font-size:22pt; color:#1e3a8a; margin-bottom:10pt;">山陰山陽 13 天縱走<br>名城・名湯・絕景漫遊隨身手冊</h1>
-            <p style="font-size:10.5pt; color:#64748b; margin-bottom:30pt;">日本100名城巡禮 ｜ 三大名湯 ｜ 日本海極品松葉蟹 ｜ 每日獨立分頁隨身指南</p>
-          </div>
+      const htmlBody = `<!DOCTYPE html>
+<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+  <meta charset="utf-8">
+  <title>山陰山陽13天旅行隨身手冊</title>
+  <!--[if gte mso 9]>
+  <xml>
+    <w:WordDocument>
+      <w:View>Print</w:View>
+      <w:Zoom>100</w:Zoom>
+      <w:DoNotOptimizeForBrowser/>
+    </w:WordDocument>
+  </xml>
+  <![endif]-->
+  <style>
+    @page {
+      size: 21.0cm 29.7cm;
+      margin: 1.8cm 1.8cm 1.8cm 1.8cm;
+      mso-page-orientation: portrait;
+    }
+    body {
+      font-family: 'Microsoft JhengHei', '微軟正黑體', sans-serif;
+      font-size: 9.5pt;
+      line-height: 1.45;
+      color: #334155;
+    }
+    td, th {
+      border: 1pt solid #cbd5e1;
+    }
+    .tag-pass { color: #059669; font-weight: bold; }
+    .tag-self { color: #d97706; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <!-- 封面 -->
+  <div style="text-align:center; padding-top:40pt; margin-bottom:20pt;">
+    <p style="font-size:12pt; color:#2563eb; font-weight:bold; margin-bottom:6pt;">🇯🇵 2027 嚴選壯遊專屬小冊子</p>
+    <h1 style="font-size:22pt; color:#1e3a8a; margin-bottom:10pt;">山陰山陽 13 天縱走<br>名城・名湯・絕景漫遊隨身手冊</h1>
+    <p style="font-size:10.5pt; color:#64748b; margin-bottom:30pt;">日本100名城巡禮 ｜ 三大名湯 ｜ 日本海極品松葉蟹 ｜ 每日獨立分頁隨身指南</p>
+  </div>
 
-          <table style="width:100%; border-collapse:collapse; margin-bottom:30pt;">
-            <tr>
-              <td style="width:25%; background-color:#f1f5f9; font-weight:bold; color:#1e3a8a; padding:8pt;">📅 旅行日期</td>
-              <td style="padding:8pt;">2027 年 1 月 13 日 (三) ～ 1 月 25 日 (一) 共 13 天 12 夜</td>
-            </tr>
-            <tr>
-              <td style="background-color:#f1f5f9; font-weight:bold; color:#1e3a8a; padding:8pt;">👥 隨行成員</td>
-              <td style="padding:8pt;">獅子 & 方 (雙人自助旅行・大眾運輸精準漫遊)</td>
-            </tr>
-            <tr>
-              <td style="background-color:#f1f5f9; font-weight:bold; color:#1e3a8a; padding:8pt;">✈️ 航班資訊</td>
-              <td style="padding:8pt;">台灣虎航直飛岡山：去程 IT214 (11:30~15:05) ｜ 回程 IT215 (15:55~17:40)</td>
-            </tr>
-            <tr>
-              <td style="background-color:#f1f5f9; font-weight:bold; color:#1e3a8a; padding:8pt;">🎫 鐵路周遊券</td>
-              <td style="padding:8pt;">JR 山陰&山陽鐵路周遊券 7日券【Day 3 ～ Day 9 啟用】</td>
-            </tr>
-            <tr>
-              <td style="background-color:#f1f5f9; font-weight:bold; color:#1e3a8a; padding:8pt;">🆘 緊急電話</td>
-              <td style="padding:8pt;">警察 110 ｜ 救護 119 ｜ 外交部急難救助 +886-800-085-095</td>
-            </tr>
-          </table>
+  <table style="width:100%; border-collapse:collapse; margin-bottom:30pt;">
+    <tr>
+      <td style="width:25%; background-color:#f1f5f9; font-weight:bold; color:#1e3a8a; padding:8pt;">📅 旅行日期</td>
+      <td style="padding:8pt;">2027 年 1 月 13 日 (三) ～ 1 月 25 日 (一) 共 13 天 12 夜</td>
+    </tr>
+    <tr>
+      <td style="background-color:#f1f5f9; font-weight:bold; color:#1e3a8a; padding:8pt;">👥 隨行成員</td>
+      <td style="padding:8pt;">獅子 & 方 (雙人自助旅行・大眾運輸精準漫遊)</td>
+    </tr>
+    <tr>
+      <td style="background-color:#f1f5f9; font-weight:bold; color:#1e3a8a; padding:8pt;">✈️ 航班資訊</td>
+      <td style="padding:8pt;">台灣虎航直飛岡山：去程 IT214 (11:30~15:05) ｜ 回程 IT215 (15:55~17:40)</td>
+    </tr>
+    <tr>
+      <td style="background-color:#f1f5f9; font-weight:bold; color:#1e3a8a; padding:8pt;">🎫 鐵路周遊券</td>
+      <td style="padding:8pt;">JR 山陰&山陽鐵路周遊券 7日券【Day 3 ～ Day 9 啟用】</td>
+    </tr>
+    <tr>
+      <td style="background-color:#f1f5f9; font-weight:bold; color:#1e3a8a; padding:8pt;">🆘 緊急電話</td>
+      <td style="padding:8pt;">警察 110 ｜ 救護 119 ｜ 外交部急難救助 +886-800-085-095</td>
+    </tr>
+  </table>
 
-          <br clear="all" style="page-break-before:always; mso-break-type:section-break">
+  <br clear="all" style="page-break-before:always; mso-break-type:section-break">
 
-          <!-- 每日內容 (每天獨立分頁) -->
-          ${daysHtml}
-        </body>
-        </html>
-      `;
+  <!-- 每日內容 (每天獨立分頁) -->
+  ${daysHtml}
+</body>
+</html>`;
 
-      const blob = new Blob([fullDoc], { type: 'application/msword;charset=utf-8' });
+      const fullMhtmlDoc =
+        `MIME-Version: 1.0\r\n` +
+        `Content-Type: multipart/related; boundary="----=_NextPart_Booklet_2027"\r\n\r\n` +
+        `------=_NextPart_Booklet_2027\r\n` +
+        `Content-Location: file:///C:/Booklet/document.html\r\n` +
+        `Content-Transfer-Encoding: 8bit\r\n` +
+        `Content-Type: text/html; charset="utf-8"\r\n\r\n` +
+        `${htmlBody}\r\n\r\n` +
+        `${mhtmlParts.join('\r\n')}` +
+        `------=_NextPart_Booklet_2027--\r\n`;
+
+      const blob = new Blob([fullMhtmlDoc], { type: 'application/msword;charset=utf-8' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
