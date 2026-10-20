@@ -6360,6 +6360,16 @@
       };
     }
 
+    function formatShortDateWithDow(dateStr) {
+      if (!dateStr) return "";
+      const d = new Date(dateStr + "T00:00:00");
+      if (isNaN(d.getTime())) return "";
+      const m = d.getMonth() + 1;
+      const dayNum = d.getDate();
+      const dowShort = ["日", "一", "二", "三", "四", "五", "六"][d.getDay()];
+      return `${m}/${dayNum}(${dowShort})`;
+    }
+
     // 檢查某景點在某天是否衝堂公休
     function checkSpotClosedConflict(spot, dateStr) {
       if (!spot || !spot.closedDay || spot.closedDay === "None" || !dateStr) return null;
@@ -7124,17 +7134,20 @@
         'hofu_tenmangu': '防府天滿宮',
         'okayama_aeon': 'AEON採買',
         'okayama_hotel': 'VIA INN 岡山',
-        'okayama_hotel_d11': '宿岡山',
+        'okayama_hotel_d11': 'VIA INN 岡山',
         'kinojo': '鬼ノ城',
         'tsuyama': '津山城',
-        'tottori_hotel': 'APA飯店 鳥取車站前',
+        'tottori_hotel': 'APA 鳥取',
         'yunogo_onsen': '湯郷溫泉',
         'tottori': '鳥取城',
         'tottori_sakyu': '鳥取砂丘',
         'hakuto_jinja': '白兔神社',
         'kinosaki_onsen': '城崎溫泉',
         'amanohashidate': '天橋立',
+        'amanohashidate_lodging': '宿天橋立',
         'ine_funaya': '伊根舟屋',
+        'yonago_hotel': 'Harvest 米子',
+        'yasugi_lodging': '宿安來',
         'kaike_onsen': '皆生溫泉',
         'gassan_toda': '月山富田城',
         'adachi_museum': '足立美術館',
@@ -7142,6 +7155,7 @@
         'matsue_horikawa': '堀川遊船',
         'matsue_lodging': '宿松江',
         'izumo_taisha': '出雲大社',
+        'iwami_ginzan': '石見銀山',
         'yaegaki_jinja': '八重垣神社',
         'tamatsukuri_yu_jinja': '玉作湯神社',
         'tamatsukuri_onsen': '玉造溫泉',
@@ -7150,12 +7164,12 @@
         'hagi_lodging': '宿萩市',
         'motonosumi_jinja': '元乃隅神社',
         'hagi': '萩城',
-        'shin_yamaguchi_lodging': 'Comfort Hotel Shin Yamaguchi',
+        'shin_yamaguchi_lodging': 'Comfort 新山口',
         'iwakuni': '岩國城',
         'itsukushima_jinja': '嚴島神社',
         'daishoin': '大聖院',
-        'hiroshima_lodging_d8': 'Via Inn Hiroshima Shinkansenguchi',
-        'hiroshima_lodging_d9': 'Via Inn Hiroshima Shinkansenguchi',
+        'hiroshima_lodging_d8': 'VIA INN 廣島',
+        'hiroshima_lodging_d9': 'VIA INN 廣島',
         'hiroshima': '廣島城',
         'hiroshima_gokoku_jinja': '廣島護國神社',
         'pokemon_center_hiroshima': '寶可夢中心',
@@ -7202,7 +7216,9 @@
               || briefName.startsWith('宿') 
               || briefName.includes('溫泉') 
               || briefName.includes('飯店') 
-              || briefName.includes('旅館');
+              || briefName.includes('旅館')
+              || /hotel|lodging|onsen/i.test(id)
+              || /VIA INN|APA|Harvest|Comfort/i.test(briefName);
             validSpots.push({ id, name: briefName, isLodging });
           }
         });
@@ -7335,9 +7351,13 @@
               ${state.itinerary.map((d, i) => {
                 const th = getDayTheme(i);
                 const summaryBrief = getDaySummaryBrief(d);
+                const shortDate = formatShortDateWithDow(d.date);
                 return `
-                  <button onclick="scrollToDay(${d.dayNumber})" title="直達 Day ${d.dayNumber}：${escapeHtml(d.title || '')}" class="text-[11px] sm:text-xs font-medium px-2.5 py-1 rounded-lg border transition flex items-center gap-1.5 hover:shadow-xs active:scale-95 cursor-pointer text-slate-700 bg-white hover:bg-slate-50 border-slate-200 hover:border-slate-300 shrink-0">
-                    <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold text-white shadow-2xs shrink-0" style="background-color: ${th.hex};">D${d.dayNumber}</span>
+                  <button onclick="scrollToDay(${d.dayNumber})" title="直達 Day ${d.dayNumber}${shortDate ? ' (' + shortDate + ')' : ''}：${escapeHtml(d.title || '')}" class="text-[11px] sm:text-xs font-medium px-2.5 py-1 rounded-lg border transition flex items-center gap-1.5 hover:shadow-xs active:scale-95 cursor-pointer text-slate-700 bg-white hover:bg-slate-50 border-slate-200 hover:border-slate-300 shrink-0">
+                    <span class="px-1.5 py-0.5 rounded text-[10px] font-bold text-white shadow-2xs shrink-0 flex items-center gap-1" style="background-color: ${th.hex};">
+                      <span class="font-mono">D${d.dayNumber}</span>
+                      <span id="day-nav-date-${d.dayNumber}" class="${shortDate ? '' : 'hidden'}">${escapeHtml(shortDate)}</span>
+                    </span>
                     <span class="font-medium text-slate-800">${escapeHtml(summaryBrief)}</span>
                   </button>
                 `;
@@ -12025,6 +12045,14 @@
         day[field] = value;
         debounceSaveState(300);
         // 嚴禁呼叫 renderMainPanel()！防止重繪銷毀使用者當前輸入框與丟失焦點
+        if (field === 'date') {
+          const navDateEl = document.getElementById(`day-nav-date-${dayNumber}`);
+          if (navDateEl) {
+            const shortDate = formatShortDateWithDow(value);
+            navDateEl.textContent = shortDate;
+            navDateEl.classList.toggle('hidden', !shortDate);
+          }
+        }
         if (field === 'title' || field === 'date') {
           updateMapFilterDropdown();
         }
