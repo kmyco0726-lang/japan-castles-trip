@@ -9092,14 +9092,17 @@
           <!-- 時刻表縮圖卡片群 (僅在有上傳圖檔時渲染，無圖檔不佔用畫面空間) -->
           ${images.length > 0 ? `
             <div class="flex flex-wrap items-start gap-2 pt-1 border-t border-slate-200/60">
-              ${images.map((img, imgIdx) => `
+              ${images.map((img, imgIdx) => {
+                const srcUrl = resolveTimetableImageUrl(img.url);
+                return `
                 <div class="relative group border border-slate-300 bg-white rounded-lg p-1 shadow-3xs flex flex-col items-center">
                   <div class="w-18 h-14 sm:w-20 sm:h-16 bg-slate-100 rounded overflow-hidden cursor-pointer relative" onclick="openImageViewer('${escapeHtml(img.url)}', '${escapeHtml(img.name || '時刻表縮圖')}')">
-                    <img src="${img.url}" class="w-full h-full object-cover transition group-hover:scale-105" alt="${escapeHtml(img.name || '時刻表')}">
+                    <img src="${srcUrl}" class="w-full h-full object-cover transition group-hover:scale-105" alt="${escapeHtml(img.name || '時刻表')}" onerror="handleTimetableImgError(this, '${escapeHtml(img.url)}')">
                     <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-[10px] font-bold">
                       🔍 放大
                     </div>
-                  </div>
+                  </div>`;
+              }).join('')}
                   <div class="w-18 sm:w-20 text-[9px] text-slate-600 truncate mt-1 text-center font-mono" title="${escapeHtml(img.name)}">${escapeHtml(img.name)}</div>
                   <button type="button" onclick="removeTransitImage(${dayNumber}, '${transitKey}', ${imgIdx})" class="absolute -top-1.5 -right-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-full w-4 h-4 text-[10px] font-bold flex items-center justify-center shadow-xs cursor-pointer" title="刪除此縮圖">✕</button>
                 </div>
@@ -12083,6 +12086,34 @@
       renderMapElements();
     }
 
+    function resolveTimetableImageUrl(rawUrl) {
+      if (!rawUrl || typeof rawUrl !== 'string') return '';
+      if (rawUrl.startsWith('data:image')) return rawUrl;
+      const cleanKey = rawUrl.replace(/^\.?\//, '');
+      const bareKey = cleanKey.split('/').pop();
+      if (typeof window !== 'undefined' && window.TIMETABLES_IMAGE_DB) {
+        const entry = window.TIMETABLES_IMAGE_DB[cleanKey] ||
+                      window.TIMETABLES_IMAGE_DB[rawUrl] ||
+                      window.TIMETABLES_IMAGE_DB[bareKey] ||
+                      window.TIMETABLES_IMAGE_DB['timetables/' + bareKey];
+        if (entry) {
+          if (typeof entry === 'string') {
+            return entry.startsWith('data:') ? entry : `data:image/jpeg;base64,${entry}`;
+          }
+          if (entry.dataUrl) return entry.dataUrl;
+          if (entry.b64) return `data:${entry.mime || 'image/jpeg'};base64,${entry.b64}`;
+        }
+      }
+      return rawUrl;
+    }
+
+    function handleTimetableImgError(imgEl, originalUrl) {
+      const fallback = resolveTimetableImageUrl(originalUrl);
+      if (fallback && fallback !== imgEl.src && fallback.startsWith('data:image')) {
+        imgEl.src = fallback;
+      }
+    }
+
     function openImageViewer(imageUrl, title) {
       const modal = document.getElementById('imageViewerModal');
       const img = document.getElementById('imageViewerImg');
@@ -12091,10 +12122,15 @@
 
       if (!modal || !img) return;
 
-      img.src = imageUrl;
+      const fullUrl = resolveTimetableImageUrl(imageUrl);
+      img.src = fullUrl;
+      img.onerror = function() {
+        const fb = resolveTimetableImageUrl(imageUrl);
+        if (fb && fb !== fullUrl) img.src = fb;
+      };
       if (titleEl) titleEl.innerHTML = `<span>🕒</span><span>${escapeHtml(title || '時刻表檢視')}</span>`;
       if (downloadEl) {
-        downloadEl.href = imageUrl;
+        downloadEl.href = fullUrl;
         downloadEl.download = (title || 'timetable') + '.jpg';
       }
 
