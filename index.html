@@ -3328,14 +3328,16 @@
         "link": "https://www.hagishi.com/wp/wp-content/uploads/2023/01/%E3%81%BE%E3%81%81%E3%83%BC%E3%82%8B%E3%83%90%E3%82%B9%E6%99%82%E5%88%BB%E8%A1%A82022.pdf"
       },
       "hagi_to_shin_yamaguchi_lodging": {
-        "notes": "巴士城跡16:23-16:28\n玉江 16:55 ➔ 新山口 21:35",
+        "notes": "巴士城跡16:23-16:28\nJR到東萩 轉巴士到新山口",
         "images": [
           {
-            "name": "1791785943600.jpg",
-            "url": "timetables/d8_tamae_to_shin_yamaguchi_1.jpg",
+            "name": "1792659089544.jpg",
+            "url": "timetables/d8_tamae_to_shin_yamaguchi_2.jpg",
             "type": "image/jpeg",
+            "width": 826,
+            "height": 548,
             "isPdf": false,
-            "uploadedAt": "2026/10/12"
+            "uploadedAt": "2026/10/22"
           }
         ],
         "link": "https://www.hagishi.com/wp/wp-content/uploads/2023/01/%E3%81%BE%E3%81%81%E3%83%BC%E3%82%8B%E3%83%90%E3%82%B9%E6%99%82%E5%88%BB%E8%A1%A82022.pdf"
@@ -3410,13 +3412,23 @@
         "link": "https://www.chugoku-jrbus.co.jp/general/yamaguchi/"
       },
       "rurikoji_pagoda_to_hofu_tenmangu": {
-        "notes": "",
+        "notes": "山口県庁前13:28- 防府駅14:12\n過去天滿宮的巴士很少(防長巴士)",
         "images": [],
-        "link": ""
+        "link": "https://www.chugoku-jrbus.co.jp/general/yamaguchi/pdf/jikoku/20260314time_yamaguchi.pdf"
       },
       "hofu_tenmangu_to_shin_yamaguchi_lodging": {
         "notes": "",
-        "images": [],
+        "images": [
+          {
+            "name": "1792660633202.jpg",
+            "url": "timetables/d9_hofu_to_shin_yamaguchi_1.jpg",
+            "type": "image/jpeg",
+            "width": 644,
+            "height": 329,
+            "isPdf": false,
+            "uploadedAt": "2026/10/22"
+          }
+        ],
         "link": ""
       }
     }
@@ -4032,7 +4044,9 @@
       '1792242457470.jpg': 'timetables/d13_okayama_to_airport_bus_2.jpg',
       '1792206433056.jpg': 'timetables/d11_hiroshima_to_fukuyama_1.jpg',
       '1791626567066.jpg': 'timetables/d6_matsue_to_tamatsukuri_onsen_1.jpg',
-      '1792495163056.jpg': 'timetables/d9_shin_yamaguchi_to_akiyoshido_1.jpg'
+      '1792495163056.jpg': 'timetables/d9_shin_yamaguchi_to_akiyoshido_1.jpg',
+      '1792659089544.jpg': 'timetables/d8_tamae_to_shin_yamaguchi_2.jpg',
+      '1792660633202.jpg': 'timetables/d9_hofu_to_shin_yamaguchi_1.jpg'
     };
 
     function sanitizeTransitAttachmentObj(att) {
@@ -4301,6 +4315,7 @@
         // 100% 原封不動信任使用者儲存在 LocalStorage 的資料！絕不以預設值覆蓋使用者的任何修改！
         if (loadedItinerary && Array.isArray(loadedItinerary) && loadedItinerary.length > 0) {
           state.itinerary = loadedItinerary;
+          let fallbackSupplemented = false;
           state.itinerary.forEach(day => {
             if (!day.transitAttachments || typeof day.transitAttachments !== 'object') {
               day.transitAttachments = {};
@@ -4315,17 +4330,33 @@
                 const fbAtt = sanitizeTransitAttachmentObj(fbDay.transitAttachments[k]);
                 if (day.transitAttachments[k] === undefined) {
                   day.transitAttachments[k] = fbAtt;
+                  fallbackSupplemented = true;
                 } else {
                   // ★ 若使用者端目前的備忘或連結為空，自動補充預設值，保證跨瀏覽器或新分頁不丟失已建檔資料
                   const cur = day.transitAttachments[k];
-                  if ((!cur.notes || !cur.notes.trim()) && fbAtt.notes) cur.notes = fbAtt.notes;
-                  if ((!cur.link || !cur.link.trim()) && fbAtt.link) cur.link = fbAtt.link;
-                  if ((!cur.images || cur.images.length === 0) && fbAtt.images && fbAtt.images.length > 0) cur.images = fbAtt.images;
+                  if ((!cur.notes || !cur.notes.trim() || cur.notes.includes('玉江 16:55 ➔ 新山口 21:35')) && fbAtt.notes && cur.notes !== fbAtt.notes) {
+                    cur.notes = fbAtt.notes;
+                    if (k === 'hagi_to_shin_yamaguchi_lodging' && fbAtt.images && fbAtt.images.length > 0) {
+                      cur.images = fbAtt.images;
+                    }
+                    fallbackSupplemented = true;
+                  }
+                  if ((!cur.link || !cur.link.trim()) && fbAtt.link) {
+                    cur.link = fbAtt.link;
+                    fallbackSupplemented = true;
+                  }
+                  if ((!cur.images || cur.images.length === 0) && fbAtt.images && fbAtt.images.length > 0) {
+                    cur.images = fbAtt.images;
+                    fallbackSupplemented = true;
+                  }
                 }
               });
             }
             syncDayTransitAliasPairs(day);
           });
+          if (fallbackSupplemented) {
+            setTimeout(() => saveState({ skipCloudPush: true }), 0);
+          }
         } else {
           state.itinerary = fallbackItinerary;
         }

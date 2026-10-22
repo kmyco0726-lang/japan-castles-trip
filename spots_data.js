@@ -2545,14 +2545,16 @@ window.EXTERNAL_SPOTS_DATA = {
           "link": "https://www.hagishi.com/wp/wp-content/uploads/2023/01/%E3%81%BE%E3%81%81%E3%83%BC%E3%82%8B%E3%83%90%E3%82%B9%E6%99%82%E5%88%BB%E8%A1%A82022.pdf"
         },
         "hagi_to_shin_yamaguchi_lodging": {
-          "notes": "巴士城跡16:23-16:28\n玉江 16:55 ➔ 新山口 21:35",
+          "notes": "巴士城跡16:23-16:28\nJR到東萩 轉巴士到新山口",
           "images": [
             {
-              "name": "1791785943600.jpg",
-              "url": "timetables/d8_tamae_to_shin_yamaguchi_1.jpg",
+              "name": "1792659089544.jpg",
+              "url": "timetables/d8_tamae_to_shin_yamaguchi_2.jpg",
               "type": "image/jpeg",
+              "width": 826,
+              "height": 548,
               "isPdf": false,
-              "uploadedAt": "2026/10/12"
+              "uploadedAt": "2026/10/22"
             }
           ],
           "link": "https://www.hagishi.com/wp/wp-content/uploads/2023/01/%E3%81%BE%E3%81%81%E3%83%BC%E3%82%8B%E3%83%90%E3%82%B9%E6%99%82%E5%88%BB%E8%A1%A82022.pdf"
@@ -2627,13 +2629,23 @@ window.EXTERNAL_SPOTS_DATA = {
           "link": "https://www.chugoku-jrbus.co.jp/general/yamaguchi/"
         },
         "rurikoji_pagoda_to_hofu_tenmangu": {
-          "notes": "",
+          "notes": "山口県庁前13:28- 防府駅14:12\n過去天滿宮的巴士很少(防長巴士)",
           "images": [],
-          "link": ""
+          "link": "https://www.chugoku-jrbus.co.jp/general/yamaguchi/pdf/jikoku/20260314time_yamaguchi.pdf"
         },
         "hofu_tenmangu_to_shin_yamaguchi_lodging": {
           "notes": "",
-          "images": [],
+          "images": [
+            {
+              "name": "1792660633202.jpg",
+              "url": "timetables/d9_hofu_to_shin_yamaguchi_1.jpg",
+              "type": "image/jpeg",
+              "width": 644,
+              "height": 329,
+              "isPdf": false,
+              "uploadedAt": "2026/10/22"
+            }
+          ],
           "link": ""
         }
       }
