@@ -1,4 +1,4 @@
-window.INITIAL_SPOTS_DATA = {
+window.EXTERNAL_SPOTS_DATA = {
   "spots": [
     {
       "id": "taoyuan_airport",
@@ -2454,6 +2454,24 @@ window.INITIAL_SPOTS_DATA = {
             }
           ],
           "link": "https://hinomarubus.co.jp/timetable_route/2956/?tab=3#up-bus"
+        },
+        "tamatsukuri_onsen_to_iwami_ginzan": {
+          "notes": "一畑巴士11:40-12:18/12:20-12:49　轉JR 再轉石見交通14:02-14:35 http://iwamigroup.jp/files/lib/1/259/202605020731205618.pdf",
+          "images": [
+            {
+              "name": "1791710402295.jpg",
+              "url": "timetables/d7_izumo_taisha_to_iwami_ginzan_1.jpg",
+              "type": "image/jpeg",
+              "isPdf": false,
+              "uploadedAt": "2026/10/11"
+            }
+          ],
+          "link": "https://bus.ichibata.co.jp/media/b07b520813bcc98fef75e7927c466e5f.pdf"
+        },
+        "iwami_ginzan_to_kenran_amiyaki": {
+          "notes": "大田市 17:47 ➔ 益田 19:11 (特急スーパーまつかぜ7號) ➔ 益田 19:14 ➔ 東萩20:27 玉江 20:36",
+          "images": [],
+          "link": ""
         }
       }
     },
@@ -2548,6 +2566,11 @@ window.INITIAL_SPOTS_DATA = {
           "notes": "西回-9:38-玉江駛前9:43",
           "images": [],
           "link": ""
+        },
+        "hagi_to_kenran_amiyaki": {
+          "notes": "步行過去餐廳",
+          "images": [],
+          "link": ""
         }
       }
     },
@@ -2569,22 +2592,47 @@ window.INITIAL_SPOTS_DATA = {
       "notes": "【JR Pass 第 7 天（最後一天）】\n• 上午：自新山口站北口巴士站搭乘防長巴士（08:40 發 ➔ 09:20 達秋芳洞，單程 ¥1,290 自費），深入日本最大鐘乳石洞「秋芳洞」（冬季恆溫 17℃ 超溫暖！欣賞百枚皿、黃金柱），搭洞內電梯上「秋吉台展望台」俯瞰壯闊喀斯特高原。\n• 中午：自秋芳洞搭乘「中國 JR 巴士・秋吉線」（憑 JR 山陰&山陽周遊券免費搭乘！）直達山口市「香山公園五重塔前」，參拜日本三大名塔之一「國寶・瑠璃光寺五重塔」與大內文化街區。\n• 下午：由山口站搭 JR 山口線回新山口轉 JR 山陽本線至「防府站」（JR 全程憑 Pass 免費），參拜日本最初天滿宮、三大天神之一「防府天滿宮」。\n• 傍晚：由防府站搭 JR 山陽本線（15 分鐘，Pass 免費）返回新山口站，續住 Comfort Hotel Shin Yamaguchi。",
       "transitAttachments": {
         "shin_yamaguchi_lodging_to_akiyoshidai_akiyoshido": {
-          "notes": "新山口駅北口 ➔ 秋芳洞 (防長巴士 約40分)",
-          "images": [],
-          "link": "https://karusuto.com/access/"
+          "notes": "2號乘車處 防長巴士 約40分\n7:35-8:10",
+          "images": [
+            {
+              "name": "1792495163056.jpg",
+              "url": "timetables/d9_shin_yamaguchi_to_akiyoshido_1.jpg",
+              "type": "image/jpeg",
+              "width": 1254,
+              "height": 558,
+              "isPdf": false,
+              "uploadedAt": "2026/10/20"
+            }
+          ],
+          "link": "https://www.bochobus.co.jp/pages/65/"
+        },
+        "morning_origin_9": {
+          "notes": "2號乘車處 防長巴士 約40分\n7:35-8:10",
+          "images": [
+            {
+              "name": "1792495163056.jpg",
+              "url": "timetables/d9_shin_yamaguchi_to_akiyoshido_1.jpg",
+              "type": "image/jpeg",
+              "width": 1254,
+              "height": 558,
+              "isPdf": false,
+              "uploadedAt": "2026/10/20"
+            }
+          ],
+          "link": "https://www.bochobus.co.jp/pages/65/"
         },
         "akiyoshidai_akiyoshido_to_rurikoji_pagoda": {
-          "notes": "秋芳洞 ➔ 香山公園五重塔前 (中國JR巴士秋吉線・憑JR Pass免費搭乘)",
+          "notes": "秋芳洞10:40-山口県庁前 11:38\n步行15分至香山公園",
           "images": [],
-          "link": ""
+          "link": "https://www.chugoku-jrbus.co.jp/general/yamaguchi/"
         },
         "rurikoji_pagoda_to_hofu_tenmangu": {
-          "notes": "山口駅 ➔ 新山口駅 ➔ 防府駅 (JR山口線+山陽本線・憑JR Pass免費)",
+          "notes": "",
           "images": [],
           "link": ""
         },
         "hofu_tenmangu_to_shin_yamaguchi_lodging": {
-          "notes": "防府駅 ➔ 新山口駅 (JR山陽本線 約15分・憑JR Pass免費)",
+          "notes": "",
           "images": [],
           "link": ""
         }
@@ -2648,7 +2696,7 @@ window.INITIAL_SPOTS_DATA = {
           "link": ""
         },
         "itsukushima_jinja_to_hiroshima_lodging_d8": {
-          "notes": "大聖院漫步回宮島棧橋搭JR渡輪返宮島口 ➔ 宮島口 17:19 ➔ 廣島 17:52 (山陽本線33分，JR Pass免費) ➔ 抵達廣島站前飯店Check-in",
+          "notes": "宮島口 17:19 ➔ 廣島 17:52",
           "images": [
             {
               "name": "1791792530678.jpg",
@@ -4023,8 +4071,3 @@ window.INITIAL_SPOTS_DATA = {
   ],
   "updatedAt": 1792202130023
 };
-const DEFAULT_SPOTS = window.INITIAL_SPOTS_DATA.spots;
-const DEFAULT_ITINERARY = window.INITIAL_SPOTS_DATA.itinerary;
-const FLIGHT_COMPARISON_DATA = window.INITIAL_SPOTS_DATA.flights;
-const DEFAULT_TRANSIT_FARES = window.INITIAL_SPOTS_DATA.fares;
-const DEFAULT_TRIP_BUDGET = window.INITIAL_SPOTS_DATA.budget;
