@@ -621,6 +621,35 @@
 
     
 
+    
+    /* 交通步驟專用：JR / 巴士時刻表與乘車附件區塊 */
+    .transit-attachment-section {
+      margin-top: 10px;
+      padding: 8px 10px;
+      background: rgba(254, 243, 199, 0.45);
+      border: 1.5px dashed #d97706;
+      border-radius: var(--radius-md);
+    }
+    .transit-attachment-title {
+      font-size: 0.78rem;
+      font-weight: 900;
+      color: #92400e;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 4px;
+    }
+    .transit-note-text {
+      font-size: 0.75rem;
+      color: #78350f;
+      line-height: 1.45;
+      margin-bottom: 6px;
+      background: #ffffff;
+      padding: 4px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(217, 119, 6, 0.25);
+    }
+
     /* 住宿卡片 */
     .hotel-card {
       background: var(--card-white);
@@ -1188,11 +1217,12 @@
       return safe.replace(/\n/g, '<br>');
     }
 
-    // 精準取得僅屬於當前步驟的時刻表／交通連結（不置於頂端，只放在對應交通步驟內）
-    function getStepTransitLinks(step, day, stepIdx) {
+    // 精準取得僅屬於當前步驟的時刻表／交通連結與備忘
+    function getStepTransitInfo(step, day, stepIdx) {
       const links = [];
       const seen = new Set();
       const atts = day.transitAttachments || {};
+      let stepNote = '';
 
       function addLink(url, label) {
         if (!url) return;
@@ -1229,14 +1259,18 @@
           const attImgUrls = (att.images || []).map(img => img.url).filter(Boolean);
           const matchedByImg = sImgUrls.some(u => attImgUrls.includes(u));
           if (matchedByImg) {
-            // 排除跨段附件誤連
             if (day.dayNumber === 13 && k.includes('tomonoura_onsen_to_bitchu') && stepIdx !== 0) {
-              // 這是鞆之浦到福山的巴士附件，不誤掛到其他步驟
+              // 排除跨段誤連
             } else {
               if (att.link) addLink(att.link);
               if (att.notes) {
                 const nMatched = att.notes.match(/https?:\/\/[^\s\)\)\"\'，。、<>]+/g);
                 if (nMatched) nMatched.forEach(u => addLink(u));
+                // 若筆記包含備忘且未包含在 details 內，可提為 stepNote
+                const cleanNote = att.notes.replace(/https?:\/\/[^\s\)\)\"\'，。、<>]+/g, '').trim();
+                if (cleanNote && (!step.details || !step.details.includes(cleanNote))) {
+                  stepNote = cleanNote;
+                }
               }
             }
           }
@@ -1325,12 +1359,16 @@
             if (att.notes) {
               const nMatched = att.notes.match(/https?:\/\/[^\s\)\)\"\'，。、<>]+/g);
               if (nMatched) nMatched.forEach(u => addLink(u));
+              const cleanNote = att.notes.replace(/https?:\/\/[^\s\)\)\"\'，。、<>]+/g, '').trim();
+              if (cleanNote && (!step.details || !step.details.includes(cleanNote))) {
+                stepNote = cleanNote;
+              }
             }
           }
         }
       }
 
-      return links;
+      return { links, note: stepNote };
     }
 
     function renderDayContent(idx) {
@@ -1341,7 +1379,6 @@
       const passBadgeClass = day.isPass ? 'pass-yes' : 'pass-no';
       const passBadgeText = day.isPass ? '🎫 JR Pass 適用日 (免費指定席)' : '💳 刷交通卡 / 現金 (非 Pass 天數)';
 
-      // 頂端僅呈現當日基本資訊，不放置時刻表捷徑列（依指示直接呈現在對應交通卡片中）
       headerCard.innerHTML = `
         <div class="day-main-title">${escapeHtml(day.shortTitle)}</div>
         <div class="day-badges-row">
@@ -1411,11 +1448,11 @@
           }).join(' ');
         }
 
-        // 查找該交通步驟精確對應的時刻表/路線網址
-        const stepLinks = getStepTransitLinks(step, day, sIdx);
+        // 查找該交通步驟精確對應的時刻表/路線網址與附件
+        const transitInfo = getStepTransitInfo(step, day, sIdx);
         let linkBtnHtml = '';
-        if (stepLinks.length > 0) {
-          linkBtnHtml = stepLinks.map(lk => `
+        if (transitInfo.links && transitInfo.links.length > 0) {
+          linkBtnHtml = transitInfo.links.map(lk => `
             <a href="${escapeHtml(lk.url)}" target="_blank" rel="noopener noreferrer" class="btn-link-view" title="${escapeHtml(lk.url)}">
               <span>🔗</span>
               <span>${escapeHtml(lk.tag)}</span>
@@ -1423,12 +1460,24 @@
           `).join(' ');
         }
 
-        const actionsRowHtml = (photoBtnHtml || linkBtnHtml) ? `
-          <div class="step-actions-row">
-            ${photoBtnHtml}
-            ${linkBtnHtml}
-          </div>
-        ` : '';
+        // 當有圖片或連結或筆記時，呈現「JR / 巴士時刻表與乘車附件：」區塊
+        let transitSectionHtml = '';
+        if (photoBtnHtml || linkBtnHtml || transitInfo.note) {
+          const noteHtml = transitInfo.note ? `<div class="transit-note-text">📝 ${formatDetailsWithLinks(transitInfo.note)}</div>` : '';
+          transitSectionHtml = `
+            <div class="transit-attachment-section">
+              <div class="transit-attachment-title">
+                <span>🕒</span>
+                <span>JR / 巴士時刻表與乘車附件：</span>
+              </div>
+              ${noteHtml}
+              <div class="step-actions-row">
+                ${photoBtnHtml}
+                ${linkBtnHtml}
+              </div>
+            </div>
+          `;
+        }
 
         return `
           <div class="timeline-node">
@@ -1442,7 +1491,7 @@
               ${(!gourmetBoxHtml && step.details) ? `<div class="step-desc">${formatDetailsWithLinks(step.details)}</div>` : ''}
               ${stampBoxHtml}
               ${gourmetBoxHtml}
-              ${actionsRowHtml}
+              ${transitSectionHtml}
             </div>
           </div>
         `;
