@@ -4083,3 +4083,15 @@ window.EXTERNAL_SPOTS_DATA = {
   ],
   "updatedAt": 1792202130023
 };
+
+// 相容性橋接：確保 admin.html 與外部腳本皆能正確讀取景點與行程資料
+if (typeof window !== "undefined" && window.EXTERNAL_SPOTS_DATA) {
+  window.INITIAL_SPOTS_DATA = window.EXTERNAL_SPOTS_DATA;
+  window.DEFAULT_SPOTS = window.EXTERNAL_SPOTS_DATA.spots || [];
+  window.DEFAULT_ITINERARY = window.EXTERNAL_SPOTS_DATA.itinerary || [];
+  window.DEFAULT_TRANSIT_FARES = window.EXTERNAL_SPOTS_DATA.transitFares || [];
+  window.DEFAULT_TRIP_BUDGET = window.EXTERNAL_SPOTS_DATA.budget || [];
+}
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = (typeof window !== "undefined" && window.EXTERNAL_SPOTS_DATA) ? window.EXTERNAL_SPOTS_DATA : {};
+}
