@@ -1516,24 +1516,24 @@
     "notes": "岡山夢幻和牛「千屋牛」特選鐵板燒。直結岡山車站 2F，極致交通便利。極度推薦排在【Day 1 晚餐】（虎航抵達Check-in後）或【Day 8 午餐】返台前慶功！"
   },
   {
-    "id": "chiyagyu_kuya",
-    "name": "鉄板焼 空也 (千屋牛)",
+    "id": "okonomiyaki_kamons",
+    "name": "お好み焼 花門S (岡山御好燒)",
     "prefecture": "岡山",
     "type": "custom",
-    "lat": 34.6655,
-    "lng": 133.9235,
-    "stayDuration": "1.5 小時",
+    "lat": 34.6644,
+    "lng": 133.9218,
+    "stayDuration": "1 小時",
     "climbLevel": "gourmet",
-    "climbLevelText": "🥩 頂級和牛美食（西川綠道公園商圈）",
+    "climbLevelText": "🥢 岡山在地人氣御好燒/牡蠣燒老店",
     "nearestStation": "岡山駅",
     "stampLocation": "餐廳櫃台",
-    "closedDay": "Sunday",
-    "closedDayText": "週日公休 (或依預約不定休)",
+    "closedDay": "Monday",
+    "closedDayText": "週一公休",
     "backupStamp": "",
-    "openHours": "晚餐 18:00~23:00 (L.O. 22:30)",
-    "transitInfo": "JR 岡山站東口出站步行約 5~7 分鐘 (岡山市北區平和町 1-11)",
-    "reservationUrl": "https://teppan-ku-ya.gorp.jp/",
-    "notes": "岡山市區隱密職人鐵板燒名店，專精 A5 頂級千屋牛、黑毛和牛與海鮮鐵板料理。適合【Day 1 晚餐】散步至西川綠道公園商圈享用。"
+    "openHours": "12:00~22:00 (通宵無中休)",
+    "transitInfo": "JR 岡山站東口出站步行約 3~5 分鐘 (岡山市北區本町 2-23 錦大樓 1F)",
+    "reservationUrl": "https://tabelog.com/okayama/A3301/A330101/33016462/",
+    "notes": "創業於1977年的岡山老字號鐵板料理名店。招牌為冬季限定「日生牡蠣燒 (カキオコ)」、津山風牛內臟炒烏龍 (ホルモンうどん)、蝦仁炒飯與招牌摩登燒。午間於此大啖在地鐵板美味！"
   },
   {
     "id": "tottori_takumi",
@@ -2302,7 +2302,7 @@
     "date": "2027-01-12",
     "dayNumber": 1,
     "deletedTransitKeys": [
-      "chiyagyu_kuya_to_okayama_aeon",
+      "chiyagyu_bisai_to_okayama_aeon",
       "okayama_aeon_to_okayama_hotel"
     ],
     "lodging": "VIA INN 岡山",
@@ -2312,7 +2312,7 @@
     "recommendedHotels": "VIA INN 岡山 (ヴィアイン岡山・JR岡山站直結徒步1分)",
     "spotIds": [
       "okayama_airport",
-      "chiyagyu_kuya",
+      "chiyagyu_bisai",
       "okayama_aeon",
       "okayama_hotel"
     ],
@@ -2323,7 +2323,7 @@
         "images": [],
         "link": ""
       },
-      "okayama_airport_to_chiyagyu_kuya": {
+      "okayama_airport_to_chiyagyu_bisai": {
         "notes": "",
         "images": [
           {
@@ -2369,6 +2369,19 @@
     ],
     "title": "Day 2：吉備古國名城鬼之城 ➔ 津山城 ➔ 抵達鳥取站前夜宿",
     "transitAttachments": {
+      "okonomiyaki_kamons_to_tsuyama": {
+        "notes": "13:05/14:06/15:08 一小時一班",
+        "images": [
+          {
+            "isPdf": false,
+            "name": "1791465300281.jpg",
+            "type": "image/jpeg",
+            "uploadedAt": "2026/10/8",
+            "url": "timetables/d2_chiyagyu_bisai_to_tsuyama_1.jpg"
+          }
+        ],
+        "link": ""
+      },
       "chiyagyu_bisai_to_tsuyama": {
         "notes": "13:05/14:06/15:08 一小時一班",
         "images": [
@@ -2378,6 +2391,19 @@
             "type": "image/jpeg",
             "uploadedAt": "2026/10/8",
             "url": "timetables/d2_chiyagyu_bisai_to_tsuyama_1.jpg"
+          }
+        ],
+        "link": ""
+      },
+      "kinojo_to_okonomiyaki_kamons": {
+        "notes": "",
+        "images": [
+          {
+            "isPdf": false,
+            "name": "1790641253493.jpg",
+            "type": "image/jpeg",
+            "uploadedAt": "2026/10/5",
+            "url": "timetables/d2_kinojo_to_chiyagyu_bisai_1.jpg"
           }
         ],
         "link": ""
@@ -3860,8 +3886,8 @@
     // 告別錯置：嚴格遵循地理行車鐵路先後順序，且所有溫泉/住宿點一律排在最後面！
     // ==========================================
     const CANONICAL_SPOT_ORDER = {
-      1: ['okayama_airport', 'chiyagyu_bisai', 'chiyagyu_kuya', 'okayama_aeon', 'okayama_hotel'],
-      2: ['kinojo', 'tsuyama', 'tottori_hotel'],
+      1: ['okayama_airport', 'chiyagyu_bisai', 'okayama_aeon', 'okayama_hotel'],
+      2: ['kinojo', 'okonomiyaki_kamons', 'tsuyama', 'tottori_hotel'],
       3: ['tottori', 'tottori_sakyu', 'tottori_takumi', 'kinosaki_onsen'],
       4: ['amanohashidate', 'ine_funaya', 'araiso_yonago', 'yonago_hotel'],
       5: ['tsuwano', 'taikodani_inari', 'kaike_onsen'],
@@ -3883,7 +3909,7 @@
 
       // Day 1 特別處理：機場 ➔ 住宿Check-in ➔ 和牛 ➔ 逛街 ➔ 住宿 (不丟棄使用者自訂加入的景點)
       if (dayNumber === 1) {
-        const d1Order = ['okayama_airport', 'chiyagyu_bisai', 'chiyagyu_kuya', 'okayama_aeon', 'okayama_hotel'];
+        const d1Order = ['okayama_airport', 'chiyagyu_bisai', 'okayama_aeon', 'okayama_hotel'];
         return [...spotIds].sort((a, b) => {
           const idxA = d1Order.indexOf(a);
           const idxB = d1Order.indexOf(b);
@@ -5330,8 +5356,8 @@
         [34.6663, 133.9185],
         [34.6648, 133.9185]
       ],
-      // 岡山站 ➔ 空也 (西川綠道商圈)
-      "okayama_station_to_chiyagyu_kuya": [
+      // 岡山站 ➔ 花門S (東口本町商圈)
+      "okayama_station_to_okonomiyaki_kamons": [
         [34.6663, 133.9185],
         [34.6658, 133.9212],
         [34.6655, 133.9235]
@@ -13166,7 +13192,7 @@
       1: {
         region: "岡山站前・表町商圈",
         items: [
-          ["🥩 岡山千屋牛", "日本最古老蔓牛血統，推薦預約「鉄板焼 空也」或格蘭比亞「鉄板焼 備彩」品嚐頂級黑毛和牛鐵板燒。"],
+          ["🥩 岡山千屋牛", "日本最古老蔓牛血統，推薦格蘭比亞飯店2F「鉄板焼 備彩」品嚐頂級黑毛和牛鐵板燒。"],
           ["🍑 岡山果實甜點", "岡山白桃霜淇淋、晴王麝香葡萄夾心餅乾與新鮮水果塔。"],
           ["🍤 岡山庶民名物", "岡山名物蝦仁黑炒飯（えびめし）、散壽司（ばらずし）。"]
         ],
@@ -13176,10 +13202,10 @@
         region: "吉備總社・美作津山・鳥取",
         items: [
           ["🍜 津山名物牛內臟炒烏龍麵", "津山ホルモンうどん・鶴山公園下町B級美食冠軍，獨門特製味噌醬汁炒新鮮牛內臟，香濃多汁。"],
-          ["🥩 備中千屋牛特上牛排", "吉備高原產地直送頂級和牛。"],
+          ["🦪 岡山日生牡蠣燒/御好燒", "創業近50年岡山老字號「花門S」，冬季肥美牡蠣燒(カキオコ)與招牌摩登燒。"],
           ["🍲 鳥取牛骨拉麵", "鳥取牛骨ラーメン・牛骨慢火清燉清香甘甜湯頭，鳥取在地靈魂名產。"]
         ],
-        tips: "中午於津山城下町品嚐熱騰騰鐵板牛內臟烏龍麵補足體力；晚間抵達鳥取站前品嚐牛骨拉麵。"
+        tips: "中午於岡山站前老字號「花門S」品嚐現煎牡蠣御好燒與鐵板料理；晚間抵達鳥取站前品嚐牛骨拉麵。"
       },
       3: {
         region: "鳥取市區・但馬城崎溫泉",
@@ -13307,7 +13333,7 @@
       const customNames = {
         'taoyuan_airport': '桃園機場',
         'okayama_airport': '岡山桃太郎機場',
-        'chiyagyu_kuya': '鉄板焼 空也',
+        'okonomiyaki_kamons': '岡山御好燒花門S',
         'aeon_mall_okayama': 'AEON Mall Okayama',
         'okayama_hotel': '岡山',
         'kinojo': '鬼ノ城',
