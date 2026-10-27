@@ -732,24 +732,24 @@ window.EXTERNAL_SPOTS_DATA = {
       "notes": "岡山夢幻和牛「千屋牛」特選鐵板燒。直結岡山車站 2F，極致交通便利。極度推薦排在【Day 1 晚餐】（虎航抵達Check-in後）或【Day 8 午餐】返台前慶功！"
     },
     {
-      "id": "chiyagyu_kuya",
-      "name": "鉄板焼 空也 (千屋牛)",
+      "id": "okonomiyaki_kamons",
+      "name": "お好み焼 花門S (岡山御好燒)",
       "prefecture": "岡山",
       "type": "custom",
-      "lat": 34.6655,
-      "lng": 133.9235,
-      "stayDuration": "1.5 小時",
+      "lat": 34.6644,
+      "lng": 133.9218,
+      "stayDuration": "1 小時",
       "climbLevel": "gourmet",
-      "climbLevelText": "🥩 頂級和牛美食（西川綠道公園商圈）",
+      "climbLevelText": "🥢 岡山在地人氣御好燒/牡蠣燒老店",
       "nearestStation": "岡山駅",
       "stampLocation": "餐廳櫃台",
-      "closedDay": "Sunday",
-      "closedDayText": "週日公休 (或依預約不定休)",
+      "closedDay": "Monday",
+      "closedDayText": "週一公休",
       "backupStamp": "",
-      "openHours": "晚餐 18:00~23:00 (L.O. 22:30)",
-      "transitInfo": "JR 岡山站東口出站步行約 5~7 分鐘 (岡山市北區平和町 1-11)",
-      "reservationUrl": "https://teppan-ku-ya.gorp.jp/",
-      "notes": "岡山市區隱密職人鐵板燒名店，專精 A5 頂級千屋牛、黑毛和牛與海鮮鐵板料理。適合【Day 1 晚餐】散步至西川綠道公園商圈享用。"
+      "openHours": "12:00~22:00 (通宵無中休)",
+      "transitInfo": "JR 岡山站東口出站步行約 3~5 分鐘 (岡山市北區本町 2-23 錦大樓 1F)",
+      "reservationUrl": "https://tabelog.com/okayama/A3301/A330101/33016462/",
+      "notes": "創業於1977年的岡山老字號鐵板料理名店。招牌為冬季限定「日生牡蠣燒 (カキオコ)」、津山風牛內臟炒烏龍 (ホルモンうどん)、蝦仁炒飯與招牌摩登燒。午間於此大啖在地鐵板美味！"
     },
     {
       "id": "tottori_takumi",
@@ -1232,6 +1232,26 @@ window.EXTERNAL_SPOTS_DATA = {
       "notes": "1996 年登錄為 UNESCO 世界文化遺產。1945 年 8 月 6 日原子彈於其上空 600 公尺處爆炸，為距離爆心最近且奇蹟未倒塌的歷史建築。矗立於元安川畔，殘存的鏤空綠色銅頂與龜裂磚牆無言訴說戰爭殘酷與恆久和平的珍貴。夜間有莊嚴點燈。"
     },
     {
+      "id": "amanohashidate_boat",
+      "name": "天橋立遊覽船 (天橋立觀光船)",
+      "prefecture": "京都",
+      "type": "scenic",
+      "lat": 35.5574,
+      "lng": 135.1873,
+      "stayDuration": "12分鐘 (單程)",
+      "climbLevel": "easy",
+      "climbLevelText": "🚢 日本三景海上航線 (沙洲松林絕景)",
+      "nearestStation": "天橋立駅 (徒步約5分鐘)",
+      "stampLocation": "天橋立棧橋候船所 / 一之宮棧橋",
+      "closedDay": "None",
+      "closedDayText": "全年無休 (天候惡劣除外)",
+      "backupStamp": "",
+      "openHours": "09:00-16:30 (每小時整點與半點出航)",
+      "transitInfo": "天橋立車站步行約 5 分鐘抵達天橋立棧橋，搭乘觀光船約 12 分鐘直達一之宮棧橋（憑「丹後天橋立伊根フリー」3,500 円周遊券免費搭乘，單程 700 円）",
+      "reservationUrl": "https://www.tankai.jp/kankousen/",
+      "notes": "• 【天橋立觀光船】：航行於天橋立棧橋與一之宮棧橋之間（單程約12分鐘），航程平行於天橋立松林沙洲，能從海上飽覽日本三景之美。\n• 【海鷗餵食】：船上可購買蝦味先體驗餵食海鷗，趣味十足。\n• 【周遊券全包】：憑「丹後天橋立伊根フリー」免費搭乘，抵達一之宮棧橋後步行約 5 分鐘即達傘松公園纜車站。"
+    },
+    {
       "id": "amanohashidate",
       "name": "日本三景 天橋立 (飛龍觀/傘松公園)",
       "prefecture": "京都",
@@ -1510,6 +1530,26 @@ window.EXTERNAL_SPOTS_DATA = {
       "transitInfo": "JR「新山口站」北口巴士總站搭乘防長巴士約 40 分鐘直達「秋芳洞」站；回程可搭中國 JR 巴士「秋吉線」(憑 JR Pass 免費) 直達山口站・香山公園五重塔前",
       "reservationUrl": "https://karusuto.com/",
       "notes": "日本規模最大的鐘乳石洞（特別天然紀念物），洞內觀光路線長約 1 公里，四季恆溫 17℃ 冬暖夏涼！必看「百枚皿」、「黃金柱」、「千町田」等億萬年地下奇景；由洞內搭電梯直上地表，即可飽覽日本最大喀斯特石灰岩草原「秋吉台」壯闊景致。"
+    },
+    {
+      "id": "hashidate_chaya",
+      "name": "はしだて茶屋 (Hashidate Chaya)",
+      "prefecture": "京都",
+      "type": "food",
+      "lat": 35.5582,
+      "lng": 135.1865,
+      "stayDuration": "1小時",
+      "climbLevel": "easy",
+      "climbLevelText": "🍜 天橋立名物美食 (花蛤丼/蛤蜊丼)",
+      "nearestStation": "天橋立駅 (徒步約9分鐘)",
+      "stampLocation": "店內",
+      "closedDay": "週四",
+      "closedDayText": "每週四公休 (冬季營業時間約10:00-16:30)",
+      "backupStamp": "",
+      "openHours": "09:00-17:00 (依季節變動)",
+      "transitInfo": "天橋立車站出站後步行約 9 分鐘，穿過智恩寺與迴旋橋即可抵達位於松林沙洲旁的茶屋",
+      "reservationUrl": "https://tabelog.com/kyoto/A2609/A260901/26002888/",
+      "notes": "• 【天橋立名物 花蛤丼 (あさり丼)】：茶屋招牌料理，嚴選宮津灣在地肥美鮮甜的花蛤，鋪滿在以特調柴魚高湯炊煮的白飯上，鮮味四溢。\n• 【招牌小食】：除了花蛤丼，亦推薦現烤花蛤、蛤蜊烏龍麵、黑豆軟冰淇淋與甜酒，漫步松林沙洲最佳歇腳處。"
     }
   ],
   "itinerary": [
@@ -1518,7 +1558,7 @@ window.EXTERNAL_SPOTS_DATA = {
       "date": "2027-01-12",
       "dayNumber": 1,
       "deletedTransitKeys": [
-        "chiyagyu_kuya_to_okayama_aeon",
+        "chiyagyu_bisai_to_okayama_aeon",
         "okayama_aeon_to_okayama_hotel"
       ],
       "lodging": "VIA INN 岡山",
@@ -1528,7 +1568,7 @@ window.EXTERNAL_SPOTS_DATA = {
       "recommendedHotels": "VIA INN 岡山 (ヴィアイン岡山・JR岡山站直結徒步1分)",
       "spotIds": [
         "okayama_airport",
-        "chiyagyu_kuya",
+        "chiyagyu_bisai",
         "okayama_aeon",
         "okayama_hotel"
       ],
@@ -1539,7 +1579,7 @@ window.EXTERNAL_SPOTS_DATA = {
           "images": [],
           "link": ""
         },
-        "okayama_airport_to_chiyagyu_kuya": {
+        "okayama_airport_to_chiyagyu_bisai": {
           "notes": "",
           "images": [
             {
@@ -1579,7 +1619,7 @@ window.EXTERNAL_SPOTS_DATA = {
       "recommendedHotels": "APA飯店 鳥取車站前 (アパホテル〈鳥取駅前〉)",
       "spotIds": [
         "kinojo",
-        "chiyagyu_bisai",
+        "okonomiyaki_kamons",
         "tsuyama",
         "tottori_hotel"
       ],
@@ -1672,6 +1712,32 @@ window.EXTERNAL_SPOTS_DATA = {
               "type": "image/jpeg",
               "uploadedAt": "2026/10/5",
               "url": "timetables/d2_tsuyama_to_yunogo_onsen_1.jpg"
+            }
+          ],
+          "link": ""
+        },
+        "kinojo_to_okonomiyaki_kamons": {
+          "notes": "",
+          "images": [
+            {
+              "isPdf": false,
+              "name": "1790641253493.jpg",
+              "type": "image/jpeg",
+              "uploadedAt": "2026/10/5",
+              "url": "timetables/d2_kinojo_to_chiyagyu_bisai_1.jpg"
+            }
+          ],
+          "link": ""
+        },
+        "okonomiyaki_kamons_to_tsuyama": {
+          "notes": "13:05/14:06/15:08 一小時一班",
+          "images": [
+            {
+              "isPdf": false,
+              "name": "1791465300281.jpg",
+              "type": "image/jpeg",
+              "uploadedAt": "2026/10/8",
+              "url": "timetables/d2_chiyagyu_bisai_to_tsuyama_1.jpg"
             }
           ],
           "link": ""
@@ -1781,20 +1847,28 @@ window.EXTERNAL_SPOTS_DATA = {
       "date": "2027-01-15",
       "dayNumber": 4,
       "deletedTransitKeys": [
-        "araiso_yonago_to_yonago_hotel"
+        "araiso_yonago_to_yonago_hotel",
+        "ine_funaya_to_hashidate_chaya",
+        "hashidate_chaya_to_araiso_yonago",
+        "hashidate_chaya_to_yonago_hotel",
+        "ine_funaya_to_araiso_yonago",
+        "ine_funaya_to_yonago_hotel",
+        "ine_funaya_to_kaike_onsen"
       ],
       "lodging": "Hotel Harvest In Yonago",
       "lodgingLocation": "JR 米子駅徒步 1 分鐘",
       "lodgingReason": "JR Pass 7日券(第2天)！包含京都丹後鐵道全線與長途特急，城崎溫泉出發遊天橋立與伊根舟屋，傍晚搭特急直達米子站，直接出站步行入住站前飯店，免拖行李轉乘公車；隔日晨間前往安來(足立美術館/月山富田城)與松江交通最極速便捷！",
-      "notes": "• 【🎫 JR Pass 第2天】：憑 Pass 免費搭乘京都丹後鐵道全線特急及山陰本線特急！\n• 【天橋立・日本三景 (建議預留 2h)】：自城崎溫泉搭京都丹後鐵道前往天橋立，搭纜車上飛龍觀眺望青松沙洲「跨下窺看」天地顛倒絕景，或漫步迴旋橋與白砂青松參道。\n• 【伊根舟屋・海之京都 (預留 2h)】：自天橋立搭丹後路線巴士約 55 分鐘抵達伊根，搭乘伊根灣遊覽船（餵海鷗、賞230棟臨海舟屋群），並於海景餐廳享用鰤魚在地料理。\n• 【傍晚移動至米子站前宿】：午後搭乘丹鐵與 JR 特急經豐岡/鳥取直達米子站，出站步行 1~3 分鐘即達站前飯店 Check-in 卸下大件行李。\n• 【米子站前名店晚餐雙推薦 (步行 2~4 分鐘直達)】：\n  - 方案 A【日本料理 荒磯 本店】：米子老字號海鮮割烹（万能町），品嚐境港活松葉蟹、紅楚蟹、炭烤喉黑魚（のどぐろ）與海鮮會席。\n  - 方案 B【居酒屋 太平記】：站前商店街超人氣第一居酒屋（明治町），境港當日朝捕活魚生魚片拼盤、大山地雞串燒與在地地酒小酌。",
+      "notes": "• 【🎫 丹後天橋立伊根フリー (3,500円) ＆ JR Pass 第2天】：使用「丹後天橋立伊根周遊券」全包丹鐵、丹海巴士、天橋立觀光船、傘松公園纜車與伊根灣遊覽船！豐岡至米子長途特急憑 JR Pass 全額免費！\n• 【天橋立觀光船 ＆ 傘松公園昇龍觀】：自天橋立搭觀光船 (09:00~09:12) 至一宮碼頭，搭 09:30 纜車登傘松公園倒看「昇龍觀」一線天絕景。下山造訪松屋品嚐名物現烤黑竹輪與參拜元伊勢籠神社。\n• 【伊根舟屋・海之京都】：由神社前搭丹海巴士 (11:24~11:50) 直達日出站，接 12:00 伊根灣遊覽船海上餵海鷗、飽覽230棟水上舟屋群。\n• 【はしだて茶屋 花蛤丼】：搭 13:09 巴士回天橋立站 (14:02抵達)，步行 9 分至「はしだて茶屋」享用招牌名物花蛤丼午餐。\n• 【15:21 電車離開直奔米子】：搭乘丹鐵宮豐線 15:21 發車經豐岡、濱坂、鳥取 (換乘特急スーパーまつかぜ13號) 於 21:54 抵達米子站，徒步 1 分入住 Harvest In 飯店，晚餐可於鳥取站內享用或至米子站前「太平記」居酒屋宵夜！",
       "recommendedHotels": "Hotel Harvest In Yonago (ホテルハーベストイン米子)",
       "spotIds": [
+        "amanohashidate_boat",
         "amanohashidate",
         "ine_funaya",
+        "hashidate_chaya",
         "araiso_yonago",
         "yonago_hotel"
       ],
-      "title": "Day 4：日本三景天橋立 (飛龍觀/傘松公園) ➔ 伊根舟屋 (海上午餐與遊覽船) ➔ 宿米子站前 (晚餐 荒磯/太平記)",
+      "title": "Day 4：日本三景天橋立 (觀光船/傘松公園) ➔ 伊根舟屋 (遊覽船) ➔ はしだて茶屋 ➔ 宿米子站前",
       "transitAttachments": {
         "kinosaki_onsen_to_amanohashidate": {
           "notes": "7:06-8:45",
@@ -1810,48 +1884,9 @@ window.EXTERNAL_SPOTS_DATA = {
           "link": ""
         },
         "amanohashidate_to_ine_funaya": {
-          "notes": "編號 5 或 7 的伊根線/蒲入線-天橋立纜車11:24-伊根灣巡游觀光船 日出站11:53(不能使用IC) 船1200円///伊根の遊覧船と天橋立ケーブル・登山バスがセットに 料金 大人：1,800円",
+          "notes": "丹後天橋立伊根周遊券 (3,500円) 全包！天橋立觀光船 09:00-09:12 一宮碼頭；傘松公園纜車 09:30 (每小時 00/15/30/45 分發車)；下山松屋黑竹輪/籠神社；神社前巴士 11:24-11:50 伊根灣巡游觀光船日出站；伊根灣舟屋遊覽船 12:00",
           "images": [],
           "link": "https://www.tankai.jp/tw/bus/tankai-bus/"
-        },
-        "ine_funaya_to_araiso_yonago": {
-          "notes": "巴士13:09-14:05天橋立駅  14:34-19:47米子",
-          "images": [
-            {
-              "name": "1791510665840.jpg",
-              "url": "timetables/d4_ine_funaya_to_araiso_yonago_1.jpg",
-              "type": "image/jpeg",
-              "isPdf": false,
-              "uploadedAt": "2026/10/9"
-            }
-          ],
-          "link": "https://www.tankai.jp/tw/bus/tankai-bus/"
-        },
-        "ine_funaya_to_yonago_hotel": {
-          "notes": "11:39.13:09伊根湾めぐり・日出-12:32.14:02天橋立駅,第一班車坐回岡山了",
-          "images": [
-            {
-              "name": "1791510665840.jpg",
-              "url": "timetables/d4_ine_funaya_to_yonago_hotel_1.jpg",
-              "type": "image/jpeg",
-              "isPdf": false,
-              "uploadedAt": "2026/10/9"
-            }
-          ],
-          "link": ""
-        },
-        "ine_funaya_to_kaike_onsen": {
-          "notes": "11:39.13:09伊根湾めぐり・日出-12:32.14:02天橋立駅,第一班車坐回岡山了",
-          "images": [
-            {
-              "name": "1791510665840.jpg",
-              "url": "timetables/d4_ine_funaya_to_kaike_onsen_1.jpg",
-              "type": "image/jpeg",
-              "isPdf": false,
-              "uploadedAt": "2026/10/9"
-            }
-          ],
-          "link": ""
         }
       }
     },
@@ -3326,7 +3361,7 @@ window.EXTERNAL_SPOTS_DATA = {
     {
       "id": "fare_d3_1",
       "dayNumber": 3,
-      "title": "鳥取駅 ➔ 鳥取城/久松公園 (日之丸巴士 北園團地線 免計程車)",
+      "title": "鳥取駅 ➔ 鳥取城跡/久松公園 (日之丸巴士 鳥取駅 ➔ 西町)",
       "from": "鳥取駅",
       "to": "鳥取城 (県庁日赤前)",
       "transitType": "bus",
@@ -3334,7 +3369,7 @@ window.EXTERNAL_SPOTS_DATA = {
       "amount": 170,
       "passCovered": false,
       "passNote": "⚠️ 需自費 (非 Pass 範圍)",
-      "notes": "07:50 鳥取站發車 ➔ 07:55 抵県庁日赤前 (170 円)，下車步行 4-5 分於 08:00 前抵達鳥取城久松公園 (免搭計程車)"
+      "notes": "07:35 鳥取駅發車 ➔ 07:42 抵達「西町」公車站 (170 円)，下車步行約 5 分於 07:47 抵達鳥取城久松公園"
     },
     {
       "id": "fare_d3_2",
@@ -3386,12 +3421,12 @@ window.EXTERNAL_SPOTS_DATA = {
       "amount": 0,
       "passCovered": true,
       "passNote": "徒步 (0 円)",
-      "notes": "出站徒步 4 分鐘抵達榮町「たくみ割烹店」，11:47~12:47 享用和牛元祖涮涮鍋午餐 (整整 1 小時)"
+      "notes": "出站徒步 4 分鐘抵達榮町「たくみ割烹店」，11:47~13:10 享用和牛元祖涮涮鍋午餐"
     },
     {
       "id": "fare_d3_6",
       "dayNumber": 3,
-      "title": "鳥取駅 ➔ 城崎溫泉駅 (JR 特急はまかぜ4號 直達 或 普通車)",
+      "title": "鳥取駅 ➔ 城崎溫泉駅 (JR 山陰本線 13:33 ➔ 15:28)",
       "from": "鳥取駅",
       "to": "城崎溫泉駅",
       "transitType": "train",
@@ -3399,72 +3434,7 @@ window.EXTERNAL_SPOTS_DATA = {
       "amount": 2330,
       "passCovered": true,
       "passNote": "🎫 JR Pass (第1天) ✅ 全額包含 (0元)",
-      "notes": "12:56 搭特急はまかぜ4號直達城崎溫泉駅 (14:11 到達，免轉車！JR Pass 免費搭乘)；備案搭 13:33 普通車 (15:15~15:30 到達)"
-    },
-    {
-      "id": "fare_d4_1",
-      "dayNumber": 4,
-      "title": "城崎溫泉駅 ➔ 天橋立駅 (京都丹後鐵道 特急/快速直通)",
-      "from": "城崎溫泉駅",
-      "to": "天橋立駅",
-      "transitType": "train",
-      "transitTypeName": "電車/特急",
-      "amount": 1220,
-      "passCovered": true,
-      "passNote": "🎫 JR Pass (第2天) ✅ 全額包含 (0元)",
-      "notes": "JR Pass 7日券 包含京都丹後鐵道全線，0 元免補票"
-    },
-    {
-      "id": "fare_d4_2",
-      "dayNumber": 4,
-      "title": "天橋立 飛龍觀登山吊椅/空中纜車 (來回票)",
-      "from": "天橋立駅",
-      "to": "天橋立飛龍觀",
-      "transitType": "cable_ferry",
-      "transitTypeName": "觀光纜車",
-      "amount": 850,
-      "passCovered": false,
-      "passNote": "⚠️ 需自費 (非 Pass 範圍)",
-      "notes": "搭乘空中單人吊椅或展望纜車登飛龍觀展望台眺望跨下窺看絕景"
-    },
-    {
-      "id": "fare_d4_3",
-      "dayNumber": 4,
-      "title": "天橋立駅 ➔ 伊根舟屋 (丹海路線巴士來回)",
-      "from": "天橋立駅",
-      "to": "伊根舟屋",
-      "transitType": "bus",
-      "transitTypeName": "路線公車",
-      "amount": 800,
-      "passCovered": false,
-      "passNote": "⚠️ 需自費 (非 Pass 範圍)",
-      "notes": "丹後海陸交通伊根線公車，單程約 55 分鐘直達伊根灣舟屋群"
-    },
-    {
-      "id": "fare_d4_4",
-      "dayNumber": 4,
-      "title": "伊根灣舟屋遊覽船 (海上巡航餵海鷗)",
-      "from": "伊根舟屋",
-      "to": "伊根灣",
-      "transitType": "cable_ferry",
-      "transitTypeName": "觀光遊覽船",
-      "amount": 1000,
-      "passCovered": false,
-      "passNote": "⚠️ 需自費 (非 Pass 範圍)",
-      "notes": "約 25 分鐘環灣巡航，近距離飽覽 230 棟舟屋群並體驗海鷗餵食"
-    },
-    {
-      "id": "fare_d4_5",
-      "dayNumber": 4,
-      "title": "天橋立駅 ➔ 米子駅 (京都丹後鐵道轉 JR 特急山陰本線)",
-      "from": "天橋立駅",
-      "to": "米子駅",
-      "transitType": "train",
-      "transitTypeName": "特急指定席",
-      "amount": 5830,
-      "passCovered": true,
-      "passNote": "🎫 JR Pass (第2天) ✅ 全額包含 (0元)",
-      "notes": "長途特急全包，丹後鐵道及山陰特急全額免補票"
+      "notes": "13:33 鳥取駅搭車 ➔ 15:28 抵城崎溫泉駅 (持 JR Pass 免費乘車；備案搭 12:56 特急はまかぜ4號)"
     },
     {
       "id": "fare_d5_1",
@@ -4063,6 +4033,38 @@ window.EXTERNAL_SPOTS_DATA = {
       "passCovered": false,
       "passNote": "不使用 Pass (自費 ¥1,000)",
       "notes": "岡山站西口 21 號月台搭利木津巴士直達機場，搭乘 2027/01/25 虎航 IT215 (岡山 ➔ 台北(桃園)) 返台"
+    },
+    {
+      "id": "fare_d4_0",
+      "dayNumber": 4,
+      "title": "城崎溫泉駅 ➔ 天橋立駅 (JR ➔ 豐岡 ➔ 丹鐵)",
+      "transitTypeName": "電車/快速",
+      "cost": "¥1,220\n(🎫 Pass免費)",
+      "notes": "07:06 城崎溫泉發車 ➔ 豐岡站轉乘 ➔ 08:45 抵達天橋立駅 (JR Pass 免費搭乘)"
+    },
+    {
+      "id": "fare_d4_1",
+      "dayNumber": 4,
+      "title": "天橋立傘松公園ケーブルカー・リフト＋伊根灣遊覽船觀光套票",
+      "transitTypeName": "觀光套票",
+      "cost": "¥1,800\n(🎫 KKday套票)",
+      "notes": "天橋立傘松公園登山纜車/吊椅來回＋伊根灣遊覽船乘船套票 (大人 1,800 円，KKday 網路預訂)"
+    },
+    {
+      "id": "fare_d4_2",
+      "dayNumber": 4,
+      "title": "天橋立 ➔ 伊根舟屋 (丹海路線巴士來回)",
+      "transitTypeName": "路線公車",
+      "cost": "¥400\n(⚠️ 需自費)",
+      "notes": "去程 10:50/11:15 丹海巴士往伊根；回程 13:09 日出站 ➔ 14:05 天橋立駅"
+    },
+    {
+      "id": "fare_d4_3",
+      "dayNumber": 4,
+      "title": "天橋立駅 ➔ 米子駅 (丹鐵特急はしだて7號 ➔ 豐岡 ➔ JR ➔ 鳥取 ➔ 特急スーパーまつかぜ11號)",
+      "transitTypeName": "特急/快速轉乘",
+      "cost": "¥6,430\n(🎫 Pass免費)",
+      "notes": "14:34 天橋立發 ➔ 15:36 抵豐岡 16:07 發 ➔ 18:34 抵鳥取 18:43 發 ➔ 19:47 抵達米子駅"
     }
   ],
   "budget": [
@@ -4083,15 +4085,6 @@ window.EXTERNAL_SPOTS_DATA = {
   ],
   "updatedAt": 1792202130023
 };
-
-// 相容性橋接：確保 admin.html 與外部腳本皆能正確讀取景點與行程資料
-if (typeof window !== "undefined" && window.EXTERNAL_SPOTS_DATA) {
-  window.INITIAL_SPOTS_DATA = window.EXTERNAL_SPOTS_DATA;
-  window.DEFAULT_SPOTS = window.EXTERNAL_SPOTS_DATA.spots || [];
-  window.DEFAULT_ITINERARY = window.EXTERNAL_SPOTS_DATA.itinerary || [];
-  window.DEFAULT_TRANSIT_FARES = window.EXTERNAL_SPOTS_DATA.transitFares || [];
-  window.DEFAULT_TRIP_BUDGET = window.EXTERNAL_SPOTS_DATA.budget || [];
-}
-if (typeof module !== "undefined" && module.exports) {
-  module.exports = (typeof window !== "undefined" && window.EXTERNAL_SPOTS_DATA) ? window.EXTERNAL_SPOTS_DATA : {};
-}
+window.INITIAL_SPOTS_DATA = window.EXTERNAL_SPOTS_DATA;
+window.DEFAULT_SPOTS = window.EXTERNAL_SPOTS_DATA.spots;
+window.DEFAULT_ITINERARY = window.EXTERNAL_SPOTS_DATA.itinerary;
