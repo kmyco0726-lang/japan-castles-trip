@@ -1509,8 +1509,9 @@
 
     <!-- 住宿資訊區塊 -->
     <section id="hotels" style="margin-top: 32px;">
-      <div class="section-title-wrap">
+      <div class="section-title-wrap" style="justify-content:space-between; flex-wrap:wrap;">
         <span class="section-tag tag-wakatake">🏨 住宿資訊</span>
+        <span id="hotelBookedCountBadge" class="hotel-status-badge status-pending" style="font-size:0.85rem; padding:4px 12px;">0 / 11 已訂妥</span>
       </div>
       <div id="hotelList"></div>
     </section>
@@ -1644,6 +1645,33 @@
         "images": [],
         "link": ""
       },
+      "okayama_airport_to_chiyagyu_bisai": {
+        "notes": "",
+        "images": [
+          {
+            "isPdf": false,
+            "name": "1790591404777.jpg",
+            "type": "image/jpeg",
+            "uploadedAt": "2026/10/3",
+            "url": "timetables/d1_okayama_airport_to_chiyagyu_kuya_1.jpg"
+          },
+          {
+            "isPdf": false,
+            "name": "1517363696-1389808805.png",
+            "type": "image/jpeg",
+            "uploadedAt": "2026/10/5",
+            "url": "timetables/d1_okayama_airport_to_chiyagyu_kuya_2.jpg"
+          },
+          {
+            "isPdf": false,
+            "name": "1517363697-3941485500.png",
+            "type": "image/jpeg",
+            "uploadedAt": "2026/10/5",
+            "url": "timetables/d1_okayama_airport_to_chiyagyu_kuya_3.jpg"
+          }
+        ],
+        "link": ""
+      },
       "okayama_airport_to_chiyagyu_kuya": {
         "notes": "",
         "images": [
@@ -1671,7 +1699,13 @@
         ],
         "link": ""
       }
-    }
+    },
+    "spotIds": [
+      "okayama_airport",
+      "chiyagyu_bisai",
+      "okayama_aeon",
+      "okayama_hotel"
+    ]
   },
   {
     "dayNumber": 2,
@@ -1885,8 +1919,40 @@
           }
         ],
         "link": ""
+      },
+      "kinojo_to_okonomiyaki_kamons": {
+        "notes": "",
+        "images": [
+          {
+            "isPdf": false,
+            "name": "1790641253493.jpg",
+            "type": "image/jpeg",
+            "uploadedAt": "2026/10/5",
+            "url": "timetables/d2_kinojo_to_chiyagyu_bisai_1.jpg"
+          }
+        ],
+        "link": ""
+      },
+      "okonomiyaki_kamons_to_tsuyama": {
+        "notes": "13:05/14:06/15:08 一小時一班",
+        "images": [
+          {
+            "isPdf": false,
+            "name": "1791465300281.jpg",
+            "type": "image/jpeg",
+            "uploadedAt": "2026/10/8",
+            "url": "timetables/d2_chiyagyu_bisai_to_tsuyama_1.jpg"
+          }
+        ],
+        "link": ""
       }
-    }
+    },
+    "spotIds": [
+      "kinojo",
+      "okonomiyaki_kamons",
+      "tsuyama",
+      "tottori_hotel"
+    ]
   },
   {
     "dayNumber": 3,
@@ -2060,7 +2126,13 @@
         ],
         "link": ""
       }
-    }
+    },
+    "spotIds": [
+      "tottori",
+      "tottori_sakyu",
+      "tottori_takumi",
+      "kinosaki_onsen"
+    ]
   },
   {
     "dayNumber": 4,
@@ -2196,7 +2268,15 @@
         "images": [],
         "link": "https://www.tankai.jp/tw/bus/tankai-bus/"
       }
-    }
+    },
+    "spotIds": [
+      "amanohashidate_boat",
+      "amanohashidate",
+      "ine_funaya",
+      "hashidate_chaya",
+      "araiso_yonago",
+      "yonago_hotel"
+    ]
   },
   {
     "dayNumber": 5,
@@ -2435,7 +2515,14 @@
         ],
         "link": "https://www.city.yasugi.shimane.jp/kurashi/sumai/yellow-bus/"
       }
-    }
+    },
+    "spotIds": [
+      "gassan_toda",
+      "adachi_museum",
+      "matsue_horikawa",
+      "matsue",
+      "kaike_onsen"
+    ]
   },
   {
     "dayNumber": 6,
@@ -2615,20 +2702,25 @@
           {
             "name": "1793106419160.jpg",
             "url": "timetables/d6_ohdashi_to_tsuwano_1747.jpg",
-            "caption": "大田市 ➔ 益田 ➔ 津和野 傍晚轉乘時刻表 (17:47發車/20:00抵達)",
+            "caption": "大田市 ➔ 益田 ➔ 津和野 傍晚特急與轉乘時刻表 (17:47發車/20:00抵達)",
             "type": "image/jpeg",
             "uploadedAt": "2026/10/27"
           }
         ],
         "link": "http://iwamigroup.jp/files/lib/1/259/202605020731205618.pdf"
       }
-    }
+    },
+    "spotIds": [
+      "izumo_taisha",
+      "iwami_ginzan",
+      "tsuwano_lodging"
+    ]
   },
   {
     "dayNumber": 7,
     "date": "2027-01-18",
-    "shortTitle": "D7:津和野城跡.太皷谷稻成.萩城.見蘭牛網焼き晚宴",
-    "title": "Day 7：津和野 7 點晨光健行 ➔ 城山遊步道登津和野城跡 ➔ 太皷谷稻成神社 ＆ 9點リフト茶屋蓋章 ➔ 12:29 JR 赴東萩 ➔ 國寶萩城 ➔ 17:00 網焼きレストラン見蘭晚宴 (宿萩市)",
+    "shortTitle": "D7:津和野城跡.太皷谷稻成.萩城.萩の御厨高大晚宴",
+    "title": "Day 7：津和野 7 點晨光健行 ➔ 城山遊步道登津和野城跡 ➔ 太皷谷稻成神社 ＆ 9點リフト茶屋蓋章 ➔ 12:29 JR 赴東萩 ➔ 國寶萩城 ➔ 17:30 萩の御厨 高大晚宴 (宿萩市)",
     "baseStation": "津和野駅 / 益田駅 / 東萩駅 / 玉江駅",
     "lodging": "萩市區飯店 / 萩溫泉旅館 (萩城下町 / 菊濱海濱溫泉)",
     "lodgingLocation": "JR 東萩駅周邊 / 萩城下町 / 菊濱海濱溫泉",
@@ -2692,29 +2784,28 @@
         "images": []
       },
       {
-        "time": "16:40~17:00",
-        "item": "萩城跡 ➔ 網焼きレストラン 見蘭 (步行前往餐廳)",
-        "mode": "漫步前往",
-        "cost": "-",
-        "details": "自萩城跡沿堀內傳統建造物群保存地區漫步前往餐廳（地址：山口縣萩市堀內 89），剛好趕上 17:00 晚間開始營業",
+        "time": "16:40~17:25",
+        "item": "萩城跡 ➔ 萩の御厨 高大 (萩循環巴士 まぁーるバス 西回線)",
+        "mode": "市營公車",
+        "cost": "¥100\n(⚠️ 需自費)",
+        "details": "於「萩城跡・指月公園入口」搭乘萩循環公車（まぁーるバス西回）至「萩バスセンター（萩巴士中心）」站下車（票價 100 円，車程約 12 分鐘），下車對面即達餐廳。",
         "images": []
       },
       {
-        "time": "17:00~18:15",
-        "item": "🥩 網焼きレストラン 見蘭 (夢幻和牛見蘭牛・見島牛燒肉晚宴)",
-        "mode": "頂級和牛晚宴",
+        "time": "17:30~19:00",
+        "item": "🍽️ 萩の御厨 高大（みくりや・たかだい） 長州旬味割烹晚宴",
+        "mode": "在地名物晚宴",
         "cost": "自費",
-        "details": "⏰ 營業時間：11:30 - 14:30 / 17:00 - 22:00 (L.O. 21:00，週三公休)\n📍 地址：山口県萩市堀内 89 (電話：0838-26-0141)\n🍽️ 必吃名物：由日本唯一純血天然紀念物「見島牛」交配培育之稀少「見蘭牛」炭火網燒（推薦：極上見蘭牛網焼きコース、特選ロース・カルビ燒肉），肉質濃郁甘甜、入口即化！",
-        "images": []
+        "details": "⏰ 營業時間：11:00 - 21:00 (不定休，電話：0838-22-0065)\n📍 地址：山口縣萩市唐樋町80（萩巴士中心正對面，徒步 1 分鐘）\n🐟 美食名物：萩市知名老舗割烹料亭！品嚐長州四季時令旬彩御膳、萩近海特鮮透抽刺身、仙崎海產與在地鄉土美饌，和風座敷庭園氛圍極佳！",
+        "images": [],
+        "link": "http://www.takadai.co.jp/"
       },
       {
-        "time": "18:15~19:00",
-        "item": "網焼きレストラン見蘭 ➔ 玉江駅 ➔ 東萩駅 / 萩市飯店 (公車或 JR 山陰本線)",
-        "mode": "公車 / JR在來線",
-        "cost": "JR Pass 全包\n(公車¥100自費)",
-        "jrSeat": "🟢 免劃位（自由入座）：玉江 18:48 ➔ 東萩 18:57 為 JR 山陰本線普通列車（自由席），免劃位直接持 Pass 搭乘",
-        "jrSeatType": "free",
-        "details": "🚌 返程方案 A：最晚循環公車 17:54 到萩巴士中心。\n🚃 返程方案 B（從容吃飽首選）：若沒搭到公車，直接從餐廳步行約 12 分鐘過去 JR「玉江站」，搭乘 JR 山陰本線 18:48 發車 ➔ 18:57 抵達「東萩站」（班次不多請留意時間），返回飯店休息享受溫泉！",
+        "time": "19:00~19:30",
+        "item": "萩の御厨 高大 ➔ 東萩駅 / 萩市飯店 (計程車 或 散策)",
+        "mode": "計程車 / 散策",
+        "cost": "約¥800~1,000/車",
+        "details": "餐後自萩巴士中心前搭乘計程車約 5 分鐘（或漫步約 20 分鐘）返回東萩站前或溫泉飯店，休息享受日本海菊濱溫泉！",
         "images": []
       }
     ],
@@ -2725,7 +2816,7 @@
         "link": ""
       },
       "morning_origin_7": {
-        "notes": "7點出發 走過去神社約25分鐘",
+        "notes": "殿町通古町散策，步行至太皷谷稻成千本鳥居約15分",
         "images": [],
         "link": ""
       },
@@ -2740,32 +2831,64 @@
           {
             "name": "1793185098422.jpg",
             "url": "timetables/d7_tsuwano_to_higashihagi_1229.jpg",
-            "caption": "津和野 12:29 ➔ 益田 13:10/13:27 ➔ 東萩 14:39 JR轉乘明細",
             "type": "image/jpeg",
-            "uploadedAt": "2026/10/28"
+            "width": 570,
+            "height": 408,
+            "isPdf": false,
+            "uploadedAt": "2026/10/28",
+            "caption": "津和野 12:29 ➔ 益田 13:27 ➔ 東萩 14:39 JR轉乘時刻表"
           },
           {
             "name": "1793184448343.jpg",
             "url": "timetables/d7_tsuwano_to_higashihagi_list.jpg",
-            "caption": "津和野 ➔ 東萩 班次一覽 (10:03 / 12:29 / 16:55)",
             "type": "image/jpeg",
-            "uploadedAt": "2026/10/28"
+            "width": 526,
+            "height": 280,
+            "isPdf": false,
+            "uploadedAt": "2026/10/28",
+            "caption": "津和野 ➔ 東萩 班次一覽 (10:03 / 12:29 / 16:55)"
           }
         ],
         "link": ""
       },
-      "hagi_to_kenran_amiyaki": {
-        "notes": "步行過去餐廳 5點吃飯",
-        "images": [],
-        "link": ""
-      },
-      "kenran_amiyaki_to_hagi_lodging": {
-        "notes": "最晚公車17:54 到巴士中心\n沒搭到直接走過去玉江站 搭JR回東萩18:48→18:57(班次不多)",
-        "images": [],
-        "link": ""
-      },
       "hagi_to_hagi_lodging": {
-        "notes": "最晚公車17:54 到巴士中心\n沒搭到直接走過去玉江站 搭JR回東萩18:48→18:57(班次不多)",
+        "notes": "巴士城跡16:23-16:28 返回市區/東萩飯店",
+        "images": [],
+        "link": "https://www.city.hagi.lg.jp/uploaded/attachment/28216.pdf"
+      },
+      "taikodani_inari_to_hagi_lodging": {
+        "notes": "津和野 12:29/13:30 ➔ 益田 13:06/14:05 ➔ 東萩 14:30/15:35 (JR山口線+山陰本線，Pass全包)\n巴士西回-13:57/14:57東萩-萩城跡14:08/15:08\n巴士城跡16:23-16:28",
+        "images": [
+          {
+            "name": "1791766653820.jpg",
+            "url": "timetables/d7_ohdashi_to_higashihagi_1.jpg",
+            "caption": "津和野 ➔ 益田 ➔ 東萩 JR轉乘時刻表",
+            "type": "image/jpeg",
+            "uploadedAt": "2026/10/12"
+          }
+        ],
+        "link": ""
+      },
+      "tsuwano_to_hagi_lodging": {
+        "notes": "津和野 12:29/13:30 ➔ 益田 13:06/14:05 ➔ 東萩 14:30/15:35 (JR山口線+山陰本線，Pass全包)",
+        "images": [
+          {
+            "name": "1791766653820.jpg",
+            "url": "timetables/d7_ohdashi_to_higashihagi_1.jpg",
+            "caption": "津和野 ➔ 益田 ➔ 東萩 JR轉乘時刻表",
+            "type": "image/jpeg",
+            "uploadedAt": "2026/10/12"
+          }
+        ],
+        "link": ""
+      },
+      "hagi_to_hagi_mikuriya_takadai": {
+        "notes": "萩城跡搭乘循環公車或計程車至萩巴士中心前，徒步1分抵達「萩の御厨 高大」享用晚宴",
+        "images": [],
+        "link": "http://www.takadai.co.jp/"
+      },
+      "hagi_mikuriya_takadai_to_hagi_lodging": {
+        "notes": "晚餐後自萩巴士中心周邊返回東萩站 / 萩市區溫泉名宿",
         "images": [],
         "link": ""
       }
@@ -2774,17 +2897,17 @@
       "tsuwano",
       "taikodani_inari",
       "hagi",
-      "kenran_amiyaki",
+      "hagi_mikuriya_takadai",
       "hagi_lodging"
     ]
   },
   {
     "dayNumber": 8,
     "date": "2027-01-19",
-    "shortTitle": "D8:東萩.元乃隅神社.山陰本線+山陽新幹線.宿新山口",
-    "title": "Day 8：東萩 07:55 出發 ➔ 長門古市轉計程車遊斷崖絕景元乃隅神社 ➔ 12:09 長門古市經小串・新下關轉新幹線こだま 956 號 ➔ 14:39 抵新山口",
-    "baseStation": "東萩駅 / 長門市駅 / 長門古市駅 / 小串駅 / 新下關駅 / 新山口駅",
-    "lodging": "Comfort Hotel Shin Yamaguchi (連住第1晚)",
+    "shortTitle": "D8:東萩.元乃隅神社.防府天滿宮.宿新山口",
+    "title": "Day 8：東萩 07:55 出發 ➔ 長門古市轉計程車遊斷崖絕景元乃隅神社 ➔ 12:09 長門古市經新下關轉新幹線こだま 956 號 ➔ 14:39 新山口轉 14:55 山陽本線 ➔ 15:11 抵防府・防府天滿宮 (宿新山口)",
+    "baseStation": "東萩駅 / 長門市駅 / 長門古市駅 / 小串駅 / 新下關駅 / 新山口駅 / 防府駅",
+    "lodging": "Comfort Hotel Shin Yamaguchi (1晚)",
     "lodgingLocation": "JR 新山口駅北口徒步 1 分鐘",
     "recommendedHotels": "Comfort Hotel Shin Yamaguchi (コンフォートホテル新山口)",
     "passStatus": "JR Pass 7日券【適用日】(全額免費搭乘指定席)",
@@ -2830,34 +2953,54 @@
         "item": "元乃隅神社 ➔ 長門古市駅 (計程車回程・銜接 12:09 JR)",
         "mode": "計程車",
         "cost": "約¥2,800/車\n(⚠️ 需自費)",
-        "details": "自元乃隅神社搭計程車返回長門古市站，銜接 12:09 發車往小串/新山口方向列車",
+        "details": "自元乃隅神社搭計程車返回長門古市站，銜接 12:09 發車往小串/新山口/防府方向列車",
         "images": []
       },
       {
-        "time": "12:09~14:39",
-        "item": "長門古市駅 ➔ 小串 ➔ 幡生 ➔ 新下關 ➔ 新山口駅 (山陰本線 + 山陽新幹線 こだま 956 號)",
+        "time": "12:09~15:11",
+        "item": "長門古市駅 ➔ 小串 ➔ 幡生 ➔ 新下關 ➔ 新山口 (14:39/14:55) ➔ 防府駅 (山陰本線 + 新幹線こだま956號 + 山陽本線)",
         "mode": "在來線+新幹線",
-        "cost": "¥3,290\n(🎫 Pass免費)",
-        "jrSeat": "🟢 免劃位可搭（或持 Pass 免費劃指定席）：\n• 12:09 長門古市➔13:16 小串、13:19 小串➔13:57 幡生、14:05 幡生➔14:08 新下關：三段皆為 JR 普通列車，全車自由席免劃位。\n• 14:17 新下關➔14:39 新山口「山陽新幹線 こだま 956 號」：圖片標示設有自由席（自由席 990 円），持 JR Pass 可直接進自由席車廂免劃位搭乘，亦可於機器免費劃指定席",
+        "cost": "¥3,630\n(🎫 Pass免費)",
+        "jrSeat": "🟢 免劃位可搭（或持 Pass 免費劃指定席）：\n• 12:09 長門古市➔13:16 小串、13:19 小串➔13:57 幡生、14:05 幡生➔14:08 新下關：三段皆為 JR 普通列車，全車自由席免劃位。\n• 14:17 新下關（3番線發）➔14:39 新山口（11番線著）「山陽新幹線 こだま 956 號（新大阪行）」：圖片標示設有自由席（990 円），持 JR Pass 可直接進自由席車廂免劃位搭乘，亦可免費劃指定席。\n• 14:55 新山口（4番線發）➔15:11 防府（JR山陽本線普通・岩國行）：🟢 普通車免劃位。",
         "jrSeatType": "free",
-        "details": "依上傳時刻表搭乘：\n① 12:09 長門古市 ➔ 13:16 小串（JR山陰本線普通・小串行，同站 3 分鐘轉乘）\n② 13:19 小串 ➔ 13:57 幡生（JR山陰本線普通・下關行，4番線著/3番線發，8 分鐘轉乘）\n③ 14:05 幡生 ➔ 14:08 新下關（JR山陽本線普通・小月行，9 分鐘轉乘新幹線）\n④ 14:17 新下關 ➔ 14:39 新山口（JR山陽新幹線 こだま 956 號・廣島行，12番線發/11番線著），14:39 準時抵達新山口站！",
+        "details": "依上傳時刻表搭乘：\n① 12:09 長門古市 ➔ 13:16 小串（JR山陰本線普通・小串行，同站 3 分鐘轉乘）\n② 13:19 小串 ➔ 13:57 幡生（JR山陰本線普通・当駅始発 下關行，8 分鐘轉乘）\n③ 14:05 幡生 ➔ 14:08 新下關（JR山陽本線普通・小月行，4番線著，9 分鐘轉乘新幹線）\n④ 14:17 新下關（3番線發）➔ 14:39 新山口（11番線著）（JR山陽新幹線 こだま 956 號・新大阪行；可利用 16 分鐘空檔於新山口站寄放行李）\n⑤ 14:55 新山口（4番線發）➔ 15:11 防府（JR山陽本線普通・岩國行），15:11 抵達防府站，步行 15~20 分鐘至防府天滿宮！",
         "images": [
           {
-            "url": "timetables/d8_nagatofuruichi_to_shinyamaguchi_1209.jpg",
-            "caption": "長門古市 12:09 ➔ 小串 ➔ 幡生 ➔ 新下關 ➔ 新山口 14:39 轉乘明細 (含新幹線こだま956號)"
-          },
-          {
-            "url": "timetables/d8_nagatofuruichi_to_shinyamaguchi_list.jpg",
-            "caption": "長門古市 ➔ 新山口 12:09~14:39 班次一覽"
+            "url": "timetables/d8_nagatofuruichi_to_hofu_1209.jpg",
+            "caption": "長門古市 12:09 ➔ 新下關 ➔ 新山口 14:39/14:55 ➔ 防府 15:11 完整轉乘明細"
           }
         ]
       },
       {
-        "time": "15:00~",
+        "time": "15:25~16:50",
+        "item": "防府天滿宮",
+        "mode": "三大天神參拜",
+        "cost": "-",
+        "details": "⏰ 開放時間：06:00 - 20:00 (御祈禱與授與所 08:30 - 17:00) (休：全年無休)\n🚶 接駁提示：15:11 防府站下車可步行 15~20 分鐘到防府天滿宮；回程 16:55 搭防長巴士（16:55-17:00）回防府車站\n🍡 必吃：表參道名物「梅枝餅」（現烤梅花年糕餅，外脆內軟）。\n⚠️ 授與所 17:00 關閉、1 月日落約 17:20，御朱印請先辦。",
+        "images": []
+      },
+      {
+        "time": "16:55~17:35",
+        "item": "防府天滿宮 ➔ 防府駅 (防長巴士 16:55-17:00) ➔ 新山口駅 (JR山陽本線 17:19-17:35)",
+        "mode": "防長巴士+JR",
+        "cost": "巴士自費+JR免費\n(🎫 JR Pass免費)",
+        "jrSeat": "🟢 免劃位（自由入座）：依上傳圖片（17:19➔17:35、17:56➔18:12、18:26➔18:44）皆為 JR 山陽本線普通列車（330 円，車程 16~18 分鐘），全車自由席無指定席，直接持 Pass 進站上車",
+        "jrSeatType": "free",
+        "details": "🚌 防長巴士：16:55「防府天満宮」站上車 ➔ 17:00 抵達 JR 防府站。\n🚃 JR 山陽本線：於防府站搭乘 17:19 發車之普通車 ➔ 17:35 抵達新山口站（持 Pass 免費；備案班次：17:56➔18:12、18:26➔18:44）。",
+        "link": "https://www.bochobus.co.jp/files/libs/8435/202603191301215019.pdf",
+        "images": [
+          {
+            "url": "timetables/d8_hofu_to_shinyamaguchi_1719.jpg",
+            "caption": "防府駅 ➔ 新山口駅 (JR山陽本線 330円) 17:19 / 17:56 / 18:26 時刻表 (免劃位)"
+          }
+        ]
+      },
+      {
+        "time": "17:45~",
         "item": "Comfort Hotel Shin Yamaguchi 入住 ＆ 🍽️ 新山口瓦片燒蕎麥 / 河豚晚宴",
         "mode": "住宿 Check-in",
         "cost": "-",
-        "details": "午後 14:39 抵達新山口站，從容辦理入住新山口站北口 Comfort Hotel（連住第1晚），下午可於新山口站アイスタ商場採買伴手禮，晚間品嚐山口名物「元祖瓦片燒蕎麥麵（瓦そば）」或下關直送天然河豚料理配獺祭地酒！",
+        "details": "返回新山口站北口 Comfort Hotel 辦理入住，晚間品嚐山口名物「元祖瓦片燒蕎麥麵（瓦そば）」或下關直送天然河豚料理配獺祭地酒！",
         "images": []
       }
     ],
@@ -2890,41 +3033,132 @@
         ],
         "link": ""
       },
-      "motonosumi_jinja_to_shin_yamaguchi_lodging": {
-        "notes": "元乃隅神社搭計程車回長門古市站12:09",
+      "motonosumi_jinja_to_hagi": {
+        "notes": "元乃隅神社搭計程車回長門古市站 ➔  東萩 13:15,\n 巴士西回-13:57東萩-萩城跡14:08",
         "images": [
           {
-            "name": "1793187636079.jpg",
-            "url": "timetables/d8_nagatofuruichi_to_shinyamaguchi_list.jpg",
-            "caption": "長門古市 ➔ 新山口 12:09~14:39 班次一覽",
+            "isPdf": false,
+            "name": "1791809071060.jpg",
             "type": "image/jpeg",
-            "uploadedAt": "2026/10/28"
+            "uploadedAt": "2026/10/12",
+            "url": "timetables/d8_nagatofuruichi_to_higashihagi_1.jpg"
+          }
+        ],
+        "link": "https://www.hagishi.com/wp/wp-content/uploads/2023/01/%E3%81%BE%E3%81%81%E3%83%BC%E3%82%8B%E3%83%90%E3%82%B9%E6%99%82%E5%88%BB%E8%A1%A82022.pdf"
+      },
+      "hagi_to_shin_yamaguchi_lodging": {
+        "notes": "萩巴士中心 16:00 ➔ 新山口 17:15 Super Hagi特急巴士 (Pass全包免自費)",
+        "images": [
+          {
+            "name": "d8_tamae_to_shin_yamaguchi_2.jpg",
+            "url": "timetables/d8_tamae_to_shin_yamaguchi_2.jpg"
           },
           {
-            "name": "1793187654867.jpg",
-            "url": "timetables/d8_nagatofuruichi_to_shinyamaguchi_1209.jpg",
-            "caption": "長門古市 12:09 ➔ 小串 ➔ 幡生 ➔ 新下關 ➔ 新山口 14:39 轉乘明細",
-            "type": "image/jpeg",
-            "uploadedAt": "2026/10/28"
+            "name": "d8_tamae_to_shin_yamaguchi_1.jpg",
+            "url": "timetables/d8_tamae_to_shin_yamaguchi_1.jpg"
           }
         ],
         "link": ""
+      },
+      "hagi_to_shin_yamaguchi": {
+        "notes": "巴士城跡16:23-16:28\nJR到東萩 轉巴士到新山口 (萩巴士中心 16:00 ➔ 新山口 17:15 Super Hagi特急巴士)",
+        "images": [
+          {
+            "isPdf": false,
+            "name": "1791811562947.jpg",
+            "type": "image/jpeg",
+            "uploadedAt": "2026/10/12",
+            "url": "timetables/d8_tamae_to_shin_yamaguchi_2.jpg"
+          },
+          {
+            "isPdf": false,
+            "name": "1791811562947.jpg",
+            "type": "image/jpeg",
+            "uploadedAt": "2026/10/12",
+            "url": "timetables/d8_tamae_to_shin_yamaguchi_1.jpg"
+          }
+        ],
+        "link": "https://www.hagishi.com/wp/wp-content/uploads/2023/01/%E3%81%BE%E3%81%81%E3%83%BC%E3%82%8B%E3%83%90%E3%82%B9%E6%99%82%E5%88%BB%E8%A1%A82022.pdf"
+      },
+      "hagi_lodging_to_hagi": {
+        "notes": "西回-W6東荻駛前7:57-W13荻城跡8:08",
+        "images": [],
+        "link": "https://www.hagishi.com/wp/wp-content/uploads/2023/01/%E3%81%BE%E3%81%81%E3%83%BC%E3%82%8B%E3%83%90%E3%82%B9%E6%99%82%E5%88%BB%E8%A1%A82022.pdf"
+      },
+      "hagi_to_motonosumi_jinja": {
+        "notes": "西回-9:38-玉江駛前9:43",
+        "images": [],
+        "link": ""
+      },
+      "hagi_to_kenran_amiyaki": {
+        "notes": "步行過去餐廳",
+        "images": [],
+        "link": ""
+      },
+      "motonosumi_jinja_to_shin_yamaguchi_lodging": {
+        "notes": "元乃隅神社搭計程車回長門古市站12:09\n15:11防府站可步行15~20分步行到天滿宮",
+        "images": [
+          {
+            "name": "1793258006919.jpg",
+            "url": "timetables/d8_nagatofuruichi_to_hofu_1209.jpg",
+            "type": "image/jpeg",
+            "width": 804,
+            "height": 834,
+            "isPdf": false,
+            "uploadedAt": "2026/10/29",
+            "caption": "長門古市 12:09 ➔ 新下關 ➔ 新山口 14:39/14:55 ➔ 防府 15:11 轉乘明細"
+          }
+        ],
+        "link": ""
+      },
+      "motonosumi_jinja_to_hofu_tenmangu": {
+        "notes": "元乃隅神社搭計程車回長門古市站12:09\n15:11防府站可步行15~20分步行到天滿宮",
+        "images": [
+          {
+            "name": "1793258006919.jpg",
+            "url": "timetables/d8_nagatofuruichi_to_hofu_1209.jpg",
+            "type": "image/jpeg",
+            "width": 804,
+            "height": 834,
+            "isPdf": false,
+            "uploadedAt": "2026/10/29",
+            "caption": "長門古市 12:09 ➔ 新下關 ➔ 新山口 14:39/14:55 ➔ 防府 15:11 轉乘明細"
+          }
+        ],
+        "link": ""
+      },
+      "hofu_tenmangu_to_shin_yamaguchi_lodging": {
+        "notes": "防長バス巴士16:55-17:00車站",
+        "images": [
+          {
+            "name": "1793258935453.jpg",
+            "url": "timetables/d8_hofu_to_shinyamaguchi_1719.jpg",
+            "type": "image/jpeg",
+            "width": 701,
+            "height": 325,
+            "isPdf": false,
+            "uploadedAt": "2026/10/29",
+            "caption": "防府駅 ➔ 新山口駅 (JR山陽本線 330円) 17:19 / 17:56 / 18:26 時刻表"
+          }
+        ],
+        "link": "https://www.bochobus.co.jp/files/libs/8435/202603191301215019.pdf"
       }
     },
     "spotIds": [
       "motonosumi_jinja",
+      "hofu_tenmangu",
       "shin_yamaguchi_lodging"
     ]
   },
   {
     "dayNumber": 9,
     "date": "2027-01-20",
-    "shortTitle": "D9:秋吉台・秋芳洞.瑠璃光寺五重塔.防府天滿宮.新山口",
-    "title": "Day 9：日本最大鐘乳洞秋芳洞・秋吉台喀斯特高原 ➔ 國寶瑠璃光寺五重塔 ➔ 防府天滿宮 ➔ 宿新山口",
-    "baseStation": "新山口 / 山口 / 防府",
-    "lodging": "Comfort Hotel Shin Yamaguchi (連住第2晚)",
-    "lodgingLocation": "新山口站北口（在來線口）步行 2 分鐘（新山口連住免搬大行李！）",
-    "recommendedHotels": "Comfort Hotel Shin Yamaguchi",
+    "shortTitle": "D9:秋吉台・秋芳洞.瑠璃光寺五重塔.宿岩國",
+    "title": "Day 9：日本最大鐘乳洞秋芳洞・秋吉台喀斯特高原 ➔ 國寶瑠璃光寺五重塔 ➔ 大內路線巴士至山口轉 JR 山口線・新幹線のぞみ 34 號・山陽本線 ➔ 15:49 抵岩國 (宿岩國)",
+    "baseStation": "新山口駅 / 秋芳洞 / 山口駅 / 廣島駅 / 岩國駅",
+    "lodging": "JR 岩國站周邊飯店 (推薦 Green Rich Hotel / 東橫INN)",
+    "lodgingLocation": "JR 岩國駅周邊（隔天搭いわくにバス約 20 分至錦帶橋）",
+    "recommendedHotels": "Green Rich Hotel 岩國站前 (附人工溫泉大浴場) / 東橫INN 岩國站西口 (徒步1分)",
     "passStatus": "JR Pass 7日券【適用日】(全額免費搭乘指定席)",
     "isPass": true,
     "steps": [
@@ -2958,7 +3192,7 @@
         "images": []
       },
       {
-        "time": "11:45~13:15",
+        "time": "11:45~12:35",
         "item": "瑠璃光寺五重塔",
         "mode": "國寶佛塔參訪",
         "cost": "-",
@@ -2966,52 +3200,53 @@
         "images": []
       },
       {
-        "time": "13:15~13:28",
-        "item": "🍽️ 秋吉台・山口市・防府天滿宮 特色美食與名物料理",
-        "mode": "當地美食",
-        "cost": "自費",
-        "details": "必吃名物：🍜 秋吉台牛蒡烏龍麵（秋芳洞名物ごぼううどん・香酥牛蒡絲天婦羅搭配清爽柴魚高湯。） ｜ 🍡 山口名物外郎糕（山口ういろう・蕨粉揉製，口感比名古屋外郎更Ｑ彈滑潤，豆沙與抹茶絕品。） ｜ 🍵 防府天滿宮梅枝餅（表參道名物現烤梅花烤年糕餅，外脆內軟。） ｜ 🥢 山口瓦片燒蕎麥麵（元祖瓦そば・熱燙瓦片上盛放茶蕎麥、牛肉絲、錦絲蛋，沾特製熱醬汁。）\n💡 賞味叮嚀：秋芳洞出洞後可在觀光商店街吃碗熱牛蒡烏龍麵；防府天滿宮參拜後品嚐梅枝餅；晚間於新山口吃瓦片蕎麥麵。",
-        "images": []
-      },
-      {
-        "time": "13:28~14:12",
-        "item": "山口県庁前 ➔ 防府駅 (中國JR巴士防長線 / 或 JR 山口線+山陽本線)",
-        "mode": "中國JR巴士/在來線",
-        "cost": "JR Pass 全包",
-        "jrSeat": "🟢 免劃位（自由入座）：中國 JR 巴士防長線（山口県庁前 13:28 ➔ 防府駅 14:12）或 JR 山口線＋山陽本線普通列車皆為自由席免劃位，直接出示 JR Pass 搭乘",
-        "jrSeatType": "free",
-        "details": "於山口県庁前搭乘 13:28 中國 JR 巴士直達防府站（14:12 抵達，Pass 免費）；注意防府站過去防府天滿宮的防長巴士班次較少，亦可自防府站天神口步行約 15~20 分鐘前往",
-        "images": []
-      },
-      {
-        "time": "14:30~16:00",
-        "item": "防府天滿宮",
-        "mode": "三大天神參拜",
-        "cost": "-",
-        "details": "⏰ 開放時間：06:00 - 20:00 (御祈禱與授與所 08:30 - 17:00) (休：全年無休)\n🚶 接駁提示：JR 山陽本線「防府站」天神口 (北口) 步行約 15~20 分鐘；或搭乘防長巴士約 4 分鐘至「防府天滿宮」站下車步行 3 分鐘",
-        "images": []
-      },
-      {
-        "time": "16:23~16:40",
-        "item": "防府駅 ➔ 新山口駅 (JR山陽本線普通車)",
-        "mode": "JR山陽本線",
-        "cost": "¥330\n(🎫 Pass免費)",
-        "jrSeat": "🟢 免劃位（自由入座）：圖片為 JR 山陽本線普通列車（16:23➔16:40、16:51➔17:08、17:19➔17:35 皆為下關行普通車），全車自由席無指定席，直接持 Pass 進站上車",
-        "jrSeatType": "free",
-        "details": "搭乘 JR 山陽本線普通車（16:23、16:51 或 17:19 發車），約 17 分鐘返回新山口站前飯店連住第 2 晚（此為 JR Pass 7日券最後一天適用日！）",
+        "time": "12:40~12:53",
+        "item": "香山公園五重塔 ➔ 山口駅 (防長/山口市社區巴士 大內路線・往若宮病院方向)",
+        "mode": "社區巴士",
+        "cost": "¥200\n(⚠️ 需自費)",
+        "details": "於「香山公園五重塔」站搭乘山口市コミュニティバス（防長巴士運行）大内ルート（若宮病院行き），12:40 發車 ➔ 12:53 抵達 JR 山口駅（備案班次：13:45 ➔ 13:58）。",
+        "link": "https://www.chugoku-jrbus.co.jp/general/yamaguchi/pdf/jikoku/20260314time_yamaguchi.pdf",
         "images": [
           {
-            "url": "timetables/d9_hofu_to_shin_yamaguchi_1.jpg",
-            "caption": "防府駅 ➔ 新山口駅 (JR山陽本線普通車) 16:23 / 16:51 / 17:19 時刻表 (免劃位)"
+            "url": "timetables/d9_rurikoji_to_yamaguchi_bus.jpg",
+            "caption": "山口市社區巴士 大内ルート (香山公園五重塔 12:40/13:45 ➔ 山口駅 12:53/13:58)"
           }
         ]
       },
       {
-        "time": "17:00~",
-        "item": "Comfort Hotel Shin Yamaguchi ＆ 瓦片燒蕎麥晚宴",
-        "mode": "住宿連住第2晚",
+        "time": "12:55~13:30",
+        "item": "🍽️ 秋吉台・山口市 特色美食與名物料理",
+        "mode": "當地美食",
+        "cost": "自費",
+        "details": "必吃名物：🍜 秋吉台牛蒡烏龍麵（秋芳洞名物ごぼううどん・香酥牛蒡絲天婦羅搭配清爽柴魚高湯。） ｜ 🍡 山口名物外郎糕（山口ういろう・蕨粉揉製，口感比名古屋外郎更Ｑ彈滑潤，豆沙與抹茶絕品。） ｜ 🥢 山口瓦片燒蕎麥麵（元祖瓦そば・熱燙瓦片上盛放茶蕎麥、牛肉絲、錦絲蛋，沾特製熱醬汁。）\n💡 賞味叮嚀：秋芳洞出洞後或山口站前可品嚐熱麵與外郎糕；晚間於岩國品嚐岩國壽司。",
+        "images": []
+      },
+      {
+        "time": "13:33~15:49",
+        "item": "山口駅 ➔ 新山口 ➔ 廣島 ➔ 岩國駅 (JR山口線 + 新幹線のぞみ34號 + 山陽本線)",
+        "mode": "在來線+新幹線",
+        "cost": "JR Pass 全包\n(🎫 Pass免費)",
+        "jrSeat": "🟢 山口線・山陽本線免劃位｜🟡 新山口➔廣島「新幹線のぞみ 34 號」建議持 Pass 免費劃指定席（或坐 1~2 號車自由席）：\n• 13:33 山口➔13:59 新山口（JR山口線普通・当駅始発 新山口行，1番線着）：🟢 普通車免劃位。\n• 14:11 新山口（11番線發）➔14:42 廣島（14番線著）「JR山陽新幹線 のぞみ 34 號（東京行）」：🟡 JR 山陽&山陰 7 日 Pass 可免費搭乘のぞみ號！建議先於售票機免費劃指定席（或直接搭 1~2 號車自由席）。\n• 15:00 廣島（1番線發）➔15:49 岩國（JR山陽本線普通・岩國行）：🟢 普通車免劃位（此日為 JR Pass 7日券最後一天適用日！）。",
+        "jrSeatType": "mixed",
+        "details": "依上傳時刻表搭乘：\n① 13:33 山口 ➔ 13:59 新山口（JR山口線普通・当駅始発 新山口行，1番線着，轉乘 12 分鐘）\n② 14:11 新山口（11番線發）➔ 14:42 廣島（14番線著）（JR山陽新幹線 のぞみ 34 號・東京行，Pass 免費）\n③ 15:00 廣島（1番線發）➔ 15:49 岩國（JR山陽本線普通・岩國行，Pass 免費），15:49 準時抵達岩國站！",
+        "link": "https://www.chugoku-jrbus.co.jp/general/yamaguchi/pdf/jikoku/20260314time_yamaguchi.pdf",
+        "images": [
+          {
+            "url": "timetables/d9_yamaguchi_to_iwakuni_1333.jpg",
+            "caption": "山口 13:33 ➔ 新山口 13:59/14:11 (のぞみ34號) ➔ 廣島 14:42/15:00 ➔ 岩國 15:49"
+          },
+          {
+            "url": "timetables/d9_rurikoji_to_yamaguchi_bus.jpg",
+            "caption": "香山公園五重塔 12:40 ➔ 山口駅 12:53 社區巴士時刻表"
+          }
+        ]
+      },
+      {
+        "time": "16:00~",
+        "item": "岩國住宿 Check-in ＆ 🍽️ 岩國壽司晚餐",
+        "mode": "住宿 Check-in",
         "cost": "-",
-        "details": "返回新山口站前，晚間品嚐熱燙瓦片茶蕎麥麵與地產美食",
+        "details": "入住 JR 岩國站周邊飯店（Green Rich Hotel 岩國站前 / 東橫INN 岩國站西口）。晚餐品嚐岩國名物「岩國壽司（殿樣壽司）」與蓮根料理。\n🌉 加碼（選配）：錦帶橋有夜間點燈，可搭いわくにバス前往夜拍。",
         "images": []
       }
     ],
@@ -3052,8 +3287,29 @@
         "link": "https://www.chugoku-jrbus.co.jp/general/yamaguchi/"
       },
       "rurikoji_pagoda_to_hofu_tenmangu": {
-        "notes": "山口県庁前13:28- 防府駅14:12\n過去天滿宮的巴士很少(防長巴士)",
-        "images": [],
+        "notes": "防長巴士 大內路線 往若宮病院方向\n香山公園五重塔12:40-12:53山口\n13:33山口-15:49岩國\n\n",
+        "images": [
+          {
+            "name": "1793263127149.jpg",
+            "url": "timetables/d9_rurikoji_to_yamaguchi_bus.jpg",
+            "type": "image/jpeg",
+            "width": 676,
+            "height": 313,
+            "isPdf": false,
+            "uploadedAt": "2026/10/29",
+            "caption": "山口市コミュニティバス 大内ルート (香山公園五重塔 12:40/13:45 ➔ 山口駅 12:53/13:58)"
+          },
+          {
+            "name": "1793263808692.jpg",
+            "url": "timetables/d9_yamaguchi_to_iwakuni_1333.jpg",
+            "type": "image/jpeg",
+            "width": 598,
+            "height": 603,
+            "isPdf": false,
+            "uploadedAt": "2026/10/29",
+            "caption": "山口 13:33 ➔ 新山口 13:59/14:11 (のぞみ34號) ➔ 廣島 14:42/15:00 ➔ 岩國 15:49"
+          }
+        ],
         "link": "https://www.chugoku-jrbus.co.jp/general/yamaguchi/pdf/jikoku/20260314time_yamaguchi.pdf"
       },
       "hofu_tenmangu_to_shin_yamaguchi_lodging": {
@@ -3070,15 +3326,46 @@
           }
         ],
         "link": ""
+      },
+      "rurikoji_pagoda_to_iwakuni_lodging": {
+        "notes": "防長巴士 大內路線 往若宮病院方向\n香山公園五重塔12:40-12:53山口\n13:33山口-15:49岩國\n\n",
+        "images": [
+          {
+            "name": "1793263127149.jpg",
+            "url": "timetables/d9_rurikoji_to_yamaguchi_bus.jpg",
+            "type": "image/jpeg",
+            "width": 676,
+            "height": 313,
+            "isPdf": false,
+            "uploadedAt": "2026/10/29",
+            "caption": "山口市コミュニティバス 大内ルート (香山公園五重塔 12:40/13:45 ➔ 山口駅 12:53/13:58)"
+          },
+          {
+            "name": "1793263808692.jpg",
+            "url": "timetables/d9_yamaguchi_to_iwakuni_1333.jpg",
+            "type": "image/jpeg",
+            "width": 598,
+            "height": 603,
+            "isPdf": false,
+            "uploadedAt": "2026/10/29",
+            "caption": "山口 13:33 ➔ 新山口 13:59/14:11 (のぞみ34號) ➔ 廣島 14:42/15:00 ➔ 岩國 15:49"
+          }
+        ],
+        "link": "https://www.chugoku-jrbus.co.jp/general/yamaguchi/pdf/jikoku/20260314time_yamaguchi.pdf"
       }
-    }
+    },
+    "spotIds": [
+      "akiyoshidai_akiyoshido",
+      "rurikoji_pagoda",
+      "iwakuni_lodging"
+    ]
   },
   {
     "dayNumber": 10,
     "date": "2027-01-21",
     "shortTitle": "D10:錦帶橋.岩國城.嚴島神社.宮島彌山大聖院.廣島",
-    "title": "Day 10：周防名橋錦帶橋・岩國城 ➔ 宮島世界遺產嚴島神社 ➔ 彌山大本山大聖院 ➔ 宿廣島",
-    "baseStation": "新山口駅 / 岩國駅 / 宮島口駅 / 廣島駅",
+    "title": "Day 10：岩國 08:30 巴士 ➔ 周防名橋錦帶橋・岩國城 (3合1套票) ➔ 11:57 岩國至宮島口 ➔ 宮島世界遺產嚴島神社・大聖院 ➔ 15:03 返廣島 (宿廣島)",
+    "baseStation": "岩國駅 / 錦帶橋 / 宮島口駅 / 廣島駅",
     "lodging": "Via Inn Hiroshima Shinkansenguchi (連住第1晚)",
     "lodgingLocation": "JR 廣島駅北口 (新幹線口) 徒步 3 分鐘",
     "recommendedHotels": "Via Inn Hiroshima Shinkansenguchi (ヴィアイン広島新幹線口・附大浴場)",
@@ -3086,69 +3373,49 @@
     "isPass": false,
     "steps": [
       {
-        "time": "07:19~09:30",
-        "item": "新山口駅 ➔ 岩國駅 (JR 山陽本線普通車直達)",
-        "mode": "JR山陽本線",
-        "cost": "¥1,980\n(⚠️ 需自費・IC卡)",
-        "jrSeat": "🟢 免劃位（自由入座）：依上傳圖片（07:19➔09:30、08:28➔10:30、09:24➔11:20）皆為 JR 山陽本線普通列車直達（0回轉乘），全車自由席無指定席，直接刷 IC 卡進站即可",
-        "jrSeatType": "free",
-        "details": "非 Pass 天數・依上傳時刻表搭乘 07:19 新山口發車之 JR 山陽本線普通列車直達岩國站（09:30 抵達，免換車）；於岩國站可先寄放隨身物品或稍作休息",
-        "images": [
-          {
-            "url": "timetables/d9_shin_yamaguchi_to_iwakuni_1.jpg",
-            "caption": "新山口駅 ➔ 岩國駅 (JR山陽本線普通車) 07:19 / 08:28 / 09:24 時刻表 (免劃位)"
-          }
-        ]
-      },
-      {
-        "time": "10:35~10:55",
-        "item": "JR 岩國駅 ➔ 錦帶橋 (いわくにバス 路線公車)",
+        "time": "08:30~08:45",
+        "item": "JR 岩國駅 ➔ 錦帶橋 (いわくにバス・岩国駅−由宇カープ練習場線)",
         "mode": "路線公車",
         "cost": "¥300\n(⚠️ 需自費)",
-        "details": "於 JR 岩國站前搭乘いわくにバス（10:35 發車 ➔ 10:55 抵達錦帶橋巴士中心），車程約 20 分鐘",
-        "images": []
+        "details": "岩國住宿退房（大行李可寄放飯店櫃檯或岩國站置物櫃），於 JR 岩國站前搭乘いわくにバス「岩国駅−由宇カープ練習場（由宇カープ練習場行）」，08:30 發車 ➔ 08:45 抵達錦帶橋（⚠️ 需確認時刻表）。",
+        "images": [],
+        "link": "https://www.jorudan.co.jp/bus/rosen/stoplist/?Ddd=12&Dhh=10&Dmn=35&Dym=202610&jyosya=%E5%B2%A9%E5%9B%BD%E9%A7%85&lid=337159#jump"
       },
       {
-        "time": "10:55~12:30",
-        "item": "錦帶橋 ＆ 岩國城 (含橫山空中纜車來回セット券)",
+        "time": "08:50~10:55",
+        "item": "錦帶橋 ＆ 岩國城 (含「錦帯橋・ロープウエー・岩国城の3つのセット」套票)",
         "mode": "百名城參訪",
-        "cost": "¥970 (套票)\n(⚠️ 需自費)",
-        "details": "🏯 百名城印章：岩國城受付窓口 (9:00～16:45)\n⏰ 開放時間：錦帶橋售票 08:00~17:00 / 岩國城 09:00 - 16:45\n🚶 接駁提示：推薦購買「セット券（錦帶橋入橋＋空中纜車往復＋岩國城天守閣＝優惠價 970 円）」，走過日本三大名橋錦帶橋後，自山麓站搭空中纜車 3 分鐘登上橫山頂峰岩國城天守閣蓋章與眺望瀨戶內海！",
+        "cost": "¥970 (3合1套票)\n(⚠️ 需自費)",
+        "details": "🏯 百名城印章：岩國城受付窓口 (9:00～16:45)\n⏰ 開放時間：錦帶橋售票 08:00~17:00 / 岩國城 09:00 - 16:45\n🎟️ 必買套票：「錦帯橋・ロープウエー・岩国城の3つのセット」（錦帶橋來回入橋＋空中纜車往復＋岩國城天守閣門票＝優惠價 大人 970 円，原價合計 1,160 円），走過日本三大名橋錦帶橋後，自山麓站搭空中纜車 3 分鐘登上橫山頂峰岩國城天守閣蓋章與眺望瀨戶內海！",
         "images": []
       },
       {
-        "time": "12:30~13:15",
-        "item": "🍽️ 周防岩國・安藝宮島・廣島 特色美食與名物料理",
-        "mode": "當地美食",
-        "cost": "自費",
-        "details": "必吃名物：🍱 錦帶橋岩國壽司（殿樣壽司・五彩木押壽司，蓮藕、蛋絲、香菇層層堆疊色彩華麗。） ｜ 🦪 宮島烤牡蠣與炸牡蠣（宮島名店「牡蠣屋」或「沖野水產」・瀨戶內海肥美大牡蠣，多汁甘甜。） ｜ 🍚 宮島百年穴子飯（宮島口「うえの 穴子めし」・秘傳醬汁蒲燒星鰻飯，米飯吸滿高湯香氣。） ｜ 🍁 宮島紅葉饅頭（もみじ饅頭・生紅葉饅頭、現炸紅葉饅頭（紅葉堂）。）\n💡 賞味叮嚀：中午在岩國錦帶橋旁品嚐岩國壽司與百種口味霜淇淋；下午宮島表參道吃現烤牡蠣、炸紅葉饅頭與穴子飯！",
-        "images": []
-      },
-      {
-        "time": "13:17~13:33",
-        "item": "錦帶橋 ➔ JR 岩國駅 (いわくにバス 路線公車)",
+        "time": "11:00~11:20",
+        "item": "錦帶橋 ➔ JR 岩國駅 (いわくにバス・岩国駅−新岩国駅線 岩国駅行)",
         "mode": "路線公車",
         "cost": "¥300\n(⚠️ 需自費)",
-        "details": "於錦帶橋巴士中心搭乘 13:17 いわくにバス ➔ 13:33 返回 JR 岩國站",
+        "details": "於錦帶橋搭乘いわくにバス（岩国駅−新岩国駅線・岩国駅行）11:00 發車 ➔ 11:20 抵達 JR 岩國站，取回寄放行李並銜接 11:57 JR 山陽本線。",
+        "link": "https://www.jorudan.co.jp/bus/rosen/timetable/%E9%8C%A6%E5%B8%AF%E6%A9%8B%E3%80%94%E3%81%84%E3%82%8F%E3%81%8F%E3%81%AB%E3%83%90%E3%82%B9%E3%80%95/%E6%96%B0%E5%B2%A9%E5%9B%BD%E9%A7%85%E7%B7%9A/%E6%A4%8E%E5%B0%BE%E7%A5%9E%E7%A4%BE/?Dw=1",
         "images": []
       },
       {
-        "time": "13:57~14:19",
+        "time": "11:57~12:19",
         "item": "JR 岩國駅 ➔ 宮島口駅 (JR 山陽本線普通車)",
         "mode": "JR山陽本線",
         "cost": "¥330\n(⚠️ 需自費・IC卡)",
-        "jrSeat": "🟢 免劃位（自由入座）：依上傳圖片（13:57➔14:19、14:25➔14:48、14:57➔15:20）皆為 JR 山陽本線普通列車（330 円），全車自由席免劃位，直接刷 IC 卡乘車",
+        "jrSeat": "🟢 免劃位（自由入座）：依上傳圖片（11:57➔12:19、12:25➔12:46、12:57➔13:19）皆為 JR 山陽本線普通列車（330 円，車程 21~22 分鐘），全車自由席免劃位，直接刷 IC 卡乘車",
         "jrSeatType": "free",
-        "details": "搭乘 13:57 岩國發車之 JR 山陽本線普通車，約 22 分鐘（14:19）直達宮島口站",
+        "details": "搭乘 11:57 岩國站發車之 JR 山陽本線普通車，22 分鐘（12:19）直達宮島口站（備案班次：12:25 ➔ 12:46、12:57 ➔ 13:19）。",
+        "link": "https://www.jorudan.co.jp/bus/rosen/timetable/%E9%8C%A6%E5%B8%AF%E6%A9%8B%E3%80%94%E3%81%84%E3%82%8F%E3%81%8F%E3%81%AB%E3%83%90%E3%82%B9%E3%80%95/%E6%96%B0%E5%B2%A9%E5%9B%BD%E9%A7%85%E7%B7%9A/%E6%A4%8E%E5%B0%BE%E7%A5%9E%E7%A4%BE/?Dw=1",
         "images": [
           {
-            "url": "timetables/d9_iwakuni_to_miyajimaguchi_1.jpg",
-            "caption": "岩國駅 ➔ 宮島口駅 (JR山陽本線 330円) 13:57 / 14:25 / 14:57 時刻表 (免劃位)"
+            "url": "timetables/d10_iwakuni_to_miyajimaguchi_1157.jpg",
+            "caption": "岩國駅 ➔ 宮島口駅 (JR山陽本線 330円) 11:57 / 12:25 / 12:57 時刻表 (免劃位)"
           }
         ]
       },
       {
-        "time": "14:25~14:40",
+        "time": "12:25~12:40",
         "item": "宮島口 ➔ 宮島棧橋 (JR 西日本宮島渡輪往返 + 宮島訪問稅)",
         "mode": "渡輪",
         "cost": "¥500\n(⚠️ 需自費)",
@@ -3156,7 +3423,15 @@
         "images": []
       },
       {
-        "time": "14:40~16:00",
+        "time": "12:40~13:30",
+        "item": "🍽️ 周防岩國・安藝宮島・廣島 特色美食與名物料理",
+        "mode": "當地美食",
+        "cost": "自費",
+        "details": "必吃名物：🍱 錦帶橋岩國壽司（殿樣壽司・五彩木押壽司，蓮藕、蛋絲、香菇層層堆疊色彩華麗。） ｜ 🦪 宮島烤牡蠣與炸牡蠣（宮島名店「牡蠣屋」或「沖野水產」・瀨戶內海肥美大牡蠣，多汁甘甜。） ｜ 🍚 宮島百年穴子飯（宮島口「うえの 穴子めし」・秘傳醬汁蒲燒星鰻飯，米飯吸滿高湯香氣。） ｜ 🍁 宮島紅葉饅頭（もみじ饅頭・生紅葉饅頭、現炸紅葉饅頭（紅葉堂）。）\n💡 賞味叮嚀：抵達宮島後於表參道商店街品嚐現烤牡蠣、炸紅葉饅頭與星鰻飯！",
+        "images": []
+      },
+      {
+        "time": "13:30~14:20",
         "item": "嚴島神社 (宮島・世界遺產) (海上大鳥居)",
         "mode": "世界遺產巡禮",
         "cost": "¥300\n(⚠️ 需自費)",
@@ -3164,7 +3439,7 @@
         "images": []
       },
       {
-        "time": "16:00~17:00",
+        "time": "14:20~14:55",
         "item": "宮島彌山 大本山 大聖院 (Daisho-in)",
         "mode": "古剎巡禮",
         "cost": "-",
@@ -3172,22 +3447,22 @@
         "images": []
       },
       {
-        "time": "17:19~17:52",
+        "time": "15:03~15:30",
         "item": "宮島口駅 ➔ 廣島駅 (JR 山陽本線普通車 返廣島站連住)",
         "mode": "JR山陽本線",
         "cost": "¥420\n(⚠️ 需自費・IC卡)",
-        "jrSeat": "🟢 免劃位（自由入座）：依上傳圖片（17:19➔17:52、17:29➔17:58、17:33➔18:02）皆為 JR 山陽本線普通列車（420 円），全車自由席免劃位，直接刷 IC 卡進站",
+        "jrSeat": "🟢 免劃位（自由入座）：依上傳圖片（15:03➔15:30、15:20➔15:47、15:32➔16:01）皆為 JR 山陽本線普通列車（420 円，約 15 分鐘一班車），全車自由席免劃位，直接刷 IC 卡進站",
         "jrSeatType": "free",
-        "details": "自宮島搭渡輪返回宮島口後，搭乘 17:19 宮島口發車之 JR 山陽本線普通列車（17:52 抵達廣島站，車資 420 円），備案有 17:29、17:33 班次",
+        "details": "自宮島搭渡輪返回宮島口後，宮島口回廣島大概 15 分鐘一班車（圖片班次：15:03 ➔ 15:30、15:20 ➔ 15:47、15:32 ➔ 16:01，車資 420 円）。",
         "images": [
           {
-            "url": "timetables/d9_miyajimaguchi_to_hiroshima_1.jpg",
-            "caption": "宮島口駅 ➔ 廣島駅 (JR山陽本線 420円) 17:19 / 17:29 / 17:33 時刻表 (免劃位)"
+            "url": "timetables/d10_miyajimaguchi_to_hiroshima_1503.jpg",
+            "caption": "宮島口駅 ➔ 廣島駅 (JR山陽本線 420円) 15:03 / 15:20 / 15:32 時刻表 (免劃位)"
           }
         ]
       },
       {
-        "time": "18:00~",
+        "time": "16:00~",
         "item": "Via Inn Hiroshima Shinkansenguchi ＆ 宮島牡蠣/廣島燒晚宴",
         "mode": "住宿 Check-in",
         "cost": "-",
@@ -3210,40 +3485,49 @@
         "link": "https://www.jorudan.co.jp/bus/rosen/stoplist/?Ddd=12&Dhh=10&Dmn=35&Dym=202610&jyosya=%E5%B2%A9%E5%9B%BD%E9%A7%85&lid=337159#jump"
       },
       "iwakuni_to_itsukushima_jinja": {
-        "notes": "巴士錦帶橋13:17-13:33 \n岩國 13:57 ➔ 宮島口 14:19 \n船15分一班",
+        "notes": "いわくにバス・岩国駅−新岩国駅\n岩国駅行11:00-11:20\n岩國 11:57➔ 宮島口 12:19\n船15分一班",
         "images": [
           {
-            "name": "1791791740539.jpg",
-            "url": "timetables/d9_iwakuni_to_miyajimaguchi_1.jpg",
+            "name": "1793269703324.jpg",
+            "url": "timetables/d10_iwakuni_to_miyajimaguchi_1157.jpg",
             "type": "image/jpeg",
+            "width": 668,
+            "height": 331,
             "isPdf": false,
-            "uploadedAt": "2026/10/12"
+            "uploadedAt": "2026/10/29",
+            "caption": "岩國駅 ➔ 宮島口駅 (JR山陽本線 330円) 11:57 / 12:25 / 12:57 時刻表"
           }
         ],
         "link": "https://www.jorudan.co.jp/bus/rosen/timetable/%E9%8C%A6%E5%B8%AF%E6%A9%8B%E3%80%94%E3%81%84%E3%82%8F%E3%81%8F%E3%81%AB%E3%83%90%E3%82%B9%E3%80%95/%E6%96%B0%E5%B2%A9%E5%9B%BD%E9%A7%85%E7%B7%9A/%E6%A4%8E%E5%B0%BE%E7%A5%9E%E7%A4%BE/?Dw=1"
       },
       "daishoin_to_hiroshima_lodging_d8": {
-        "notes": "宮島口 17:19 ➔ 廣島 17:52",
+        "notes": "宮島口回廣島 大概15分一班車",
         "images": [
           {
-            "name": "1791792530678.jpg",
-            "url": "timetables/d9_miyajimaguchi_to_hiroshima_1.jpg",
+            "name": "1793269789792.jpg",
+            "url": "timetables/d10_miyajimaguchi_to_hiroshima_1503.jpg",
             "type": "image/jpeg",
+            "width": 640,
+            "height": 329,
             "isPdf": false,
-            "uploadedAt": "2026/10/12"
+            "uploadedAt": "2026/10/29",
+            "caption": "宮島口駅 ➔ 廣島駅 (JR山陽本線 420円) 15:03 / 15:20 / 15:32 時刻表"
           }
         ],
         "link": ""
       },
       "itsukushima_jinja_to_hiroshima_lodging_d8": {
-        "notes": "宮島口 17:19 ➔ 廣島 17:52",
+        "notes": "宮島口回廣島 大概15分一班車",
         "images": [
           {
-            "name": "1791792530678.jpg",
-            "url": "timetables/d9_miyajimaguchi_to_hiroshima_1.jpg",
+            "name": "1793269789792.jpg",
+            "url": "timetables/d10_miyajimaguchi_to_hiroshima_1503.jpg",
             "type": "image/jpeg",
+            "width": 640,
+            "height": 329,
             "isPdf": false,
-            "uploadedAt": "2026/10/12"
+            "uploadedAt": "2026/10/29",
+            "caption": "宮島口駅 ➔ 廣島駅 (JR山陽本線 420円) 15:03 / 15:20 / 15:32 時刻表"
           }
         ],
         "link": ""
@@ -3254,19 +3538,28 @@
         "link": ""
       },
       "morning_origin_10": {
-        "notes": "新山新山口 07:19 ➔ 岩國 09:30 \n いわくにバス 10:35-錦帶橋10:55",
-        "images": [
-          {
-            "name": "1791791176996.jpg",
-            "url": "timetables/d9_shin_yamaguchi_to_iwakuni_1.jpg",
-            "type": "image/jpeg",
-            "isPdf": false,
-            "uploadedAt": "2026/10/12"
-          }
-        ],
-        "link": "https://www.jorudan.co.jp/bus/rosen/stoplist/?Ddd=12&Dhh=10&Dmn=35&Dym=202610&jyosya=%E5%B2%A9%E5%9B%BD%E9%A7%85&lid=337159#jump"
+        "notes": "いわくにバス・岩国駅−由宇カープ練習場\n由宇カープ練習場行(需確認時刻表)\n8:30-8:45錦帶橋",
+        "images": [],
+        "link": ""
+      },
+      "iwakuni_lodging_to_kintaikyo": {
+        "notes": "いわくにバス・岩国駅−由宇カープ練習場\n由宇カープ練習場行(需確認時刻表)\n8:30-8:45錦帶橋",
+        "images": [],
+        "link": ""
+      },
+      "kintaikyo_to_iwakuni": {
+        "notes": "錦帯橋・ロープウエー・岩国城の3つのセット",
+        "images": [],
+        "link": ""
       }
-    }
+    },
+    "spotIds": [
+      "kintaikyo",
+      "iwakuni",
+      "itsukushima_jinja",
+      "daishoin",
+      "hiroshima_lodging_d8"
+    ]
   },
   {
     "dayNumber": 11,
@@ -3335,7 +3628,16 @@
         "images": [],
         "link": "https://www.chugoku-jrbus.co.jp/sightseeing/"
       }
-    }
+    },
+    "spotIds": [
+      "hiroshima",
+      "hiroshima_gokoku_jinja",
+      "pokemon_center_hiroshima",
+      "atomic_bomb_dome",
+      "hiroshima_peace_museum",
+      "hiroshima_jinseki",
+      "hiroshima_lodging_d9"
+    ]
   },
   {
     "dayNumber": 12,
@@ -3350,11 +3652,12 @@
     "isPass": false,
     "steps": [
       {
-        "time": "07:45~09:15",
-        "item": "廣島駅 ➔ 紙屋町 / 廣島巴士中心 ➔ 安藝高田市役所前 (路面電車 + 廣電巴士吉田線)",
+        "time": "06:38~08:56",
+        "item": "廣島駅 ➔ 紙屋町西 (廣電6號線 06:38-06:48) ➔ 廣島巴士中心 ➔ 安藝高田市役所前 (07:15-08:56)",
         "mode": "路面電車+巴士",
         "cost": "約¥1,600\n(⚠️ 需自費)",
-        "details": "🚋 路面電車：自廣島站搭 ①番ホーム（紙屋町・市役所経由 宇品行き）於「紙屋町東電停」下車，或 ②/⑥番ホーム於「紙屋町西電停」下車。\n🚌 廣電巴士：於廣島巴士中心 ⑧番ホーム搭乘「吉田営業所行き」路線巴士，至「安芸高田市役所前」下車步行約 5 分鐘即達吉田郡山城麓",
+        "details": "🚋 路面電車（建議 06:30 出發）：\n• 廣島電鐵 6 號線（当駅始発 江波行）06:38 ➔ 06:48「紙屋町西電停」下車（①番ホーム 紙屋町・市役所経由 宇品行き於「紙屋町東電停」下車；②番ホーム 宮島行き / ⑥番ホーム 江波行き於「紙屋町西電停」下車）。\n🚶 轉乘動線：由 SOGO 百貨與「紙屋町 Shareo（シャレオ）」地下街出入口，可直接走進建築物搭乘手扶梯或電梯直達 3 樓巴士總站，步行至巴士中心。\n🚌 廣電巴士：於 ⑧番ホーム搭乘「吉田営業所行き」路線巴士（07:15 ➔ 08:56 或 07:45 ➔ 09:26），於「安芸高田市役所前」下車步行約 5 分鐘即達吉田郡山城麓。",
+        "link": "https://www.hiroden.co.jp/bus/route/n-72.html",
         "images": []
       },
       {
@@ -3370,21 +3673,21 @@
         "item": "安藝高田市役所前 ➔ 廣島駅 (廣電巴士返程)",
         "mode": "高速/路線巴士",
         "cost": "約¥1,380\n(⚠️ 需自費)",
-        "details": "搭乘 10:42 發車巴士返回廣島市區 / 廣島站（12:16 抵達），銜接 12:33 山陽新幹線前往福山",
+        "details": "搭乘 10:42 發車巴士返回廣島市區 / 廣島站（12:16 抵達），銜接 13:18 山陽新幹線前往福山",
         "images": []
       },
       {
-        "time": "12:33~12:56",
-        "item": "廣島駅 ➔ 福山駅 (JR 山陽新幹線 さくら 750 號)",
+        "time": "13:18~13:41",
+        "item": "廣島駅 ➔ 福山駅 (JR 山陽新幹線 のぞみ 28 號)",
         "mode": "山陽新幹線",
         "cost": "¥4,510\n(⚠️ 需自費・自由席)",
-        "jrSeat": "🟢 免劃位（可買自由席直接搭）：依上傳圖片（12:33 廣島 13番線發 ➔ 12:56 福山 7番線著「JR 新幹線 さくら 750 号・新大阪行」），乘車券 1,980 円＋自由席 2,530 円＝合計 4,510 円。さくら號第 1~3 號車為自由席，買自由席票免劃位直接上車即可（⚠️ 若攜帶長寬高合計超過 160cm 特大行李，則需買指定席並劃「特大荷物席」）",
+        "jrSeat": "🟢 免劃位（可買自由席直接搭）：依上傳圖片（13:18 廣島 14番線發 ➔ 13:41 福山 2番線著「JR 新幹線 のぞみ 28 号・東京行」），乘車券 1,980 円＋自由席 2,530 円＝合計 4,510 円。のぞみ號第 1~2 號車為自由席，買自由席票免劃位直接上車即可（⚠️ 若攜帶長寬高合計超過 160cm 特大行李，則需買指定席並劃「特大荷物席」）",
         "jrSeatType": "free",
-        "details": "非 Pass 天數・於廣島站搭乘 12:33 發車之山陽新幹線「さくら 750 號」，僅 23 分鐘（12:56）極速直達福山站！",
+        "details": "非 Pass 天數・於廣島站 14 番線搭乘 13:18 發車之山陽新幹線「のぞみ 28 號（東京行）」，僅 23 分鐘（13:41）極速直達福山站 2 番線！",
         "images": [
           {
-            "url": "timetables/d11_hiroshima_to_fukuyama_1.jpg",
-            "caption": "廣島駅 12:33 ➔ 福山駅 12:56 (山陽新幹線さくら750號 自由席4,510円) 時刻表"
+            "url": "timetables/d12_hiroshima_to_fukuyama_1318.jpg",
+            "caption": "廣島駅 13:18 ➔ 福山駅 13:41 (山陽新幹線のぞみ28號 自由席4,510円) 時刻表"
           }
         ]
       },
@@ -3423,7 +3726,7 @@
     ],
     "transitAttachments": {
       "hiroshima_lodging_d9_to_yoshida_koriyama": {
-        "notes": "路面電車\n①番ホーム ( 紙屋町･市役所経由 ) 　宇品行き「紙屋町東電停」下車 \n②番ホーム 宮島行き「紙屋町西電停」下車 \n⑥番ホーム 番江波行き「紙屋町西電停」下車\n\n巴士\n⑧番ホーム／吉田営業所行き 「安芸高田市役所前」下車き 「安芸高田市役所前」下車",
+        "notes": "路面電車 建議6:30出發\n①番ホーム ( 紙屋町･市役所経由 ) 　宇品行き「紙屋町東電停」下車 \n②番ホーム 宮島行き「紙屋町西電停」下車 \n⑥番ホーム 番江波行き「紙屋町西電停」下車\n\n広島電鉄６号線当駅始発江波行\n6:38-6:48\nSOGO 百貨與「紙屋町 Shareo（シャレオ）」地下街出入口，可直接走進建築物搭乘手扶梯或電梯直達 3 樓巴士總站\n步行至巴士中心\n⑧番ホーム／吉田営業所行き 「安芸高田市役所前」下車き7:15-8:56/7:45-9:26",
         "images": [],
         "link": "https://www.hiroden.co.jp/bus/route/n-72.html"
       },
@@ -3433,24 +3736,32 @@
         "link": ""
       },
       "yoshida_koriyama_to_fukuyama": {
-        "notes": "巴士回廣島 10:42-12:16\n",
+        "notes": "巴士回廣島 10:42-12:16\n廣島13:18-13:41福山\n",
         "images": [
           {
-            "name": "1792206433056.jpg",
-            "url": "timetables/d11_hiroshima_to_fukuyama_1.jpg",
+            "name": "1793270990959.jpg",
+            "url": "timetables/d12_hiroshima_to_fukuyama_1318.jpg",
             "type": "image/jpeg",
+            "width": 806,
+            "height": 530,
             "isPdf": false,
-            "uploadedAt": "2026/10/17"
+            "uploadedAt": "2026/10/29",
+            "caption": "廣島駅 13:18 ➔ 福山駅 13:41 (JR新幹線のぞみ28號 自由席4,510円) 時刻表"
           }
         ],
         "link": ""
       },
       "morning_origin_12": {
-        "notes": "路面電車\n①番ホーム ( 紙屋町･市役所経由 ) 　宇品行き「紙屋町東電停」下車 \n②番ホーム 宮島行き「紙屋町西電停」下車 \n⑥番ホーム 番江波行き「紙屋町西電停」下車\n\n巴士\n⑧番ホーム／吉田営業所行き 「安芸高田市役所前」下車き 「安芸高田市役所前」下車",
+        "notes": "路面電車 建議6:30出發\n①番ホーム ( 紙屋町･市役所経由 ) 　宇品行き「紙屋町東電停」下車 \n②番ホーム 宮島行き「紙屋町西電停」下車 \n⑥番ホーム 番江波行き「紙屋町西電停」下車\n\n広島電鉄６号線当駅始発江波行\n6:38-6:48\nSOGO 百貨與「紙屋町 Shareo（シャレオ）」地下街出入口，可直接走進建築物搭乘手扶梯或電梯直達 3 樓巴士總站\n步行至巴士中心\n⑧番ホーム／吉田営業所行き 「安芸高田市役所前」下車き7:15-8:56/7:45-9:26",
         "images": [],
         "link": "https://www.hiroden.co.jp/bus/route/n-72.html"
       }
-    }
+    },
+    "spotIds": [
+      "yoshida_koriyama",
+      "fukuyama",
+      "tomonoura_onsen"
+    ]
   },
   {
     "dayNumber": 13,
@@ -3465,11 +3776,12 @@
     "isPass": false,
     "steps": [
       {
-        "time": "07:18~07:51",
+        "time": "07:18~07:55",
         "item": "鞆之浦溫泉 ➔ 福山駅 (鞆鐵道路線巴士 返回福山站)",
         "mode": "路線公車",
         "cost": "¥560\n(⚠️ 需自費)",
-        "details": "晨間搭乘 07:18 鞆鐵道巴士返回福山站（07:51 抵達），銜接 08:29 JR 山陽本線",
+        "details": "晨間搭乘 07:18 鞆鐵道巴士返回福山站（07:55 抵達），銜接 08:29 JR 山陽本線",
+        "link": "https://tomotetsu.co.jp/cont/wp-content/uploads/2026/09/1.20261001jikoku-tomo.pdf",
         "images": []
       },
       {
@@ -3516,22 +3828,27 @@
         "images": []
       },
       {
-        "time": "12:48~14:03",
-        "item": "備中高梁駅 ➔ 總社駅 ➔ 備前一宮駅 (JR 伯備線 轉 吉備線)",
-        "mode": "JR在來線",
-        "cost": "¥680 (普通)\n(⚠️ 需自費)",
-        "jrSeat": "🟢 搭 12:48 發車班次免劃位（680 円普通車）｜🔴 若搭 13:10 發車班次含「特急やくも」則必須先劃位（2,170 円）：\n• 依上傳圖片路線 1（12:48 備中高梁➔14:03 備前一宮，車資 680 円）：全程為 JR 伯備線普通車＋JR 吉備線普通車，🟢 全車自由席免劃位，刷 IC 卡即可。\n• 依上傳圖片路線 2（13:10 備中高梁➔14:03 備前一宮，車資 2,170 円）：前段備中高梁➔總社/倉敷搭乘「JR 特急やくも」，🔴 為全車指定席必須先購票劃位！",
+        "time": "12:48~14:33",
+        "item": "備中高梁駅 ➔ 岡山駅 (12:48-13:43 先回岡山飯店放行李) ➔ 備前一宮駅 (14:22-14:33)",
+        "mode": "JR伯備線+吉備線",
+        "cost": "¥1,070 (860+210)\n(⚠️ 需自費・IC卡)",
+        "jrSeat": "🟢 搭 12:48 普通車免劃位（860 円）｜🔴 若搭 13:10「特急やくも」則必須先劃位（2,150 円）：\n• 第一段「備中高梁 ➔ 岡山」：依上傳圖片 ルート1（12:48➔13:43，860 円）為 JR 伯備線普通車直達岡山，🟢 全車自由席免劃位，直接刷 IC 卡！（若改搭 ルート2 13:10➔13:46 特急やくも 2,150 円則為 🔴 全車指定席須先劃位）。\n• 第二段「岡山 ➔ 備前一宮」：先回岡山飯店（VIA INN 岡山）放行李後，搭乘 14:22➔14:33（備案 14:52、15:22）JR 吉備線（桃太郎線）普通車（210 円，11 分鐘），🟢 全車自由席免劃位。",
         "jrSeatType": "mixed",
-        "details": "自備中高梁站前往桃太郎傳說「吉備津彥神社（備前一宮站）」：\n• 方案 A（12:48 發車 ➔ 14:03 抵備前一宮）：伯備線普通車至總社轉吉備線（桃太郎線）普通車，僅 680 円免劃位。\n• 方案 B（13:10 發車 ➔ 14:03 抵備前一宮）：搭乘特急やくも（全車指定席）轉吉備線，合計 2,170 円。",
+        "details": "① 12:48~13:43 備中高梁 ➔ 岡山（JR伯備線普通車直達，860 円；備案 13:10➔13:46 特急やくも 2,150 円）。\n② 13:43~14:20 先回岡山站直通飯店「VIA INN 岡山」寄放行李，輕裝出發！\n③ 14:22~14:33 岡山 ➔ 備前一宮（JR吉備線/桃太郎線普通車，210 円，備案 14:52➔15:03）。",
+        "link": "https://transit.yahoo.co.jp/search/result?from=%E5%82%99%E4%B8%AD%E9%AB%98%E6%A2%81&to=%E5%82%99%E5%89%8D%E4%B8%80%E5%AE%AE",
         "images": [
           {
-            "url": "timetables/d12_bitchu_matsuyama_to_kibitsuhiko_1.jpg",
-            "caption": "備中高梁駅 ➔ 備前一宮駅 12:48(普通680円免劃位) / 13:10(含特急やくも2,170円需劃位) 時刻表"
+            "url": "timetables/d13_bitchu_takahashi_to_okayama_1248.jpg",
+            "caption": "備中高梁 ➔ 岡山 12:48➔13:43(普通860円) / 13:10➔13:46(特急2,150円)"
+          },
+          {
+            "url": "timetables/d13_okayama_to_bizen_ichinomiya_1422.jpg",
+            "caption": "岡山 ➔ 備前一宮 (JR吉備線 210円) 14:22 / 14:52 / 15:22 時刻表"
           }
         ]
       },
       {
-        "time": "14:05~15:00",
+        "time": "14:35~15:30",
         "item": "吉備津彥神社 (Kibitsuhiko Jinja 桃太郎神話古社)",
         "mode": "桃太郎神話古社",
         "cost": "-",
@@ -3539,22 +3856,22 @@
         "images": []
       },
       {
-        "time": "15:04~15:07",
+        "time": "15:34~15:37",
         "item": "備前一宮駅 ➔ 吉備津駅 (JR 吉備線/桃太郎線 普通車)",
         "mode": "JR吉備線",
         "cost": "¥150\n(⚠️ 需自費・IC卡)",
-        "jrSeat": "🟢 免劃位（自由入座）：依上傳圖片（15:04➔15:07、15:34➔15:37、16:04➔16:07）皆為 JR 吉備線（桃太郎線）普通列車（150 円，僅 1 站 3 分鐘），全車自由席免劃位，直接刷 IC 卡乘車",
+        "jrSeat": "🟢 免劃位（自由入座）：依上傳圖片（15:34➔15:37、16:04➔16:07、16:34➔16:37）皆為 JR 吉備線（桃太郎線）普通列車（150 円，僅 1 站 3 分鐘），全車自由席免劃位，直接刷 IC 卡乘車",
         "jrSeatType": "free",
-        "details": "搭乘 JR 吉備線（桃太郎線）15:04 或 15:34 班次，僅 1 站 3 分鐘即達吉備津站",
+        "details": "搭乘 JR 吉備線（桃太郎線）15:34 ➔ 15:37 班次（備案 16:04、16:34），僅 1 站 3 分鐘即達吉備津站",
         "images": [
           {
-            "url": "timetables/d12_kibitsuhiko_to_kibitsu_1.jpg",
-            "caption": "備前一宮駅 ➔ 吉備津駅 (JR吉備線 150円) 15:04 / 15:34 / 16:04 時刻表 (免劃位)"
+            "url": "timetables/d13_bizen_ichinomiya_to_kibitsu_1534.jpg",
+            "caption": "備前一宮駅 ➔ 吉備津駅 (JR吉備線 150円) 15:34 / 16:04 / 16:34 時刻表 (免劃位)"
           }
         ]
       },
       {
-        "time": "15:10~16:40",
+        "time": "15:40~16:40",
         "item": "吉備津神社 (Kibitsu Jinja 國寶比翼入母屋造本殿 ＆ 360公尺大迴廊)",
         "mode": "國寶大迴廊神社",
         "cost": "-",
@@ -3566,12 +3883,13 @@
         "item": "吉備津駅 ➔ 岡山駅 (JR 吉備線/桃太郎線 普通車返回岡山)",
         "mode": "JR吉備線",
         "cost": "¥210\n(⚠️ 需自費・IC卡)",
-        "jrSeat": "🟢 免劃位（自由入座）：依上傳圖片（16:47➔17:05、17:17➔17:35、17:47➔18:04）皆為 JR 吉備線（桃太郎線）普通列車（210 円，車程 18 分鐘），全車自由席免劃位，直接刷 IC 卡進站",
+        "jrSeat": "🟢 免劃位（自由入座）：依上傳圖片（16:47➔17:05、17:17➔17:35、17:47➔18:05）皆為 JR 吉備線（桃太郎線）普通列車（210 円，車程 18 分鐘），全車自由席免劃位，直接刷 IC 卡進站",
         "jrSeatType": "free",
         "details": "搭乘 16:47（或 17:17）吉備津發車之 JR 吉備線普通列車，18 分鐘直達岡山站（車資 210 円）",
+        "link": "https://transit.yahoo.co.jp/search/result?from=%E5%90%89%E5%82%99%E6%B4%A5&to=%E5%B2%A1%E5%B1%B1",
         "images": [
           {
-            "url": "timetables/d12_kibitsu_to_okayama_1.jpg",
+            "url": "timetables/d13_kibitsu_to_okayama_1647.jpg",
             "caption": "吉備津駅 ➔ 岡山駅 (JR吉備線 210円) 16:47 / 17:17 / 17:47 時刻表 (免劃位)"
           }
         ]
@@ -3587,7 +3905,7 @@
     ],
     "transitAttachments": {
       "tomonoura_onsen_to_bitchu_matsuyama": {
-        "notes": "巴士回車站 7:18-7:51\nJR 8:29-9:49\n10:00計程車預約 https://www.asoview.com/item/activity/pln3000045984/",
+        "notes": "巴士回車站 7:18-7:55\nJR 8:29-9:49\n10:00計程車預約 https://www.asoview.com/item/activity/pln3000045984/",
         "images": [
           {
             "name": "1792209376728.jpg",
@@ -3607,7 +3925,7 @@
         "link": "https://tomotetsu.co.jp/cont/wp-content/uploads/2026/09/1.20261001jikoku-tomo.pdf"
       },
       "fukuyama_to_bitchu_matsuyama": {
-        "notes": "巴士回車站 7:18-7:51\nJR 8:29-9:49\n10:00計程車預約 https://www.asoview.com/item/activity/pln3000045984/",
+        "notes": "巴士回車站 7:18-7:55\nJR 8:29-9:49\n10:00計程車預約 https://www.asoview.com/item/activity/pln3000045984/",
         "images": [
           {
             "name": "1792209376728.jpg",
@@ -3627,27 +3945,43 @@
         "link": "https://tomotetsu.co.jp/cont/wp-content/uploads/2026/09/1.20261001jikoku-tomo.pdf"
       },
       "bitchu_matsuyama_to_kibitsuhiko_jinja": {
-        "notes": "",
+        "notes": "12:48-13:43先回岡山飯店放行李\n14:22→14:33",
         "images": [
           {
-            "name": "1792242039636.jpg",
-            "url": "timetables/d12_bitchu_matsuyama_to_kibitsuhiko_1.jpg",
+            "name": "1793272437558.jpg",
+            "url": "timetables/d13_bitchu_takahashi_to_okayama_1248.jpg",
             "type": "image/jpeg",
+            "width": 646,
+            "height": 336,
             "isPdf": false,
-            "uploadedAt": "2026/10/17"
+            "uploadedAt": "2026/10/29",
+            "caption": "備中高梁 ➔ 岡山 12:48➔13:43(普通860円) / 13:10➔13:46(特急2,150円)"
+          },
+          {
+            "name": "1793272554925.jpg",
+            "url": "timetables/d13_okayama_to_bizen_ichinomiya_1422.jpg",
+            "type": "image/jpeg",
+            "width": 658,
+            "height": 354,
+            "isPdf": false,
+            "uploadedAt": "2026/10/29",
+            "caption": "岡山 ➔ 備前一宮 (JR吉備線 210円) 14:22 / 14:52 / 15:22 時刻表"
           }
         ],
         "link": "https://transit.yahoo.co.jp/search/result?from=%E5%82%99%E4%B8%AD%E9%AB%98%E6%A2%81&to=%E5%82%99%E5%89%8D%E4%B8%80%E5%AE%AE"
       },
       "kibitsuhiko_jinja_to_kibitsu_jinja": {
-        "notes": "",
+        "notes": "15:34-15:37",
         "images": [
           {
-            "name": "1792242236767.jpg",
-            "url": "timetables/d12_kibitsuhiko_to_kibitsu_1.jpg",
+            "name": "1793272623172.jpg",
+            "url": "timetables/d13_bizen_ichinomiya_to_kibitsu_1534.jpg",
             "type": "image/jpeg",
+            "width": 653,
+            "height": 330,
             "isPdf": false,
-            "uploadedAt": "2026/10/17"
+            "uploadedAt": "2026/10/29",
+            "caption": "備前一宮 ➔ 吉備津 (JR吉備線 150円) 15:34 / 16:04 / 16:34 時刻表"
           }
         ],
         "link": ""
@@ -3656,17 +3990,20 @@
         "notes": "",
         "images": [
           {
-            "name": "1792242347783.jpg",
-            "url": "timetables/d12_kibitsu_to_okayama_1.jpg",
+            "name": "1793272684521.jpg",
+            "url": "timetables/d13_kibitsu_to_okayama_1647.jpg",
             "type": "image/jpeg",
+            "width": 631,
+            "height": 349,
             "isPdf": false,
-            "uploadedAt": "2026/10/17"
+            "uploadedAt": "2026/10/29",
+            "caption": "吉備津 ➔ 岡山 (JR吉備線 210円) 16:47 / 17:17 / 17:47 時刻表"
           }
         ],
         "link": "https://transit.yahoo.co.jp/search/result?from=%E5%90%89%E5%82%99%E6%B4%A5&to=%E5%B2%A1%E5%B1%B1"
       },
       "morning_origin_13": {
-        "notes": "巴士回車站 7:18-7:51\nJR 8:29-9:49\n10:00計程車預約 https://www.asoview.com/item/activity/pln3000045984/",
+        "notes": "巴士回車站 7:18-7:55\nJR 8:29-9:49\n10:00計程車預約 https://www.asoview.com/item/activity/pln3000045984/",
         "images": [
           {
             "name": "1792209376728.jpg",
@@ -3685,7 +4022,13 @@
         ],
         "link": "https://tomotetsu.co.jp/cont/wp-content/uploads/2026/09/1.20261001jikoku-tomo.pdf"
       }
-    }
+    },
+    "spotIds": [
+      "bitchu_matsuyama",
+      "kibitsuhiko_jinja",
+      "kibitsu_jinja",
+      "okayama_hotel"
+    ]
   },
   {
     "dayNumber": 14,
@@ -3724,11 +4067,7 @@
         "images": [
           {
             "url": "timetables/d13_okayama_to_airport_bus_2.jpg",
-            "caption": "岡山站西口 ➔ 岡山桃太郎機場 (機場利木津巴士 14:50直達15:20) 時刻表"
-          },
-          {
-            "url": "timetables/d13_okayama_to_airport_bus_1.jpg",
-            "caption": "機場 ➔ 岡山站西口 巴士時刻表對照"
+            "caption": "岡山站西口 ➔ 岡山桃太郎機場 (機場利木津巴士) 時刻表"
           }
         ]
       },
@@ -3746,13 +4085,6 @@
         "notes": "岡山 ➔ 台北(桃園) IT215 (2027/01/25 15:55 - 17:40)",
         "images": [
           {
-            "name": "1792242497253.jpg",
-            "url": "timetables/d13_okayama_to_airport_bus_1.jpg",
-            "type": "image/jpeg",
-            "isPdf": false,
-            "uploadedAt": "2026/10/17"
-          },
-          {
             "name": "1792242457470.jpg",
             "url": "timetables/d13_okayama_to_airport_bus_2.jpg",
             "type": "image/jpeg",
@@ -3765,13 +4097,6 @@
       "morning_origin_14": {
         "notes": "岡山 ➔ 台北(桃園) IT215 (2027/01/25 15:55 - 17:40)",
         "images": [
-          {
-            "name": "1792242497253.jpg",
-            "url": "timetables/d13_okayama_to_airport_bus_1.jpg",
-            "type": "image/jpeg",
-            "isPdf": false,
-            "uploadedAt": "2026/10/17"
-          },
           {
             "name": "1792242457470.jpg",
             "url": "timetables/d13_okayama_to_airport_bus_2.jpg",
@@ -3791,18 +4116,14 @@
             "type": "image/jpeg",
             "isPdf": false,
             "uploadedAt": "2026/10/17"
-          },
-          {
-            "name": "1792242497253.jpg",
-            "url": "timetables/d13_okayama_to_airport_bus_1.jpg",
-            "type": "image/jpeg",
-            "isPdf": false,
-            "uploadedAt": "2026/10/17"
           }
         ],
         "link": ""
       }
-    }
+    },
+    "spotIds": [
+      "okayama_airport"
+    ]
   }
 ];
   const HOTELS_DATA = [
@@ -3815,7 +4136,8 @@
     "highlight": "岡山站正上方直結，出站免吹風淋雨即達大廳！周邊 AEON Mall、一番街與驚安殿堂採買極為方便。",
     "address": "岡山県岡山市北区駅元町1-25",
     "mapQuery": "VIA INN Okayama",
-    "phone": "086-251-5489"
+    "phone": "086-251-5489",
+    "id": "hotel_d1_okayama"
   },
   {
     "days": "Day 2 (1/13)",
@@ -3826,7 +4148,8 @@
     "highlight": "鳥取站南口徒步 2 分鐘，鄰近牛骨拉麵名店與便利商店，次日早晨前往鳥取城跡極為順暢。",
     "address": "鳥取県鳥取市富安2-138-2",
     "mapQuery": "APA Hotel Tottori-Ekimae",
-    "phone": "0857-27-8811"
+    "phone": "0857-27-8811",
+    "id": "hotel_d2_tottori"
   },
   {
     "days": "Day 3 (1/14)",
@@ -3837,7 +4160,8 @@
     "highlight": "入住換穿花浴衣漫步柳樹小橋流水七大外湯，晚宴品嚐津居山港直送活松葉蟹刺身、烤蟹與火鍋全席！",
     "address": "兵庫県豊岡市城崎町湯島",
     "mapQuery": "Kinosaki Onsen Ryokan",
-    "phone": "0796-32-2211"
+    "phone": "0796-32-2211",
+    "id": "hotel_d3_kinosaki"
   },
   {
     "days": "Day 4 (1/15)",
@@ -3848,7 +4172,8 @@
     "highlight": "米子站旁步行 1 分鐘，直通米子站交通動線。晚間前往「日本料理 荒磯」或「太平記」品嚐日本海海鮮。",
     "address": "鳥取県米子市弥生町8-27",
     "mapQuery": "Hotel Harvest In Yonago",
-    "phone": "0859-31-1111"
+    "phone": "0859-31-1111",
+    "id": "hotel_d4_yonago"
   },
   {
     "days": "Day 5 (1/16)",
@@ -3859,7 +4184,8 @@
     "highlight": "面朝日本海美景，享受日本少見的含鹽化妝水泉質，晚宴享用境港松葉蟹、喉黑魚（ノドグロ）鹽烤會席。",
     "address": "鳥取県米子市皆生温泉",
     "mapQuery": "Kaike Onsen Ryokan",
-    "phone": "0859-33-3531"
+    "phone": "0859-33-3531",
+    "id": "hotel_d5_kaike"
   },
   {
     "days": "Day 6 (1/17)",
@@ -3870,7 +4196,8 @@
     "highlight": "漫步山陰小京都殿町通錦鯉流水街區，登津和野城跡俯瞰紅瓦盆地絕景，參拜太皷谷稻成神社千本鳥居。",
     "address": "島根県鹿足郡津和野町後田",
     "mapQuery": "Tsuwano Onsen Ryokan",
-    "phone": "0856-72-0035"
+    "phone": "0856-72-0035",
+    "id": "hotel_d6_tsuwano"
   },
   {
     "days": "Day 7 (1/18)",
@@ -3878,21 +4205,35 @@
     "hotel": "萩市區飯店 / 萩溫泉旅館 (萩之宿 常茂惠 / 萩觀光飯店)",
     "type": "城下町溫泉名宿",
     "tag": "世界遺產歷史散策",
-    "highlight": "探訪津和野與萩城指月公園後，晚間於「網焼きレストラン 見蘭」品嚐稀少天然紀念物見島牛交配之見蘭牛燒肉晚宴。",
+    "highlight": "探訪津和野與萩城指月公園後，晚間於老舗名店「萩の御厨 高大」享用長州旬彩會席，入住萩市溫泉旅館休息。",
     "address": "山口県萩市堀内",
     "mapQuery": "Hagi Onsen Ryokan",
-    "phone": "0838-25-3151"
+    "phone": "0838-25-3151",
+    "id": "hotel_d7_hagi"
   },
   {
-    "days": "Day 8 (1/19), Day 9 (1/20)",
+    "days": "Day 8 (1/19)",
     "city": "山口新山口 (Shin-Yamaguchi)",
-    "hotel": "Comfort Hotel Shin Yamaguchi (新山口站北口徒步1分・連住2晚)",
+    "hotel": "Comfort Hotel Shin Yamaguchi (新山口站北口徒步1分)",
     "type": "交通樞紐商務名宿",
     "tag": "新幹線轉運樞紐",
-    "highlight": "遊覽元乃隅神社後自長門古市經小串・新下關搭乘山陽新幹線こだま956號於 14:39 進駐新山口站連住兩晚，品嚐瓦片蕎麥麵與河豚料理。",
+    "highlight": "遊覽元乃隅神社後經新下關搭こだま956號 14:39 抵新山口，寄放行李後往返防府天滿宮，晚間品嚐瓦片蕎麥麵與河豚料理。",
     "address": "山口県山口市小郡下郷1253-1",
     "mapQuery": "Comfort Hotel Shin Yamaguchi",
-    "phone": "083-973-7711"
+    "phone": "083-973-7711",
+    "id": "hotel_d8_shinyamaguchi"
+  },
+  {
+    "id": "hotel_d9_iwakuni",
+    "days": "Day 9 (1/20)",
+    "city": "岩國 (Iwakuni)",
+    "hotel": "JR 岩國站周邊飯店 (推薦 Green Rich Hotel / 東橫INN)",
+    "type": "轉運商務名宿",
+    "tag": "輕裝直攻錦帶橋",
+    "highlight": "秋芳洞、瑠璃光寺後經防府搭山陽本線直達岩國站前。出站即入住，隔日早晨退房行李寄放櫃檯，兩手空空搭 20 分公車直攻錦帶橋與岩國城，中午回站拿行李直奔宮島，省去 2 小時晨間通勤與拖行李擠公車之苦！",
+    "address": "山口県岩国市麻里布町2-5-22 (Green Rich Hotel) / 麻里布町1-2-7 (東橫INN)",
+    "mapQuery": "Green Rich Hotel Iwakuni Ekimae",
+    "phone": "0827-29-5555"
   },
   {
     "days": "Day 10 (1/21), Day 11 (1/22)",
@@ -3900,10 +4241,11 @@
     "hotel": "Via Inn Hiroshima Shinkansenguchi (廣島維亞新幹線口)",
     "type": "廣島站直通連住",
     "tag": "雙日連住站前樞紐",
-    "highlight": "廣島站新幹線口徒步 2 分鐘，極速前往宮島嚴島神社、岩國錦帶橋與廣島城，晚間品嚐頂級廣島牛鐵板燒。",
+    "highlight": "廣島站新幹線口徒步 2 分鐘，宮島嚴島神社、廣島城交通便利，晚間品嚐頂級廣島牛鐵板燒。",
     "address": "広島県広島市東区二葉の里3-2-2",
     "mapQuery": "Via Inn Hiroshima Shinkansenguchi",
-    "phone": "082-568-5489"
+    "phone": "082-568-5489",
+    "id": "hotel_d10_hiroshima"
   },
   {
     "days": "Day 12 (1/23)",
@@ -3914,7 +4256,8 @@
     "highlight": "房間面朝瀨戶內海仙醉島絕景，屋頂露天風呂飽覽常夜燈港町夜色，享用經典鞆之浦鯛魚全席晚宴！",
     "address": "広島県福山市鞆町鞆",
     "mapQuery": "Tomonoura Onsen Ryokan",
-    "phone": "084-982-1123"
+    "phone": "084-982-1123",
+    "id": "hotel_d12_tomonoura"
   }
 ];
 
@@ -3937,21 +4280,21 @@
         "id": "t2",
         "text": "丹後天橋立・伊根周遊券 2 日券 (Amanohashidate-Ine Free Pass)",
         "checked": false,
-        "badge": "伊根舟屋必備",
+        "badge": "伊根舟屋必備(可網購)",
         "badgeType": "pass",
-        "location": "丹後海陸交通「天橋立站內觀光案內所 / 丹海巴士售票窗口」現場購買",
-        "price": "大人 ¥3,000 (連續 2 日有效)",
-        "content": "涵蓋 D4 伊根舟屋全行程：包含丹海路線巴士全線(天橋立駅⇄伊根舟屋來回公車原價單程 ¥400~800)、伊根灣遊覽船(出海餵海鷗賞舟屋原價 ¥1,200)、天橋立觀光船、傘松公園登山纜車/單人吊椅來回券(原價 ¥800)。現省逾千日圓且免逐次掏零錢。"
+        "location": "🌐 可事先於網路購買（KKday / Klook / 日本旅遊平台預訂電子憑證），當日於「天橋立站內觀光案內所 / 丹海巴士售票窗口」出示 QR Code 兌換實體券（亦可現場購買）",
+        "price": "大人 ¥3,000 ~ ¥3,500 (依方案版本，連續 2 日有效)",
+        "content": "涵蓋 D4 伊根舟屋全行程：包含丹海路線巴士全線(天橋立駅⇄伊根舟屋來回公車)、伊根灣遊覽船(出海餵海鷗賞舟屋)、天橋立觀光船、傘松公園登山纜車/單人吊椅來回券。網路預先購買免現場排隊填單，且免逐次掏零錢！"
       },
       {
-        "id": "t3",
-        "text": "松江・出雲 緣結三日券 (縁結びパーフェクトチケット / Perfect Ticket)",
+        "id": "t3_kintaikyo",
+        "text": "錦帯橋・ロープウエー・岩国城の3つのセット (錦帶橋・纜車・岩國城 3合1套票)",
         "checked": false,
-        "badge": "出雲松江必備",
+        "badge": "D10 岩國必買套票",
         "badgeType": "pass",
-        "location": "一畑電車主要站(松江宍道湖溫泉站、出雲大社前站)、米子站/松江站觀光案內所、一畑巴士售票處",
-        "price": "大人 ¥4,000 (連續 3 日有效)",
-        "content": "涵蓋 D5~D6：連續 3 日無限搭乘一畑電車全線、一畑路線巴士全線(出雲市駅⇄出雲大社、松江⇄玉造溫泉)、松江市營巴士全線(含松江城觀光巴士レイクライン Lake Line)。享松江城登閣及堀川遊覽船等多項景點門票折扣折抵。"
+        "location": "錦帶橋橋頭售票窗口 (錦帯橋料金所) 現場購買",
+        "price": "大人 ¥970 (原價合計 ¥1,160，現省 ¥190)",
+        "content": "涵蓋 D10 岩國核心行程：包含錦帶橋來回入橋券(原價 ¥310)＋岩國城空中纜車來回票(原價 ¥560)＋岩國城天守閣門票(原價 ¥270)。一票到底免分次排隊買票！"
       },
       {
         "id": "t4",
@@ -3962,16 +4305,6 @@
         "location": "廣島站新幹線口巴士案內所、車內司機處、或手機 MOBIRY 購買",
         "price": "めいぷる〜ぷ 1日乗車券 ¥600 (廣電路面電車一日券 ¥700)",
         "content": "涵蓋 D11 廣島市內全天巡禮：串聯廣島站、廣島城(護國神社)、原爆圓頂、和平紀念公園與紙屋町本通商圈。"
-      },
-      {
-        "id": "t5",
-        "text": "鳥取藩乘放題手形 3 日巴士通票 (或單程刷現金/電子支付)",
-        "checked": false,
-        "badge": "鳥取交通推薦",
-        "badgeType": "pass",
-        "location": "鳥取駅巴士總站售票處 (鳥取駅バスターミナル)、鳥取市觀光案內所",
-        "price": "大人 ¥1,800 (連續 3 日有效)",
-        "content": "涵蓋 D2~D3 鳥取行程：3 日內無限搭乘鳥取縣內日之丸巴士、日本交通所有路線公車(鳥取駅⇄鳥取城跡、鳥取駅⇄鳥取砂丘線直達車)，憑手形享鳥取砂丘纜車、砂之美術館等各景點門票折價。"
       },
       {
         "id": "t6",
@@ -4043,15 +4376,23 @@
         "checked": false,
         "badge": "🟢 自由席可直搭",
         "badgeType": "info",
-        "details": "依上傳圖片判定（長門古市 12:09 ➔ 新山口 14:39）：前 3 段（長門古市➔小串➔幡生➔新下關）皆為 JR 普通列車免劃位；第 4 段「14:17 新下關 ➔ 14:39 新山口」為【JR 山陽新幹線 こだま 956 號】，圖片標示設有自由席（990円），持 JR Pass 可直接進自由席車廂免劃位搭乘，亦可於售票機免費劃指定席。"
+        "details": "依上傳圖片判定（長門古市 12:09 ➔ 新山口 14:39/14:55 ➔ 防府 15:11）：前 3 段（長門古市➔小串➔幡生➔新下關）及第 5 段（新山口➔防府）皆為 JR 普通列車免劃位；第 4 段「14:17 新下關 ➔ 14:39 新山口」為【JR 山陽新幹線 こだま 956 號】，設有自由席（990円），持 JR Pass 可直接進自由席車廂免劃位搭乘，亦可於售票機免費劃指定席。"
+      },
+      {
+        "id": "jr_d9_1",
+        "text": "【🟡 建議持 Pass 免費劃位 / 可搭自由席】Day 9 (1/20) 山陽新幹線 のぞみ 34 號 (新山口 14:11 ➔ 廣島 14:42)",
+        "checked": false,
+        "badge": "🟡 Pass免費劃位",
+        "badgeType": "suggest",
+        "details": "依上傳圖片判定（山口 13:33 ➔ 新山口 13:59/14:11 ➔ 廣島 14:42/15:00 ➔ 岩國 15:49）：前段山口線與後段山陽本線皆為普通車免劃位；中段「14:11 新山口 ➔ 14:42 廣島」為【JR 山陽新幹線 のぞみ 34 號】，持 JR 山陽&山陰 7 日 Pass 可免費劃指定席（或直接搭 1~2 號車自由席）。"
       },
       {
         "id": "jr_d12_1",
-        "text": "【🟢 自由席免劃位(自費)】Day 12 (1/23) 山陽新幹線 さくら 750 號 (廣島 12:33 ➔ 福山 12:56)",
+        "text": "【🟢 自由席免劃位(自費)】Day 12 (1/23) 山陽新幹線 のぞみ 28 號 (廣島 13:18 ➔ 福山 13:41)",
         "checked": false,
         "badge": "🟢 自由席可直搭",
         "badgeType": "info",
-        "details": "依上傳圖片判定：12:33 廣島發 ➔ 12:56 福山著「JR 山陽新幹線 さくら 750 號（新大阪行）」，圖片顯示為「自由席 2,530 円＋乘車券 1,980 円＝合計 4,510 円」。さくら號第 1~3 號車為自由席，買自由席票免劃位直接上車！（⚠️ 若帶長寬高合計超過 160cm 特大行李，則需買指定席劃特大荷物席）"
+        "details": "依上傳圖片判定：13:18 廣島 14番線發 ➔ 13:41 福山 2番線著「JR 山陽新幹線 のぞみ 28 號（東京行）」，圖片顯示為「自由席 2,530 円＋乘車券 1,980 円＝合計 4,510 円」。のぞみ號第 1~2 號車為自由席，買自由席票免劃位直接上車！（⚠️ 若帶長寬高合計超過 160cm 特大行李，則需買指定席劃特大荷物席）"
       },
       {
         "id": "jr_d13_1",
@@ -4063,11 +4404,11 @@
       },
       {
         "id": "jr_d13_2",
-        "text": "【🟢 12:48普通車免劃位 / 🔴 13:10特急須劃位】Day 13 (1/24) 備中高梁 ➔ 備前一宮 (12:48 或 13:10 發車)",
+        "text": "【🟢 12:48普通車免劃位 / 🔴 13:10特急須劃位】Day 13 (1/24) 備中高梁 ➔ 岡山放行李 (12:48➔13:43) ➔ 備前一宮 (14:22➔14:33)",
         "checked": false,
         "badge": "🟢 依班次判定",
         "badgeType": "info",
-        "details": "依上傳圖片判定：\n• 搭「路線1：12:48 備中高梁 ➔ 14:03 備前一宮（680円）」：全程為伯備線＋吉備線普通車，🟢 免劃位直接刷 IC 卡進站。\n• 若改搭「路線2：13:10 備中高梁 ➔ 14:03 備前一宮（2,170円）」：前段為「特急やくも」🔴 全車指定席，必須先購票劃位。"
+        "details": "依上傳圖片判定：\n• 第一段「備中高梁 ➔ 岡山」：搭 ルート1「12:48 備中高梁 ➔ 13:43 岡山（860円）」為伯備線普通車，🟢 免劃位直接刷 IC 卡（若改搭 ルート2 13:10➔13:46 特急やくも 2,150円 則為 🔴 全車指定席須先劃位）。\n• 第二段「岡山 ➔ 備前一宮」：回岡山飯店放行李後，搭「14:22 岡山 ➔ 14:33 備前一宮（210円）」為吉備線普通車，🟢 免劃位直接刷 IC 卡。"
       },
       {
         "id": "jr_all_local",
@@ -4075,7 +4416,7 @@
         "checked": true,
         "badge": "🟢 普通車免劃位",
         "badgeType": "info",
-        "details": "以下依上傳時刻表圖片判定，100% 皆為 JR 普通或快速列車（無指定席車廂），刷 IC 卡或持 JR Pass 直接進站自由入座，完全不必劃位：\n• D2：07:45 岡山➔08:24 總社(吉備線普通)、11:51 總社➔12:12 岡山(吉備線普通)、12:57 岡山➔14:06 津山(津山線快速ことぶき)、16:40/17:27 津山➔岡山(津山線)\n• D5：09:07/09:32 米子➔安來(山陰本線普通)、17:58 松江➔18:27 米子(山陰本線普通)\n• D6：07:36 米子➔09:16 出雲市(山陰本線普通)、17:47 大田市➔19:03/19:11 益田➔20:00 津和野(山陰本線+山口線普通)\n• D7：12:29 津和野➔13:10/13:27 益田➔14:39 東萩(山口線+山陰本線普通)、18:48 玉江➔18:57 東萩(山陰本線普通)\n• D8：07:55 東萩➔08:33/09:45 長門市➔09:57 長門古市(山陰本線普通)\n• D9：16:23/16:51 防府➔新山口(山陽本線普通)\n• D10：07:19 新山口➔09:30 岩國(山陽本線普通)、13:57 岩國➔14:19 宮島口(山陽本線普通)、17:19 宮島口➔17:52 廣島(山陽本線普通)\n• D13：15:04 備前一宮➔15:07 吉備津(吉備線普通)、16:47 吉備津➔17:05 岡山(吉備線普通)"
+        "details": "以下依上傳時刻表圖片判定，100% 皆為 JR 普通或快速列車（無指定席車廂），刷 IC 卡或持 JR Pass 直接進站自由入座，完全不必劃位：\n• D2：07:45 岡山➔08:24 總社(吉備線普通)、11:51 總社➔12:12 岡山(吉備線普通)、12:57 岡山➔14:06 津山(津山線快速ことぶき)\n• D5：09:07/09:32 米子➔安來(山陰本線普通)、16:18/16:21 松江➔米子(山陰本線普通)\n• D6：17:47 大田市➔19:11 益田➔20:00 津和野(山陰本線+山口線普通)\n• D7：12:29 津和野➔13:27 益田➔14:39 東萩(山口線+山陰本線普通)\n• D8：07:55 東萩➔08:33/09:45 長門市➔09:57 長門古市(山陰本線普通)、14:55 新山口➔15:11 防府(山陽本線普通)、17:19 防府➔17:35 新山口(山陽本線普通)\n• D9：13:33 山口➔13:59 新山口(山口線普通)、15:00 廣島➔15:49 岩國(山陽本線普通)\n• D10：11:57 岩國➔12:19 宮島口(山陽本線普通)、15:03 宮島口➔15:30 廣島(山陽本線普通)\n• D13：12:48 備中高梁➔13:43 岡山(伯備線普通)、14:22 岡山➔14:33 備前一宮(吉備線普通)、15:34 備前一宮➔15:37 吉備津(吉備線普通)、16:47 吉備津➔17:05 岡山(吉備線普通)"
       }
     ]
   },
@@ -4388,9 +4729,9 @@
       const item = step.item || '';
       const isTransit = m.includes('車') || m.includes('公車') || m.includes('巴士') || m.includes('電車') || m.includes('特急') || m.includes('新幹線') || m.includes('纜車') || m.includes('船') || item.includes('➔');
 
-      if (isTransit) {
+      if (isTransit || item.includes('錦帶橋')) {
         for (const [k, att] of Object.entries(atts)) {
-          if (!att || (!att.link && (!att.notes || !att.notes.includes('http')))) continue;
+          if (!att || (!att.link && (!att.notes || !att.notes.trim()))) continue;
           let isMatch = false;
 
           // Day 3
@@ -4426,18 +4767,21 @@
           // Day 8
           else if (day.dayNumber === 8) {
             if (k.includes('hagi_lodging_to_motonosumi') && item.includes('東萩') && item.includes('長門古市')) isMatch = true;
-            if (k.includes('motonosumi_jinja_to_shin_yamaguchi') && item.includes('長門古市') && item.includes('新山口')) isMatch = true;
+            if ((k.includes('motonosumi_jinja_to_hofu') || k.includes('motonosumi_jinja_to_shin_yamaguchi')) && item.includes('長門古市') && item.includes('防府')) isMatch = true;
+            if (k.includes('hofu_tenmangu_to_shin_yamaguchi') && item.includes('防府天滿宮') && item.includes('新山口')) isMatch = true;
           }
           // Day 9
           else if (day.dayNumber === 9) {
             if (k.includes('shin_yamaguchi_lodging_to_akiyoshidai') && item.includes('新山口') && item.includes('秋芳洞')) isMatch = true;
             if (k.includes('akiyoshidai_akiyoshido_to_rurikoji') && item.includes('秋芳洞') && item.includes('山口')) isMatch = true;
-            if (k.includes('rurikoji_pagoda_to_hofu') && item.includes('山口') && item.includes('防府')) isMatch = true;
+            if ((k.includes('rurikoji_pagoda_to_iwakuni') || k.includes('rurikoji_pagoda_to_hofu')) && (item.includes('香山公園') || item.includes('岩國駅'))) isMatch = true;
           }
           // Day 10
           else if (day.dayNumber === 10) {
-            if (k.includes('shin_yamaguchi_lodging_to_kintaikyo') && item.includes('岩國') && item.includes('錦帶橋')) isMatch = true;
-            if (k.includes('iwakuni_to_itsukushima') && item.includes('錦帶橋') && item.includes('岩國')) isMatch = true;
+            if (k.includes('iwakuni_lodging_to_kintaikyo') && item.includes('JR 岩國駅 ➔ 錦帶橋')) isMatch = true;
+            if (k.includes('kintaikyo_to_iwakuni') && item.includes('錦帶橋 ＆ 岩國城')) isMatch = true;
+            if (k.includes('iwakuni_to_itsukushima') && (item.includes('錦帶橋 ➔ JR 岩國駅') || item.includes('JR 岩國駅 ➔ 宮島口駅'))) isMatch = true;
+            if (k.includes('daishoin_to_hiroshima') && item.includes('宮島口駅 ➔ 廣島駅')) isMatch = true;
           }
           // Day 11
           else if (day.dayNumber === 11) {
@@ -4650,14 +4994,63 @@
       return 'timetables/' + cleanName;
     }
 
-    // 3. 住宿卡片渲染
-    function initHotels() {
+    // 3. 住宿卡片渲染與訂房核取狀態管理
+    const HOTEL_STORAGE_KEY = 'japan_2027_trip_hotels_booked_v1';
+    let bookedHotelIds = new Set();
+
+    function loadBookedHotels() {
+      try {
+        const saved = localStorage.getItem(HOTEL_STORAGE_KEY);
+        if (saved) {
+          const arr = JSON.parse(saved);
+          if (Array.isArray(arr)) bookedHotelIds = new Set(arr);
+        }
+      } catch (e) {
+        bookedHotelIds = new Set();
+      }
+    }
+
+    function toggleHotelBooked(hotelId) {
+      if (bookedHotelIds.has(hotelId)) {
+        bookedHotelIds.delete(hotelId);
+      } else {
+        bookedHotelIds.add(hotelId);
+      }
+      try {
+        localStorage.setItem(HOTEL_STORAGE_KEY, JSON.stringify([...bookedHotelIds]));
+      } catch (e) {}
+      renderHotelsList();
+    }
+
+    function renderHotelsList() {
       const list = document.getElementById('hotelList');
-      list.innerHTML = HOTELS_DATA.map(h => `
-        <div class="hotel-card">
+      if (!list) return;
+      const totalCount = HOTELS_DATA.length;
+      const bookedCount = HOTELS_DATA.filter(h => bookedHotelIds.has(h.id)).length;
+      
+      // 更新標題區塊進度計數
+      const countBadge = document.getElementById('hotelBookedCountBadge');
+      if (countBadge) {
+        countBadge.textContent = `${bookedCount} / ${totalCount} 已訂妥`;
+        countBadge.className = 'hotel-status-badge ' + (bookedCount === totalCount ? 'status-confirmed' : 'status-pending');
+      }
+
+      list.innerHTML = HOTELS_DATA.map(h => {
+        const isBooked = bookedHotelIds.has(h.id);
+        return `
+        <div class="hotel-card ${isBooked ? 'is-booked' : ''}" id="card_${h.id}">
           <div class="hotel-head">
-            <span class="hotel-days">${escapeHtml(h.days)}</span>
-            <span class="hotel-tag-pill">${escapeHtml(h.tag)}</span>
+            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+              <span class="hotel-days">${escapeHtml(h.days)}</span>
+              <span class="hotel-tag-pill">${escapeHtml(h.tag)}</span>
+              <span class="hotel-status-badge ${isBooked ? 'status-confirmed' : 'status-pending'}">
+                ${isBooked ? '✅ 已完成訂房' : '⏳ 待訂房 / 規劃中'}
+              </span>
+            </div>
+            <button type="button" class="hotel-booking-btn ${isBooked ? 'checked' : ''}" onclick="toggleHotelBooked('${h.id}')" title="點擊切換訂房狀態">
+              <span class="check-mark">${isBooked ? '✓' : ''}</span>
+              <span>${isBooked ? '已訂房' : '標記已訂房'}</span>
+            </button>
           </div>
           <div class="hotel-name">${escapeHtml(h.hotel)}</div>
           <div style="font-size:0.8rem; font-weight:800; color:#3b82f6; margin-bottom:6px;">📍 ${escapeHtml(h.city)} ｜ ${escapeHtml(h.type)}</div>
@@ -4678,11 +5071,19 @@
           </div>
 
           <div class="hotel-highlight">${escapeHtml(h.highlight)}</div>
-          <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(h.mapQuery)}" target="_blank" class="btn-map" style="margin-top:10px;">
-            <span>🗺️ 開啟 Google Maps 導航</span>
-          </a>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
+            <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(h.mapQuery)}" target="_blank" class="btn-map">
+              <span>🗺️ 開啟 Google Maps 導航</span>
+            </a>
+          </div>
         </div>
-      `).join('');
+        `;
+      }).join('');
+    }
+
+    function initHotels() {
+      loadBookedHotels();
+      renderHotelsList();
     }
 
     // 4. 互動待辦清單
@@ -4694,17 +5095,21 @@
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
-          // 同步最新 JR 劃位明細分類
-          const jrDefaultCat = CHECKLIST_DEFAULT.find(c => c.icon === 'train');
-          const jrSavedIdx = parsed.findIndex(c => c.icon === 'train' || (c.category && c.category.includes('需先劃位的 JR')));
-          if (jrDefaultCat && jrSavedIdx !== -1) {
-            const checkedMap = new Map((parsed[jrSavedIdx].items || []).map(it => [it.id, !!it.checked]));
-            const syncedCat = JSON.parse(JSON.stringify(jrDefaultCat));
-            syncedCat.items.forEach(it => {
-              if (checkedMap.has(it.id)) it.checked = checkedMap.get(it.id);
-            });
-            parsed[jrSavedIdx] = syncedCat;
-          }
+          // 同步最新交通套票與 JR 劃位明細分類
+          ['ticket', 'train'].forEach(iconKey => {
+            const defCat = CHECKLIST_DEFAULT.find(c => c.icon === iconKey);
+            const savedIdx = parsed.findIndex(c => c.icon === iconKey || (iconKey === 'train' && c.category && c.category.includes('需先劃位的 JR')) || (iconKey === 'ticket' && c.category && c.category.includes('建議購入交通套票')));
+            if (defCat && savedIdx !== -1) {
+              const checkedMap = new Map((parsed[savedIdx].items || []).map(it => [it.id, !!it.checked]));
+              const customItems = (parsed[savedIdx].items || []).filter(it => String(it.id || '').startsWith('custom_'));
+              const syncedCat = JSON.parse(JSON.stringify(defCat));
+              syncedCat.items.forEach(it => {
+                if (checkedMap.has(it.id)) it.checked = checkedMap.get(it.id);
+              });
+              syncedCat.items.push(...customItems);
+              parsed[savedIdx] = syncedCat;
+            }
+          });
           const existingCategories = new Set(parsed.map(c => c.category));
           CHECKLIST_DEFAULT.forEach((defaultCat, idx) => {
             if (!existingCategories.has(defaultCat.category)) {
@@ -4885,18 +5290,26 @@
     let hmView = null;
     let hmAnim = 0;
 
+    function hmUnwrapArr(v) {
+      if (Array.isArray(v)) return v;
+      if (v && Array.isArray(v.value)) return v.value;
+      return [];
+    }
+
     function hmSpots() {
       const ext = window.EXTERNAL_SPOTS_DATA;
-      return (ext && Array.isArray(ext.spots)) ? ext.spots : [];
+      return ext ? hmUnwrapArr(ext.spots) : [];
     }
 
     function hmSpotIdsFor(idx) {
       const day = DAYS_DATA[idx];
       if (!day) return [];
-      if (Array.isArray(day.spotIds) && day.spotIds.length) return day.spotIds;
+      const daySpotIds = hmUnwrapArr(day.spotIds);
+      if (daySpotIds.length) return daySpotIds;
       const ext = window.EXTERNAL_SPOTS_DATA;
-      const it = ext && (ext.itinerary || []).find(d => d.dayNumber === day.dayNumber);
-      return (it && it.spotIds) || [];
+      const itList = ext ? hmUnwrapArr(ext.itinerary) : [];
+      const it = itList.find(d => d.dayNumber === day.dayNumber);
+      return it ? hmUnwrapArr(it.spotIds) : [];
     }
 
     function hmIsLodging(s) {
