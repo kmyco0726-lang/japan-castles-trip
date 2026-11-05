@@ -1,0 +1,218 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1100" width="100%" height="100%" style="background:#FFFDF9; font-family:'Zen Maru Gothic', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;">
+  <defs>
+    <style>
+      .title-text { font-size: 26px; font-weight: 900; fill: #3E3A39; }
+      .subtitle-text { font-size: 14px; font-weight: 500; fill: #7E726B; }
+      .section-badge { font-size: 12px; font-weight: 700; fill: #FFF; }
+      .node-title { font-size: 15px; font-weight: 800; fill: #3E3A39; }
+      .node-desc { font-size: 11.5px; font-weight: 500; fill: #655B53; }
+      .num-badge { font-size: 13px; font-weight: 900; fill: #FFF; }
+      .route-label { font-size: 12px; font-weight: 800; fill: #E06D53; }
+      .card-bg { rx: 16px; ry: 16px; stroke-width: 2px; }
+      .shadow { filter: drop-shadow(2px 3px 0px rgba(62,58,57,0.15)); }
+    </style>
+    
+    <!-- Pattern for grassy ground -->
+    <pattern id="grass-dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.5" fill="#E2EED8" />
+    </pattern>
+
+    <!-- Marker for route arrow -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#E06D53" />
+    </marker>
+  </defs>
+
+  <!-- Background Grassy Areas -->
+  <rect x="20" y="20" width="860" height="1060" rx="24" fill="#FCFAF2" stroke="#4A3E3D" stroke-width="3" />
+  <rect x="35" y="35" width="830" height="1030" rx="18" fill="url(#grass-dots)" />
+
+  <!-- Mountain Background at Top (Yakumoyama) -->
+  <path d="M 80 120 Q 250 40 450 70 Q 650 40 820 120 L 820 150 L 80 150 Z" fill="#DDECD2" opacity="0.7" />
+  <text x="450" y="105" text-anchor="middle" font-size="13" font-weight="700" fill="#6A8E58">⛰️ 聖山 八雲山（禁足神體山靈氣守護）</text>
+
+  <!-- Header Header Banner -->
+  <g transform="translate(50, 45)">
+    <rect x="0" y="0" width="800" height="60" rx="14" fill="#FFF9E6" stroke="#4A3E3D" stroke-width="2.5" class="shadow" />
+    <text x="25" y="36" class="title-text">⛩️ 出雲大社 境內參拜導覽地圖 ＆ 建議參觀順序</text>
+    <rect x="670" y="15" width="105" height="30" rx="8" fill="#F28B82" stroke="#4A3E3D" stroke-width="1.5" />
+    <text x="722" y="35" text-anchor="middle" font-size="12" font-weight="800" fill="#FFF">二禮・四拍手・一禮</text>
+  </g>
+
+  <!-- Route Guide Line (Dotted with Arrows) -->
+  <path d="
+    M 450 940 
+    L 450 820 
+    L 530 820 
+    L 450 750 
+    L 450 670 
+    L 450 560 
+    L 450 470 
+    L 330 470 
+    L 330 380 
+    L 450 330 
+    L 570 380 
+    L 570 470 
+    L 250 470 
+    L 250 540 
+    L 250 890 
+    L 450 990" 
+    fill="none" stroke="#E06D53" stroke-width="3" stroke-dasharray="6,6" marker-end="url(#arrow)" opacity="0.5" />
+
+  <!-- ==================== SPOTS ==================== -->
+
+  <!-- [10] ご縁横丁 & 門前午餐 (Bottom) -->
+  <g transform="translate(180, 960)" class="shadow">
+    <rect x="0" y="0" width="540" height="90" class="card-bg" fill="#FFF" stroke="#4A3E3D" />
+    <circle cx="28" cy="28" r="14" fill="#F28B82" stroke="#4A3E3D" stroke-width="2" />
+    <text x="28" y="33" text-anchor="middle" class="num-badge">10</text>
+    <text x="50" y="30" class="node-title">門前午餐 ＆ ご縁横丁（緣起橫丁）</text>
+    <text x="50" y="52" class="node-desc">🍜【蕎麥 荒木屋】：創業240年全出雲最古老老鋪，必吃五段「緣結割子蕎麥」附善哉！</text>
+    <text x="50" y="70" class="node-desc">🍡【坂根屋 ぜんざい餅】：正門口必吃現烤紅豆善哉麻糬 ｜ 🥢【千鳥蕎麥】：神門通手打名店</text>
+  </g>
+
+  <!-- [起點] 勢溜之鳥居（正門 二之鳥居） -->
+  <g transform="translate(340, 880)" class="shadow">
+    <rect x="0" y="0" width="220" height="55" class="card-bg" fill="#FFE8D6" stroke="#4A3E3D" />
+    <text x="110" y="25" text-anchor="middle" font-size="14" font-weight="900" fill="#3E3A39">⛩️ 勢溜之鳥居（正門）</text>
+    <text x="110" y="44" text-anchor="middle" font-size="11" font-weight="600" fill="#7E726B">【參觀起點】巨大木造二之鳥居</text>
+  </g>
+
+  <!-- [1] 祓社 (はらえのやしろ) -->
+  <g transform="translate(560, 780)" class="shadow">
+    <rect x="0" y="0" width="260" height="65" class="card-bg" fill="#FFF" stroke="#4A3E3D" />
+    <circle cx="24" cy="24" r="14" fill="#E06D53" stroke="#4A3E3D" stroke-width="2" />
+    <text x="24" y="29" text-anchor="middle" class="num-badge">1</text>
+    <text x="46" y="26" class="node-title">祓社（はらえのやしろ）</text>
+    <text x="46" y="46" class="node-desc">✨ 入境先淨身！掃除身心穢氣與罪障</text>
+    <text x="46" y="59" class="node-desc">🙏 參拜禮儀：二禮・四拍手・一禮</text>
+  </g>
+
+  <!-- [2] 松之參道 & 因幡白兔群 -->
+  <g transform="translate(100, 720)" class="shadow">
+    <rect x="0" y="0" width="280" height="85" class="card-bg" fill="#E8F5E9" stroke="#4A3E3D" />
+    <circle cx="24" cy="24" r="14" fill="#66BB6A" stroke="#4A3E3D" stroke-width="2" />
+    <text x="24" y="29" text-anchor="middle" class="num-badge">2</text>
+    <text x="46" y="26" class="node-title">松之參道 ＆ 祓橋 ＆ 白兔群 🐰</text>
+    <text x="46" y="46" class="node-desc">🌲 全日本罕見的「下坡參道」，數百年古松鬱鬱</text>
+    <text x="46" y="62" class="node-desc">🐇 境內尋找 60 多隻可愛合十因幡白兔石雕！</text>
+    <text x="46" y="78" class="node-desc">橋下為素鵞川，過橋象徵邁入清淨神域</text>
+  </g>
+
+  <!-- [3] 手水舍 ＆ 銅鳥居（四之鳥居） -->
+  <g transform="translate(320, 630)" class="shadow">
+    <rect x="0" y="0" width="260" height="60" class="card-bg" fill="#FFF" stroke="#4A3E3D" />
+    <circle cx="24" cy="24" r="14" fill="#E06D53" stroke="#4A3E3D" stroke-width="2" />
+    <text x="24" y="29" text-anchor="middle" class="num-badge">3</text>
+    <text x="46" y="26" class="node-title">手水舍 ＆ 銅鳥居（四之鳥居）</text>
+    <text x="46" y="48" class="node-desc">🪙 毛利秀就奉納青銅鳥居，撫摸可增強金運！</text>
+  </g>
+
+  <!-- [4] 拜殿 (はいでん) -->
+  <g transform="translate(300, 520)" class="shadow">
+    <rect x="0" y="0" width="300" height="75" class="card-bg" fill="#FFE082" stroke="#4A3E3D" />
+    <circle cx="24" cy="24" r="14" fill="#E06D53" stroke="#4A3E3D" stroke-width="2" />
+    <text x="24" y="29" text-anchor="middle" class="num-badge">4</text>
+    <text x="46" y="26" class="node-title">拜殿（はいでん）</text>
+    <text x="46" y="46" class="node-desc">📿 大社造銅板屋頂，長6.5米重1噸注連繩</text>
+    <text x="46" y="64" class="node-desc">🙏 虔誠行「二禮・四拍手・一禮」祈求大結緣！</text>
+  </g>
+
+  <!-- [5] 八足門 & 御本殿 -->
+  <g transform="translate(300, 410)" class="shadow">
+    <rect x="0" y="0" width="300" height="80" class="card-bg" fill="#FFF" stroke="#4A3E3D" stroke-width="2.5" />
+    <circle cx="24" cy="24" r="14" fill="#E06D53" stroke="#4A3E3D" stroke-width="2" />
+    <text x="24" y="29" text-anchor="middle" class="num-badge">5</text>
+    <text x="46" y="26" class="node-title">八足門 ＆ 國寶御本殿（大社造）</text>
+    <text x="46" y="46" class="node-desc">🏯 日本最古老神社建築樣式，高達24米巍峨雄偉</text>
+    <text x="46" y="62" class="node-desc">一般信眾於八足門前向本殿內大國主大神致敬</text>
+    <text x="46" y="75" class="node-desc">（地下埋有古代48米巨大神殿「金井柱」三本遺跡）</text>
+  </g>
+
+  <!-- [6] 東・西十九社 -->
+  <g transform="translate(630, 390)" class="shadow">
+    <rect x="0" y="0" width="220" height="70" class="card-bg" fill="#F3E5F5" stroke="#4A3E3D" />
+    <circle cx="24" cy="24" r="14" fill="#AB47BC" stroke="#4A3E3D" stroke-width="2" />
+    <text x="24" y="29" text-anchor="middle" class="num-badge">6</text>
+    <text x="46" y="26" class="node-title">東十九社・西十九社</text>
+    <text x="46" y="46" class="node-desc">☁️ 全國八百萬神仙的專屬宿舍！</text>
+    <text x="46" y="60" class="node-desc">農曆十月「神在月」眾神齊聚下榻處</text>
+  </g>
+
+  <!-- [8] 素鵞社 (御本殿正後方) -->
+  <g transform="translate(320, 160)" class="shadow">
+    <rect x="0" y="0" width="260" height="75" class="card-bg" fill="#E1F5FE" stroke="#4A3E3D" />
+    <circle cx="24" cy="24" r="14" fill="#0288D1" stroke="#4A3E3D" stroke-width="2" />
+    <text x="24" y="29" text-anchor="middle" class="num-badge">8</text>
+    <text x="46" y="26" class="node-title">素鵞社（そがのやしろ）</text>
+    <text x="46" y="46" class="node-desc">⛰️ 背靠八雲山岩壁，全境靈氣最強磁場！</text>
+    <text x="46" y="64" class="node-desc">供奉素盞鳴尊（須佐之男），後方有御神砂</text>
+  </g>
+
+  <!-- [7] 御本殿西側參拜所 (大國主神正面) -->
+  <g transform="translate(50, 330)" class="shadow">
+    <rect x="0" y="0" width="230" height="85" class="card-bg" fill="#FFF3E0" stroke="#E65100" stroke-width="2.5" />
+    <circle cx="24" cy="24" r="14" fill="#FF9800" stroke="#4A3E3D" stroke-width="2" />
+    <text x="24" y="29" text-anchor="middle" class="num-badge">7</text>
+    <text x="46" y="24" font-size="14" font-weight="900" fill="#E65100">★ 本殿西側參拜所</text>
+    <text x="46" y="44" class="node-desc">👀【內行人必知密技！】</text>
+    <text x="46" y="60" class="node-desc">大國主神在殿內座向「朝西」迎海！</text>
+    <text x="46" y="76" class="node-desc">走到此處才能與神明「正面相對」祈願！</text>
+  </g>
+
+  <!-- [9] 神樂殿 (日本最大注連繩) -->
+  <g transform="translate(50, 470)" class="shadow">
+    <rect x="0" y="0" width="230" height="90" class="card-bg" fill="#FFEBEE" stroke="#C62828" stroke-width="2.5" />
+    <circle cx="24" cy="24" r="14" fill="#E53935" stroke="#4A3E3D" stroke-width="2" />
+    <text x="24" y="29" text-anchor="middle" class="num-badge">9</text>
+    <text x="46" y="24" font-size="14" font-weight="900" fill="#C62828">神樂殿（かぐらでん）</text>
+    <text x="46" y="44" class="node-desc">🎗️【日本第一超巨型大注連繩】</text>
+    <text x="46" y="60" class="node-desc">長 13.6 米、重達 5.2 噸！極度壯觀</text>
+    <text x="46" y="78" class="node-desc">出雲大社最代表性拍照打卡地標</text>
+  </g>
+
+  <!-- Cute Illustrative Icons / Elements -->
+  <!-- Cute Rabbits -->
+  <g transform="translate(480, 715)">
+    <text font-size="28">🐇</text>
+  </g>
+  <g transform="translate(390, 760)">
+    <text font-size="24">🐰</text>
+  </g>
+  <g transform="translate(680, 680)">
+    <text font-size="26">🐇</text>
+    <text x="32" y="18" font-size="11" font-weight="700" fill="#7E726B">御慈愛之兔</text>
+  </g>
+
+  <!-- Torii Icons -->
+  <g transform="translate(435, 845)"><text font-size="26">⛩️</text></g>
+  <g transform="translate(435, 610)"><text font-size="22">⛩️</text></g>
+  <g transform="translate(435, 395)"><text font-size="22">⛩️</text></g>
+
+  <!-- Footprints along path -->
+  <circle cx="450" cy="860" r="3" fill="#E06D53" opacity="0.6"/>
+  <circle cx="450" cy="800" r="3" fill="#E06D53" opacity="0.6"/>
+  <circle cx="450" cy="710" r="3" fill="#E06D53" opacity="0.6"/>
+  <circle cx="450" cy="620" r="3" fill="#E06D53" opacity="0.6"/>
+  <circle cx="450" cy="510" r="3" fill="#E06D53" opacity="0.6"/>
+  
+  <!-- Legend Box at Bottom Left -->
+  <g transform="translate(50, 960)">
+    <rect x="0" y="0" width="115" height="90" rx="12" fill="#FFF" stroke="#4A3E3D" stroke-width="1.5" />
+    <text x="12" y="22" font-size="11" font-weight="900" fill="#3E3A39">📌 推薦參觀順序</text>
+    <text x="12" y="40" font-size="10.5" font-weight="700" fill="#E06D53">❶ 祓社淨身</text>
+    <text x="12" y="55" font-size="10.5" font-weight="700" fill="#E06D53">❷ 拜殿 ➔ ❺ 八足門</text>
+    <text x="12" y="70" font-size="10.5" font-weight="700" fill="#E06D53">❼ 西側參拜 ➔ ❽ 素鵞</text>
+    <text x="12" y="85" font-size="10.5" font-weight="700" fill="#E06D53">❾ 神樂殿 ➔ ❿ 午餐</text>
+  </g>
+
+  <!-- Legend Box at Bottom Right (Tips) -->
+  <g transform="translate(735, 960)">
+    <rect x="0" y="0" width="115" height="90" rx="12" fill="#FFF" stroke="#4A3E3D" stroke-width="1.5" />
+    <text x="12" y="22" font-size="11" font-weight="900" fill="#3E3A39">💡 參拜小叮嚀</text>
+    <text x="12" y="40" font-size="10.5" font-weight="600" fill="#655B53">• 二禮四拍一禮</text>
+    <text x="12" y="55" font-size="10.5" font-weight="600" fill="#655B53">• 稻佐之濱迎神</text>
+    <text x="12" y="70" font-size="10.5" font-weight="600" fill="#655B53">• 大社造國寶本殿</text>
+    <text x="12" y="85" font-size="10.5" font-weight="600" fill="#655B53">• 五円結好緣</text>
+  </g>
+</svg>

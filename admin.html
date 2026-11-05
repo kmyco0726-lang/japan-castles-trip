@@ -778,7 +778,7 @@
   </div>
 
   <!-- 載入原始景點資料庫與時刻表圖片 Base64 離線庫 -->
-  <script src="spots_data.js?v=2027_01_12_ROUTE_14DAYS_YAMAGUCHI_V94_RESTORE_ALL_HANDWRITTEN_NOTES"></script>
+  <script src="spots_data.js?v=2027_01_12_ROUTE_14DAYS_YAMAGUCHI_V105_IZUMO_4TORII_PERFECT"></script>
   <script src="timetables_b64.js"></script>
 
   <!-- 應用程式主邏輯 -->
@@ -790,13 +790,93 @@
     const STORAGE_KEY_ITINERARY = "jp_castles_itinerary_v1";
     const STORAGE_KEY_ITINERARY_VER = "jp_castles_itinerary_ver";
     const STORAGE_KEY_DELETED_SPOTS = "jp_castles_deleted_spots_v1";
-    const CURRENT_ITINERARY_VER = "2027_01_12_ROUTE_14DAYS_YAMAGUCHI_V100_HOFU_BUS_RESTORED";
+    const CURRENT_ITINERARY_VER = "2027_01_12_ROUTE_14DAYS_YAMAGUCHI_V106_TOTTORI_TAXI_OKI";
 
     // ==========================================
     // 雙重自包含備援資料庫 (Fallback Database)
     // 防止 GitHub CDN 快取延遲、404 或使用者僅單獨上傳 index.html 時資料脫節
     // ==========================================
     const BUILTIN_DEFAULT_SPOTS = [
+    {
+        "id": "izumo_sakaneya",
+        "name": "坂根屋（緣起橫丁店／出雲ぜんざい餅大社店）",
+        "prefecture": "島根",
+        "type": "custom",
+        "lat": 35.3955,
+        "lng": 132.686,
+        "stayDuration": "30 分鐘",
+        "climbLevel": "gourmet",
+        "climbLevelText": "🍡 出雲大社正門前紅豆善哉發祥名店",
+        "nearestStation": "一畑電車 出雲大社前駅 / 出雲大社正門",
+        "stampLocation": "店鋪櫃台",
+        "closedDay": "None",
+        "closedDayText": "年中無休",
+        "backupStamp": "",
+        "openHours": "09:00〜17:00",
+        "transitInfo": "出雲大社勢溜大鳥居正對面「ご縁横丁」內（出雲市大社町杵築南 840-1）",
+        "notes": "安政年間創業的島根和菓子百年老鋪「坂根屋」直營店。出雲為日本紅豆善哉（ぜんざい／神在餅）發祥地，店內必吃名物為現烤香脆紅豆麻糬「出雲ぜんざい餅」與熱騰騰大納言紅豆湯圓，亦有善哉霜淇淋，是參拜出雲大社後的最佳結緣甜點！",
+        "checklists": {}
+    },
+    {
+        "id": "izumo_chidorisoba",
+        "name": "千鳥蕎麥 (千鳥そば・出雲神門通手打割子蕎麥名店)",
+        "prefecture": "島根",
+        "type": "custom",
+        "lat": 35.3976,
+        "lng": 132.6858,
+        "stayDuration": "45 分鐘",
+        "climbLevel": "gourmet",
+        "climbLevelText": "🍜 神門通手打十割/九割割子蕎麥名店",
+        "nearestStation": "一畑電車 出雲大社前駅 / 出雲大社正門",
+        "stampLocation": "餐廳櫃台",
+        "closedDay": "Monday",
+        "closedDayText": "週一公休 (蕎麥售完為止)",
+        "backupStamp": "",
+        "openHours": "11:00〜15:30",
+        "transitInfo": "出雲大社勢溜大鳥居沿神門通り步行約 3 分鐘（出雲市大社町杵築東 650-1）",
+        "notes": "出雲神門通周邊人氣手打割子蕎麥名店。麵條勁道有嚼勁且蕎麥麥香純厚，甘醇蕎麥醬汁直接淋入圓形漆盒中品嚐，三段割子、天婦羅割子蕎麥深受當地人與參拜客推崇。",
+        "checklists": {}
+    },
+    {
+        "id": "izumo_arakidaya",
+        "name": "蕎麥 荒木屋 (そば 荒木屋・創業240年江戶最古割子蕎麥老店)",
+        "prefecture": "島根",
+        "type": "custom",
+        "lat": 35.4011,
+        "lng": 132.6845,
+        "stayDuration": "1 小時",
+        "climbLevel": "gourmet",
+        "climbLevelText": "🍜 出雲最古老割子蕎麥麵（創業240年老鋪）",
+        "nearestStation": "一畑電車 出雲大社前駅 / 出雲大社正門",
+        "stampLocation": "餐廳櫃台",
+        "closedDay": "Wednesday",
+        "closedDayText": "週三公休 (蕎麥麵售完為止)",
+        "backupStamp": "",
+        "openHours": "11:00〜17:00",
+        "transitInfo": "出雲大社勢溜大鳥居出正門步行約 5~7 分鐘（出雲市大社町杵築東 409-2）",
+        "notes": "全出雲現存歷史最悠久的蕎麥老鋪（天明年間創業，超過240年）。以石臼研磨全蕎麥粒製成特有深褐色蕎麥麵，香氣濃醇。必點招牌「割子そば」三段或五段「縁結びセット（緣結套餐）」，隨餐附贈結緣御守與迷你出雲紅豆善哉。",
+        "checklists": {}
+    },
+    {
+        "id": "nobonita_shokudo",
+        "name": "のぼにた食堂 (安來站前 和食定食＆孟加拉南亞香料咖哩)",
+        "prefecture": "島根",
+        "type": "custom",
+        "lat": 35.4328,
+        "lng": 133.2536,
+        "stayDuration": "1 小時",
+        "climbLevel": "gourmet",
+        "climbLevelText": "🍛 安來站前二刀流食堂（在地比田米定食 / 香料咖哩）",
+        "nearestStation": "安來駅",
+        "stampLocation": "餐廳櫃台",
+        "closedDay": "Sunday",
+        "closedDayText": "週日公休",
+        "backupStamp": "",
+        "openHours": "11:00〜16:30 (午餐營業)",
+        "transitInfo": "JR 安來站出站步行約 1~2 分鐘（島根縣安來市安來町 2442-1，站前步行即達）",
+        "notes": "安來站前極具特色的「二刀流食堂」，由バングラデシュ（孟加拉）籍老闆娘掌勺！一邊是使用島根安來在地比田米與大山土雞製作的手作「チキンコロッケ定食（炸雞可樂餅定食）」、「から揚げ定食（唐揚雞定食）」等暖心和食定食；另一邊是用石臼現磨香料慢熬的正統南亞香料咖哩（チキンカレー等），吃完零廚餘還享折價 100 円。是安來站搭車轉乘與午餐的絕佳首選！",
+        "checklists": {}
+    },
   {
     "id": "taoyuan_airport",
     "name": "台灣桃園國際機場 第一航廈 (TPE T1 虎航出發)",
