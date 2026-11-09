@@ -2031,9 +2031,9 @@
     "shortTitle": "D10:錦帶橋.岩國城.嚴島神社.宮島彌山大聖院.廣島",
     "title": "Day 10：岩國 08:30 巴士 ➔ 周防名橋錦帶橋・岩國城 (3合1套票) ➔ 11:57 岩國至宮島口 ➔ 宮島世界遺產嚴島神社・大聖院 ➔ 15:03 返廣島 (宿廣島)",
     "baseStation": "岩國駅 / 錦帶橋 / 宮島口駅 / 廣島駅",
-    "lodging": "Via Inn Hiroshima Shinkansenguchi (連住第1晚)",
-    "lodgingLocation": "JR 廣島駅北口 (新幹線口) 徒步 3 分鐘",
-    "recommendedHotels": "Via Inn Hiroshima Shinkansenguchi (ヴィアイン広島新幹線口・附大浴場)",
+    "lodging": "Hotel Granvia Hiroshima (連住第1晚)",
+    "lodgingLocation": "JR 廣島駅新幹線口 (北口) 直結",
+    "recommendedHotels": "Hotel Granvia Hiroshima (廣島格蘭比亞大飯店・JR廣島站直結)",
     "passStatus": "刷交通 IC 卡 / 現金 (非 Pass 天數)",
     "isPass": false,
     "steps": [
@@ -2137,12 +2137,12 @@
       },
       {
         "time": "16:00~",
-        "item": "Via Inn Hiroshima Shinkansenguchi ＆ 宮島牡蠣/廣島燒晚宴",
+        "item": "Hotel Granvia Hiroshima (廣島格蘭比亞大飯店) ＆ 宮島牡蠣/廣島燒晚宴",
         "mode": "住宿 Check-in",
         "cost": "-",
-        "details": "入住廣島站北口飯店連住第1晚，晚間於廣島站 ekie 品嚐廣島燒或烤牡蠣",
+        "details": "入住廣島站直結飯店連住第1晚，晚間於廣島站 ekie 品嚐廣島燒或烤牡蠣",
         "images": [],
-        "title": "Via Inn Hiroshima Shinkansenguchi ＆ 宮島牡蠣/廣島燒晚宴"
+        "title": "Hotel Granvia Hiroshima (廣島格蘭比亞大飯店) ＆ 宮島牡蠣/廣島燒晚宴"
       }
     ],
     "transitAttachments": {
@@ -2242,9 +2242,9 @@
     "shortTitle": "D11:廣島城.廣島護國神社.寶可夢中心.原爆圓頂.和平紀念資料館.鉄板焼 神石.廣島",
     "title": "Day 11：廣島和平文化・鯉城與護國神社 ➔ 原爆圓頂 ➔ 廣島和牛晚宴 (宿廣島)",
     "baseStation": "廣島駅 / 原爆圓頂前 / 本通商圈",
-    "lodging": "Via Inn Hiroshima Shinkansenguchi (連住第2晚)",
-    "lodgingLocation": "JR 廣島駅北口 (新幹線口) 徒步 3 分鐘",
-    "recommendedHotels": "Via Inn Hiroshima Shinkansenguchi (ヴィアイン広島新幹線口・連住免搬行李)",
+    "lodging": "Hotel Granvia Hiroshima (連住第2晚)",
+    "lodgingLocation": "JR 廣島駅新幹線口 (北口) 直結",
+    "recommendedHotels": "Hotel Granvia Hiroshima (廣島格蘭比亞大飯店・連住免搬行李・21F神石鐵板燒)",
     "passStatus": "刷交通 IC 卡 / 現金 (非 Pass 天數)",
     "isPass": false,
     "steps": [
