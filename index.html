@@ -114,12 +114,36 @@
       border-radius: var(--radius-md);
       box-shadow: 2px 2px 0px var(--ink);
       white-space: nowrap;
-      transition: transform 0.1s, box-shadow 0.1s;
+      transition: transform 0.1s, box-shadow 0.1s, background-color 0.15s, color 0.15s;
+      cursor: pointer;
     }
 
     .nav-link:active {
       transform: translate(2px, 2px);
       box-shadow: 0px 0px 0px var(--ink);
+    }
+
+    .nav-link.active {
+      background-color: var(--ink);
+      color: #ffffff;
+      box-shadow: 1px 1px 0px var(--ink);
+      transform: translate(1px, 1px);
+    }
+
+    /* 分頁區塊容器 */
+    .tab-content {
+      display: none;
+      padding-top: 16px;
+      animation: tabFadeIn 0.15s ease-out;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes tabFadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .container {
@@ -1122,6 +1146,12 @@
       color: var(--ink);
     }
 
+    [data-theme="dark"] .nav-link.active {
+      background-color: var(--yamabuki);
+      color: #1e293b;
+      box-shadow: 1px 1px 0px rgba(0,0,0,0.5);
+    }
+
     [data-theme="dark"] .step-desc {
       color: #cbd5e1;
     }
@@ -1375,7 +1405,7 @@
 
   <!-- 頂端固定選單 -->
   <nav class="navbar">
-    <a href="#" class="nav-brand">
+    <a href="#itinerary" class="nav-brand" data-tab="itinerary" title="回到行程首頁">
       <span class="nav-brand-icon">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3E3A39" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M3 21h18M5 21V7l7-4 7 4v14M9 10h6M9 14h6M9 18h6"/>
@@ -1384,10 +1414,10 @@
       <span>山陰山陽 14天</span>
     </a>
     <div class="nav-links">
-      <a href="#flight" class="nav-link">✈️ 航班</a>
-      <a href="#itinerary" class="nav-link">🗓️ 行程</a>
-      <a href="#hotels" class="nav-link">🏨 住宿</a>
-      <a href="#checklist" class="nav-link">✅ 待辦</a>
+      <a href="#itinerary" class="nav-link" data-tab="itinerary">🗓️ 行程</a>
+      <a href="#flight" class="nav-link" data-tab="flight">✈️ 航班</a>
+      <a href="#hotels" class="nav-link" data-tab="hotels">🏨 住宿</a>
+      <a href="#checklist" class="nav-link" data-tab="checklist">✅ 待辦</a>
       <a href="admin.html" class="nav-link" style="background:var(--yamabuki-light);">⚙️ 管理</a>
       <button id="themeToggleBtn" class="nav-link theme-toggle-btn" aria-label="切換亮暗模式" title="切換亮/暗模式"><span id="themeToggleIcon">🌙</span></button>
     </div>
@@ -1395,7 +1425,7 @@
 
   <div class="container">
 
-    <!-- 首頁插圖＋標題＋出發倒數 -->
+    <!-- 首頁插圖＋標題＋出發倒數 (行程分頁專屬) -->
     <header class="hero-section">
       <!-- 日系繪本風・當日路線地圖 (依選擇的日期切換，資料來源 spots_data.js) -->
       <div class="hero-map-wrap">
@@ -1434,8 +1464,24 @@
       </div>
     </header>
 
-    <!-- 航班卡片區塊 -->
-    <section id="flight">
+    <!-- 每日行程分頁 -->
+    <section id="itinerary" class="tab-content">
+      <div class="section-title-wrap">
+        <span class="section-tag tag-yamabuki">🗓️ 每日行程</span>
+      </div>
+
+      <!-- 上方日期滑動切換列 -->
+      <div class="day-picker-bar" id="dayPickerBar"></div>
+
+      <!-- 當日資訊卡片 -->
+      <div class="day-header-card" id="dayHeaderCard"></div>
+
+      <!-- 下方時間軸卡片列表 -->
+      <div class="timeline-container" id="timelineList"></div>
+    </section>
+
+    <!-- 航班卡片分頁 -->
+    <section id="flight" class="tab-content">
       <div class="section-title-wrap">
         <span class="section-tag tag-coral">✈️ 航班資訊</span>
       </div>
@@ -1491,24 +1537,8 @@
       </div>
     </section>
 
-    <!-- 每日行程區塊 -->
-    <section id="itinerary">
-      <div class="section-title-wrap">
-        <span class="section-tag tag-yamabuki">🗓️ 每日行程</span>
-      </div>
-
-      <!-- 上方日期滑動切換列 -->
-      <div class="day-picker-bar" id="dayPickerBar"></div>
-
-      <!-- 當日資訊卡片 -->
-      <div class="day-header-card" id="dayHeaderCard"></div>
-
-      <!-- 下方時間軸卡片列表 -->
-      <div class="timeline-container" id="timelineList"></div>
-    </section>
-
-    <!-- 住宿資訊區塊 -->
-    <section id="hotels" style="margin-top: 32px;">
+    <!-- 住宿資訊分頁 -->
+    <section id="hotels" class="tab-content">
       <div class="section-title-wrap" style="justify-content:space-between; flex-wrap:wrap;">
         <span class="section-tag tag-wakatake">🏨 住宿資訊</span>
         <span id="hotelBookedCountBadge" class="hotel-status-badge status-pending" style="font-size:0.85rem; padding:4px 12px;">0 / 11 已訂妥</span>
@@ -1516,8 +1546,8 @@
       <div id="hotelList"></div>
     </section>
 
-    <!-- 可打勾的待辦清單區塊 -->
-    <section id="checklist" style="margin-top: 32px;">
+    <!-- 可打勾的待辦清單分頁 -->
+    <section id="checklist" class="tab-content">
       <div class="section-title-wrap">
         <span class="section-tag tag-mizu">✅ 行前待辦與行李清單</span>
       </div>
@@ -6086,6 +6116,87 @@ const HOTELS_DATA = [
       renderDayContent(idx);
     }
 
+    // ==========================================
+    // 分頁切換模組 (Tab Navigation)
+    // 支援行程、航班、住宿、待辦切換，並自動記憶 Hash
+    // ==========================================
+    function switchPageTab(tabId, updateHash = true) {
+      const validTabs = ['itinerary', 'flight', 'hotels', 'checklist'];
+      if (!validTabs.includes(tabId)) tabId = 'itinerary';
+
+      // 1. 切換各區塊顯示狀態
+      validTabs.forEach(id => {
+        const sec = document.getElementById(id);
+        if (sec) {
+          if (id === tabId) {
+            sec.classList.add('active');
+            sec.style.display = 'block';
+          } else {
+            sec.classList.remove('active');
+            sec.style.display = 'none';
+          }
+        }
+      });
+
+      // 2. 首頁地圖與出發倒數 (hero-section) 僅在行程分頁展示
+      const hero = document.querySelector('.hero-section');
+      if (hero) {
+        hero.style.display = (tabId === 'itinerary') ? 'block' : 'none';
+      }
+
+      // 3. 切換回行程時，若需要重新觸發 HeroMap 繪製以防破圖
+      if (tabId === 'itinerary' && typeof renderHeroMap === 'function' && typeof currentDayIndex !== 'undefined') {
+        try { renderHeroMap(currentDayIndex); } catch (_) {}
+      }
+
+      // 4. 更新 Navbar 按鈕 active 狀態
+      document.querySelectorAll('.nav-link[data-tab]').forEach(btn => {
+        const active = btn.getAttribute('data-tab') === tabId;
+        btn.classList.toggle('active', active);
+      });
+
+      // 5. 更新網址列 hash
+      if (updateHash) {
+        if (window.location.hash !== '#' + tabId) {
+          try {
+            history.pushState(null, '', '#' + tabId);
+          } catch (_) {
+            window.location.hash = '#' + tabId;
+          }
+        }
+      }
+
+      // 6. 平滑捲回頂端
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function initPageTabs() {
+      // 綁定 Navbar 點擊事件
+      document.querySelectorAll('.nav-link[data-tab], .nav-brand[data-tab]').forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const target = this.getAttribute('data-tab');
+          switchPageTab(target, true);
+        });
+      });
+
+      // 監聽網址列 hash 變更（支援瀏覽器上一頁/下一頁）
+      window.addEventListener('hashchange', () => {
+        const h = window.location.hash.replace('#', '');
+        if (['itinerary', 'flight', 'hotels', 'checklist'].includes(h)) {
+          switchPageTab(h, false);
+        }
+      });
+
+      // 初次載入：依據目前 hash 或預設為 itinerary (每日行程)
+      const initialHash = window.location.hash.replace('#', '');
+      if (['itinerary', 'flight', 'hotels', 'checklist'].includes(initialHash)) {
+        switchPageTab(initialHash, false);
+      } else {
+        switchPageTab('itinerary', false);
+      }
+    }
+
     // 頁面啟動
     window.addEventListener('DOMContentLoaded', () => {
       initCountdown();
@@ -6093,6 +6204,7 @@ const HOTELS_DATA = [
       initHotels();
       initChecklist();
       initThemeToggle();
+      initPageTabs();
     });
   
   function initThemeToggle() {
