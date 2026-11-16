@@ -834,6 +834,102 @@
       text-decoration: none;
     }
 
+    /* 預約管理卡片 (餐廳/計程車) */
+    .booking-filter-btn {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--ink);
+      background-color: var(--card-white);
+      border: var(--border-thin);
+      border-radius: var(--radius-md);
+      box-shadow: 2px 2px 0px var(--ink);
+      padding: 6px 14px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.1s;
+    }
+    .booking-filter-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 0px 0px 0px var(--ink);
+    }
+    .booking-filter-btn.active {
+      background-color: var(--ink);
+      color: #ffffff;
+      box-shadow: 1px 1px 0px var(--ink);
+      transform: translate(1px, 1px);
+    }
+    [data-theme="dark"] .booking-filter-btn.active {
+      background-color: var(--yamabuki);
+      color: #1e293b;
+    }
+
+    .booking-card {
+      background: var(--card-white);
+      border: var(--border-thick);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-flat);
+      padding: 16px;
+      margin-bottom: 16px;
+      position: relative;
+      transition: all 0.15s ease-out;
+    }
+    .booking-card.is-booked {
+      border-color: #059669;
+      background: #f0fdf4;
+    }
+    [data-theme="dark"] .booking-card.is-booked {
+      background: rgba(6, 78, 59, 0.25);
+      border-color: #10b981;
+    }
+    .booking-type-pill {
+      font-size: 0.75rem;
+      font-weight: 900;
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      border: var(--border-thin);
+    }
+    .booking-type-restaurant {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+    .booking-type-taxi {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    [data-theme="dark"] .booking-type-restaurant {
+      background: #7f1d1d;
+      color: #fecaca;
+    }
+    [data-theme="dark"] .booking-type-taxi {
+      background: #78350f;
+      color: #fef3c7;
+    }
+    .booking-memo-box {
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--line);
+    }
+    .booking-memo-input {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 6px 10px;
+      font-size: 0.78rem;
+      font-family: inherit;
+      background: rgba(255, 255, 255, 0.85);
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    [data-theme="dark"] .booking-memo-input {
+      background: #1e293b;
+      color: #f1f5f9;
+      border-color: #475569;
+    }
+    .booking-memo-input:focus {
+      border-color: #3b82f6;
+    }
+
     /* 待辦清單 */
     .checklist-progress-bar {
       width: 100%;
@@ -1417,6 +1513,7 @@
       <a href="#itinerary" class="nav-link" data-tab="itinerary">🗓️ 行程</a>
       <a href="#flight" class="nav-link" data-tab="flight">✈️ 航班</a>
       <a href="#hotels" class="nav-link" data-tab="hotels">🏨 住宿</a>
+      <a href="#bookings" class="nav-link" data-tab="bookings">🍽️ 餐廳/計程車</a>
       <a href="#checklist" class="nav-link" data-tab="checklist">✅ 待辦</a>
       <a href="admin.html" class="nav-link" style="background:var(--yamabuki-light);">⚙️ 管理</a>
       <button id="themeToggleBtn" class="nav-link theme-toggle-btn" aria-label="切換亮暗模式" title="切換亮/暗模式"><span id="themeToggleIcon">🌙</span></button>
@@ -1544,6 +1641,49 @@
         <span id="hotelBookedCountBadge" class="hotel-status-badge status-pending" style="font-size:0.85rem; padding:4px 12px;">0 / 11 已訂妥</span>
       </div>
       <div id="hotelList"></div>
+    </section>
+
+    <!-- 餐廳預訂 / 計程車預定分頁 -->
+    <section id="bookings" class="tab-content">
+      <div class="section-title-wrap" style="justify-content:space-between; flex-wrap:wrap; margin-bottom:12px;">
+        <span class="section-tag tag-yamabuki">🍽️ 餐廳預訂 / 🚕 計程車預定</span>
+        <span id="bookingCountBadge" class="hotel-status-badge status-pending" style="font-size:0.85rem; padding:4px 12px;">0 / 0 已預訂</span>
+      </div>
+
+      <!-- 快捷子分類切換鈕 -->
+      <div class="booking-filter-bar" style="display:flex; gap:8px; margin-bottom:16px; overflow-x:auto; padding:2px 0;">
+        <button type="button" class="booking-filter-btn active" data-filter="all" onclick="filterBookings('all', this)">全部清單</button>
+        <button type="button" class="booking-filter-btn" data-filter="restaurant" onclick="filterBookings('restaurant', this)">🍽️ 餐廳預訂</button>
+        <button type="button" class="booking-filter-btn" data-filter="taxi" onclick="filterBookings('taxi', this)">🚕 計程車/觀光包車</button>
+      </div>
+
+      <!-- 預約卡片清單 -->
+      <div id="bookingList"></div>
+
+      <!-- 自訂新增預訂項目卡片 -->
+      <div class="washi-card" style="margin-top:20px;">
+        <div style="font-size:0.95rem; font-weight:900; margin-bottom:12px; display:flex; align-items:center; gap:6px;">
+          <span>＋</span> <span>新增自訂預約 (餐廳 / 計程車)</span>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px;">
+          <select id="customBookingCat" style="border:var(--border-thin); border-radius:var(--radius-md); padding:8px; font-size:0.8rem; background:var(--card-white); color:var(--ink);">
+            <option value="restaurant">🍽️ 餐廳預約</option>
+            <option value="taxi">🚕 計程車/接駁</option>
+          </select>
+          <input type="text" id="customBookingDay" placeholder="天數/日期 (例: Day 5 晚餐)" style="border:var(--border-thin); border-radius:var(--radius-md); padding:8px 10px; font-size:0.8rem; background:var(--card-white); color:var(--ink);">
+        </div>
+        <div style="margin-bottom:8px;">
+          <input type="text" id="customBookingTitle" placeholder="名稱 (例: 境港活蟹居酒屋 / 鳥取觀光計程車)" style="width:100%; border:var(--border-thin); border-radius:var(--radius-md); padding:8px 10px; font-size:0.8rem; background:var(--card-white); color:var(--ink);">
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px;">
+          <input type="text" id="customBookingPhone" placeholder="聯絡電話 (可選)" style="border:var(--border-thin); border-radius:var(--radius-md); padding:8px 10px; font-size:0.8rem; background:var(--card-white); color:var(--ink);">
+          <input type="text" id="customBookingUrl" placeholder="官方網址 (可選)" style="border:var(--border-thin); border-radius:var(--radius-md); padding:8px 10px; font-size:0.8rem; background:var(--card-white); color:var(--ink);">
+        </div>
+        <div style="margin-bottom:12px;">
+          <input type="text" id="customBookingTips" placeholder="備註/訂位代號/注意事項" style="width:100%; border:var(--border-thin); border-radius:var(--radius-md); padding:8px 10px; font-size:0.8rem; background:var(--card-white); color:var(--ink);">
+        </div>
+        <button type="button" class="btn-add-todo" style="width:100%;" onclick="addCustomBooking()">加入預約清單</button>
+      </div>
     </section>
 
     <!-- 可打勾的待辦清單分頁 -->
@@ -5599,6 +5739,371 @@ const HOTELS_DATA = [
       renderHotelsList();
     }
 
+    // ==========================================
+    // 5. 餐廳預訂 / 計程車預定模組 (Bookings & Reservations)
+    // ==========================================
+    const BOOKINGS_STORAGE_KEY = 'japan_2027_bookings_status_v1';
+    const BOOKINGS_MEMOS_KEY = 'japan_2027_bookings_memos_v1';
+    const BOOKINGS_CUSTOM_KEY = 'japan_2027_bookings_custom_v1';
+
+    const BOOKINGS_DEFAULT = [
+      // 🍽️ 餐廳預約 (6 項，嚴格對齊行程步驟)
+      {
+        id: 'res_d1_okayama_bisai',
+        category: 'restaurant',
+        dayNumber: 1,
+        dayText: 'Day 1 晚餐 (2027/01/12)',
+        title: '鉄板焼 備彩 (岡山格蘭比亞 2F・千屋牛頂級鐵板燒)',
+        location: 'JR 岡山站直結 格蘭比亞大飯店 2F',
+        highlights: '日本最古老血統「岡山千屋牛」鐵板燒晚宴、活鮑魚與時令旬彩',
+        phone: '086-233-3138',
+        url: 'https://jrwest-hotels.jp/tw/granvia-okayama/restaurant/bisai/',
+        urlText: '官網線上預訂',
+        needAdvance: '強烈建議出發前 1 個月官網預約',
+        tips: '【行程 Day 1 Step 4】千屋牛為珍稀日本蔓牛始祖，席位極少，建議及早預約 18:00 晚宴席位。'
+      },
+      {
+        id: 'res_d2_tottori_tsubomi',
+        category: 'restaurant',
+        dayNumber: 2,
+        dayText: 'Day 2 晚餐 (2027/01/13)',
+        title: '鉄板焼 蕾 つぼみ (鳥取東伯和牛/大山土雞)',
+        location: '鳥取市末広温泉町753 (鳥取站步行 8 分)',
+        highlights: '鳥取在地最高品質東伯和牛菲力牛排、大山地雞、精緻預約制鐵板燒',
+        phone: '0857-50-1798',
+        url: 'https://teppan-tsubomi.com/',
+        urlText: '官網線上預約席位',
+        needAdvance: '預約制套餐，建議提前預約',
+        tips: '【行程 Day 2 Step 11】津山城攻城後搭因美線抵達鳥取站飯店 Check-in，19:00 前往享用在地和牛晚宴。'
+      },
+      {
+        id: 'res_d3_tottori_takumi',
+        category: 'restaurant',
+        dayNumber: 3,
+        dayText: 'Day 3 午餐 (2027/01/14)',
+        title: 'たくみ割烹店 (日本牛肉涮涮鍋元祖・鳥取和牛鍋)',
+        location: '鳥取市栄町652 (JR 鳥取站北口步行 5 分)',
+        highlights: '日本和牛涮涮鍋（しゃぶしゃぶ）發祥名店！鳥取民藝和牛鍋',
+        phone: '0857-26-6355',
+        url: 'https://www.tottori-mingei.jp/takumikappou.html',
+        urlText: '官網預約/店鋪資訊',
+        needAdvance: '建議提早 1~2 週預訂午餐時段',
+        tips: '【行程 Day 3 Step 5】觀光計程車結束後 12:05 享用，週三公休（Day 3 為週五正常營業），民藝陶器盛裝和牛涮涮鍋名氣極高。'
+      },
+      {
+        id: 'res_d4_yonago_araiso',
+        category: 'restaurant',
+        dayNumber: 4,
+        dayText: 'Day 4 晚餐 (2027/01/15)',
+        title: '日本料理 荒磯 本店 (境港活松葉蟹/喉黑魚) ｜ 備選 居酒屋 太平記',
+        location: '鳥取縣米子市万能町162 (JR 米子站步行 3 分)',
+        highlights: '境港冬旬活松葉蟹、炭火烤喉黑魚、白烏賊海鮮會席；備選太平記大山地雞串燒',
+        phone: '0859-34-3151',
+        url: 'http://araiso.jp/',
+        urlText: '荒磯官網洽詢預約 (太平記: 0859-32-9689)',
+        needAdvance: '活松葉蟹會席需提前 3~7 天預訂',
+        tips: '【行程 Day 4 宿米子站前】1 月為境港松葉蟹最肥美季節，欲品嚐專人現拆活蟹全席務必提前訂位。'
+      },
+      {
+        id: 'res_d7_hagi_takadai',
+        category: 'restaurant',
+        dayNumber: 7,
+        dayText: 'Day 7 晚餐 (2027/01/18)',
+        title: '萩の御厨 高大 (みくりや・たかだい・長州旬彩割烹)',
+        location: '山口縣萩市唐樋町80番地 (萩巴士中心步行 1 分)',
+        highlights: '長州四季時令會席、仙崎特鮮活透抽、長州黑柏地雞、和風庭園包廂',
+        phone: '0838-22-0065',
+        url: 'http://www.takadai.co.jp/',
+        urlText: '高大料亭官網',
+        needAdvance: '預約制料理，需提前預定包廂會席',
+        tips: '【行程 Day 7 Step 8】萩城參訪後 16:45~19:00 享用名物割烹晚宴，緊鄰巴士中心，餐後步行或搭短程計程車回飯店極方便。'
+      },
+      {
+        id: 'res_d11_hiroshima_jinseki',
+        category: 'restaurant',
+        dayNumber: 11,
+        dayText: 'Day 11 晚餐 (2027/01/22)',
+        title: '鉄板焼 神石 (廣島格蘭比亞 21F・廣島牛) ｜ 備選 青ひげ',
+        location: 'JR 廣島站北口直結 格蘭比亞大飯店 21F',
+        highlights: '嚴選頂級廣島牛、瀨戶內海鮑魚海鮮鐵板燒、俯瞰廣島市區高空夜景',
+        phone: '082-262-1132',
+        url: 'https://jrwest-hotels.jp/granvia-hiroshima/restaurant/jinseki/',
+        urlText: '格蘭比亞官網線上訂位 (青ひげ: 082-246-8166)',
+        needAdvance: '需提早預約高空景觀席位',
+        tips: '【行程 Day 11 Step 7】廣島市區巡禮後 18:00~20:00 於飯店 21F 享用廣島牛晚宴；若想吃厚切牛排亦可備選ステーキ青ひげ。'
+      },
+
+      // 🚕 計程車預定 (4 項，嚴格對齊行程步驟)
+      {
+        id: 'taxi_d2_kinojo',
+        category: 'taxi',
+        dayNumber: 2,
+        dayText: 'Day 2 上午 (2027/01/13)',
+        title: '總社站 ⇄ 鬼之城山頂計程車往返',
+        location: 'JR 總社站前排班處 ⇄ 鬼城山遊客中心/西門步道',
+        highlights: '單程約 25~30 分鐘 (車資約 3,000~3,500 円/車)',
+        phone: '0866-92-0056',
+        url: '',
+        urlText: '總社計程車 (総社タクシー)',
+        needAdvance: '去程站前搭車，下車時務必約定回程',
+        tips: '【行程 Day 2 Step 2 & 4】鬼之城山頂全無公車！08:15 自總社站搭車抵達山頂時，務必先與司機約好 10:30 接送下山回總社站。'
+      },
+      {
+        id: 'taxi_d3_tottori_3hr',
+        category: 'taxi',
+        dayNumber: 3,
+        dayText: 'Day 3 上午 (2027/01/14)',
+        title: '鳥取市 3 小時外國人觀光計程車 (路線 2)',
+        location: 'JR 鳥取站北口東側「鳥取市國際觀光客案內所」櫃台',
+        highlights: '外國遊客補助價：3 小時僅需 4,000 円/台 (一車最多載 4 人！)',
+        phone: '0857-22-3318',
+        url: 'https://www.torican.jp/',
+        urlText: '鳥取市觀光推進機構指南',
+        needAdvance: '當日 09:00 案內所櫃檯現場登記',
+        tips: '【行程 Day 3 Step 1~4】09:00 登記路線 2：鳥取站 ➔ 白兔神社 (30分) ➔ 鳥取砂丘 (40分) ➔ 鳥取城跡 (45分)，司機各站等待，行李可放後車廂。'
+      },
+      {
+        id: 'taxi_d8_motonosumi',
+        category: 'taxi',
+        dayNumber: 8,
+        dayText: 'Day 8 上午 (2027/01/19)',
+        title: '長門古市站 ⇄ 元乃隅神社 (千本鳥居) 計程車往返',
+        location: 'JR 山陰本線「長門古市站」 ⇄ 元乃隅神社',
+        highlights: '單程約 20 分鐘 (車資約 2,500~3,000 円/車)',
+        phone: '0837-22-2255',
+        url: '',
+        urlText: '長門計程車 (長門タクシー)',
+        needAdvance: '山陰段無公車直達，需事先預約或約定回程',
+        tips: '【行程 Day 8 Step 2 & 4】10:00 自長門古市站搭車前往千本鳥居，參拜後需搭 11:35 計程車返回長門古市站，以銜接 12:09 的 JR 山陰本線！'
+      },
+      {
+        id: 'taxi_d13_bitchu_matsuyama',
+        category: 'taxi',
+        dayNumber: 13,
+        dayText: 'Day 13 上午 (2027/01/24)',
+        title: '備中松山城 觀光乘合計程車 (観光乗合タクシー)',
+        location: 'JR 備中高梁站前 ⇄ 鞴峠 (ふいご峠登山口)',
+        highlights: '單程約 500~800 円/人 (車程 15 分，省下 1 小時徒步陡坡)',
+        phone: '0866-21-0461',
+        url: 'https://www.asoview.com/item/activity/pln3000045984/',
+        urlText: 'Asoview 線上預約乘車券',
+        needAdvance: '需前一日 17:00 前預約完成',
+        tips: '【行程 Day 13 Step 3】10:00 發車直達登山口鞴峠，下車後僅需步行 20 分鐘即可登上天空之城天守閣見貓城主「三十郎」！'
+      }
+    ];
+
+    let bookedBookingIds = new Set();
+    let bookingMemos = {};
+    let customBookings = [];
+    let currentBookingFilter = 'all';
+
+    function loadBookingsData() {
+      try {
+        const savedStatus = localStorage.getItem(BOOKINGS_STORAGE_KEY);
+        if (savedStatus) bookedBookingIds = new Set(JSON.parse(savedStatus));
+      } catch (e) {}
+
+      try {
+        const savedMemos = localStorage.getItem(BOOKINGS_MEMOS_KEY);
+        if (savedMemos) bookingMemos = JSON.parse(savedMemos) || {};
+      } catch (e) {}
+
+      try {
+        const savedCustom = localStorage.getItem(BOOKINGS_CUSTOM_KEY);
+        if (savedCustom) customBookings = JSON.parse(savedCustom) || [];
+      } catch (e) {}
+    }
+
+    function getAllBookings() {
+      return [...BOOKINGS_DEFAULT, ...customBookings];
+    }
+
+    function toggleBookingBooked(id) {
+      if (bookedBookingIds.has(id)) {
+        bookedBookingIds.delete(id);
+      } else {
+        bookedBookingIds.add(id);
+      }
+      try {
+        localStorage.setItem(BOOKINGS_STORAGE_KEY, JSON.stringify([...bookedBookingIds]));
+      } catch (e) {}
+      renderBookingList();
+    }
+
+    function saveBookingMemo(id, val) {
+      bookingMemos[id] = val;
+      try {
+        localStorage.setItem(BOOKINGS_MEMOS_KEY, JSON.stringify(bookingMemos));
+      } catch (e) {}
+    }
+
+    function filterBookings(cat, btnEl) {
+      currentBookingFilter = cat;
+      document.querySelectorAll('.booking-filter-btn').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+      renderBookingList();
+    }
+
+    function addCustomBooking() {
+      const cat = document.getElementById('customBookingCat').value || 'restaurant';
+      const day = (document.getElementById('customBookingDay').value || '').trim();
+      const title = (document.getElementById('customBookingTitle').value || '').trim();
+      const phone = (document.getElementById('customBookingPhone').value || '').trim();
+      const url = (document.getElementById('customBookingUrl').value || '').trim();
+      const tips = (document.getElementById('customBookingTips').value || '').trim();
+
+      if (!title) {
+        alert('請填寫預約名稱！');
+        return;
+      }
+
+      const newItem = {
+        id: 'custom_booking_' + Date.now(),
+        category: cat,
+        dayNumber: 99,
+        dayText: day || (cat === 'restaurant' ? '自訂餐廳' : '自訂計程車'),
+        title: title,
+        location: '',
+        highlights: '',
+        phone: phone,
+        url: url,
+        urlText: url ? '開啟預約連結' : '',
+        needAdvance: '自訂預約',
+        tips: tips,
+        isCustom: true
+      };
+
+      customBookings.push(newItem);
+      try {
+        localStorage.setItem(BOOKINGS_CUSTOM_KEY, JSON.stringify(customBookings));
+      } catch (e) {}
+
+      // 清空輸入
+      document.getElementById('customBookingDay').value = '';
+      document.getElementById('customBookingTitle').value = '';
+      document.getElementById('customBookingPhone').value = '';
+      document.getElementById('customBookingUrl').value = '';
+      document.getElementById('customBookingTips').value = '';
+
+      renderBookingList();
+    }
+
+    function deleteCustomBooking(id) {
+      if (!confirm('確定刪除此自訂預約項目？')) return;
+      customBookings = customBookings.filter(b => b.id !== id);
+      bookedBookingIds.delete(id);
+      delete bookingMemos[id];
+      try {
+        localStorage.setItem(BOOKINGS_CUSTOM_KEY, JSON.stringify(customBookings));
+        localStorage.setItem(BOOKINGS_STORAGE_KEY, JSON.stringify([...bookedBookingIds]));
+        localStorage.setItem(BOOKINGS_MEMOS_KEY, JSON.stringify(bookingMemos));
+      } catch (e) {}
+      renderBookingList();
+    }
+
+    function renderBookingList() {
+      const listEl = document.getElementById('bookingList');
+      if (!listEl) return;
+
+      const allItems = getAllBookings();
+      const totalCount = allItems.length;
+      const bookedCount = allItems.filter(b => bookedBookingIds.has(b.id)).length;
+
+      // 更新進度徽章
+      const countBadge = document.getElementById('bookingCountBadge');
+      if (countBadge) {
+        countBadge.textContent = `${bookedCount} / ${totalCount} 已預訂`;
+        countBadge.className = 'hotel-status-badge ' + (bookedCount === totalCount ? 'status-confirmed' : 'status-pending');
+      }
+
+      // 依分類過濾
+      const filtered = allItems.filter(b => {
+        if (currentBookingFilter === 'all') return true;
+        return b.category === currentBookingFilter;
+      });
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = '<div style="text-align:center; padding:30px 10px; color:var(--ink-light); font-size:0.85rem;">此分類尚無預約項目</div>';
+        return;
+      }
+
+      listEl.innerHTML = filtered.map(b => {
+        const isBooked = bookedBookingIds.has(b.id);
+        const memo = bookingMemos[b.id] || '';
+        const isRes = b.category === 'restaurant';
+        const typeClass = isRes ? 'booking-type-restaurant' : 'booking-type-taxi';
+        const typeLabel = isRes ? '🍽️ 餐廳預約' : '🚕 計程車預約';
+
+        return `
+        <div class="booking-card ${isBooked ? 'is-booked' : ''}" id="booking_${b.id}">
+          <div class="hotel-head">
+            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+              <span class="booking-type-pill ${typeClass}">${typeLabel}</span>
+              <span class="hotel-days">${escapeHtml(b.dayText)}</span>
+              <span class="hotel-status-badge ${isBooked ? 'status-confirmed' : 'status-pending'}">
+                ${isBooked ? '✅ 已完成預約' : '⏳ 待預約 / 待安排'}
+              </span>
+            </div>
+            <div style="display:flex; gap:6px; align-items:center;">
+              ${b.isCustom ? `<button type="button" onclick="deleteCustomBooking('${b.id}')" style="background:#fee2e2; border:none; color:#dc2626; border-radius:6px; padding:4px 8px; font-size:0.75rem; cursor:pointer;" title="刪除">✕</button>` : ''}
+              <button type="button" class="hotel-booking-btn ${isBooked ? 'checked' : ''}" onclick="toggleBookingBooked('${b.id}')" title="切換預約狀態">
+                <span class="check-mark">${isBooked ? '✓' : ''}</span>
+                <span>${isBooked ? '已預約' : '標記已預約'}</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="hotel-name">${escapeHtml(b.title)}</div>
+          
+          ${b.location ? `<div style="font-size:0.8rem; font-weight:800; color:#3b82f6; margin-bottom:6px;">📍 ${escapeHtml(b.location)}</div>` : ''}
+
+          <!-- 重點與提醒區塊 -->
+          <div class="hotel-addr-box">
+            ${b.highlights ? `<div style="font-size:0.8rem; color:var(--ink); font-weight:700; margin-bottom:4px;">✨ ${escapeHtml(b.highlights)}</div>` : ''}
+            
+            <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center; font-size:0.78rem; padding-top:4px; border-top:1px dotted var(--line);">
+              ${b.phone ? `
+                <a href="tel:${escapeHtml(b.phone.replace(/[^0-9]/g, ''))}" style="color:#0284c7; text-decoration:none; font-weight:800; display:inline-flex; align-items:center; gap:3px;">
+                  📞 <span>電話：${escapeHtml(b.phone)}</span>
+                </a>
+              ` : ''}
+              ${b.needAdvance ? `<span style="color:#d97706; font-weight:800;">⚠️ ${escapeHtml(b.needAdvance)}</span>` : ''}
+            </div>
+            ${b.tips ? `<div style="font-size:0.75rem; color:#64748b; margin-top:4px; line-height:1.4;">💡 ${escapeHtml(b.tips)}</div>` : ''}
+          </div>
+
+          <!-- 按鈕動作區 -->
+          <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;">
+            ${b.url ? `
+              <a href="${escapeHtml(b.url)}" target="_blank" rel="noopener noreferrer" class="btn-map" style="background:#fef08a; color:#854d0e;">
+                <span>🔗 ${escapeHtml(b.urlText || '開啟官方線上預訂')}</span>
+              </a>
+            ` : ''}
+            ${b.location ? `
+              <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.location)}" target="_blank" rel="noopener noreferrer" class="btn-map">
+                <span>🗺️ Google 地圖</span>
+              </a>
+            ` : ''}
+          </div>
+
+          <!-- 預約備註與訂位代號輸入框 (自動儲存) -->
+          <div class="booking-memo-box">
+            <input type="text" class="booking-memo-input" 
+              placeholder="✏️ 填寫此項預約代號、時間、或預約人 (輸入自動儲存)..." 
+              value="${escapeHtml(memo)}"
+              onchange="saveBookingMemo('${b.id}', this.value)"
+              oninput="saveBookingMemo('${b.id}', this.value)">
+          </div>
+        </div>
+        `;
+      }).join('');
+    }
+
+    function initBookings() {
+      loadBookingsData();
+      renderBookingList();
+    }
+
     // 4. 互動待辦清單
     const TODO_STORAGE_KEY = 'japan_2027_trip_todos_v2';
     let userTodos = [];
@@ -6121,7 +6626,7 @@ const HOTELS_DATA = [
     // 支援行程、航班、住宿、待辦切換，並自動記憶 Hash
     // ==========================================
     function switchPageTab(tabId, updateHash = true) {
-      const validTabs = ['itinerary', 'flight', 'hotels', 'checklist'];
+      const validTabs = ['itinerary', 'flight', 'hotels', 'bookings', 'checklist'];
       if (!validTabs.includes(tabId)) tabId = 'itinerary';
 
       // 1. 切換各區塊顯示狀態
@@ -6183,14 +6688,14 @@ const HOTELS_DATA = [
       // 監聽網址列 hash 變更（支援瀏覽器上一頁/下一頁）
       window.addEventListener('hashchange', () => {
         const h = window.location.hash.replace('#', '');
-        if (['itinerary', 'flight', 'hotels', 'checklist'].includes(h)) {
+        if (['itinerary', 'flight', 'hotels', 'bookings', 'checklist'].includes(h)) {
           switchPageTab(h, false);
         }
       });
 
       // 初次載入：依據目前 hash 或預設為 itinerary (每日行程)
       const initialHash = window.location.hash.replace('#', '');
-      if (['itinerary', 'flight', 'hotels', 'checklist'].includes(initialHash)) {
+      if (['itinerary', 'flight', 'hotels', 'bookings', 'checklist'].includes(initialHash)) {
         switchPageTab(initialHash, false);
       } else {
         switchPageTab('itinerary', false);
@@ -6202,6 +6707,7 @@ const HOTELS_DATA = [
       initCountdown();
       initItinerary();
       initHotels();
+      initBookings();
       initChecklist();
       initThemeToggle();
       initPageTabs();
