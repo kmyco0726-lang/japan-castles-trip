@@ -819,6 +819,32 @@
       line-height: 1.45;
     }
 
+    .btn-map-inline {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      margin-left: 6px;
+      padding: 2px 8px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      background: #e0f2fe;
+      color: #0369a1;
+      border: 1px solid #7dd3fc;
+      border-radius: 6px;
+      text-decoration: none;
+      vertical-align: middle;
+      white-space: nowrap;
+      box-shadow: 1px 1px 0px rgba(3, 105, 161, 0.4);
+      transition: all 0.15s;
+    }
+    .btn-map-inline:hover {
+      background: #0284c7;
+      color: #ffffff;
+      border-color: #0284c7;
+      box-shadow: none;
+      transform: translate(1px, 1px);
+    }
+
     .btn-map {
       display: inline-flex;
       align-items: center;
@@ -4603,58 +4629,68 @@
     "isPass": false,
     "steps": [
       {
-            "time": "08:30~09:00",
-            "item": "VIA INN 岡山 退房・寄放行李 ➔ 岡山駅 ➔ 備前一宮駅 (JR 吉備線/桃太郎線)",
-            "mode": "JR吉備線",
+            "time": "06:30~06:58",
+            "item": "VIA INN 岡山 退房・寄放行李 ➔ 岡山駅 ➔ 備前一宮駅 (JR 桃太郎線 06:44 發車)",
+            "mode": "JR桃太郎線",
             "cost": "¥210\n(⚠️ 需自費・IC卡)",
-            "details": "清晨於 VIA INN 岡山辦理退房並將大件行李寄放於櫃檯。前往岡山站 10 番線搭乘 08:35 發車之 JR 吉備線普通車（總社行），約 11 分鐘直達「備前一宮站」（08:46 抵達）。",
-            "images": [],
-            "title": "VIA INN 岡山 退房・寄放行李 ➔ 岡山駅 ➔ 備前一宮駅 (JR 吉備線/桃太郎線)"
+            "details": "晨間於 VIA INN 岡山辦理退房並將大件行李寄放於櫃檯。前往岡山站 10 番線搭乘 06:44 發車之 JR 桃太郎線（吉備線）普通車（総社行），約 14 分鐘直達「備前一宮站」（06:58 抵達，刷 IC 卡 210 円）。",
+            "images": [
+                  {
+                        "url": "timetables/d14_okayama_to_bizen_ichinomiya_0644.jpg",
+                        "caption": "岡山 06:44 ➔ 備前一宮 06:58 (JR桃太郎線 10番線・¥210)"
+                  }
+            ],
+            "title": "VIA INN 岡山 退房・寄放行李 ➔ 岡山駅 ➔ 備前一宮駅 (JR 桃太郎線 06:44 發車)"
       },
       {
-            "time": "08:50~09:50",
-            "item": "吉備津彥神社 (Kibitsuhiko Jinja 備前國一之宮・桃太郎神話古社)",
+            "time": "07:00~08:00",
+            "item": "吉備津彥神社 (Kibitsuhiko Jinja 備前國一之宮・桃太郎神話古社・停留1小時)",
             "mode": "桃太郎神話古社",
-            "cost": "-",
-            "details": "備前一宮站出站步行 3 分鐘即達。參拜主祀吉備津彥命（桃太郎原型），欣賞安土桃山風格神池與拜殿，求取桃子御守與平安御朱印。",
+            "cost": "免費參拜",
+            "details": "備前一宮站出站步行僅 3 分鐘即達。參拜主祀吉備津彥命（桃太郎原型），欣賞安土桃山風格神池、隨神門與拜殿，漫步晨間神杉古道，求取桃子御守與平安御朱印（停留約 1 小時充裕參訪）。",
             "images": [],
-            "title": "吉備津彥神社 (Kibitsuhiko Jinja 備前國一之宮・桃太郎神話古社)"
+            "title": "吉備津彥神社 (Kibitsuhiko Jinja 備前國一之宮・桃太郎神話古社・停留1小時)"
       },
       {
-            "time": "09:55~10:05",
-            "item": "備前一宮駅 ➔ 吉備津駅 (JR 吉備線/桃太郎線 普通車)",
-            "mode": "JR吉備線",
-            "cost": "¥150\n(⚠️ 需自費・IC卡)",
-            "details": "自備前一宮站搭乘 JR 吉備線普通車（總社行），車程僅 3 分鐘直達「吉備津站」。",
+            "time": "08:00~08:35",
+            "item": "吉備路歷史步道漫步：吉備津彥神社 ➔ 步行前往 ➔ 吉備津神社 (田園松林悠閒步行約 2 公里)",
+            "mode": "吉備路步道漫步",
+            "cost": "免費散策",
+            "details": "自吉備津彥神社出發，沿著著名「吉備路歷史自行車道／步道」悠閒漫步前往吉備津神社（全長約 2.1 公里，步行約 25~30 分鐘）。沿途田園松林環繞、清幽古樸，享受晨光悠閒漫步，免去在車站久候班車之苦！",
             "images": [],
-            "title": "備前一宮駅 ➔ 吉備津駅 (JR 吉備線/桃太郎線 普通車)"
+            "title": "吉備路歷史步道漫步：吉備津彥神社 ➔ 步行前往 ➔ 吉備津神社 (田園松林悠閒步行約 2 公里)"
       },
       {
-            "time": "10:10~11:20",
-            "item": "吉備津神社 (Kibitsu Jinja 備中國一之宮・國寶比翼入母屋造本殿 ＆ 360公尺大迴廊)",
+            "time": "08:35~09:45",
+            "item": "吉備津神社 (Kibitsu Jinja 備中國一之宮・國寶比翼入母屋造本殿 ＆ 360公尺大迴廊・停留1小時)",
             "mode": "國寶大迴廊神社",
-            "cost": "-",
-            "details": "吉備津站步行 10 分鐘即達。參拜全日本唯一「吉備津造」國寶本殿，漫步於依山勢延伸的 360 公尺壯麗大迴廊，鳴釜神事發祥地，祈求返程旅途平安順遂。",
+            "cost": "免費參拜",
+            "details": "步行抵達吉備津神社，停留約 1 小時充裕參訪。參拜全日本唯一「吉備津造」國寶本殿，漫步於依山勢起伏延伸的 360 公尺壯麗大迴廊，探訪溫羅傳說與鳴釜神事發祥地，求取桃太郎退魔御守，為 14 天旅途祈求圓滿順遂。",
             "images": [],
-            "title": "吉備津神社 (Kibitsu Jinja 備中國一之宮・國寶比翼入母屋造本殿 ＆ 360公尺大迴廊)"
+            "title": "吉備津神社 (Kibitsu Jinja 備中國一之宮・國寶比翼入母屋造本殿 ＆ 360公尺大迴廊・停留1小時)"
       },
       {
-            "time": "11:25~11:50",
-            "item": "吉備津駅 ➔ 岡山駅 (JR 吉備線/桃太郎線 返回岡山站領取行李)",
-            "mode": "JR吉備線",
+            "time": "09:45~10:11",
+            "item": "吉備津駅 ➔ 岡山駅 (JR 桃太郎線 09:56 發車・返回岡山站領取行李)",
+            "mode": "JR桃太郎線",
             "cost": "¥210\n(⚠️ 需自費・IC卡)",
-            "details": "自吉備津站搭乘 JR 吉備線普通車（岡山行），約 19 分鐘直達岡山站（約 11:47 抵達）。返回飯店櫃檯領取大件行李。",
-            "images": [],
-            "title": "吉備津駅 ➔ 岡山駅 (JR 吉備線/桃太郎線 返回岡山站領取行李)"
+            "details": "吉備津神社步行約 10 分鐘至 JR 吉備津站。搭乘 09:56 發車之 JR 桃太郎線普通車（岡山行），車程 15 分鐘，於 10:11 直達岡山站 10 番線（刷 IC 卡 210 円）。返回飯店櫃檯領取大件行李。",
+            "images": [
+                  {
+                        "url": "timetables/d14_kibitsu_to_okayama_0956.jpg",
+                        "caption": "吉備津 09:56 ➔ 岡山 10:11 (JR桃太郎線 岡山行・¥210)"
+                  }
+            ],
+            "title": "吉備津駅 ➔ 岡山駅 (JR 桃太郎線 09:56 發車・返回岡山站領取行李)"
       },
       {
-            "time": "11:50~12:40",
-            "item": "🍽️ 岡山市區・車站一番街 特色美食午餐 ＆ 伴手禮採買 (白桃・吉備糰子)",
+            "time": "10:15~12:35",
+            "item": "VIA INN 領取行李 ＆ 🍽️ 岡山車站一番街・さんすて 特色美食午餐 ＆ 伴手禮最後大採買",
             "mode": "當地美食/採買",
             "cost": "自費",
-            "details": "於岡山站さんすて或一番街享用午餐，把握最後時光採買岡山名物吉備糰子（きびだんご）、白桃果凍點心、蒜山生乳甜點與日本酒伴手禮。",
+            "details": "抵達岡山站後先至 VIA INN 領取寄放大件行李。隨後於岡山車站一番街或さんすて享用午餐，把握最後時光採買岡山名物吉備糰子（きびだんご）、白桃果凍點心、蒜山生乳甜點、瀨戶內檸檬伴手禮與在地地酒。",
             "images": [],
-            "title": "🍽️ 岡山市區・車站一番街 特色美食午餐 ＆ 伴手禮採買 (白桃・吉備糰子)"
+            "title": "VIA INN 領取行李 ＆ 🍽️ 岡山車站一番街・さんすて 特色美食午餐 ＆ 伴手禮最後大採買"
       },
       {
             "time": "12:40~13:10",
@@ -4662,7 +4698,12 @@
             "mode": "機場巴士",
             "cost": "¥1,000\n(⚠️ 需自費)",
             "details": "於岡山站西口巴士總站 21 號乘車處，搭乘 12:40（或 13:10）發車之機場利木津巴士，約 30 分鐘直達岡山桃太郎機場 (OKJ) 出境大廳。",
-            "images": [],
+            "images": [
+              {
+                "url": "timetables/d13_okayama_to_airport_bus_2.jpg",
+                "caption": "岡山站西口 21號乘車處 ➔ 岡山桃太郎機場 (利木津巴士時刻表)"
+              }
+            ],
             "title": "岡山駅西口 ➔ 岡山桃太郎機場 (機場利木津巴士 直達機場)"
       },
       {
@@ -5254,12 +5295,291 @@ const HOTELS_DATA = [
       renderDayContent(idx);
     }
 
-    // 將文字中的 URL 轉為可點擊超連結
-    function formatDetailsWithLinks(text) {
+    // ==========================================
+    // 智慧 Google Maps 精準導航定位模組
+    // ==========================================
+    const KANJI_MAP = {
+      '縣': '県', '廣島': '広島', '広越': '広越', '中區': '中区', '北區': '北区',
+      '東區': '東区', '南區': '南区', '末廣': '末広', '溫泉': '温泉', '鐵板': '鉄板',
+      '車站': '駅', '大樓': 'ビル', '鳥取本通': '鳥取本通'
+    };
+
+    const KNOWN_DINING_PLACES = {
+      'minoya': {
+        keywords: ['みのや', 'Minoya'],
+        name: 'お食事処 みのや',
+        mapQuery: 'みのや 島根県鹿足郡津和野町後田イ75-1',
+        phone: '0856-72-1531',
+        url: 'https://tsuwano-kanko.net/sightseeing/look/minoya/',
+        urlText: '津和野觀光協會・みのや介紹'
+      },
+      'koufukushifuku': {
+        keywords: ['口福至福', 'こうふくしふく'],
+        name: '口福至福',
+        mapQuery: '口福至福 山口県山口市小郡高砂町4-36',
+        phone: '083-976-8888',
+        url: 'https://tabelog.com/tw/yamaguchi/A3501/A350101/35010107/',
+        urlText: 'Tabelog・口福至福'
+      },
+      'shabujin': {
+        keywords: ['しゃぶ仁', 'ShabuJin'],
+        name: 'しゃぶ仁',
+        mapQuery: 'しゃぶ仁 山口県岩国市麻里布町3-12-13',
+        phone: '0827-23-4488',
+        url: 'https://shokudouen.jp/',
+        urlText: '官方網站（道仁集團）'
+      },
+      'mikotoya': {
+        keywords: ['みこと屋', 'Mikotoya'],
+        name: 'みこと屋',
+        mapQuery: 'みこと屋 広島県廿日市市宮島町785',
+        phone: '0829-30-7657',
+        url: 'https://www.instagram.com/mikotoya1122/',
+        urlText: '官方 Instagram'
+      },
+      'yakumo': {
+        keywords: ['ひろしま八雲', 'Hiroshima Yakumo', '八雲'],
+        name: 'ひろしま八雲',
+        mapQuery: 'ひろしま八雲 広島県広島市中区富士見町4-9',
+        phone: '082-244-1551',
+        url: 'https://www.tablecheck.com/shops/hiroshima-yakumo/reserve',
+        urlText: 'TableCheck 官方預約'
+      },
+      'bisai': {
+        keywords: ['備彩', '鉄板焼 備彩'],
+        name: '鉄板焼 備彩',
+        mapQuery: '鉄板焼 備彩 ホテルグランヴィア岡山',
+        phone: '086-233-3138',
+        url: 'https://jrwest-hotels.jp/tw/granvia-okayama/restaurant/bisai/',
+        urlText: '官網線上預訂'
+      },
+      'tsubomi': {
+        keywords: ['鉄板焼 蕾', 'つぼみ'],
+        name: '鉄板焼 蕾',
+        mapQuery: '鉄板焼 蕾 鳥取県鳥取市末広温泉町753',
+        phone: '0857-50-1798',
+        url: 'https://teppan-tsubomi.com/',
+        urlText: '官網線上預約席位'
+      },
+      'kanmiya': {
+        keywords: ['甘味屋', '草莓大福'],
+        name: '甘味屋 鳥取店',
+        mapQuery: '甘味屋 鳥取店 鳥取県鳥取市末広温泉町128',
+        phone: '0857-36-1515'
+      },
+      'kamon': {
+        keywords: ['花門S', 'お好み焼き 花門S'],
+        name: 'お好み焼き 花門S',
+        mapQuery: 'お好み焼き 花門S 岡山県岡山市北区駅前町1-2-4',
+        phone: '086-224-1589'
+      },
+      'takumi': {
+        keywords: ['たくみ割烹店', 'たくみ割烹'],
+        name: 'たくみ割烹店',
+        mapQuery: 'たくみ割烹店 鳥取県鳥取市栄町652',
+        phone: '0857-26-6355',
+        url: 'https://www.tottori-mingei.jp/takumikappou.html',
+        urlText: '官網預約/店鋪資訊'
+      },
+      'araiso': {
+        keywords: ['荒磯', '日本料理 荒磯'],
+        name: '日本料理 荒磯 本店',
+        mapQuery: '日本料理 荒磯 本店 鳥取県米子市万能町162',
+        phone: '0859-34-3151',
+        url: 'http://araiso.jp/',
+        urlText: '荒磯官網洽詢預約'
+      },
+      'taiheiki': {
+        keywords: ['太平記', '居酒屋 太平記'],
+        name: '居酒屋 太平記',
+        mapQuery: '居酒屋 太平記 鳥取県米子市明治町271',
+        phone: '0859-32-9689'
+      },
+      'takadai': {
+        keywords: ['萩の御厨 高大', '高大'],
+        name: '萩の御厨 高大',
+        mapQuery: '萩の御厨 高大 山口県萩市唐樋町80',
+        phone: '0838-22-0065',
+        url: 'http://www.takadai.co.jp/',
+        urlText: '高大料亭官網'
+      },
+      'jinseki': {
+        keywords: ['神石', '鉄板焼 神石'],
+        name: '鉄板焼 神石',
+        mapQuery: '鉄板焼 神石 ホテルグランヴィア広島',
+        phone: '082-262-1132',
+        url: 'https://jrwest-hotels.jp/granvia-hiroshima/restaurant/jinseki/',
+        urlText: '格蘭比亞官網線上訂位'
+      },
+      'aohige': {
+        keywords: ['青ひげ', 'ステーキ青ひげ'],
+        name: 'ステーキ青ひげ 本店',
+        mapQuery: 'ステーキ青ひげ 本店 広島県広島市中区本通8-18',
+        phone: '082-246-8166'
+      },
+      'nomura': {
+        keywords: ['味司野村', '野村'],
+        name: '味司野村',
+        mapQuery: '味司野村 岡山県岡山市北区平和町1-10',
+        phone: '086-222-2234'
+      },
+      'hashidate_chaya': {
+        keywords: ['はしだて茶屋', 'Hashidate Chaya'],
+        name: 'はしだて茶屋',
+        mapQuery: 'はしだて茶屋 京都府宮津市文珠468',
+        phone: '0772-22-3363'
+      },
+      'arakia': {
+        keywords: ['荒木屋', '出雲そば 荒木屋'],
+        name: '出雲そば 荒木屋',
+        mapQuery: '出雲そば 荒木屋 島根県出雲市大社町杵築東409-2',
+        phone: '0853-53-2352'
+      },
+      'workman': {
+        keywords: ['Workman', 'ワークマンプラス'],
+        name: 'ワークマンプラス 山口小郡店',
+        mapQuery: 'ワークマンプラス 山口小郡店 山口県山口市小郡前田町1-13',
+        phone: '083-972-5577'
+      }
+    };
+
+    function buildPreciseMapQuery(stepTitle, addrText) {
+      if (stepTitle) {
+        for (const k in KNOWN_DINING_PLACES) {
+          const kp = KNOWN_DINING_PLACES[k];
+          if (kp.keywords.some(kw => stepTitle.includes(kw))) {
+            return kp.mapQuery;
+          }
+        }
+      }
+      if (addrText) {
+        for (const k in KNOWN_DINING_PLACES) {
+          const kp = KNOWN_DINING_PLACES[k];
+          if (kp.keywords.some(kw => addrText.includes(kw))) {
+            return kp.mapQuery;
+          }
+        }
+      }
+
+      let cleanAddr = (addrText || '').replace(/[\(（][^()）]*[)）]/g, '');
+      cleanAddr = cleanAddr.replace(/(步行|搭乘|車程|從|JR|分|僅|約).*$/, '');
+      cleanAddr = cleanAddr.trim().replace(/[，。、\s]+$/, '');
+      for (const k in KANJI_MAP) {
+        cleanAddr = cleanAddr.split(k).join(KANJI_MAP[k]);
+      }
+
+      let title = (stepTitle || '').trim();
+      title = title.replace(/^[🍽️🏮🍓🛒🚕🍜☕🍱🍙\s]+/, '');
+      title = title.replace(/^(午餐|晚餐|朝食|在地午餐|人氣晚餐|頂級晚餐|隱密和食午餐|極致頂級晚宴|散策買名菓|採購散策)[：:\s]+/, '');
+      let mainTitle = title.split(/[\(（・/]/)[0].trim();
+      if (mainTitle.includes('：')) mainTitle = mainTitle.split('：').pop().trim();
+      for (const k in KANJI_MAP) {
+        mainTitle = mainTitle.split(k).join(KANJI_MAP[k]);
+      }
+
+      if (mainTitle && cleanAddr) {
+        if (cleanAddr.includes(mainTitle)) return cleanAddr;
+        return `${mainTitle} ${cleanAddr}`;
+      }
+      return cleanAddr || mainTitle || addrText;
+    }
+
+    function getCleanMapQuery(item) {
+      if (!item) return '';
+      if (item.mapQuery && item.mapQuery.trim()) return item.mapQuery.trim();
+      return buildPreciseMapQuery(item.title || item.item, item.location || item.address);
+    }
+
+    function getCleanMapUrl(item) {
+      const q = getCleanMapQuery(item);
+      if (!q) return '';
+      return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q);
+    }
+
+    function getStepDiningInfo(step, day) {
+      if (!step) return null;
+      const item = step.item || '';
+      const details = step.details || '';
+
+      // 1. KNOWN_DINING_PLACES 匹配
+      for (const key in KNOWN_DINING_PLACES) {
+        const place = KNOWN_DINING_PLACES[key];
+        const match = place.keywords.some(kw => item.includes(kw) || details.includes(kw));
+        if (match) {
+          return {
+            name: place.name,
+            mapUrl: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(place.mapQuery),
+            phone: place.phone,
+            url: place.url,
+            urlText: place.urlText
+          };
+        }
+      }
+
+      // 2. 比對 BOOKINGS_DEFAULT
+      if (typeof BOOKINGS_DEFAULT !== 'undefined') {
+        const matchedBooking = BOOKINGS_DEFAULT.find(b => {
+          if (b.category !== 'restaurant') return false;
+          const dayMatch = !b.dayNumber || (day && b.dayNumber === day.dayNumber);
+          const nameCore = b.title.split(/[\(（・]/)[0].trim();
+          const nameMatch = item.includes(nameCore) || (b.phone && details.includes(b.phone));
+          return dayMatch && nameMatch;
+        });
+
+        if (matchedBooking) {
+          const cleanQuery = getCleanMapQuery(matchedBooking);
+          return {
+            name: matchedBooking.title.split(/[\\(（・]/)[0].trim(),
+            mapUrl: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(cleanQuery),
+            phone: matchedBooking.phone,
+            url: matchedBooking.url,
+            urlText: matchedBooking.urlText
+          };
+        }
+      }
+
+      // 3. 從 details 中的 📍 地點 / 📍 地址 匹配
+      const locMatch = details.match(/(?:•\s*)?📍\s*(?:地點|地址)[：:]\s*([^\n]+)/);
+      if (locMatch) {
+        const phoneMatch = details.match(/(?:•\s*)?📞\s*電話[：:]\s*([^\n｜|]+)/);
+        const cleanQuery = buildPreciseMapQuery(item, locMatch[1]);
+        let name = item.replace(/^[🍽️🏮🍓🛒🚕🍜☕🍱🍙\s]+/, '').split(/[\(（・:：]/)[0].trim();
+        return {
+          name: name || '地點',
+          mapUrl: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(cleanQuery),
+          phone: phoneMatch ? phoneMatch[1].trim() : '',
+          url: '',
+          urlText: ''
+        };
+      }
+
+      // 4. step.mapQuery
+      if (step.mapQuery) {
+        let name = item.replace(/^[🍽️🏮🍓🛒🚕🍜☕🍱🍙\s]+/, '').split(/[\(（・:：]/)[0].trim();
+        return {
+          name: name || '目的地',
+          mapUrl: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(step.mapQuery),
+          phone: '',
+          url: '',
+          urlText: ''
+        };
+      }
+
+      return null;
+    }
+
+    // 將文字中的 URL 轉為可點擊超連結，並為 📍 地點 自動附加精準 Google Maps 導航按鈕
+    function formatDetailsWithLinks(text, stepContext) {
       if (!text) return '';
       let safe = escapeHtml(text);
       safe = safe.replace(/(https?:\/\/[^\s\)\)\"\'，。、<>]+)/g, (url) => {
         return `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color:#0284c7; text-decoration:underline; font-weight:800; word-break:break-all;">${url}</a>`;
+      });
+      // 為 📍 地點 / 📍 地址 掛上精準 Google Maps 導航按鈕
+      safe = safe.replace(/((?:•\s*)?📍\s*(?:地點|地址)[：:]\s*)([^\n<]+)/g, (match, prefix, addrText) => {
+        const cleanQuery = buildPreciseMapQuery(stepContext ? (stepContext.item || stepContext.title) : '', addrText);
+        const mapUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(cleanQuery);
+        return `${prefix}${addrText} <a href="${mapUrl}" target="_blank" rel="noopener noreferrer" class="btn-map-inline" title="開啟 Google 地圖精準導航">🗺️ 地圖導航</a>`;
       });
       return safe.replace(/\n/g, '<br>');
     }
@@ -5455,6 +5775,10 @@ const HOTELS_DATA = [
             if (k.includes('bitchu_matsuyama_to_kibitsuhiko') && item.includes('備中高梁') && item.includes('備前一宮')) isMatch = true;
             if (k.includes('kibitsu_jinja_to_okayama') && item.includes('吉備津') && item.includes('岡山')) isMatch = true;
           }
+          // Day 14
+          else if (day.dayNumber === 14) {
+            if ((k.includes('okayama_hotel_to_okayama_airport') || k.includes('okayama_airport_14') || k.includes('airport')) && (item.includes('機場') || item.includes('空港'))) isMatch = true;
+          }
 
           if (isMatch) {
             if (att.link) addLink(att.link);
@@ -5551,7 +5875,27 @@ const HOTELS_DATA = [
         if (step.mode === '當地美食' || step.item.includes('美食')) {
           gourmetBoxHtml = `
             <div class="gourmet-badge-box">
-              ${formatDetailsWithLinks(step.details)}
+              ${formatDetailsWithLinks(step.details, step)}
+            </div>
+          `;
+        }
+
+        // 餐廳 / 景點 精準地圖導航與電話專屬動作區
+        const diningInfo = getStepDiningInfo(step, day);
+        let diningSectionHtml = '';
+        if (diningInfo) {
+          diningSectionHtml = `
+            <div class="step-actions-row" style="margin-top:10px;">
+              <a href="${diningInfo.mapUrl}" target="_blank" rel="noopener noreferrer" class="btn-map" style="background:#e0f2fe; color:#0369a1; border-color:#7dd3fc;" title="在 Google Maps 開啟精準導航">
+                <span>🗺️</span>
+                <span>${escapeHtml(diningInfo.name || '餐廳')} Google 地圖導航</span>
+              </a>
+              ${diningInfo.url ? `
+                <a href="${escapeHtml(diningInfo.url)}" target="_blank" rel="noopener noreferrer" class="btn-map" style="background:#fef08a; color:#854d0e; border-color:#fde047;" title="開啟官方介紹/預約頁面">
+                  <span>🔗</span>
+                  <span>${escapeHtml(diningInfo.urlText || '官方預約/介紹')}</span>
+                </a>
+              ` : ''}
             </div>
           `;
         }
@@ -5621,9 +5965,10 @@ const HOTELS_DATA = [
               <div class="step-title">${escapeHtml(step.item)}</div>
               ${costHtml}
               ${jrSeatHtml}
-              ${(!gourmetBoxHtml && step.details) ? `<div class="step-desc">${formatDetailsWithLinks(step.details)}</div>` : ''}
+              ${(!gourmetBoxHtml && step.details) ? `<div class="step-desc">${formatDetailsWithLinks(step.details, step)}</div>` : ''}
               ${stampBoxHtml}
               ${gourmetBoxHtml}
+              ${diningSectionHtml}
               ${transitSectionHtml}
             </div>
           </div>
@@ -5779,6 +6124,7 @@ const HOTELS_DATA = [
         dayText: 'Day 7 午餐 (2027/01/18)',
         title: 'みのや (Minoya・津和野站前茅葺茶屋名店)',
         location: '島根縣鹿足郡津和野町後田イ75-1 (JR 津和野站步行 2 分)',
+        mapQuery: 'みのや 島根県鹿足郡津和野町後田イ75-1',
         highlights: '名物招牌「しこたまうどん」（豐盛山菜烏龍麵）、日本五大名飯「うずめ飯」、手工艾草糰子',
         phone: '0856-72-1531',
         url: 'https://tsuwano-kanko.net/sightseeing/look/minoya/',
@@ -5794,6 +6140,7 @@ const HOTELS_DATA = [
         dayText: 'Day 8 晚餐 (2027/01/19)',
         title: '口福至福 (こうふくしふく・新山口站前海味旬彩名店)',
         location: '山口縣山口市小郡高砂町4-36 オアシスビル 1F (新山口站新幹線口步行 4 分)',
+        mapQuery: '口福至福 山口県山口市小郡高砂町4-36',
         highlights: '山口近海鮮魚刺身盛合、長州赤雞、見蘭牛、下關河豚唐揚、山口代表地酒（獺祭/東洋美人/雁木/貴）',
         phone: '083-976-8888',
         url: 'https://tabelog.com/tw/yamaguchi/A3501/A350101/35010107/',
@@ -5809,6 +6156,7 @@ const HOTELS_DATA = [
         dayText: 'Day 9 晚餐 (2027/01/20)',
         title: 'しゃぶ仁 (ShabuJin・黑毛和牛涮涮鍋 ＆ 釜飯名店)',
         location: '山口縣岩國市麻里布町3-12-13 (JR 岩國站西口步行 5 分)',
+        mapQuery: 'しゃぶ仁 山口県岩国市麻里布町3-12-13',
         highlights: '頂級黑毛和牛/山形豚涮涮鍋、特製一番高湯現炊釜飯、道仁餐飲集團人氣包廂名店',
         phone: '0827-23-4488',
         url: 'https://shokudouen.jp/',
@@ -5824,6 +6172,7 @@ const HOTELS_DATA = [
         dayText: 'Day 10 午餐 (2027/01/21)',
         title: 'みこと屋 (Mikotoya・宮島黃金穴子重 ＆ 酥炸牡蠣)',
         location: '廣島縣廿日市市宮島町785 (宮島棧橋步行 7 分・町家通古街旁)',
+        mapQuery: 'みこと屋 広島県廿日市市宮島町785',
         highlights: '名物「黃金穴子重」（厚燒出汁玉子燒＋甘醇蒲燒星鰻）、酥炸鮮甜廣島大牡蠣、穴子釜飯定食',
         phone: '0829-30-7657',
         url: 'https://www.instagram.com/mikotoya1122/',
@@ -5839,6 +6188,7 @@ const HOTELS_DATA = [
         dayText: 'Day 10 晚餐 (2027/01/21)',
         title: 'ひろしま八雲 (Hiroshima Yakumo・廣島牛すすぎ鍋/瀨戶內會席)',
         location: '廣島市中區富士見町4-9 廣越本社大樓 (廣島站搭計程車約 8~10 分)',
+        mapQuery: 'ひろしま八雲 広島県広島市中区富士見町4-9',
         highlights: '名物「すすぎ鍋」（女將桌邊現涮廣島牛＋3日熟成秘傳胡麻胡桃醬）、瀨戶內冬牡蠣與旬魚會席、全包廂',
         phone: '082-244-1551',
         url: 'https://www.tablecheck.com/shops/hiroshima-yakumo/reserve',
@@ -5854,6 +6204,7 @@ const HOTELS_DATA = [
         dayText: 'Day 1 晚餐 (2027/01/12)',
         title: '鉄板焼 備彩 (岡山格蘭比亞 2F・千屋牛頂級鐵板燒)',
         location: 'JR 岡山站直結 格蘭比亞大飯店 2F',
+        mapQuery: '鉄板焼 備彩 ホテルグランヴィア岡山',
         highlights: '日本最古老血統「岡山千屋牛」鐵板燒晚宴、活鮑魚與時令旬彩',
         phone: '086-233-3138',
         url: 'https://jrwest-hotels.jp/tw/granvia-okayama/restaurant/bisai/',
@@ -5868,6 +6219,7 @@ const HOTELS_DATA = [
         dayText: 'Day 2 晚餐 (2027/01/13)',
         title: '鉄板焼 蕾 つぼみ (鳥取東伯和牛/大山土雞)',
         location: '鳥取市末広温泉町753 (鳥取站步行 8 分)',
+        mapQuery: '鉄板焼 蕾 鳥取県鳥取市末広温泉町753',
         highlights: '鳥取在地最高品質東伯和牛菲力牛排、大山地雞、精緻預約制鐵板燒',
         phone: '0857-50-1798',
         url: 'https://teppan-tsubomi.com/',
@@ -5882,6 +6234,7 @@ const HOTELS_DATA = [
         dayText: 'Day 3 午餐 (2027/01/14)',
         title: 'たくみ割烹店 (日本牛肉涮涮鍋元祖・鳥取和牛鍋)',
         location: '鳥取市栄町652 (JR 鳥取站北口步行 5 分)',
+        mapQuery: 'たくみ割烹店 鳥取県鳥取市栄町652',
         highlights: '日本和牛涮涮鍋（しゃぶしゃぶ）發祥名店！鳥取民藝和牛鍋',
         phone: '0857-26-6355',
         url: 'https://www.tottori-mingei.jp/takumikappou.html',
@@ -5896,6 +6249,7 @@ const HOTELS_DATA = [
         dayText: 'Day 4 晚餐 (2027/01/15)',
         title: '日本料理 荒磯 本店 (境港活松葉蟹/喉黑魚) ｜ 備選 居酒屋 太平記',
         location: '鳥取縣米子市万能町162 (JR 米子站步行 3 分)',
+        mapQuery: '日本料理 荒磯 本店 鳥取県米子市万能町162',
         highlights: '境港冬旬活松葉蟹、炭火烤喉黑魚、白烏賊海鮮會席；備選太平記大山地雞串燒',
         phone: '0859-34-3151',
         url: 'http://araiso.jp/',
@@ -5910,6 +6264,7 @@ const HOTELS_DATA = [
         dayText: 'Day 7 晚餐 (2027/01/18)',
         title: '萩の御厨 高大 (みくりや・たかだい・長州旬彩割烹)',
         location: '山口縣萩市唐樋町80番地 (萩巴士中心步行 1 分)',
+        mapQuery: '萩の御厨 高大 山口県萩市唐樋町80',
         highlights: '長州四季時令會席、仙崎特鮮活透抽、長州黑柏地雞、和風庭園包廂',
         phone: '0838-22-0065',
         url: 'http://www.takadai.co.jp/',
@@ -5924,6 +6279,7 @@ const HOTELS_DATA = [
         dayText: 'Day 11 晚餐 (2027/01/22)',
         title: '鉄板焼 神石 (廣島格蘭比亞 21F・廣島牛) ｜ 備選 青ひげ',
         location: 'JR 廣島站北口直結 格蘭比亞大飯店 21F',
+        mapQuery: '鉄板焼 神石 ホテルグランヴィア広島',
         highlights: '嚴選頂級廣島牛、瀨戶內海鮑魚海鮮鐵板燒、俯瞰廣島市區高空夜景',
         phone: '082-262-1132',
         url: 'https://jrwest-hotels.jp/granvia-hiroshima/restaurant/jinseki/',
@@ -5940,6 +6296,7 @@ const HOTELS_DATA = [
         dayText: 'Day 12 & 13 接駁 (2027/01/23~24)',
         title: 'ホテル鴎風亭 免費接駁專車往返 (完全預約制)',
         location: 'JR 福山站乘車口 ⇄ 鞆之浦 ホテル鴎風亭',
+        mapQuery: 'JR 福山駅 北口 送迎バス乗り場',
         highlights: '去程 16:05預約/16:15發車 ｜ 隔天回程 09:03發車直達福山站 (車程約30分・免費)',
         phone: '084-982-1123',
         url: 'https://tomotetsu.co.jp/cont/wp-content/uploads/2026/09/1.20261001jikoku-tomo.pdf',
@@ -6200,9 +6557,9 @@ const HOTELS_DATA = [
             
             <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center; font-size:0.78rem; padding-top:4px; border-top:1px dotted var(--line);">
               ${b.phone ? `
-                <a href="tel:${escapeHtml(b.phone.replace(/[^0-9]/g, ''))}" style="color:#0284c7; text-decoration:none; font-weight:800; display:inline-flex; align-items:center; gap:3px;">
+                <span style="color:#475569; font-weight:700; display:inline-flex; align-items:center; gap:3px;">
                   📞 <span>電話：${escapeHtml(b.phone)}</span>
-                </a>
+                </span>
               ` : ''}
               ${b.needAdvance ? `<span style="color:#d97706; font-weight:800;">⚠️ ${escapeHtml(b.needAdvance)}</span>` : ''}
             </div>
@@ -6216,9 +6573,9 @@ const HOTELS_DATA = [
                 <span>🔗 ${escapeHtml(b.urlText || '開啟官方線上預訂')}</span>
               </a>
             ` : ''}
-            ${b.location ? `
-              <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.location)}" target="_blank" rel="noopener noreferrer" class="btn-map">
-                <span>🗺️ Google 地圖</span>
+            ${(b.location || b.mapQuery) ? `
+              <a href="${getCleanMapUrl(b)}" target="_blank" rel="noopener noreferrer" class="btn-map" title="在 Google Maps 開啟精準導航">
+                <span>🗺️ Google 地圖導航</span>
               </a>
             ` : ''}
           </div>
