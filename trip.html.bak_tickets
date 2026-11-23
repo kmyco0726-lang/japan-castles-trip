@@ -1,0 +1,1653 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>山陰山陽 14天 鐵道名城溫泉之旅 ｜ 日系繪本行程手冊</title>
+  
+  <!-- Google Fonts: Zen Maru Gothic & Open Huninn Fallback -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
+  
+  <style>
+    @font-face {
+      font-family: 'Huninn';
+      src: url('https://cdn.jsdelivr.net/gh/justfont/open-huninn-font@master/font/jf-openhuninn-2.0.woff2') format('woff2');
+      font-display: swap;
+    }
+
+    :root {
+      --bg-washi: #FFFCF6;
+      --ink: #3E3A39;
+      --coral: #F2A497;
+      --coral-light: #FDE8E5;
+      --yamabuki: #F6D27A;
+      --yamabuki-light: #FDF6E2;
+      --mizu: #A8D3E6;
+      --mizu-light: #EDF6FA;
+      --wakatake: #B9DAA5;
+      --wakatake-light: #F2F8EE;
+      --card-white: #FFFFFF;
+      --border-thick: 3px solid var(--ink);
+      --border-thin: 2px solid var(--ink);
+      --shadow-flat: 4px 4px 0px var(--ink);
+      --shadow-flat-sm: 2px 2px 0px var(--ink);
+      --shadow-flat-hover: 6px 6px 0px var(--ink);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Huninn', 'Zen Maru Gothic', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-washi);
+      color: var(--ink);
+      line-height: 1.6;
+      overflow-x: hidden;
+      padding-top: 64px;
+      padding-bottom: 40px;
+    }
+
+    /* 頂端固定選單 */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      background-color: var(--bg-washi);
+      border-bottom: var(--border-thick);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 900;
+      font-size: 1.05rem;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .nav-brand-icon {
+      width: 32px;
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--yamabuki);
+      border: var(--border-thin);
+      border-radius: var(--radius-sm);
+      box-shadow: 2px 2px 0px var(--ink);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      overflow-x: auto;
+      padding: 4px 0;
+    }
+
+    .nav-link {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--ink);
+      text-decoration: none;
+      padding: 6px 12px;
+      background-color: var(--card-white);
+      border: var(--border-thin);
+      border-radius: var(--radius-md);
+      box-shadow: 2px 2px 0px var(--ink);
+      white-space: nowrap;
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+
+    .nav-link:active {
+      transform: translate(2px, 2px);
+      box-shadow: 0px 0px 0px var(--ink);
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    /* 可愛線框卡片通用樣式 */
+    .washi-card {
+      background: var(--card-white);
+      border: var(--border-thick);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-flat);
+      padding: 20px;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .section-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .section-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 900;
+      font-size: 1.15rem;
+      padding: 4px 14px;
+      border: var(--border-thick);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-flat-sm);
+    }
+
+    .tag-coral { background-color: var(--coral); color: #FFF; }
+    .tag-yamabuki { background-color: var(--yamabuki); color: var(--ink); }
+    .tag-mizu { background-color: var(--mizu); color: var(--ink); }
+    .tag-wakatake { background-color: var(--wakatake); color: var(--ink); }
+
+    /* 首頁 Hero 區塊 */
+    .hero-section {
+      text-align: center;
+      padding-top: 10px;
+      margin-bottom: 24px;
+    }
+
+    .hero-illustration {
+      width: 100%;
+      max-height: 220px;
+      margin-bottom: 14px;
+    }
+
+    .hero-title {
+      font-size: 1.45rem;
+      font-weight: 900;
+      color: var(--ink);
+      line-height: 1.35;
+      margin-bottom: 6px;
+    }
+
+    .hero-subtitle {
+      display: inline-block;
+      font-size: 0.88rem;
+      font-weight: 700;
+      background: var(--yamabuki-light);
+      border: var(--border-thin);
+      padding: 4px 12px;
+      border-radius: var(--radius-md);
+      box-shadow: 2px 2px 0px var(--ink);
+      margin-bottom: 16px;
+    }
+
+    /* 倒數計時卡片 */
+    .countdown-box {
+      background: var(--yamabuki-light);
+      border: var(--border-thick);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-flat);
+      padding: 14px;
+      margin-top: 12px;
+    }
+
+    .countdown-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .countdown-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .countdown-item {
+      background: var(--card-white);
+      border: var(--border-thin);
+      border-radius: var(--radius-md);
+      padding: 8px 4px;
+      text-align: center;
+      box-shadow: 2px 2px 0px var(--ink);
+    }
+
+    .countdown-num {
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: var(--ink);
+      line-height: 1;
+    }
+
+    .countdown-unit {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #64748b;
+      margin-top: 2px;
+    }
+
+    /* 航班卡片 */
+    .flight-ticket {
+      background: var(--coral-light);
+      border: var(--border-thick);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-flat);
+      padding: 18px;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .ticket-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      border-bottom: 2px dashed var(--ink);
+      padding-bottom: 10px;
+    }
+
+    .airline-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--coral);
+      color: #FFF;
+      font-size: 0.8rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border: var(--border-thin);
+      border-radius: var(--radius-sm);
+      box-shadow: 2px 2px 0px var(--ink);
+    }
+
+    .flight-segment {
+      background: var(--card-white);
+      border: var(--border-thin);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      margin-bottom: 10px;
+      box-shadow: 2px 2px 0px var(--ink);
+    }
+
+    .flight-seg-head {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 800;
+      font-size: 0.85rem;
+      margin-bottom: 8px;
+      color: #1e3a8a;
+    }
+
+    .flight-cities {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      text-align: center;
+    }
+
+    .city-block .time {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: var(--ink);
+    }
+
+    .city-block .code {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #64748b;
+    }
+
+    .flight-arrow {
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: var(--coral);
+    }
+
+    .ticket-footer {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .pill-info {
+      background: #FFF;
+      border: var(--border-thin);
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    /* 每日行程區塊 */
+    .day-picker-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+      scrollbar-width: none;
+    }
+
+    .day-picker-bar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .day-tab {
+      flex: 0 0 auto;
+      background: var(--card-white);
+      border: var(--border-thick);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-flat-sm);
+      padding: 8px 12px;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.1s, background-color 0.1s;
+    }
+
+    .day-tab.active {
+      background: var(--yamabuki);
+      transform: translate(-1px, -2px);
+      box-shadow: var(--shadow-flat);
+    }
+
+    .day-tab-num {
+      font-size: 0.95rem;
+      font-weight: 900;
+      color: var(--ink);
+    }
+
+    .day-tab-date {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #475569;
+    }
+
+    /* 當日主題標題卡片 */
+    .day-header-card {
+      background: var(--wakatake-light);
+      border: var(--border-thick);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-flat);
+      padding: 14px 16px;
+      margin-bottom: 18px;
+    }
+
+    .day-main-title {
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: var(--ink);
+      line-height: 1.35;
+      margin-bottom: 6px;
+    }
+
+    .day-badges-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .pass-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      border: var(--border-thin);
+      font-weight: 800;
+    }
+
+    .pass-yes { background: var(--wakatake); color: #064e3b; }
+    .pass-no { background: #fed7aa; color: #9a3412; }
+
+    /* 時間軸主容器 */
+    .timeline-container {
+      position: relative;
+      padding-left: 28px;
+      margin-top: 16px;
+    }
+
+    .timeline-container::before {
+      content: '';
+      position: absolute;
+      top: 10px;
+      bottom: 20px;
+      left: 10px;
+      width: 4px;
+      background: var(--ink);
+      border-radius: 2px;
+    }
+
+    .timeline-node {
+      position: relative;
+      margin-bottom: 18px;
+    }
+
+    .timeline-node::before {
+      content: '';
+      position: absolute;
+      left: -24px;
+      top: 14px;
+      width: 14px;
+      height: 14px;
+      background: var(--yamabuki);
+      border: 3px solid var(--ink);
+      border-radius: 50%;
+      z-index: 2;
+    }
+
+    .step-card {
+      background: var(--card-white);
+      border: var(--border-thick);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-flat-sm);
+      padding: 14px 16px;
+      transition: transform 0.1s;
+    }
+
+    .step-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .step-time-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #3E3A39;
+      color: #FFF;
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      box-shadow: 1px 1px 0px #000;
+    }
+
+    .mode-pill {
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      border: var(--border-thin);
+    }
+
+    .mode-shinkansen { background: var(--mizu); color: #0c4a6e; }
+    .mode-bus { background: var(--yamabuki); color: #78350f; }
+    .mode-ropeway { background: var(--wakatake); color: #064e3b; }
+    .mode-castle { background: var(--yamabuki); color: #78350f; }
+    .mode-food { background: var(--coral); color: #FFF; }
+    .mode-lodging { background: var(--wakatake); color: #064e3b; }
+    .mode-other { background: #f1f5f9; color: var(--ink); }
+
+    .step-title {
+      font-size: 1.02rem;
+      font-weight: 900;
+      color: var(--ink);
+      line-height: 1.35;
+      margin-bottom: 6px;
+    }
+
+    .step-cost-badge {
+      display: inline-block;
+      font-size: 0.76rem;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      border: var(--border-thin);
+      margin-bottom: 6px;
+    }
+
+    .cost-pass { background: var(--wakatake-light); color: #047857; }
+    .cost-self { background: #fef2f2; color: #dc2626; }
+
+    .step-desc {
+      font-size: 0.85rem;
+      color: #334155;
+      line-height: 1.5;
+      white-space: pre-line;
+    }
+
+    /* 城堡蓋章特別貼紙 */
+    .stamp-badge-box {
+      background: var(--yamabuki-light);
+      border: 2px dashed #b45309;
+      border-radius: var(--radius-md);
+      padding: 8px 10px;
+      margin-top: 8px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #92400e;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* 美食特別貼紙 */
+    .gourmet-badge-box {
+      background: var(--coral-light);
+      border: var(--border-thin);
+      border-radius: var(--radius-md);
+      padding: 8px 10px;
+      margin-top: 8px;
+      font-size: 0.82rem;
+      color: #451a03;
+      line-height: 1.45;
+    }
+
+    /* 附件時刻表按鈕 */
+    .btn-photo-view {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--mizu-light);
+      border: var(--border-thin);
+      border-radius: var(--radius-md);
+      box-shadow: 2px 2px 0px var(--ink);
+      padding: 5px 10px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: #0369a1;
+      margin-top: 8px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .btn-photo-view:active {
+      transform: translate(1px, 1px);
+      box-shadow: 0px 0px 0px var(--ink);
+    }
+
+    
+    /* 時刻表 / 官方連結按鈕 */
+    .btn-link-view {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--yamabuki-light);
+      color: #78350f;
+      border: var(--border-thin);
+      border-radius: var(--radius-md);
+      box-shadow: 2px 2px 0px var(--ink);
+      padding: 5px 10px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      margin-top: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.1s ease;
+    }
+    .btn-link-view:hover {
+      background: var(--yamabuki);
+      color: var(--ink);
+    }
+    .btn-link-view:active {
+      transform: translate(1px, 1px);
+      box-shadow: 0px 0px 0px var(--ink);
+    }
+
+    .step-actions-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    
+
+    
+    /* 交通步驟專用：JR / 巴士時刻表與乘車附件區塊 */
+    .transit-attachment-section {
+      margin-top: 10px;
+      padding: 8px 10px;
+      background: rgba(254, 243, 199, 0.45);
+      border: 1.5px dashed #d97706;
+      border-radius: var(--radius-md);
+    }
+    .transit-attachment-title {
+      font-size: 0.78rem;
+      font-weight: 900;
+      color: #92400e;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 4px;
+    }
+    .transit-note-text {
+      font-size: 0.75rem;
+      color: #78350f;
+      line-height: 1.45;
+      margin-bottom: 6px;
+      background: #ffffff;
+      padding: 4px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(217, 119, 6, 0.25);
+    }
+
+    /* 住宿卡片 */
+    .hotel-card {
+      background: var(--card-white);
+      border: var(--border-thick);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-flat);
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .hotel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+
+    .hotel-days {
+      background: var(--yamabuki);
+      border: var(--border-thin);
+      border-radius: var(--radius-sm);
+      font-size: 0.78rem;
+      font-weight: 900;
+      padding: 2px 8px;
+    }
+
+    .hotel-name {
+      font-size: 1.08rem;
+      font-weight: 900;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    .hotel-highlight {
+      font-size: 0.82rem;
+      color: #475569;
+      margin-bottom: 10px;
+      line-height: 1.45;
+    }
+
+    .btn-map {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--wakatake);
+      color: var(--ink);
+      border: var(--border-thin);
+      border-radius: var(--radius-md);
+      box-shadow: 2px 2px 0px var(--ink);
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 6px 12px;
+      text-decoration: none;
+    }
+
+    /* 待辦清單 */
+    .checklist-progress-bar {
+      width: 100%;
+      height: 18px;
+      background: #e2e8f0;
+      border: var(--border-thin);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .checklist-progress-fill {
+      height: 100%;
+      background: var(--wakatake);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .checklist-category-title {
+      font-weight: 900;
+      font-size: 0.95rem;
+      margin: 16px 0 8px 0;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--card-white);
+      border: var(--border-thin);
+      border-radius: var(--radius-md);
+      padding: 8px 12px;
+      margin-bottom: 6px;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.1s;
+    }
+
+    .check-item:active {
+      transform: scale(0.99);
+    }
+
+    .check-box-custom {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      border: var(--border-thin);
+      border-radius: 6px;
+      background: #FFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+    }
+
+    .check-item.done .check-box-custom {
+      background: var(--wakatake);
+    }
+
+    .check-item.done .check-text {
+      text-decoration: line-through;
+      color: #94a3b8;
+    }
+
+    .check-text {
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--ink);
+      flex: 1;
+    }
+
+    .btn-add-todo {
+      background: var(--yamabuki);
+      border: var(--border-thin);
+      border-radius: var(--radius-md);
+      box-shadow: 2px 2px 0px var(--ink);
+      font-weight: 800;
+      font-size: 0.85rem;
+      padding: 6px 14px;
+      cursor: pointer;
+    }
+
+    /* 彈窗 Lightbox */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(62, 58, 57, 0.7);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--bg-washi);
+      border: var(--border-thick);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-flat-lg);
+      max-width: 520px;
+      width: 100%;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.85); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      border-bottom: var(--border-thick);
+      background: var(--yamabuki-light);
+    }
+
+    .modal-body {
+      padding: 14px;
+      overflow-y: auto;
+      text-align: center;
+    }
+
+    .modal-body img {
+      max-width: 100%;
+      border-radius: var(--radius-md);
+      border: var(--border-thin);
+    }
+
+    .btn-close {
+      background: var(--coral);
+      border: var(--border-thin);
+      color: #FFF;
+      font-weight: 900;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    /* 頁尾連結 */
+    .site-footer {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 16px;
+      border-top: 2px dashed #cbd5e1;
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+
+    .admin-link {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 4px 12px;
+      background: #f1f5f9;
+      border: var(--border-thin);
+      border-radius: var(--radius-sm);
+      color: var(--ink);
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 0.78rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 頂端固定選單 -->
+  <nav class="navbar">
+    <a href="#" class="nav-brand">
+      <span class="nav-brand-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3E3A39" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 21h18M5 21V7l7-4 7 4v14M9 10h6M9 14h6M9 18h6"/>
+        </svg>
+      </span>
+      <span>山陰山陽 14天</span>
+    </a>
+    <div class="nav-links">
+      <a href="#flight" class="nav-link">✈️ 航班</a>
+      <a href="#itinerary" class="nav-link">🗓️ 行程</a>
+      <a href="#hotels" class="nav-link">🏨 住宿</a>
+      <a href="#checklist" class="nav-link">✅ 待辦</a>
+      <a href="admin.html" class="nav-link" style="background:var(--yamabuki-light);">⚙️ 管理</a>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <!-- 首頁插圖＋標題＋出發倒數 -->
+    <header class="hero-section">
+      <!-- 原創日系繪本風風景插畫 SVG -->
+      <svg class="hero-illustration" viewBox="0 0 600 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- 柔和雲朵背景 -->
+        <rect x="0" y="0" width="600" height="240" rx="24" fill="#FFFCF6"/>
+        
+        <!-- 遠景：大山/富士山雪峰 -->
+        <path d="M 230 190 L 300 70 L 370 190 Z" fill="#A8D3E6" stroke="#3E3A39" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M 300 70 L 280 105 Q 300 115 320 105 Z" fill="#FFFFFF" stroke="#3E3A39" stroke-width="3" stroke-linejoin="round"/>
+        
+        <!-- 晨曦太陽 -->
+        <circle cx="300" cy="55" r="32" fill="#F6D27A" stroke="#3E3A39" stroke-width="3"/>
+        
+        <!-- 和紙飄雲 -->
+        <path d="M 90 60 Q 110 45 135 55 Q 155 45 175 60 Q 190 75 170 85 Q 150 90 120 85 Q 80 80 90 60 Z" fill="#FFFFFF" stroke="#3E3A39" stroke-width="3"/>
+        <path d="M 430 70 Q 450 55 470 65 Q 490 55 510 70 Q 520 85 500 95 Q 480 98 450 95 Q 420 90 430 70 Z" fill="#FFFFFF" stroke="#3E3A39" stroke-width="3"/>
+        
+        <!-- 地景地面 -->
+        <path d="M 0 190 Q 300 180 600 190 L 600 240 L 0 240 Z" fill="#F2F8EE" stroke="#3E3A39" stroke-width="3"/>
+        
+        <!-- 左側：日本百名城天守閣插圖 -->
+        <g transform="translate(45, 80)">
+          <!-- 城底座石垣 -->
+          <path d="M 20 110 L 100 110 L 90 85 L 30 85 Z" fill="#B9DAA5" stroke="#3E3A39" stroke-width="3" stroke-linejoin="round"/>
+          <line x1="50" y1="85" x2="45" y2="110" stroke="#3E3A39" stroke-width="2"/>
+          <line x1="70" y1="85" x2="75" y2="110" stroke="#3E3A39" stroke-width="2"/>
+          <!-- 一階屋頂 -->
+          <path d="M 15 85 Q 60 70 105 85 L 95 65 L 25 65 Z" fill="#A8D3E6" stroke="#3E3A39" stroke-width="3" stroke-linejoin="round"/>
+          <!-- 二階白壁 -->
+          <rect x="35" y="45" width="50" height="20" fill="#FFFFFF" stroke="#3E3A39" stroke-width="3"/>
+          <rect x="52" y="50" width="16" height="12" rx="2" fill="#3E3A39"/>
+          <!-- 二階頂層三角破風屋頂 -->
+          <path d="M 25 45 Q 60 25 95 45 L 60 15 Z" fill="#A8D3E6" stroke="#3E3A39" stroke-width="3" stroke-linejoin="round"/>
+          <!-- 金黃鯱鉾 -->
+          <circle cx="60" cy="12" r="5" fill="#F6D27A" stroke="#3E3A39" stroke-width="2"/>
+        </g>
+        
+        <!-- 中間：朱紅海上鳥居與松樹 -->
+        <g transform="translate(180, 125)">
+          <path d="M 10 20 L 10 65 M 35 20 L 35 65" stroke="#F2A497" stroke-width="5" stroke-linecap="round"/>
+          <path d="M 5 20 L 40 20 M 2 28 L 43 28" stroke="#F2A497" stroke-width="4" stroke-linecap="round"/>
+          <path d="M 10 20 L 10 65 M 35 20 L 35 65 M 5 20 L 40 20 M 2 28 L 43 28" stroke="#3E3A39" stroke-width="2" stroke-linecap="round"/>
+        </g>
+        
+        <!-- 右側：可愛的新幹線列車插圖 -->
+        <g transform="translate(380, 140)">
+          <!-- 鐵軌 -->
+          <line x1="0" y1="52" x2="190" y2="52" stroke="#3E3A39" stroke-width="3" stroke-dasharray="8 6"/>
+          <!-- 列車本體 -->
+          <path d="M 10 48 L 130 48 Q 170 48 180 35 Q 165 20 120 20 L 10 20 Z" fill="#FFFFFF" stroke="#3E3A39" stroke-width="3" stroke-linejoin="round"/>
+          <!-- 水色線條裝飾 -->
+          <path d="M 10 38 L 140 38 Q 165 38 175 32" stroke="#A8D3E6" stroke-width="6" stroke-linecap="round"/>
+          <path d="M 10 38 L 140 38 Q 165 38 175 32" stroke="#3E3A39" stroke-width="1.5" fill="none"/>
+          <!-- 車窗 -->
+          <rect x="25" y="24" width="16" height="10" rx="3" fill="#3E3A39"/>
+          <rect x="50" y="24" width="16" height="10" rx="3" fill="#3E3A39"/>
+          <rect x="75" y="24" width="16" height="10" rx="3" fill="#3E3A39"/>
+          <rect x="100" y="24" width="16" height="10" rx="3" fill="#3E3A39"/>
+          <!-- 駕駛室前窗 -->
+          <path d="M 145 25 Q 155 25 160 30 L 140 30 Z" fill="#3E3A39"/>
+          <!-- 車輪 -->
+          <circle cx="35" cy="48" r="6" fill="#3E3A39"/>
+          <circle cx="115" cy="48" r="6" fill="#3E3A39"/>
+          <!-- 疾駛小風線 -->
+          <line x1="0" y1="30" x2="-15" y2="30" stroke="#3E3A39" stroke-width="2" stroke-linecap="round"/>
+          <line x1="5" y1="40" x2="-8" y2="40" stroke="#3E3A39" stroke-width="2" stroke-linecap="round"/>
+        </g>
+      </svg>
+
+      <h1 class="hero-title">山陰山陽 14天<br>鐵道名城溫泉之旅</h1>
+      <div class="hero-subtitle">2027/01/12 (二) ~ 01/25 (一) ｜ 14天13晚</div>
+
+      <!-- 出發倒數計時 -->
+      <div class="countdown-box">
+        <div class="countdown-label">
+          <span>🕒 距離出發啟程還有</span>
+        </div>
+        <div class="countdown-grid">
+          <div class="countdown-item">
+            <div class="countdown-num" id="cd-days">--</div>
+            <div class="countdown-unit">天 (Days)</div>
+          </div>
+          <div class="countdown-item">
+            <div class="countdown-num" id="cd-hours">--</div>
+            <div class="countdown-unit">時 (Hours)</div>
+          </div>
+          <div class="countdown-item">
+            <div class="countdown-num" id="cd-mins">--</div>
+            <div class="countdown-unit">分 (Mins)</div>
+          </div>
+          <div class="countdown-item">
+            <div class="countdown-num" id="cd-secs">--</div>
+            <div class="countdown-unit">秒 (Secs)</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- 航班卡片區塊 -->
+    <section id="flight">
+      <div class="section-title-wrap">
+        <span class="section-tag tag-coral">✈️ 航班資訊</span>
+      </div>
+      <div class="flight-ticket">
+        <div class="ticket-header">
+          <span class="airline-tag">🐯 台灣虎航 Tigerair Taiwan</span>
+          <span style="font-size:0.8rem; font-weight:800; color:#475569;">已確認直飛航班</span>
+        </div>
+
+        <!-- 去程 -->
+        <div class="flight-segment">
+          <div class="flight-seg-head">
+            <span>🛫 去程 IT214 ｜ 2027/01/12 (二)</span>
+            <span>直飛 2h 35m</span>
+          </div>
+          <div class="flight-cities">
+            <div class="city-block">
+              <div class="time">11:30</div>
+              <div class="code">台北桃園 TPE (T1)</div>
+            </div>
+            <div class="flight-arrow">➔ ➔ ➔</div>
+            <div class="city-block">
+              <div class="time">15:05</div>
+              <div class="code">岡山桃太郎 OKJ</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 回程 -->
+        <div class="flight-segment">
+          <div class="flight-seg-head">
+            <span>🛬 回程 IT215 ｜ 2027/01/25 (一)</span>
+            <span>直飛 2h 45m</span>
+          </div>
+          <div class="flight-cities">
+            <div class="city-block">
+              <div class="time">15:55</div>
+              <div class="code">岡山桃太郎 OKJ</div>
+            </div>
+            <div class="flight-arrow">➔ ➔ ➔</div>
+            <div class="city-block">
+              <div class="time">17:40</div>
+              <div class="code">台北桃園 TPE (T1)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ticket-footer">
+          <span class="pill-info">🧳 含來回 20kg 託運 ＋ 10kg 手提</span>
+          <span class="pill-info">🚌 岡山機場巴士 30分 (1,000円) 直達岡山站西口</span>
+          <span class="pill-info">🎫 岡山站開通 JR 山陽&山陰 7日券</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 每日行程區塊 -->
+    <section id="itinerary">
+      <div class="section-title-wrap">
+        <span class="section-tag tag-yamabuki">🗓️ 每日行程</span>
+      </div>
+
+      <!-- 上方日期滑動切換列 -->
+      <div class="day-picker-bar" id="dayPickerBar"></div>
+
+      <!-- 當日資訊卡片 -->
+      <div class="day-header-card" id="dayHeaderCard"></div>
+
+      <!-- 下方時間軸卡片列表 -->
+      <div class="timeline-container" id="timelineList"></div>
+    </section>
+
+    <!-- 住宿資訊區塊 -->
+    <section id="hotels" style="margin-top: 32px;">
+      <div class="section-title-wrap">
+        <span class="section-tag tag-wakatake">🏨 住宿資訊</span>
+      </div>
+      <div id="hotelList"></div>
+    </section>
+
+    <!-- 可打勾的待辦清單區塊 -->
+    <section id="checklist" style="margin-top: 32px;">
+      <div class="section-title-wrap">
+        <span class="section-tag tag-mizu">✅ 行前待辦與行李清單</span>
+      </div>
+      
+      <div class="washi-card">
+        <!-- 進度條 -->
+        <div style="display:flex; justify-content:space-between; font-size:0.82rem; font-weight:800; margin-bottom:6px;">
+          <span>準備完成進度</span>
+          <span id="checklistProgressText">0 / 0 (0%)</span>
+        </div>
+        <div class="checklist-progress-bar">
+          <div class="checklist-progress-fill" id="checklistProgressFill"></div>
+        </div>
+
+        <!-- 待辦項目清單容器 -->
+        <div id="checklistContainer"></div>
+
+        <!-- 自訂新增待辦 -->
+        <div style="margin-top: 16px; display:flex; gap:8px;">
+          <input type="text" id="newTodoInput" placeholder="新增自訂待辦事項..." style="flex:1; border:var(--border-thin); border-radius:var(--radius-md); padding:8px 12px; font-family:inherit; font-size:0.85rem;">
+          <button class="btn-add-todo" onclick="addCustomTodo()">＋ 加入</button>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <p>🌸 山陰山陽 14天 鐵道名城溫泉之旅 ｜ 日系繪本風格手冊</p>
+      <a href="admin.html" class="admin-link">⚙️ 資料管理與小冊子 Word 匯出 (Admin)</a>
+    </footer>
+
+  </div>
+
+  <!-- 圖片 Lightbox 彈窗 -->
+  <div class="modal-overlay" id="photoModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span style="font-weight:900; font-size:0.95rem; color:#1e3a8a;" id="modalTitle">時刻表圖片</span>
+        <button class="btn-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <img id="modalImg" src="" alt="時刻表縮圖">
+        <p style="font-size:0.8rem; color:#64748b; margin-top:8px;" id="modalCaption"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 時刻表 Base64 資料庫 -->
+  <script src="timetables_b64.js"></script>
+
+  <script>
+    // 注入的全域資料
+    const DAYS_DATA = [{"dayNumber":1,"date":"2027-01-12","shortTitle":"D1:岡山桃太郎機場.鉄板焼 空也.AEON Mall Okayama.岡山","title":"Day 1：抵達岡山・機場 ➔ 住宿 ➔ 和牛 ➔ 逛街","baseStation":"岡山桃太郎機場 / 岡山駅","lodging":"VIA INN 岡山","lodgingLocation":"JR 岡山駅中央改札口直結 (Sunste 西館 5F)","recommendedHotels":"VIA INN 岡山 (ヴィアイン岡山・JR岡山站直結徒步1分)","passStatus":"刷交通 IC 卡 / 現金 (非 Pass 天數)","isPass":false,"steps":[{"time":"14:30~15:05","item":"抵達岡山桃太郎機場 (OKJ)","mode":"班機抵達","cost":"-","details":"搭乘台灣虎航 IT214 降落，出關提領行李","images":[]},{"time":"15:30~16:05","item":"岡山桃太郎機場 ➔ 岡山站西口 (機場利木津巴士)","mode":"機場巴士","cost":"¥1,000\n(⚠️ 需自費)","details":"非 Pass 天數・岡電/中鐵巴士，車程約30分鐘，持IC卡或現金購票直達西口","images":[{"url":"timetables/d1_okayama_airport_to_chiyagyu_kuya_1.jpg","caption":"岡山機場 ➔ 岡山站西口 利木津巴士時刻表"}]},{"time":"16:30~17:30","item":"VIA INN 岡山 (岡山站直結)","mode":"飯店入住","cost":"-","details":"出站直通飯店辦理 Check-in，卸下行李","images":[{"url":"timetables/d1_okayama_airport_to_chiyagyu_kuya_3.jpg","caption":"JR岡山站直結 VIA INN / さんすて西館 5F 樓層指南"}]},{"time":"18:00~19:30","item":"🍽️ 岡山站前・表町商圈 特色美食與名物料理","mode":"當地美食","cost":"自費","details":"必吃名物：🥩 岡山千屋牛（日本最古老蔓牛血統，推薦預約「鉄板焼 空也」或格蘭比亞「鉄板焼 備彩」品嚐頂級黑毛和牛鐵板燒。） ｜ 🍑 岡山果實甜點（岡山白桃霜淇淋、晴王麝香葡萄夾心餅乾與新鮮水果塔。） ｜ 🍤 岡山庶民名物（岡山名物蝦仁黑炒飯（えびめし）、散壽司（ばらずし）。）\n💡 賞味叮嚀：抵達首夜推薦直奔岡山千屋牛鐵板燒享受頂級和牛晚宴，餐後漫步 AEON Mall 採買。","images":[]},{"time":"19:30~21:00","item":"AEON Mall Okayama (西日本最大級)","mode":"逛街採買","cost":"-","details":"漫步350間店鋪商圈採買藥妝物資，儲備體力","images":[{"url":"timetables/d1_okayama_airport_to_chiyagyu_kuya_2.jpg","caption":"岡山站前・表町商圈・AEON Mall 逛街地圖"}]}],"transitAttachments":{"okayama_airport_1":{"notes":"台北(桃園) ➔ 岡山 IT214 (2027/01/12 11:30 - 15:05)","images":[],"link":""},"okayama_airport_to_chiyagyu_kuya":{"notes":"","images":[{"isPdf":false,"name":"1790591404777.jpg","type":"image/jpeg","uploadedAt":"2026/10/3","url":"timetables/d1_okayama_airport_to_chiyagyu_kuya_1.jpg"},{"isPdf":false,"name":"1517363696-1389808805.png","type":"image/jpeg","uploadedAt":"2026/10/5","url":"timetables/d1_okayama_airport_to_chiyagyu_kuya_2.jpg"},{"isPdf":false,"name":"1517363697-3941485500.png","type":"image/jpeg","uploadedAt":"2026/10/5","url":"timetables/d1_okayama_airport_to_chiyagyu_kuya_3.jpg"}],"link":""}}},{"dayNumber":2,"date":"2027-01-13","shortTitle":"D2:鬼ノ城.鉄板焼 備彩.津山城.鳥取","title":"Day 2：吉備古國名城鬼之城 ➔ 津山城 ➔ 抵達鳥取站前夜宿","baseStation":"岡山駅 / 津山駅 / 鳥取駅","lodging":"APA飯店 鳥取車站前","lodgingLocation":"JR 鳥取駅南口徒步 2 分鐘","recommendedHotels":"APA飯店 鳥取車站前 (アパホテル〈鳥取駅前〉)","passStatus":"刷交通 IC 卡 / 現金 (非 Pass 天數)","isPass":false,"steps":[{"time":"07:30~08:10","item":"岡山駅 ➔ 總社駅 (JR 吉備線)","mode":"電車","cost":"¥420\n(⚠️ 需自費)","details":"非 Pass 天數・JR 吉備線約 35 分直達總社站，刷 ICOCA 乘車","images":[{"url":"timetables/d2_okayama_hotel_to_kinojo_1.jpg","caption":"岡山駅 ➔ 總社駅 (JR吉備線) 07:25 / 07:33 / 07:49 時刻表"}]},{"time":"08:15~08:45","item":"總社駅 ➔ 鬼城山遊客中心 (鬼之城 預約計程車往返每人分攤)","mode":"預約計程車","cost":"¥3,500\n(⚠️ 需自費)","details":"整車來回約 7,000 円，兩人分攤每人 3,500 円，約定司機接送","images":[]},{"time":"08:45~10:45","item":"鬼ノ城","mode":"百名城參訪","cost":"-","details":"🏯 百名城印章：鬼城山ビジターセンター (9:00～17:00)\n⏰ 開放時間：09:00 - 17:00 (休：週一休息 (休館時至「総社市埋蔵文化財学習の館」蓋章 9:00～16:00))\n🚶 接駁提示：ＪＲ伯備線(桃太郎線)「総社駅」からタクシー約30分 (山頂無定期公車，建議回程預約)","images":[]},{"time":"11:30~12:30","item":"🍽️ 吉備總社・美作津山・鳥取 特色美食與名物料理","mode":"當地美食","cost":"自費","details":"必吃名物：🍜 津山名物牛內臟炒烏龍麵（津山ホルモンうどん・鶴山公園下町B級美食冠軍，獨門特製味噌醬汁炒新鮮牛內臟，香濃多汁。） ｜ 🥩 備中千屋牛特上牛排（吉備高原產地直送頂級和牛。） ｜ 🍲 鳥取牛骨拉麵（鳥取牛骨ラーメン・牛骨慢火清燉清香甘甜湯頭，鳥取在地靈魂名產。）\n💡 賞味叮嚀：中午於津山城下町品嚐熱騰騰鐵板牛內臟烏龍麵補足體力；晚間抵達鳥取站前品嚐牛骨拉麵。","images":[]},{"time":"12:40~13:40","item":"總社駅 ➔ 津山駅 (JR 吉備線/津山線 往津山城)","mode":"電車","cost":"¥1,680\n(⚠️ 需自費)","details":"非 Pass 天數・搭乘快速列車直達津山，購票/刷 IC 卡","images":[{"url":"timetables/d2_kinojo_to_tsuyama_1.jpg","caption":"總社駅 ➔ 津山駅 (JR吉備線/津山線) 11:32 / 12:13 / 12:31 時刻表"},{"url":"timetables/d2_chiyagyu_bisai_to_tsuyama_1.jpg","caption":"備彩方案：岡山駅 ➔ 津山駅 (JR津山線) 13:05 / 14:06 / 15:08 時刻表"}]},{"time":"13:45~14:00","item":"津山駅 ➔ 津山城 (鶴山公園 市內公車ごんごバス)","mode":"路線公車","cost":"¥200\n(⚠️ 需自費)","details":"津山市內公車單程 200 円 (亦可徒步約10分)","images":[]},{"time":"14:00~16:00","item":"津山城","mode":"百名城參訪","cost":"-","details":"🏯 百名城印章：津山城備中櫓受付 (8:40～17:00)\n⏰ 開放時間：08:40 - 17:00 (休：無休 (12/29-12/31休))\n🚶 接駁提示：JR 姫新線・津山線「津山駅」徒步10分，或搭「ごんごバス」左迴線至「観光センター前」下車","images":[]},{"time":"16:30~18:00","item":"津山駅 ➔ 鳥取駅 (JR 因美線普通車 或 經智頭特急スーパーいなば)","mode":"電車","cost":"¥1,170\n(⚠️ 需自費)","details":"非 Pass 天數・搭乘 JR 因美線直達鳥取站","images":[{"url":"timetables/d2_tsuyama_to_tottori_hotel_1.jpg","caption":"津山駅 ➔ 鳥取駅 (JR因美線) 15:13 / 16:38 時刻表"}]},{"time":"18:30~","item":"APA飯店 鳥取車站前 ＆ 市區晚餐","mode":"住宿 Check-in","cost":"-","details":"出站徒步進飯店，晚間品嚐鳥取牛骨拉麵","images":[]}],"transitAttachments":{"chiyagyu_bisai_to_tsuyama":{"notes":"13:05/14:06/15:08 一小時一班","images":[{"isPdf":false,"name":"1791465300281.jpg","type":"image/jpeg","uploadedAt":"2026/10/8","url":"timetables/d2_chiyagyu_bisai_to_tsuyama_1.jpg"}],"link":""},"kinojo_to_chiyagyu_bisai":{"notes":"","images":[{"isPdf":false,"name":"1790641253493.jpg","type":"image/jpeg","uploadedAt":"2026/10/5","url":"timetables/d2_kinojo_to_chiyagyu_bisai_1.jpg"}],"link":""},"kinojo_to_tsuyama":{"notes":"","images":[{"isPdf":false,"name":"1790596403291.jpg","type":"image/jpeg","uploadedAt":"2026/10/5","url":"timetables/d2_kinojo_to_tsuyama_1.jpg"}],"link":""},"okayama_hotel_to_kinojo":{"notes":"","images":[{"isPdf":false,"name":"1790596186537.jpg","type":"image/jpeg","uploadedAt":"2026/10/5","url":"timetables/d2_okayama_hotel_to_kinojo_1.jpg"}],"link":""},"tsuyama_to_chiyagyu_bisai":{"notes":"","images":[{"isPdf":false,"name":"1790641253493.jpg","type":"image/jpeg","uploadedAt":"2026/10/5","url":"timetables/d2_tsuyama_to_chiyagyu_bisai_1.jpg"}],"link":""},"tsuyama_to_tottori_hotel":{"notes":"","images":[{"isPdf":false,"name":"1791509643022.jpg","type":"image/jpeg","uploadedAt":"2026/10/9","url":"timetables/d2_tsuyama_to_tottori_hotel_1.jpg"}],"link":""},"tsuyama_to_yunogo_onsen":{"notes":"飯店可能5點才會到","images":[{"isPdf":false,"name":"1791182285031.jpg","type":"image/jpeg","uploadedAt":"2026/10/5","url":"timetables/d2_tsuyama_to_yunogo_onsen_1.jpg"}],"link":""}}},{"dayNumber":3,"date":"2027-01-14","shortTitle":"D3:鳥取城.鳥取砂丘.たくみ割烹店.城崎溫泉","title":"Day 3：晨遊鳥取城跡 ➔ 冬季鳥取砂丘 (展望台/吊椅纜車) ➔ 和牛元祖「たくみ割烹店」午餐 ➔ 特急直達宿城崎溫泉","baseStation":"鳥取駅 / 城崎溫泉駅","lodging":"城崎溫泉 和風旅館 (七大外湯巡禮/松葉蟹)","lodgingLocation":"城崎溫泉街 (兵庫縣豐岡市)","recommendedHotels":"西村屋本館 / 城崎山名央館 (Yamanaokan) / 旅館 川口屋本館","passStatus":"JR Pass 7日券【適用日】(全額免費搭乘指定席)","isPass":true,"steps":[{"time":"07:50~07:55","item":"鳥取駅 ➔ 鳥取城/久松公園 (日之丸巴士 北園團地線 免計程車)","mode":"路線公車","cost":"¥170\n(⚠️ 需自費)","details":"07:50 鳥取站發車 ➔ 07:55 抵県庁日赤前 (170 円)，下車步行 4-5 分於 08:00 前抵達鳥取城久松公園 (免搭計程車)","images":[]},{"time":"08:00~09:40","item":"鳥取城","mode":"百名城參訪","cost":"-","details":"🏯 百名城印章：鳥取県立博物館 (9:00～17:00)\n⏰ 開放時間：09:00 - 17:00 (休：週一休息 (休館時至鳥取市役所本廳舍1樓綜合窗口或管理室蓋章))\n🚶 接駁提示：鳥取駅から100円バスくる梨「緑コース」で9分「仁風閣・県立博物館」下車徒歩5分","images":[]},{"time":"09:47~10:02","item":"鳥取城(県庁日赤前) ➔ 鳥取砂丘 (日之丸巴士 砂丘線 39系統)","mode":"路線公車","cost":"¥390\n(⚠️ 需自費)","details":"09:47 県庁日赤前搭車 ➔ 10:00 抵砂丘センター展望台 / 10:02 抵砂丘会館 (390 円)","images":[]},{"time":"10:05~10:15","item":"鳥取砂丘 觀光吊椅纜車 (單程/見晴之丘下滑至砂丘入口)","mode":"觀光纜車","cost":"¥300\n(⚠️ 需自費)","details":"搭乘單程吊椅纜車（300 円，車程 5 分鐘），面向雪白砂丘與日本海全景往下溜，不走回頭路 (若遇強風運休則省下)","images":[]},{"time":"10:15~11:15","item":"鳥取砂丘","mode":"景點參訪","cost":"-","details":"⏰ 開放時間：砂丘全天 / 砂之美術館 09:00~18:00 (休：砂丘全天開放 (砂之美術館換展期休館))\n🚶 接駁提示：JR 鳥取站前 0 號巴士月台搭公車約 20 分直達「砂丘會館」；往返鳥取城跡於「西町」公車站上下車直達 (徒步 5 分，毋須繞回鳥取站)","images":[]},{"time":"11:20~11:42","item":"鳥取砂丘 ➔ 鳥取駅 (日之丸巴士 砂丘線 39系統 返站)","mode":"路線公車","cost":"¥390\n(⚠️ 需自費)","details":"11:20 砂丘会館搭車 ➔ 11:42 直達鳥取駅 (390 円)","images":[]},{"time":"11:45~12:45","item":"🍽️ 鳥取市區・但馬城崎溫泉 特色美食與名物料理","mode":"當地美食","cost":"自費","details":"必吃名物：🍲 鳥取和牛元祖涮涮鍋（鳥取民藝名店「たくみ割烹店」・日本牛肉涮涮鍋發祥店，極品和牛油脂入口即化。） ｜ 🍦 砂丘會館二十世紀梨冰淇淋（純天然二十世紀梨原汁製作，酸甜清爽解膩。） ｜ 🦀 冬季城崎松葉蟹會席（津居山港直送活蟹・刺身、烤蟹、甲羅燒與松葉蟹火鍋全席，鮮甜飽滿。） ｜ 🥩 但馬牛牛排與可樂餅（城崎溫泉街但馬牛專門店熱騰騰現炸名物。）\n💡 賞味叮嚀：中午在鳥取必吃たくみ割烹店和牛涮涮鍋；晚間入住城崎溫泉享用最頂級的松葉蟹全席！","images":[]},{"time":"12:56~14:11","item":"鳥取駅 ➔ 城崎溫泉駅 (JR 特急はまかぜ4號 直達 或 普通車)","mode":"特急指定席","cost":"¥2,330\n(🎫 Pass免費)","details":"12:56 搭特急はまかぜ4號直達城崎溫泉駅 (14:11 到達，免轉車！JR Pass 免費搭乘)；備案搭 13:33 普通車 (15:15~15:30 到達)","images":[{"url":"timetables/d3_tottori_takumi_to_kinosaki_onsen_1.jpg","caption":"鳥取駅 ➔ 城崎溫泉駅 (JR特急はまかぜ4號/普通車) 13:33 / 15:21 時刻表"}]},{"time":"14:30~","item":"城崎溫泉 和風旅館（住宿 Check-in ＆ 松葉蟹晚宴）","mode":"夜宿溫泉","cost":"-","details":"換穿浴衣漫步七大外湯街，享用冬季津居山港直送活松葉蟹全席","images":[]}],"transitAttachments":{"hakuto_jinja_to_tottori":{"notes":"9:20-9:52","images":[],"link":""},"hakuto_jinja_to_tottori_takumi":{"notes":"15:34-16:17","images":[],"link":""},"tottori_hotel_to_hakuto_jinja":{"notes":"8:15-8:54 白兔神社9:00開 【41】白兔海岸線/https://hinomarubus.co.jp/wp/wp-content/uploads/2022/03/41%E5%B9%B3%E6%97%A5.pdf","images":[],"link":""},"tottori_hotel_to_tottori":{"notes":"(44-47)湖山池線 鳥取駅\t7:35-西町\t7:42","images":[],"link":"https://hinomarubus.co.jp/timetable_route/2661/"},"tottori_hotel_to_tottori_sakyu":{"notes":"11:30 巴士11:51 抵達「砂之美術館前」鳥取砂丘線・39號","images":[{"isPdf":false,"name":"1791182958140.jpg","type":"image/jpeg","uploadedAt":"2026/10/5","url":"timetables/d3_tottori_hotel_to_tottori_sakyu_1.jpg"}],"link":""},"tottori_sakyu_to_tottori":{"notes":"11:20-11:35/12:00-12:15","images":[],"link":""},"tottori_sakyu_to_tottori_takumi":{"notes":"沙丘會館搭車回車站(39) 11:20 -11:42","images":[],"link":"https://hinomarubus.co.jp/timetable_route/4185/"},"tottori_takumi_to_kinosaki_onsen":{"notes":"13:33→15:28","images":[{"isPdf":false,"name":"1791460811449.jpg","type":"image/jpeg","uploadedAt":"2026/10/8","url":"timetables/d3_tottori_takumi_to_kinosaki_onsen_1.jpg"}],"link":""},"tottori_to_hakuto_jinja":{"notes":"【41】白兔海岸線（往鹿野營業所方向）13:22-13:56 /15:02-15:32 ","images":[],"link":""},"tottori_to_tottori_sakyu":{"notes":"(39)鳥取砂丘線 西町9:47-砂丘センター展望台10:00 買票搭纜車下去沙丘入口 馬之背 ","images":[],"link":"https://hinomarubus.co.jp/timetable_route/4185/"},"yunogo_onsen_to_tottori_sakyu":{"notes":"11:30 巴士11:51 抵達「砂之美術館前」鳥取砂丘線・39號","images":[{"isPdf":false,"name":"1791182958140.jpg","type":"image/jpeg","uploadedAt":"2026/10/5","url":"timetables/d3_yunogo_onsen_to_tottori_sakyu_1.jpg"}],"link":""}}},{"dayNumber":4,"date":"2027-01-15","shortTitle":"D4:天橋立.伊根舟屋.荒磯 本店.米子","title":"Day 4：日本三景天橋立 (飛龍觀/傘松公園) ➔ 伊根舟屋 (海上午餐與遊覽船) ➔ 宿米子站前 (晚餐 荒磯/太平記)","baseStation":"城崎溫泉駅 / 天橋立駅 / 伊根灣 / 米子駅","lodging":"Hotel Harvest In Yonago","lodgingLocation":"JR 米子駅徒步 1 分鐘","recommendedHotels":"Hotel Harvest In Yonago (ホテルハーベストイン米子)","passStatus":"JR Pass 7日券【適用日】(全額免費搭乘指定席)","isPass":true,"steps":[{"time":"08:30~09:30","item":"城崎溫泉駅 ➔ 天橋立駅 (京都丹後鐵道 特急/快速直通)","mode":"電車/特急","cost":"¥1,220\n(🎫 Pass免費)","details":"JR Pass 7日券 包含京都丹後鐵道全線，0 元免補票","images":[{"url":"timetables/d4_kinosaki_onsen_to_amanohashidate_1.jpg","caption":"城崎溫泉駅 ➔ 天橋立駅 (京都丹後鐵道) 07:06 / 07:57 時刻表"}]},{"time":"09:30~09:40","item":"天橋立 飛龍觀登山吊椅/空中纜車 (來回票)","mode":"觀光纜車","cost":"¥850\n(⚠️ 需自費)","details":"搭乘空中單人吊椅或展望纜車登飛龍觀展望台眺望跨下窺看絕景","images":[]},{"time":"09:40~11:10","item":"日本三景 天橋立 (飛龍觀/傘松公園)","mode":"日本三景參訪","cost":"-","details":"⏰ 開放時間：展望台 09:00-17:00 (依季節變動) (休：全年無休 (纜車定期點檢除外))\n🚶 接駁提示：JR 特急「橋立號 (Hashidate)」直達天橋立站，或自豐岡/城崎溫泉搭乘京都丹後鐵道直達 (JR PASS 全線免費搭乘！)步行至南","images":[]},{"time":"11:15~12:10","item":"天橋立駅 ➔ 伊根舟屋 (丹海路線巴士來回)","mode":"路線公車","cost":"¥800\n(⚠️ 需自費)","details":"丹後海陸交通伊根線公車，單程約 55 分鐘直達伊根灣舟屋群","images":[]},{"time":"12:15~12:45","item":"伊根灣舟屋遊覽船 (海上巡航餵海鷗)","mode":"觀光遊覽船","cost":"¥1,000\n(⚠️ 需自費)","details":"約 25 分鐘環灣巡航，近距離飽覽 230 棟舟屋群並體驗海鷗餵食","images":[]},{"time":"12:45~14:30","item":"伊根舟屋聚落 (海上午餐與遊覽船)","mode":"景點巡禮＆午餐","cost":"-","details":"⏰ 開放時間：伊根灣遊覽船 09:00-16:00 每整點與半點發船 (休：全年無休 (遊覽船視風浪營運))\n🚶 接駁提示：天橋立站前搭乘丹海巴士 (伊根線/蒲入線) 至「伊根灣めぐり・日出」或「伊根」站下車 (約 55 分鐘)","images":[]},{"time":"14:30~15:00","item":"🍽️ 丹後天橋立・伊根舟屋・米子 特色美食與名物料理","mode":"當地美食","cost":"自費","details":"必吃名物：🐟 伊根冬季油寒鰤魚（伊根名物「鰤しゃぶ」寒鰤魚涮涮鍋・冬季日本海油脂豐潤、肉質鮮甜緊實。） ｜ 🍢 宮津黑竹輪與海鮮丼（現烤黑竹輪（黒ちくわ）與丹後沿岸當令海鮮丼。） ｜ 🦀 米子境港直送海鮮割烹（米子站前「日本料理 荒磯」或「太平記」品嚐紅楚蟹、活白烏賊、鬼蜆湯與海鮮散壽司。）\n💡 賞味叮嚀：中午在伊根舟屋海邊餐廳享用海鮮午餐；晚間於米子站前品嚐日本海直送海鮮割烹！","images":[]},{"time":"15:30~18:30","item":"天橋立駅 ➔ 米子駅 (京都丹後鐵道轉 JR 特急山陰本線)","mode":"特急指定席","cost":"¥5,830\n(🎫 Pass免費)","details":"長途特急全包，丹後鐵道及山陰特急全額免補票","images":[{"url":"timetables/d4_ine_funaya_to_araiso_yonago_1.jpg","caption":"天橋立駅 ➔ 米子駅 (丹後鐵道+JR特急) 12:38 / 14:34 時刻表"}]},{"time":"18:45~","item":"米子站前「日本料理 荒磯/太平記」海鮮晚宴 ＆ 住宿","mode":"夜宿飯店","cost":"-","details":"享用境港直送紅楚蟹、活白烏賊，入住米子站前 Hotel Harvest In Yonago","images":[]}],"transitAttachments":{"kinosaki_onsen_to_amanohashidate":{"notes":"7:06-8:45","images":[{"name":"1791510298995.jpg","url":"timetables/d4_kinosaki_onsen_to_amanohashidate_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/9"}],"link":""},"amanohashidate_to_ine_funaya":{"notes":"編號 5 或 7 的伊根線/蒲入線-天橋立纜車11:24-伊根灣巡游觀光船 日出站11:53(不能使用IC) 船1200円///伊根の遊覧船と天橋立ケーブル・登山バスがセットに 料金 大人：1,800円","images":[],"link":"https://www.tankai.jp/tw/bus/tankai-bus/"},"ine_funaya_to_araiso_yonago":{"notes":"巴士13:09-14:05天橋立駅  14:34-19:47米子","images":[{"name":"1791510665840.jpg","url":"timetables/d4_ine_funaya_to_araiso_yonago_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/9"}],"link":"https://www.tankai.jp/tw/bus/tankai-bus/"},"ine_funaya_to_yonago_hotel":{"notes":"11:39.13:09伊根湾めぐり・日出-12:32.14:02天橋立駅,第一班車坐回岡山了","images":[{"name":"1791510665840.jpg","url":"timetables/d4_ine_funaya_to_yonago_hotel_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/9"}],"link":""},"ine_funaya_to_kaike_onsen":{"notes":"11:39.13:09伊根湾めぐり・日出-12:32.14:02天橋立駅,第一班車坐回岡山了","images":[{"name":"1791510665840.jpg","url":"timetables/d4_ine_funaya_to_kaike_onsen_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/9"}],"link":""}}},{"dayNumber":5,"date":"2027-01-16","shortTitle":"D5:津和野城.太鼓谷稻成神社.皆生溫泉","title":"Day 5：晨間特急直奔山陰小京都津和野・城下町與纜車山城 ➔ 太皷谷稻成神社 ➔ 傍晚返回米子 ➔ 宿皆生溫泉","baseStation":"米子駅 / 津和野駅 / 皆生溫泉","lodging":"皆生溫泉 海濱和風溫泉旅館 (米子市)","lodgingLocation":"皆生溫泉街 (鳥取縣米子市皆生溫泉)","recommendedHotels":"皆生 菊乃家 (Kikunoya) / 皆生游月 (Yugetsu) / 華水亭 (Kasuitei)","passStatus":"JR Pass 7日券【適用日】(全額免費搭乘指定席)","isPass":true,"steps":[{"time":"06:00~09:15","item":"米子駅 ➔ 津和野駅 (JR 山陰本線・山口線 特急スーパーおき 指定席)","mode":"特急指定席","cost":"¥4,800\n(🎫 Pass免費)","details":"JR Pass 7日券全包！晨間搭乘特急超級隱岐號約 2h40m 直達山陰小京都津和野","images":[{"url":"timetables/d5_yonago_to_tsuwano_1.jpg","caption":"米子駅 ➔ 津和野駅 (特急スーパーおき1號直達 06:00➔09:15) 時刻表"}]},{"time":"09:20~09:30","item":"津和野城跡觀光登山纜車 (觀光リフト來回票)","mode":"登山纜車","cost":"¥700\n(⚠️ 需自費)","details":"非 JR 設施・搭乘單人觀光吊椅纜車直登津和野城本丸石垣絕景","images":[]},{"time":"09:30~11:30","item":"津和野城","mode":"百名城參訪","cost":"-","details":"🏯 百名城印章：津和野城跡観光リフト乗り場 (9:00～17:00)\n⏰ 開放時間：09:00 - 17:00 (休：觀光纜車冬季或惡劣天候運休 (運休時印章移至津和野町鄉土館))\n🚶 接駁提示：JR 山口線「津和野駅」搭石見交通公車往「鴎外旧居・長野」約5分至「森」下車，步行10分抵纜車處，搭纜車(5分)後再步行15分至本丸","images":[]},{"time":"11:30~12:30","item":"🍽️ 石見津和野・米子皆生溫泉 特色美食與名物料理","mode":"當地美食","cost":"自費","details":"必吃名物：🫔 津和野名物源氏卷（薄烤蛋糕皮包裹細緻紅豆沙・表參道山田竹風軒現烤熱騰騰名菓。） ｜ 🐟 高津川清流香魚料理（日本第一清流高津川天然香魚鹽烤與山菜天婦羅定食。） ｜ 🦀 皆生溫泉日本海會席（境港松葉蟹、日本海喉黑魚（ノドグロ）鹽烤、大山地雞與海濱御前料理。）\n💡 賞味叮嚀：津和野殿町通散策時來份現做熱源氏卷配熱茶；晚間於海濱旅館享受含鹽泉質與奢華海味。","images":[]},{"time":"12:30~13:30","item":"太鼓谷稻成神社 (Taikodani Inari)","mode":"神社參拜","cost":"-","details":"⏰ 開放時間：全天開放 (祈禱授與 08:00~17:00) (休：全年無休)\n🚶 接駁提示：步行20分「殿町通」（白壁土藏、水溝裡游著大量鯉魚），且走到神社山腳下時，剛好可以穿過那條壯觀、由上千座朱紅色鳥居組成的「千本鳥居」隧道一路","images":[]},{"time":"14:15~17:00","item":"津和野駅 ➔ 米子駅 (JR 山口線・山陰本線 特急スーパーおき 指定席)","mode":"特急指定席","cost":"¥4,800\n(🎫 Pass免費)","details":"JR Pass 7日券全包！傍晚搭乘特急返回米子站","images":[{"url":"timetables/d5_tsuwano_to_yonago_1.jpg","caption":"津和野駅 ➔ 米子駅 (特急スーパーおき4號 13:58➔17:11) 時刻表"}]},{"time":"17:18~17:37","item":"米子駅 ➔ 皆生溫泉 (日之丸路線巴士)","mode":"路線公車","cost":"¥300\n(⚠️ 需自費)","details":"米子站前搭日之丸巴士約 15 分直達皆生溫泉海濱旅館","images":[]},{"time":"18:00~","item":"皆生溫泉 海濱和風溫泉旅館（住宿 Check-in ＆ 日本海晚宴）","mode":"夜宿溫泉","cost":"-","details":"享受鹽化妝水神之湯，品嚐日本海境港松葉蟹與喉黑魚會席料理","images":[]}],"transitAttachments":{"yonago_hotel_to_tsuwano":{"notes":"米子 06:00 ➔ 津和野 09:15 (特急スーパーおき1號直達，車程3h15m，Pass全包)","images":[{"name":"1791762314517.jpg","url":"timetables/d5_yonago_to_tsuwano_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/12"}],"link":""},"yonago_hotel_to_taikodani_inari":{"notes":"","images":[{"name":"1791762314517.jpg","url":"timetables/d5_yonago_to_tsuwano_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/12"}],"link":""},"tsuwano_to_taikodani_inari":{"notes":"纜車9：00～16：30","images":[],"link":""},"taikodani_inari_to_tsuwano":{"notes":"纜車9：00～16：30","images":[],"link":""},"taikodani_inari_to_kaike_onsen":{"notes":"17:18-17:37\t皆生温泉観光センター","images":[{"name":"1791764861443.jpg","url":"timetables/d5_tsuwano_to_yonago_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/12"}],"link":"https://hinomarubus.co.jp/timetable_route/2956/?tab=3#up-bus"},"tsuwano_to_kaike_onsen":{"notes":"17:18-17:37\t皆生温泉観光センター","images":[{"name":"1791764861443.jpg","url":"timetables/d5_tsuwano_to_yonago_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/12"}],"link":"https://hinomarubus.co.jp/timetable_route/2956/?tab=3#up-bus"},"tsuwano_to_yasugi_lodging":{"notes":"傍晚津和野站搭特急スーパーおき直達安來站","images":[],"link":""},"iwami_ginzan_to_hagi_lodging":{"notes":"大田市 17:47 ➔ 益田 19:11 (特急スーパーまつかぜ7號) ➔ 益田 19:14 ➔ 東萩 20:27 (JR山陰本線)，Pass全包","images":[{"isPdf":false,"name":"大田市➔益田➔東萩 山陰本線特急與各停時刻表","type":"image/jpeg","uploadedAt":"2026/10/12","url":"timetables/d7_ohdashi_to_higashihagi_1.jpg"}],"link":""},"izumo_taisha_to_iwami_ginzan":{"notes":"出雲市搭特急至大田市站，轉石見交通巴士至大森(石見銀山)","images":[],"link":"https://iwamigroup.jp/publics/index/48/"},"tamatsukuri_onsen_to_izumo_taisha":{"notes":"晨間玉造溫泉搭JR至出雲市站，轉一畑巴士直達出雲大社正門","images":[],"link":"https://www.ichibata.co.jp/bus/rosen/taisha.html"},"adachi_museum_to_matsue":{"notes":"免費巴士(售票前方桌子可以拿整理卷)12:55-13:15.13:30-13:50  //松江巴士 14:00-14:13/","images":[{"isPdf":false,"name":"1791624714329.jpg","type":"image/jpeg","uploadedAt":"2026/10/10","url":"timetables/d5_adachi_museum_to_matsue_1.jpg"}],"link":"https://matsue-bus.jp/lakeline"},"adachi_museum_to_matsue_horikawa":{"notes":"售票處旁有免費接駁整理卷12:00-12:20/12:30-12:50","images":[{"isPdf":false,"name":"1791635914662.jpg","type":"image/jpeg","uploadedAt":"2026/10/10","url":"timetables/d6_adachi_museum_to_matsue_horikawa_1.jpg"}],"link":"https://www.adachi-museum.or.jp/shuttle-bus"},"gassan_toda_to_adachi_museum":{"notes":"10:32-10:39/11:20-11:29鷺の湯温泉・足立美術館前","images":[],"link":"https://www.city.yasugi.shimane.jp/kurashi/sumai/yellow-bus/zikokusaisinn.html"},"kaike_onsen_to_gassan_toda":{"notes":"皆生公車至米子站，JR 9分至安來，搭黃色巴士9:12-9:38至月山入口","images":[{"isPdf":false,"name":"1791624714329.jpg","type":"image/jpeg","uploadedAt":"2026/10/10","url":"timetables/d5_adachi_museum_to_matsue_1.jpg"}],"link":"https://www.city.yasugi.shimane.jp/"},"matsue_horikawa_to_matsue":{"notes":"13:00-13:13/","images":[],"link":"https://matsue-bus.jp/lakeline"},"matsue_to_tamatsukuri_onsen":{"notes":"一般路線公車16:41-17:19 P路線-玉造線-県民会館前上車 終點玉造溫泉630 日幣","images":[],"link":"https://bus.ichibata.co.jp/media/b07b520813bcc98fef75e7927c466e5f.pdf"},"matsue_to_tamatsukuri_yu_jinja":{"notes":"一般巴士P路線 玉造線-国宝松江城県庁前15:39-16:19(一小時一班)/循環巴士15:13-15:48","images":[{"isPdf":false,"name":"1791636411145.jpg","type":"image/jpeg","uploadedAt":"2026/10/10","url":"timetables/d6_matsue_to_tamatsukuri_yu_jinja_1.jpg"}],"link":"https://matsue-bus.jp/rosen_time_list2026/rosen_root_p_2026"},"yasugi_lodging_to_gassan_toda":{"notes":"安來站搭黃色公車9:12-9:38至月山入口 (由安來站前直接出發極速便捷)","images":[{"isPdf":false,"name":"1791519808986.jpg","type":"image/jpeg","uploadedAt":"2026/10/9","url":"timetables/d5_yonago_hotel_to_gassan_toda_1.jpg"}],"link":"https://www.city.yasugi.shimane.jp/kurashi/sumai/yellow-bus/"},"yonago_hotel_to_gassan_toda":{"notes":"安來站搭黃色公車9:12-9:38至月山入口 (由安來站前直接出發極速便捷)","images":[{"isPdf":false,"name":"1791519808986.jpg","type":"image/jpeg","uploadedAt":"2026/10/9","url":"timetables/d5_yonago_hotel_to_gassan_toda_1.jpg"}],"link":"https://www.city.yasugi.shimane.jp/kurashi/sumai/yellow-bus/"}}},{"dayNumber":6,"date":"2027-01-17","shortTitle":"D6:月山富田城.足立美術館.松江城(堀川遊覽船).松江城.玉作湯神社.玉造溫泉","title":"Day 6：戰國月山富田城 ➔ 足立美術館 ➔ 國寶松江城 ➔ 宿玉造溫泉","baseStation":"皆生溫泉 / 米子駅 / 安來駅 / 松江駅 / 玉造溫泉駅","lodging":"玉造溫泉 和風旅館 (日本第一美肌神之湯)","lodgingLocation":"玉造溫泉街 (松江市玉湯町)","recommendedHotels":"佳翠苑 皆美 (Kasuen Minami) / 湯之助之宿 長樂園 / 白石家 (Shiraishiya)","passStatus":"JR Pass 7日券【適用日】(全額免費搭乘指定席)","isPass":true,"steps":[{"time":"07:30~07:50","item":"皆生溫泉 ➔ 米子駅 (日之丸路線巴士)","mode":"路線公車","cost":"¥300\n(⚠️ 需自費)","details":"晨間自皆生溫泉搭公車至米子站轉搭 JR","images":[{"url":"timetables/d6_yonago_to_yasugi_1.jpg","caption":"米子駅 ➔ 安來駅 (JR山陰本線) 07:45 / 08:10 / 08:17 時刻表"},{"url":"timetables/d6_kaike_onsen_to_gassan_toda_1.jpg","caption":"米子駅 ➔ 安來駅 (JR山陰本線) 08:10 / 08:17 / 08:28 時刻表"}]},{"time":"08:15~08:45","item":"安來駅 ➔ 月山富田城 (安來市營黃色巴士)","mode":"市營公車","cost":"¥200\n(⚠️ 需自費)","details":"非 JR 設施・安來市營黃色公車直達月山入口市立病院前","images":[]},{"time":"08:45~10:45","item":"月山富田城","mode":"百名城參訪","cost":"-","details":"🏯 百名城印章：安来市立歴史資料館 (9:30～17:00)\n⏰ 開放時間：09:30 - 17:00 (休：週二休息 (休館日館方於玄關前備有印章可蓋))\n🚶 接駁提示：山陰本線「安来駅」搭乘「広瀬行」黃色公車至「広瀬病院前」徒步15分抵資料館，登頂本丸需爬陡坡40分","images":[]},{"time":"10:55~11:15","item":"月山富田城 ➔ 足立美術館 (安來市營黃色巴士)","mode":"市營公車","cost":"¥200\n(⚠️ 需自費)","details":"非 JR 設施・山麓搭黃色公車 8 分鐘直達足立美術館","images":[]},{"time":"11:15~12:45","item":"足立美術館 (Adachi Museum of Art)","mode":"景點參訪","cost":"-","details":"⏰ 開放時間：09:00 - 17:30 (冬季至 17:00) (休：年中無休)\n🚶 接駁提示：JR 山陰本線「安來站」出站即有免費接駁專車約 20 分直達 (攻月山富田城的安來站同站！)","images":[]},{"time":"12:45~13:30","item":"🍽️ 安來・出雲松江・玉造溫泉 特色美食與名物料理","mode":"當地美食","cost":"自費","details":"必吃名物：🐟 宍道湖七珍名物料理（宍道湖名物大和蜆味噌湯（しじみ汁）、鱸魚白杉燒、鰻魚。） ｜ 🍜 出雲割子蕎麥麵（三段圓漆盒盛裝・八雲庵或神代蕎麥，淋上濃口柴魚醬汁與蔥花海苔。） ｜ 🍵 松江三大銘菓與抹茶（山川、若草・感受松平不昧公城下町傳承數百年的茶道點心文化。） ｜ 🥩 島根和牛美肌會席（玉造溫泉旅館頂級晚宴，搭配島根美酒。）\n💡 賞味叮嚀：登松江城後至堀川周邊享用正宗割子蕎麥麵；晚間於玉造溫泉旅館享用宍道湖名物與島根和牛。","images":[]},{"time":"13:30~13:50","item":"足立美術館 ➔ 安來駅 (足立美術館免費接駁車)","mode":"免費接駁車","cost":"¥0\n(🎫 Pass免費)","details":"足立美術館專用免費接駁車直達安來站","images":[]},{"time":"14:00~14:25","item":"安來駅 ➔ 松江駅 (JR 山陰本線 特急やくも 指定席)","mode":"特急指定席","cost":"¥1,590\n(🎫 Pass免費)","details":"特急八雲號持 Pass 免費劃指定席，14 分鐘直達松江","images":[{"url":"timetables/d6_adachi_museum_to_matsue_horikawa_1.jpg","caption":"安來駅 ➔ 松江駅 (特急やくも/普通車) 12:27 / 12:34 / 13:34 時刻表"},{"url":"timetables/d5_adachi_museum_to_matsue_1.jpg","caption":"安來駅 ➔ 松江駅 (特急やくも) 13:34 / 13:43 / 14:35 時刻表"}]},{"time":"14:30~14:45","item":"松江駅 ➔ 松江城大手前 (松江市營レイクライン觀光巴士)","mode":"市營公車","cost":"¥210\n(⚠️ 需自費)","details":"非 JR 設施・觀光循環公車直達松江城大手前","images":[]},{"time":"14:45~16:45","item":"松江城 (含堀川遊覽船)","mode":"國寶名城參訪","cost":"-","details":"🏯 百名城印章：松江城天守内受付カウンター (8:30～17:00)\n⏰ 開放時間：08:30 - 17:00 (休：天守全年無休)\n🚶 接駁提示：JR「松江駅」搭市營觀光巴士「ぐるっと松江レイクライン」約10分至「松江城（大手前）」即達","images":[]},{"time":"17:00~17:35","item":"松江城(県民会館前) ➔ 玉造溫泉 (一畑巴士 P路線-玉造線 直達)","mode":"路線公車","cost":"¥610\n(⚠️ 需自費)","details":"一畑公車一車直達玉造溫泉街中心，免拖行李轉乘電車","images":[{"url":"timetables/d6_matsue_to_tamatsukuri_yu_jinja_1.jpg","caption":"松江駅 ➔ 玉造溫泉駅 15:52 / 16:12 / 16:45 電車時刻表"},{"url":"timetables/d6_matsue_to_tamatsukuri_onsen_1.jpg","caption":"松江駅 ➔ 玉造溫泉駅 16:45 / 16:54 / 17:10 電車時刻表"}]},{"time":"18:00~","item":"玉造溫泉 和風旅館（住宿 Check-in ＆ 美肌晚宴）","mode":"夜宿溫泉","cost":"-","details":"入住日本第一美肌之湯，參拜玉作湯神社，享用島根和牛會席","images":[]}],"transitAttachments":{"kaike_onsen_to_gassan_toda":{"notes":"皆生回米子巴士7:44-8:03 JR8:28-8:36  黃色巴士9:12-9:38月山入口","images":[{"name":"1791766343354.jpg","url":"timetables/d6_kaike_onsen_to_gassan_toda_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/12"}],"link":"https://www.city.yasugi.shimane.jp/kurashi/sumai/yellow-bus/zikokusaisinn.data/3yonagohirose-0.pdf"},"yonago_hotel_to_gassan_toda":{"notes":"巴士9:12-9:38月山入口","images":[{"name":"1791519808986.jpg","url":"timetables/d5_yonago_hotel_to_gassan_toda_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/9"}],"link":"https://www.city.yasugi.shimane.jp/kurashi/sumai/yellow-bus/"},"yasugi_lodging_to_gassan_toda":{"notes":"巴士9:12-9:38月山入口","images":[{"name":"1791519808986.jpg","url":"timetables/d5_yonago_hotel_to_gassan_toda_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/9"}],"link":"https://www.city.yasugi.shimane.jp/kurashi/sumai/yellow-bus/"},"gassan_toda_to_adachi_museum":{"notes":"市立病院前 10:35-10:39/11:20-11:29鷺の湯温泉・足立美術館前","images":[],"link":"https://www.city.yasugi.shimane.jp/kurashi/sumai/yellow-bus/zikokusaisinn.html"},"adachi_museum_to_matsue_horikawa":{"notes":"售票處旁有免費接駁整理卷11:30-11:50/12:00-12:20/","images":[{"name":"1791635914662.jpg","url":"timetables/d6_adachi_museum_to_matsue_horikawa_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/10"}],"link":"https://www.adachi-museum.or.jp/shuttle-bus"},"adachi_museum_to_matsue":{"notes":"免費巴士(售票前方桌子可以拿整理卷)12:55-13:15.13:30-13:50  //松江巴士 14:00-14:13/","images":[{"name":"1791624714329.jpg","url":"timetables/d5_adachi_museum_to_matsue_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/10"}],"link":"https://matsue-bus.jp/lakeline"},"matsue_horikawa_to_matsue":{"notes":"13:00-13:13/","images":[],"link":"https://matsue-bus.jp/lakeline"},"matsue_to_tamatsukuri_yu_jinja":{"notes":"一般巴士P路線 玉造線-国宝松江城県庁前15:39-16:19(一小時一班)/循環巴士15:13-15:48","images":[{"name":"1791636411145.jpg","url":"timetables/d6_matsue_to_tamatsukuri_yu_jinja_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/10"}],"link":"https://matsue-bus.jp/rosen_time_list2026/rosen_root_p_2026"},"matsue_to_tamatsukuri_onsen":{"notes":"一般路線公車16:41-17:19 P路線-玉造線-県民会館前上車 終點玉造溫泉630 日","images":[{"name":"1791626567066.jpg","url":"timetables/d6_matsue_to_tamatsukuri_onsen_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/10"}],"link":"https://matsue-bus.jp/wp-content/uploads/2026/03/onsen-tmatsukuri-time.pdf"},"tamatsukuri_yu_jinja_to_tamatsukuri_onsen":{"notes":"一般路線公車16:41-17:19 P路線-玉造線-県民会館前上車 終點玉造溫泉630 日","images":[],"link":"https://matsue-bus.jp/wp-content/uploads/2026/03/onsen-tmatsukuri-time.pdf"},"tsuwano_to_kaike_onsen":{"notes":"17:18-17:37\t皆生温泉観光センター","images":[{"isPdf":false,"name":"津和野➔米子 特急スーパーおき4號時刻表","type":"image/jpeg","uploadedAt":"2026/10/12","url":"timetables/d5_tsuwano_to_yonago_1.jpg"}],"link":"https://hinomarubus.co.jp/timetable_route/2956/?tab=3#up-bus"},"tsuwano_to_yasugi_lodging":{"notes":"傍晚津和野站搭特急スーパーおき直達安來站","images":[],"link":""},"yonago_hotel_to_tsuwano":{"notes":"米子 06:00 ➔ 津和野 09:15 (特急スーパーおき1號直達，車程3h15m，Pass全包)","images":[{"isPdf":false,"name":"米子➔津和野 特急スーパーおき1號時刻表","type":"image/jpeg","uploadedAt":"2026/10/12","url":"timetables/d5_yonago_to_tsuwano_1.jpg"}],"link":""},"iwami_ginzan_to_hagi_lodging":{"notes":"大田市 17:47 ➔ 益田 19:11 (特急スーパーまつかぜ7號) ➔ 益田 19:14 ➔ 東萩 20:27 (JR山陰本線)，Pass全包","images":[{"isPdf":false,"name":"大田市➔益田➔東萩 山陰本線特急與各停時刻表","type":"image/jpeg","uploadedAt":"2026/10/12","url":"timetables/d7_ohdashi_to_higashihagi_1.jpg"}],"link":""},"izumo_taisha_to_iwami_ginzan":{"notes":"出雲市搭特急至大田市站，轉石見交通巴士至大森(石見銀山)","images":[],"link":"https://iwamigroup.jp/publics/index/48/"},"tamatsukuri_onsen_to_izumo_taisha":{"notes":"晨間玉造溫泉搭JR至出雲市站，轉一畑巴士直達出雲大社正門","images":[],"link":"https://www.ichibata.co.jp/bus/rosen/taisha.html"},"taikodani_inari_to_kaike_onsen":{"notes":"17:18-17:37\t皆生温泉観光センター","images":[{"isPdf":false,"name":"津和野➔米子 特急スーパーおき4號時刻表","type":"image/jpeg","uploadedAt":"2026/10/12","url":"timetables/d5_tsuwano_to_yonago_1.jpg"}],"link":"https://hinomarubus.co.jp/timetable_route/2956/?tab=3#up-bus"}}},{"dayNumber":7,"date":"2027-01-18","shortTitle":"D7:出雲大社.石見銀山.萩","title":"Day 7：出雲大社參拜 ➔ 大田市世界遺產石見銀山・龍源寺間步 ➔ 大森街區散策 ➔ 特急直奔東萩 (宿萩市)","baseStation":"玉造溫泉駅 / 出雲市駅 / 大田市駅 / 益田駅 / 東萩駅","lodging":"萩市區飯店 / 萩溫泉旅館","lodgingLocation":"萩市區 / 萩城下町 / 菊濱海濱溫泉","recommendedHotels":"北門屋敷 (Hokumon Yashiki) / 萩之宿 常茂惠 (Tomoe) / 萩溫泉景觀飯店","passStatus":"JR Pass 7日券【適用日】(全額免費搭乘指定席)","isPass":true,"steps":[{"time":"07:30~08:00","item":"玉造溫泉駅 ➔ 出雲市駅 (JR 山陰本線 特急スーパーまつかぜ/やくも)","mode":"特急指定席","cost":"¥1,500\n(🎫 Pass免費)","details":"JR Pass 7日券全包！晨間特急 20 分鐘直抵出雲市","images":[{"url":"timetables/d7_tamatsukuri_onsen_to_izumo_taisha_1.jpg","caption":"玉造溫泉駅 ➔ 出雲市駅 (JR特急) 08:00 / 08:40 / 09:15 時刻表"}]},{"time":"08:05~08:35","item":"出雲市駅 ➔ 出雲大社 (一畑路線巴士)","mode":"路線公車","cost":"¥530\n(⚠️ 需自費)","details":"出雲市站前搭一畑公車約 25 分直達出雲大社正門前","images":[]},{"time":"08:35~10:45","item":"出雲大社 (Izumo Taisha)","mode":"神話大社參拜","cost":"-","details":"⏰ 開放時間：06:00 - 18:00 (休：境內全天開放 (授與所 08:30~17:00))\n🚶 接駁提示：JR 出雲市站轉一畑巴士約 25 分直達正門前，或一畑電車「出雲大社前站」徒步 7 分","images":[]},{"time":"11:00~12:00","item":"🍽️ 出雲大社・石見大森・長州萩市 特色美食與名物料理","mode":"當地美食","cost":"自費","details":"必吃名物：🍜 出雲大社門前蕎麥麵（神門通「八雲」或「荒木屋」割子蕎麥麵與出雲ぜんざい紅豆年糕湯。） ｜ ☕ 石見銀山群言堂旬菜料理（大森街區古民家健康旬彩定食、銀山古法烘焙咖啡。） ｜ 🥩 萩見蘭牛極上和牛（天然紀念物見島牛與荷斯登牛交配之稀少夢幻和牛・網燒牛排「玄」或「見蘭」。） ｜ 🦑 萩仙崎特鮮活烏賊（長門仙崎港直送活透抽刺身，透明清甜彈牙。）\n💡 賞味叮嚀：參拜出雲大社後於神門通吃割子蕎麥；抵達萩市後務必尋訪見蘭牛與日本海新鮮海產。","images":[]},{"time":"12:15~13:00","item":"出雲市駅 ➔ 大田市駅 (JR 山陰本線 特急スーパーまつかぜ/おき)","mode":"特急指定席","cost":"¥1,800\n(🎫 Pass免費)","details":"出雲大社參拜後搭特急直達世界遺產石見銀山門戶大田市站","images":[{"url":"timetables/d7_izumo_taisha_to_iwami_ginzan_1.jpg","caption":"出雲市駅 ➔ 大田市駅 (JR山陰本線特急) 12:21 / 13:28 / 14:24 時刻表"}]},{"time":"13:10~13:40","item":"大田市駅 ➔ 石見銀山大森代官所 (石見交通路線巴士來回)","mode":"路線公車","cost":"¥1,520\n(⚠️ 需自費)","details":"非 JR 設施・石見交通公車單程 760 円，來回 1,520 円","images":[]},{"time":"13:45~14:00","item":"石見銀山大森街區 ➔ 龍源寺間步 (電動自行車往返租借)","mode":"單車租借","cost":"¥800\n(⚠️ 需自費)","details":"大森街區租借電動自行車 2 小時約 700~800 円","images":[]},{"time":"14:00~16:30","item":"石見銀山・龍源寺間步坑道","mode":"世界遺產巡禮","cost":"-","details":"⏰ 開放時間：無休 (休：無)\n🚶 接駁提示：https://ohomori-ginzan.jp/rentcy/\n貸自転車「弥七」大森代官所跡バス停のすぐ近くです。","images":[]},{"time":"17:15~20:27","item":"大田市駅 ➔ 益田駅 ➔ 東萩駅 (JR 特急スーパーおき 轉 山陰本線)","mode":"特急/普通車","cost":"¥3,500\n(🎫 Pass免費)","details":"大田市站搭特急超級隱岐號直達益田，轉山陰本線直達東萩站，入住萩市","images":[{"url":"timetables/d7_ohdashi_to_higashihagi_1.jpg","caption":"大田市 17:47 ➔ 益田 19:11 (特急) ➔ 東萩 20:27 (山陰本線) 時刻表"}]},{"time":"20:30~20:45","item":"東萩駅 ➔ 萩市區/溫泉旅館 (萩循環まぁーる巴士)","mode":"市營公車","cost":"¥100\n(⚠️ 需自費)","details":"非 JR 設施・萩百圓公車 100 円直達市區溫泉名宿","images":[]},{"time":"21:00~","item":"萩市區飯店 / 萩溫泉旅館（住宿 Check-in）","mode":"夜宿長州","cost":"-","details":"入住維新歷史之城萩市，品嚐見蘭牛宵夜與溫泉休養","images":[]}],"transitAttachments":{"tamatsukuri_onsen_to_izumo_taisha":{"notes":" 一畑バス 大社・日御碕線 1 號乘車處 公車 9:00-9:27/9:40-10:16","images":[{"name":"1791708459748.jpg","url":"timetables/d7_tamatsukuri_onsen_to_izumo_taisha_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/11"}],"link":"https://bus.ichibata.co.jp/media/41b388560b1ef8c2ff8bdac82ed7509c.pdf"},"izumo_taisha_to_iwami_ginzan":{"notes":"一畑巴士11:40-12:18/12:20-12:49　/石見交通14:02-14:35 http://iwamigroup.jp/files/lib/1/259/202605020731205618.pdf","images":[{"name":"1791710402295.jpg","url":"timetables/d7_izumo_taisha_to_iwami_ginzan_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/11"}],"link":"https://bus.ichibata.co.jp/media/b07b520813bcc98fef75e7927c466e5f.pdf"},"iwami_ginzan_to_hagi_lodging":{"notes":"大田市 17:47 ➔ 益田 19:11 (特急スーパーまつかぜ7號) ➔ 益田 19:14 ➔ 東萩 20:27","images":[{"name":"1791766653820.jpg","url":"timetables/d7_ohdashi_to_higashihagi_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/12"}],"link":""},"iwami_ginzan_to_tsuwano_lodging":{"notes":"巴士16:26-16:59","images":[{"name":"1791712386686.jpg","url":"timetables/d7_iwami_ginzan_to_tsuwano_lodging_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/11"}],"link":""},"adachi_museum_to_matsue":{"notes":"免費巴士(售票前方桌子可以拿整理卷)12:55-13:15.13:30-13:50  //松江巴士 14:00-14:13/","images":[{"isPdf":false,"name":"1791624714329.jpg","type":"image/jpeg","uploadedAt":"2026/10/10","url":"timetables/d5_adachi_museum_to_matsue_1.jpg"}],"link":"https://matsue-bus.jp/lakeline"},"adachi_museum_to_matsue_horikawa":{"notes":"售票處旁有免費接駁整理卷12:00-12:20/12:30-12:50","images":[{"isPdf":false,"name":"1791635914662.jpg","type":"image/jpeg","uploadedAt":"2026/10/10","url":"timetables/d6_adachi_museum_to_matsue_horikawa_1.jpg"}],"link":"https://www.adachi-museum.or.jp/shuttle-bus"},"gassan_toda_to_adachi_museum":{"notes":"10:32-10:39/11:20-11:29鷺の湯温泉・足立美術館前","images":[],"link":"https://www.city.yasugi.shimane.jp/kurashi/sumai/yellow-bus/zikokusaisinn.html"},"kaike_onsen_to_gassan_toda":{"notes":"皆生公車至米子站，JR 9分至安來，搭黃色巴士9:12-9:38至月山入口","images":[{"isPdf":false,"name":"1791624714329.jpg","type":"image/jpeg","uploadedAt":"2026/10/10","url":"timetables/d5_adachi_museum_to_matsue_1.jpg"}],"link":"https://www.city.yasugi.shimane.jp/"},"matsue_horikawa_to_matsue":{"notes":"13:00-13:13/","images":[],"link":"https://matsue-bus.jp/lakeline"},"matsue_to_tamatsukuri_onsen":{"notes":"一般路線公車16:41-17:19 P路線-玉造線-県民会館前上車 終點玉造溫泉630 日幣","images":[],"link":"https://bus.ichibata.co.jp/media/b07b520813bcc98fef75e7927c466e5f.pdf"},"matsue_to_tamatsukuri_yu_jinja":{"notes":"一般巴士P路線 玉造線-国宝松江城県庁前15:39-16:19(一小時一班)/循環巴士15:13-15:48","images":[{"isPdf":false,"name":"1791636411145.jpg","type":"image/jpeg","uploadedAt":"2026/10/10","url":"timetables/d6_matsue_to_tamatsukuri_yu_jinja_1.jpg"}],"link":"https://matsue-bus.jp/rosen_time_list2026/rosen_root_p_2026"},"yasugi_lodging_to_gassan_toda":{"notes":"安來站搭黃色公車9:12-9:38至月山入口 (由安來站前直接出發極速便捷)","images":[{"isPdf":false,"name":"1791519808986.jpg","type":"image/jpeg","uploadedAt":"2026/10/9","url":"timetables/d5_yonago_hotel_to_gassan_toda_1.jpg"}],"link":"https://www.city.yasugi.shimane.jp/kurashi/sumai/yellow-bus/"},"yonago_hotel_to_gassan_toda":{"notes":"安來站搭黃色公車9:12-9:38至月山入口 (由安來站前直接出發極速便捷)","images":[{"isPdf":false,"name":"1791519808986.jpg","type":"image/jpeg","uploadedAt":"2026/10/9","url":"timetables/d5_yonago_hotel_to_gassan_toda_1.jpg"}],"link":"https://www.city.yasugi.shimane.jp/kurashi/sumai/yellow-bus/"},"tsuwano_to_kaike_onsen":{"notes":"17:18-17:37\t皆生温泉観光センター","images":[{"isPdf":false,"name":"津和野➔米子 特急スーパーおき4號時刻表","type":"image/jpeg","uploadedAt":"2026/10/12","url":"timetables/d5_tsuwano_to_yonago_1.jpg"}],"link":"https://hinomarubus.co.jp/timetable_route/2956/?tab=3#up-bus"},"tsuwano_to_yasugi_lodging":{"notes":"傍晚津和野站搭特急スーパーおき直達安來站","images":[],"link":""},"yonago_hotel_to_tsuwano":{"notes":"米子 06:00 ➔ 津和野 09:15 (特急スーパーおき1號直達，車程3h15m，Pass全包)","images":[{"isPdf":false,"name":"米子➔津和野 特急スーパーおき1號時刻表","type":"image/jpeg","uploadedAt":"2026/10/12","url":"timetables/d5_yonago_to_tsuwano_1.jpg"}],"link":""},"taikodani_inari_to_kaike_onsen":{"notes":"17:18-17:37\t皆生温泉観光センター","images":[{"isPdf":false,"name":"津和野➔米子 特急スーパーおき4號時刻表","type":"image/jpeg","uploadedAt":"2026/10/12","url":"timetables/d5_tsuwano_to_yonago_1.jpg"}],"link":"https://hinomarubus.co.jp/timetable_route/2956/?tab=3#up-bus"},"tamatsukuri_onsen_to_iwami_ginzan":{"notes":"一畑巴士11:40-12:18/12:20-12:49　轉JR 再轉石見交通14:02-14:35 http://iwamigroup.jp/files/lib/1/259/202605020731205618.pdf","images":[{"name":"1791710402295.jpg","url":"timetables/d7_izumo_taisha_to_iwami_ginzan_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/11"}],"link":"https://bus.ichibata.co.jp/media/b07b520813bcc98fef75e7927c466e5f.pdf"},"iwami_ginzan_to_kenran_amiyaki":{"notes":"大田市 17:47 ➔ 益田 19:11 (特急スーパーまつかぜ7號) ➔ 益田 19:14 ➔ 東萩20:27 玉江 20:36","images":[],"link":""}}},{"dayNumber":8,"date":"2027-01-19","shortTitle":"D8:元乃隅神社.萩城.新山口","title":"Day 8：長門斷崖絕景元乃隅神社 ➔ 長州維新世界遺產萩城 ➔ 宿新山口","baseStation":"東萩駅 / 長門市駅 / 新山口駅","lodging":"Comfort Hotel Shin Yamaguchi (連住第1晚)","lodgingLocation":"JR 新山口駅北口徒步 1 分鐘","recommendedHotels":"Comfort Hotel Shin Yamaguchi (コンフォートホテル新山口)","passStatus":"JR Pass 7日券【適用日】(全額免費搭乘指定席)","isPass":true,"steps":[{"time":"07:45~08:20","item":"東萩駅 ➔ 長門古市駅 (JR 山陰本線)","mode":"電車","cost":"¥510\n(🎫 Pass免費)","details":"JR 山陰本線至長門古市站，元乃隅神社轉乘樞紐","images":[{"url":"timetables/d8_higashihagi_to_nagatofuruichi_1.jpg","caption":"東萩 07:03 ➔ 長門市 ➔ 長門古市 08:05 (JR山陰本線) 時刻表"},{"url":"timetables/d8_higashihagi_to_nagatofuruichi_2.jpg","caption":"東萩 07:55 ➔ 長門市 ➔ 長門古市 09:57 (JR山陰本線備案) 時刻表"}]},{"time":"08:25~08:45","item":"長門古市駅 ➔ 元乃隅神社 (預約計程車往返每人分攤)","mode":"預約計程車","cost":"¥2,500\n(⚠️ 需自費)","details":"整車來回約 5,000 円，兩人分攤每人 2,500 円","images":[]},{"time":"08:45~10:15","item":"元乃隅神社 (Motonosumi Jinja)","mode":"絕景神社參拜","cost":"-","details":"⏰ 開放時間：05:30 - 17:30 (休：夜間禁止進入)\n🚶 接駁提示：JR 山陰本線「長門古市站」搭計程車約 20 分鐘；或由萩市區租車自駕約 50 分鐘 (適合12~14天行程山口段延伸)","images":[]},{"time":"10:30~11:15","item":"長門古市駅 ➔ 東萩駅 (JR 山陰本線 返回萩市)","mode":"電車","cost":"¥510\n(🎫 Pass免費)","details":"搭 JR 山陰本線返回東萩站漫步萩城跡與城下町","images":[{"url":"timetables/d8_nagatofuruichi_to_higashihagi_1.jpg","caption":"長門古市 12:23 ➔ 長門市 ➔ 東萩 13:15 (JR山陰本線) 時刻表"}]},{"time":"11:30~11:45","item":"萩市區 ➔ 萩城跡指月公園 (萩循環巴士來回)","mode":"循環公車","cost":"¥200\n(⚠️ 需自費)","details":"搭萩循環まぁーる西回線至萩城跡・指月公園入口下車","images":[]},{"time":"11:45~13:45","item":"萩城","mode":"百名城參訪","cost":"-","details":"🏯 百名城印章：本丸入口料金所 (8:30～16:30)\n⏰ 開放時間：08:30 - 16:30 (休：全年無休)\n🚶 接駁提示：JR 東萩駅或萩駅搭乘「萩循環まぁーるバス」（西回り路線）於「萩城跡・指月公園入口」下車徒歩3分","images":[]},{"time":"14:00~15:00","item":"🍽️ 長門仙崎・北長門・新山口 特色美食與名物料理","mode":"當地美食","cost":"自費","details":"必吃名物：🥩 萩網燒見蘭牛（道の駅 萩往還「玄」牛排丼、見蘭肉餅、長州黑柏地雞。） ｜ 🍊 萩名產夏蜜柑甜點（夏蜜柑霜淇淋、夏蜜柑果凍、夏蜜柑丸漬。） ｜ 🐡 山口南風河豚料理（新山口站前名店品嚐河豚刺身（ふぐ刺し）、炸河豚、河豚鰭酒。） ｜ 🍢 長門名物烤雞肉串（仙崎深川養雞場直送炭火烤雞串（やきとり）。）\n💡 賞味叮嚀：下午於萩城下町或道の駅享用見蘭牛與夏蜜柑甜點；晚間於新山口站前居酒屋品嚐山口河豚與獺祭地酒。","images":[]},{"time":"16:00~17:15","item":"東萩駅 / 萩巴士中心 ➔ 新山口駅 (中國 JR 巴士 Super Hagi 直達特急巴士)","mode":"特急巴士","cost":"¥1,800\n(🎫 Pass免費)","details":"憑 JR Pass 7日券 免費搭乘直達特急巴士 (原價 1,800 円全免)","images":[{"url":"timetables/d8_tamae_to_shin_yamaguchi_2.jpg","caption":"東萩駅前 17:05 ➔ 新山口駅前 18:20 (直達特急スーパーはぎ號) 時刻表"},{"url":"timetables/d8_tamae_to_shin_yamaguchi_1.jpg","caption":"玉江駅 ➔ 新山口駅 (JR山陰本線/山口線) 16:46 / 16:55 時刻表"}]},{"time":"17:30~","item":"Comfort Hotel Shin Yamaguchi ＆ 山口河豚晚宴","mode":"住宿 Check-in","cost":"-","details":"入住新山口站前連住第1晚，晚間居酒屋享用山口河豚刺身與獺祭","images":[]}],"transitAttachments":{"morning_origin_8":{"notes":"","images":[{"name":"1791785522141.jpg","url":"timetables/d8_higashihagi_to_nagatofuruichi_2.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/12"},{"name":"1791775417052.jpg","url":"timetables/d8_higashihagi_to_nagatofuruichi_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/12"}],"link":""},"hagi_lodging_to_motonosumi_jinja":{"notes":"","images":[{"name":"1791785522141.jpg","url":"timetables/d8_higashihagi_to_nagatofuruichi_2.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/12"},{"name":"1791775417052.jpg","url":"timetables/d8_higashihagi_to_nagatofuruichi_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/12"}],"link":""},"motonosumi_jinja_to_hagi":{"notes":"元乃隅神社搭計程車回長門古市站 ➔  東萩 13:15,\n 巴士西回-13:57東萩-萩城跡14:08","images":[{"name":"1791785582351.jpg","url":"timetables/d8_nagatofuruichi_to_higashihagi_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/12"}],"link":"https://www.hagishi.com/wp/wp-content/uploads/2023/01/%E3%81%BE%E3%81%81%E3%83%BC%E3%82%8B%E3%83%90%E3%82%B9%E6%99%82%E5%88%BB%E8%A1%A82022.pdf"},"hagi_to_shin_yamaguchi_lodging":{"notes":"巴士城跡16:23-16:28\nJR到東萩 轉巴士到新山口","images":[{"name":"1792659089544.jpg","url":"timetables/d8_tamae_to_shin_yamaguchi_2.jpg","type":"image/jpeg","width":826,"height":548,"isPdf":false,"uploadedAt":"2026/10/22"}],"link":"https://www.hagishi.com/wp/wp-content/uploads/2023/01/%E3%81%BE%E3%81%81%E3%83%BC%E3%82%8B%E3%83%90%E3%82%B9%E6%99%82%E5%88%BB%E8%A1%A82022.pdf"},"hagi_lodging_to_hagi":{"notes":"西回-W6東荻駛前7:57-W13荻城跡8:08","images":[],"link":"https://www.hagishi.com/wp/wp-content/uploads/2023/01/%E3%81%BE%E3%81%81%E3%83%BC%E3%82%8B%E3%83%90%E3%82%B9%E6%99%82%E5%88%BB%E8%A1%A82022.pdf"},"hagi_to_motonosumi_jinja":{"notes":"西回-9:38-玉江駛前9:43","images":[],"link":""},"hagi_to_kenran_amiyaki":{"notes":"步行過去餐廳","images":[],"link":""}}},{"dayNumber":9,"date":"2027-01-20","shortTitle":"D9:秋吉台・秋芳洞.瑠璃光寺五重塔.防府天滿宮.新山口","title":"Day 9：日本最大鐘乳洞秋芳洞・秋吉台喀斯特高原 ➔ 國寶瑠璃光寺五重塔 ➔ 防府天滿宮 ➔ 宿新山口","baseStation":"新山口 / 山口 / 防府","lodging":"Comfort Hotel Shin Yamaguchi (連住第2晚)","lodgingLocation":"新山口站北口（在來線口）步行 2 分鐘（新山口連住免搬大行李！）","recommendedHotels":"Comfort Hotel Shin Yamaguchi","passStatus":"JR Pass 7日券【適用日】(全額免費搭乘指定席)","isPass":true,"steps":[{"time":"07:35~08:15","item":"新山口駅 ➔ 秋芳洞 (防長交通路線巴士)","mode":"防長巴士","cost":"¥1,290\n(⚠️ 需自費)","details":"新山口站北口巴士站搭車約 40 分鐘直達秋芳洞","images":[{"url":"timetables/d9_shin_yamaguchi_to_akiyoshido_1.jpg","caption":"新山口駅 ➔ 秋芳洞 (防長巴士 7:35-8:10) 時刻表"}]},{"time":"08:15~10:30","item":"秋吉台・秋芳洞 (日本最大級喀斯特高原＆鐘乳石洞)","mode":"自然奇景探索","cost":"-","details":"⏰ 開放時間：08:30 - 16:30 (冬季 12月~2月，閉洞 17:30) (休：全年無休)\n🚶 接駁提示：JR「新山口站」北口巴士總站搭乘防長巴士約 40 分鐘直達「秋芳洞」站；回程可搭中國 JR 巴士「秋吉線」(憑 JR Pass 免費) 直達","images":[]},{"time":"10:40~11:38","item":"秋芳洞 ➔ 香山公園五重塔前・山口駅 (中國JR巴士秋吉線)","mode":"中國JR巴士","cost":"¥1,210\n(🎫 Pass免費)","details":"由秋芳洞直達山口市國寶瑠璃光寺五重塔","images":[]},{"time":"11:45~13:15","item":"瑠璃光寺五重塔","mode":"國寶佛塔參訪","cost":"-","details":"⏰ 開放時間：香山公園全天開放 (瑠璃光寺資料館 09:00 - 17:00) (休：全年無休 (香山公園自由參觀))\n🚶 接駁提示：JR 山口線「山口站」搭乘防長巴士約 10~15 分至「香山公園五重塔前」下車即達；或自 JR「新山口站」搭乘市區公車直達","images":[]},{"time":"13:15~13:30","item":"🍽️ 秋吉台・山口市・防府天滿宮 特色美食與名物料理","mode":"當地美食","cost":"自費","details":"必吃名物：🍜 秋吉台牛蒡烏龍麵（秋芳洞名物ごぼううどん・香酥牛蒡絲天婦羅搭配清爽柴魚高湯。） ｜ 🍡 山口名物外郎糕（山口ういろう・蕨粉揉製，口感比名古屋外郎更Ｑ彈滑潤，豆沙與抹茶絕品。） ｜ 🍵 防府天滿宮梅枝餅（表參道名物現烤梅花烤年糕餅，外脆內軟。） ｜ 🥢 山口瓦片燒蕎麥麵（元祖瓦そば・熱燙瓦片上盛放茶蕎麥、牛肉絲、錦絲蛋，沾特製熱醬汁。）\n💡 賞味叮嚀：秋芳洞出洞後可在觀光商店街吃碗熱牛蒡烏龍麵；防府天滿宮參拜後品嚐梅枝餅；晚間於新山口吃瓦片蕎麥麵。","images":[]},{"time":"13:28~14:12","item":"山口駅 ➔ 新山口駅 ➔ 防府駅 (JR山口線+山陽本線)","mode":"JR在來線","cost":"¥590\n(🎫 Pass免費)","details":"前往日本三大天神防府天滿宮參拜","images":[]},{"time":"14:30~16:00","item":"防府天滿宮","mode":"三大天神參拜","cost":"-","details":"⏰ 開放時間：06:00 - 20:00 (御祈禱與授與所 08:30 - 17:00) (休：全年無休)\n🚶 接駁提示：JR 山陽本線「防府站」天神口 (北口) 步行約 15~20 分鐘；或搭乘防長巴士約 4 分鐘至「防府天滿宮」站下車步行 3 分鐘","images":[]},{"time":"16:30~16:45","item":"防府駅 ➔ 新山口駅 (JR山陽本線)","mode":"JR山陽本線","cost":"¥330\n(🎫 Pass免費)","details":"15 分鐘返回新山口站前飯店連住第 2 晚","images":[{"url":"timetables/d9_hofu_to_shin_yamaguchi_1.jpg","caption":"防府駅 ➔ 新山口駅 (JR山陽本線) 16:23 / 16:51 / 17:19 時刻表"}]},{"time":"17:00~","item":"Comfort Hotel Shin Yamaguchi ＆ 瓦片燒蕎麥晚宴","mode":"住宿連住第2晚","cost":"-","details":"返回新山口站前，晚間品嚐熱燙瓦片茶蕎麥麵與地產美食","images":[]}],"transitAttachments":{"shin_yamaguchi_lodging_to_akiyoshidai_akiyoshido":{"notes":"2號乘車處 防長巴士 約40分\n7:35-8:10","images":[{"name":"1792495163056.jpg","url":"timetables/d9_shin_yamaguchi_to_akiyoshido_1.jpg","type":"image/jpeg","width":1254,"height":558,"isPdf":false,"uploadedAt":"2026/10/20"}],"link":"https://www.bochobus.co.jp/pages/65/"},"morning_origin_9":{"notes":"2號乘車處 防長巴士 約40分\n7:35-8:10","images":[{"name":"1792495163056.jpg","url":"timetables/d9_shin_yamaguchi_to_akiyoshido_1.jpg","type":"image/jpeg","width":1254,"height":558,"isPdf":false,"uploadedAt":"2026/10/20"}],"link":"https://www.bochobus.co.jp/pages/65/"},"akiyoshidai_akiyoshido_to_rurikoji_pagoda":{"notes":"秋芳洞10:40-山口県庁前 11:38\n步行15分至香山公園","images":[],"link":"https://www.chugoku-jrbus.co.jp/general/yamaguchi/"},"rurikoji_pagoda_to_hofu_tenmangu":{"notes":"山口県庁前13:28- 防府駅14:12\n過去天滿宮的巴士很少(防長巴士)","images":[],"link":"https://www.chugoku-jrbus.co.jp/general/yamaguchi/pdf/jikoku/20260314time_yamaguchi.pdf"},"hofu_tenmangu_to_shin_yamaguchi_lodging":{"notes":"","images":[{"name":"1792660633202.jpg","url":"timetables/d9_hofu_to_shin_yamaguchi_1.jpg","type":"image/jpeg","width":644,"height":329,"isPdf":false,"uploadedAt":"2026/10/22"}],"link":""}}},{"dayNumber":10,"date":"2027-01-21","shortTitle":"D10:錦帶橋.岩國城.嚴島神社.宮島彌山大聖院.廣島","title":"Day 10：周防名橋錦帶橋・岩國城 ➔ 宮島世界遺產嚴島神社 ➔ 彌山大本山大聖院 ➔ 宿廣島","baseStation":"新山口駅 / 新岩國駅 / 岩國駅 / 宮島口駅 / 廣島駅","lodging":"Via Inn Hiroshima Shinkansenguchi (連住第1晚)","lodgingLocation":"JR 廣島駅北口 (新幹線口) 徒步 3 分鐘","recommendedHotels":"Via Inn Hiroshima Shinkansenguchi (ヴィアイン広島新幹線口・附大浴場)","passStatus":"刷交通 IC 卡 / 現金 (非 Pass 天數)","isPass":false,"steps":[{"time":"07:45~08:13","item":"新山口駅 ➔ 新岩國駅 (山陽新幹線 こだま/ひかり 指定席)","mode":"新幹線","cost":"¥3,210\n(🎫 Pass免費)","details":"山陽新幹線極速 28 分抵新岩國站，Pass 全包指定席","images":[{"url":"timetables/d9_shin_yamaguchi_to_iwakuni_1.jpg","caption":"新山口駅 ➔ 岩國駅 (新幹線/山陽本線) 07:19 / 08:28 / 09:24 時刻表"}]},{"time":"08:20~08:35","item":"新岩國駅 ➔ 錦帶橋 (防長交通路線巴士)","mode":"路線公車","cost":"¥360\n(⚠️ 需自費)","details":"新岩國站前搭防長巴士約 15 分直達錦帶橋巴士中心","images":[]},{"time":"08:35~09:15","item":"錦帶橋","mode":"名橋漫步","cost":"-","details":"⏰ 開放時間：料金所営業時間／8：00～ (休：全年無休 (售票亭 08:00~17:00，其餘時間自由投幣通行))\n🚶 接駁提示：JR 山陽本線「岩國站」搭乘公車約 20 分鐘；或山陽新幹線「新岩國站」搭乘公車約 15 分鐘直達「錦帶橋巴士中心」\nセット券（※錦帯橋入橋","images":[]},{"time":"09:15~09:20","item":"錦帶橋 ➔ 岩國城空中纜車 (橫山登山纜車來回票)","mode":"空中纜車","cost":"¥560\n(⚠️ 需自費)","details":"自山麓站搭空中纜車約 3 分登上橫山頂峰岩國城天守","images":[]},{"time":"09:20~11:00","item":"岩國城","mode":"百名城參訪","cost":"-","details":"🏯 百名城印章：岩國城受付窓口 (9:00～16:45)\n⏰ 開放時間：09:00 - 16:45 (休：無休 (遇纜車點檢時除外))\n🚶 接駁提示：山陽本線「岩国駅」或山陽新幹線「新岩国駅」搭公車約20分至「錦帯橋巴士中心」～徒步10分「山麓駅」轉搭登山纜車至「山頂駅」～徒步5分","images":[]},{"time":"11:15~12:00","item":"🍽️ 周防岩國・安藝宮島・廣島 特色美食與名物料理","mode":"當地美食","cost":"自費","details":"必吃名物：🍱 錦帶橋岩國壽司（殿樣壽司・五彩木押壽司，蓮藕、蛋絲、香菇層層堆疊色彩華麗。） ｜ 🦪 宮島烤牡蠣與炸牡蠣（宮島名店「牡蠣屋」或「沖野水產」・瀨戶內海肥美大牡蠣，多汁甘甜。） ｜ 🍚 宮島百年穴子飯（宮島口「うえの 穴子めし」・秘傳醬汁蒲燒星鰻飯，米飯吸滿高湯香氣。） ｜ 🍁 宮島紅葉饅頭（もみじ饅頭・生紅葉饅頭、現炸紅葉饅頭（紅葉堂）。）\n💡 賞味叮嚀：中午在岩國錦帶橋旁品嚐岩國壽司；下午宮島表參道吃現烤牡蠣、炸紅葉饅頭與穴子飯！","images":[]},{"time":"12:10~12:30","item":"錦帶橋 ➔ JR 岩國駅 (防長交通路線巴士)","mode":"路線公車","cost":"¥310\n(⚠️ 需自費)","details":"錦帶橋公車中心搭防長巴士約 20 分抵 JR 岩國站","images":[]},{"time":"12:40~13:03","item":"JR 岩國駅 ➔ 宮島口駅 (JR 山陽本線)","mode":"電車","cost":"¥420\n(🎫 Pass免費)","details":"JR 山陽本線約 23 分抵宮島口站","images":[{"url":"timetables/d9_iwakuni_to_miyajimaguchi_1.jpg","caption":"岩國駅 ➔ 宮島口駅 (JR山陽本線) 13:57 / 14:25 / 14:57 時刻表"}]},{"time":"13:10~13:20","item":"宮島口 ➔ 宮島棧橋 (JR 西日本宮島渡輪往返 + 宮島訪問稅)","mode":"渡輪","cost":"¥500\n(⚠️ 需自費)","details":"憑 Pass 搭 JR 渡輪享大鳥居接近航線，進島自費繳納 100 円訪問稅","images":[]},{"time":"13:20~15:30","item":"嚴島神社 (宮島・世界遺產) (海上鳥居)","mode":"世界遺產巡禮","cost":"-","details":"⏰ 開放時間：06:30 - 18:00 (依季節微調) (休：全年無休)\n🚶 接駁提示：JR 廣島站搭山陽本線至「宮島口站」(26分)，徒步至碼頭搭 JR 渡輪 10 分抵宮島，再步行 10 分即達","images":[]},{"time":"15:30~16:45","item":"宮島彌山 大本山 大聖院 (Daisho-in)","mode":"古剎巡禮","cost":"-","details":"⏰ 開放時間：08:00 - 17:00 (境內免費參拜) (休：全年無休)\n🚶 接駁提示：自嚴島神社出口西側瀧町小路步道步行約 5~10 分鐘 (約 500 公尺)；或自宮島棧橋步行約 20 分鐘","images":[]},{"time":"17:15~17:45","item":"宮島口駅 ➔ 廣島駅 (JR 山陽本線 返廣島站連住)","mode":"電車","cost":"¥420\n(🎫 Pass免費)","details":"JR Pass 7日券啟用最後一趟！山陽本線約 25 分直達廣島站","images":[{"url":"timetables/d9_miyajimaguchi_to_hiroshima_1.jpg","caption":"宮島口駅 ➔ 廣島駅 (JR山陽本線) 17:19 / 17:29 / 17:33 時刻表"}]},{"time":"18:00~","item":"Via Inn Hiroshima Shinkansenguchi ＆ 宮島牡蠣晚宴","mode":"住宿 Check-in","cost":"-","details":"入住廣島站直結飯店連住第1晚，晚間品嚐廣島燒或烤牡蠣","images":[]}],"transitAttachments":{"shin_yamaguchi_lodging_to_kintaikyo":{"notes":"新山新山口 07:19 ➔ 岩國 09:30 \n いわくにバス 10:35-錦帶橋10:55","images":[{"name":"1791791176996.jpg","url":"timetables/d9_shin_yamaguchi_to_iwakuni_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/12"}],"link":"https://www.jorudan.co.jp/bus/rosen/stoplist/?Ddd=12&Dhh=10&Dmn=35&Dym=202610&jyosya=%E5%B2%A9%E5%9B%BD%E9%A7%85&lid=337159#jump"},"iwakuni_to_itsukushima_jinja":{"notes":"巴士錦帶橋13:17-13:33 \n岩國 13:57 ➔ 宮島口 14:19 \n船15分一班","images":[{"name":"1791791740539.jpg","url":"timetables/d9_iwakuni_to_miyajimaguchi_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/12"}],"link":"https://www.jorudan.co.jp/bus/rosen/timetable/%E9%8C%A6%E5%B8%AF%E6%A9%8B%E3%80%94%E3%81%84%E3%82%8F%E3%81%8F%E3%81%AB%E3%83%90%E3%82%B9%E3%80%95/%E6%96%B0%E5%B2%A9%E5%9B%BD%E9%A7%85%E7%B7%9A/%E6%A4%8E%E5%B0%BE%E7%A5%9E%E7%A4%BE/?Dw=1"},"daishoin_to_hiroshima_lodging_d8":{"notes":"宮島口 17:19 ➔ 廣島 17:52","images":[{"name":"1791792530678.jpg","url":"timetables/d9_miyajimaguchi_to_hiroshima_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/12"}],"link":""},"itsukushima_jinja_to_hiroshima_lodging_d8":{"notes":"宮島口 17:19 ➔ 廣島 17:52","images":[{"name":"1791792530678.jpg","url":"timetables/d9_miyajimaguchi_to_hiroshima_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/12"}],"link":""},"itsukushima_jinja_to_daishoin":{"notes":"纜車最晚上16:00 最晚下16:30","images":[],"link":""},"morning_origin_10":{"notes":"新山新山口 07:19 ➔ 岩國 09:30 \n いわくにバス 10:35-錦帶橋10:55","images":[{"name":"1791791176996.jpg","url":"timetables/d9_shin_yamaguchi_to_iwakuni_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/12"}],"link":"https://www.jorudan.co.jp/bus/rosen/stoplist/?Ddd=12&Dhh=10&Dmn=35&Dym=202610&jyosya=%E5%B2%A9%E5%9B%BD%E9%A7%85&lid=337159#jump"}}},{"dayNumber":11,"date":"2027-01-22","shortTitle":"D11:廣島城.廣島護國神社.寶可夢中心.原爆圓頂.和平紀念資料館.鉄板焼 神石.廣島","title":"Day 11：廣島和平文化・鯉城與護國神社 ➔ 原爆圓頂 ➔ 廣島和牛晚宴 (宿廣島)","baseStation":"廣島駅 / 原爆圓頂前 / 本通商圈","lodging":"Via Inn Hiroshima Shinkansenguchi (連住第2晚)","lodgingLocation":"JR 廣島駅北口 (新幹線口) 徒步 3 分鐘","recommendedHotels":"Via Inn Hiroshima Shinkansenguchi (ヴィアイン広島新幹線口・連住免搬行李)","passStatus":"刷交通 IC 卡 / 現金 (非 Pass 天數)","isPass":false,"steps":[{"time":"08:30~09:00","item":"廣島市內巡迴 廣電路面電車 (廣島駅 ➔ 廣島城 / 原爆圓頂 / 本通)","mode":"路面電車","cost":"¥440\n(⚠️ 需自費)","details":"非 Pass 天數・廣島電鐵市內電車單程 220 円，刷 IC 卡乘車","images":[]},{"time":"09:00~10:30","item":"廣島城 ＆ 護國神社","mode":"百名城參訪","cost":"-","details":"🏯 百名城印章：天守閣入口前通路 (9:00～16:30)\n⏰ 開放時間：09:00 - 16:30 (休：無休 (12/29-12/31休))\n🚶 接駁提示：JR広島駅搭廣島電鐵1・2・6系統約14分「紙屋町東」下車北行徒步15分；或JR広島駅搭公車至「合同庁舎前」徒步8分","images":[]},{"time":"10:45~11:45","item":"寶可夢中心 廣島 (Pokémon Center)","mode":"逛街採買","cost":"-","details":"參觀 SOGO 6F 寶可夢中心選購限定周邊","images":[]},{"time":"12:00~13:00","item":"🍽️ 廣島市區・八丁堀・紙屋町 特色美食與名物料理","mode":"當地美食","cost":"自費","details":"必吃名物：🥩 頂級廣島牛鐵板燒晚宴（格蘭比亞 21F「鉄板焼 神石」・品嚐最高等級廣島和牛與瀨戶內鮑魚。） ｜ 🥞 廣島本通正宗廣島燒（お好み焼き・長田屋、みっちゃん 或 麗ちゃん，層層疊上高麗菜、豬肉、中華炒麵。） ｜ 🍜 廣島沾麵（廣島つけ麺・ばくだん屋，冰鎮辛香辣沾醬配冷麵，酸辣開胃過癮。） ｜ 🥐 八天堂廣島限定奶油麵包（入口即化的濃郁卡士達與鮮奶油。）\n💡 賞味叮嚀：中午在紙屋町/本通吃現煎廣島燒；晚間在飯店高空餐廳「鉄板焼 神石」享受極致和牛鐵板燒盛宴。","images":[]},{"time":"13:15~16:00","item":"原爆圓頂 ＆ 和平紀念資料館","mode":"和平文化巡禮","cost":"-","details":"悼念世界和平歷史，走訪和平紀念公園","images":[]},{"time":"18:00~20:00","item":"格蘭比亞 21F「鉄板焼 神石」廣島牛晚宴","mode":"頂級美食晚宴","cost":"自費","details":"享用頂級廣島和牛、鮑魚鐵板燒高空夜景晚宴，宿廣島連住第2晚","images":[]}],"transitAttachments":{"hiroshima_lodging_d8_to_hiroshima":{"notes":"ひろしまめいぷる〜ぷ1日乗車券 600日","images":[],"link":"https://www.chugoku-jrbus.co.jp/sightseeing/"}}},{"dayNumber":12,"date":"2027-01-23","shortTitle":"D12:吉田郡山城.福山城.鞆之浦溫泉","title":"Day 12：毛利要塞吉田郡山城 ➔ 福山城 ➔ 鞆之浦夕陽溫泉","baseStation":"廣島駅 / 廣島巴士中心 / 福山駅 / 鞆之浦","lodging":"鞆之浦溫泉 海景旅館 (福山市)","lodgingLocation":"鞆之浦古港 / 仙醉島海景露天風呂","recommendedHotels":"景勝館 漣亭 / 汀邸 遠音近音 (Ofutei) / 鷗風亭 (Hotel Osource)","passStatus":"刷交通 IC 卡 / 現金 (非 Pass 天數)","isPass":false,"steps":[{"time":"08:00~09:15","item":"廣島巴士中心 ➔ 安藝高田 吉田出張所 (吉田郡山城 廣電/備北客運來回)","mode":"高速客運","cost":"¥2,920\n(⚠️ 需自費)","details":"非 Pass 天數・廣島巴士中心 9 號月台搭高田南部線客運往返","images":[]},{"time":"09:15~12:15","item":"郡山城 (吉田郡山城)","mode":"百名城參訪","cost":"-","details":"🏯 百名城印章：安芸高田市歴史民俗博物館 (9:30～17:00)\n⏰ 開放時間：09:30 - 17:00 (休：週二休息 (祝日開館，翌日休))\n🚶 接駁提示：【推薦】廣島巴士中心搭客運往「吉田出張所」行 (約1小時20分) 至「安芸高田市役所前」下車步行5分；或JR藝備線「向原駅」轉計程車15分 ","images":[]},{"time":"12:30~13:30","item":"🍽️ 安藝高田・備後福山・鞆之浦 特色美食與名物料理","mode":"當地美食","cost":"自費","details":"必吃名物：🍜 安藝高田夜叉烏龍麵（夜叉うどん・在地名物，秘傳辣味噌、特產蔥與黑豚肉片，暖胃過癮。） ｜ 🐟 鞆之浦名物鯛魚料理（鯛魚茶泡飯（鯛茶漬け）、鯛魚飯（鯛めし）、鯛魚荒焚き，肉質甘甜緊實。） ｜ 🍶 鞆之浦十六味保命酒（江戶傳承至今之漢方本草藥酒，可試飲保命酒飴與保命酒冰淇淋。） ｜ 🐟 瀨戶內海小魚料理（ガスエビ、小イワシ天婦羅酥脆美味。）\n💡 賞味叮嚀：中午探訪郡山城時可在安藝高田品嚐夜叉烏龍麵；傍晚抵達鞆之浦享用海景溫泉飯店的經典鯛魚全席晚宴！","images":[]},{"time":"14:00~15:00","item":"廣島駅 ➔ 福山駅 (山陽新幹線 のぞみ/さくら 自由席)","mode":"新幹線自由席","cost":"¥3,740\n(⚠️ 需自費)","details":"非 Pass 天數・自費購買新幹線自由席僅需 3,740 円 (23分極速抵達福山)","images":[{"url":"timetables/d11_hiroshima_to_fukuyama_1.jpg","caption":"廣島駅 12:33 ➔ 福山駅 12:56 (新幹線さくら750號) 時刻表"}]},{"time":"15:00~16:30","item":"福山城","mode":"百名城參訪","cost":"-","details":"🏯 百名城印章：福山城天守閣内 (9:00～17:00)\n⏰ 開放時間：09:00 - 17:00 (休：週一休息 (祝日翌日休，12/28-12/31休))\n🚶 接駁提示：山陽新幹線・山陽本線「福山駅」北口出站步行 5 分鐘即達 (全日本離新幹線最近的城池！)","images":[]},{"time":"16:45~17:15","item":"福山駅南口 ➔ 鞆之浦溫泉 (鞆鐵道路線巴士)","mode":"路線公車","cost":"¥560\n(⚠️ 需自費)","details":"福山站南口搭鞆鐵道巴士約 30 分直達鞆之浦海景溫泉街","images":[]},{"time":"17:30~","item":"鞆之浦溫泉 遠景之宿（海景溫泉 ＆ 鯛魚全席）","mode":"夜宿溫泉","cost":"-","details":"入住海景溫泉飯店，欣賞鞆之浦常夜燈港町夜景，品嚐鯛魚名物料理","images":[]}],"transitAttachments":{"hiroshima_lodging_d9_to_yoshida_koriyama":{"notes":"路面電車\n①番ホーム ( 紙屋町･市役所経由 ) 　宇品行き「紙屋町東電停」下車 \n②番ホーム 宮島行き「紙屋町西電停」下車 \n⑥番ホーム 番江波行き「紙屋町西電停」下車\n\n巴士\n⑧番ホーム／吉田営業所行き 「安芸高田市役所前」下車き 「安芸高田市役所前」下車","images":[],"link":"https://www.hiroden.co.jp/bus/route/n-72.html"},"fukuyama_to_tomonoura_onsen":{"notes":"JR 福山站南口 5號公車\n鞆鐵巴士（トモテツバス）的「鞆線」（開往「鞆の浦」或「鞆港」方向）\n或飯店接送","images":[],"link":""},"yoshida_koriyama_to_fukuyama":{"notes":"巴士回廣島 10:42-12:16\n","images":[{"name":"1792206433056.jpg","url":"timetables/d11_hiroshima_to_fukuyama_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/17"}],"link":""},"morning_origin_12":{"notes":"路面電車\n①番ホーム ( 紙屋町･市役所経由 ) 　宇品行き「紙屋町東電停」下車 \n②番ホーム 宮島行き「紙屋町西電停」下車 \n⑥番ホーム 番江波行き「紙屋町西電停」下車\n\n巴士\n⑧番ホーム／吉田営業所行き 「安芸高田市役所前」下車き 「安芸高田市役所前」下車","images":[],"link":"https://www.hiroden.co.jp/bus/route/n-72.html"}}},{"dayNumber":13,"date":"2027-01-24","shortTitle":"D13:備中松山城.吉備津彥神社.吉備津神社.岡山","title":"Day 13：鞆之浦晨光 ➔ 福山新幹線 ➔ 岡山 ➔ 天空之城備中松山城 ➔ 桃太郎吉備路傳說 ➔ 宿岡山站前","baseStation":"鞆之浦 / 福山駅 / 岡山駅 / 備中高梁駅 / 備前一宮駅","lodging":"VIA INN 岡山","lodgingLocation":"JR 岡山駅中央改札口直結 (Sunste 西館 5F)","recommendedHotels":"VIA INN 岡山 (ヴィアイン岡山・JR岡山站直結徒步1分)","passStatus":"刷交通 IC 卡 / 現金 (非 Pass 天數)","isPass":false,"steps":[{"time":"07:18~07:51","item":"鞆之浦溫泉 ➔ 福山駅 (鞆鐵道路線巴士 返回福山站)","mode":"路線公車","cost":"¥560\n(⚠️ 需自費)","details":"晨間搭路線巴士約 30 分鐘返回福山站銜接新幹線","images":[]},{"time":"08:00~08:16","item":"福山駅 ➔ 岡山駅 (山陽新幹線 自由席 返回岡山放行李)","mode":"新幹線自由席","cost":"¥1,770\n(⚠️ 需自費)","details":"非 Pass 天數・自費搭新幹線自由席僅 1,770 円 (16分抵岡山站)","images":[]},{"time":"08:29~09:49","item":"岡山駅 ➔ 備中高梁駅 (JR 伯備線 普通車/特急 往備中松山城)","mode":"電車","cost":"¥860\n(⚠️ 需自費)","details":"非 Pass 天數・搭乘伯備線普通車僅 860 円 (若搭特急自由席為 1,500 円)","images":[{"url":"timetables/d12_tomonoura_to_bitchu_matsuyama_1.jpg","caption":"福山 08:29 ➔ 倉敷 ➔ 備中高梁 09:49 (特急やくも5號) 時刻表"},{"url":"timetables/d12_tomonoura_to_bitchu_matsuyama_2.jpg","caption":"福山 09:31 ➔ 倉敷 ➔ 備中高梁 10:47 (特急やくも7號) 時刻表"}]},{"time":"10:00~10:20","item":"備中高梁駅前 ➔ 鞴峠 (備中松山城 觀光乘合計程車往返)","mode":"觀光乘合計程車","cost":"¥2,000\n(⚠️ 需自費)","details":"高梁市觀光協會合乘計程車，單程 1,000 円，來回 2,000 円，需預約","images":[]},{"time":"10:20~12:30","item":"備中松山城","mode":"現存山城參訪","cost":"-","details":"🏯 百名城印章：備中松山城券売所 (9:00～16:30)\n⏰ 開放時間：09:00 - 16:30 (休：無休 (年末年始除外))\n🚶 接駁提示：伯備線「備中高梁駅」前観光案内所より『観光乗合タクシー』を運行 (約15分至鞴峠/ふいご峠，再步行20分攻頂)","images":[]},{"time":"12:45~13:30","item":"🍽️ 備中高梁・吉備路・岡山 特色美食與名物料理","mode":"當地美食","cost":"自費","details":"必吃名物：🍝 高梁名物印地安番茄炒麵（インディアントマト焼そば・咖哩風味炒麵淋上高梁完熟番茄肉醬。） ｜ 🍱 岡山味司野村多蜜豬排丼（デミカツ丼・炸豬排淋上法式濃郁多蜜醬汁，岡山獨特代表名物。） ｜ 🦪 備前日生牡蠣文字燒（カキオコ・鐵板上鋪滿肥美鮮蚵，鮮香撲鼻。） ｜ 🍑 岡山白桃果凍與吉備糰子（名產街伴手禮首選。）\n💡 賞味叮嚀：高梁城下町可品嚐印地安番茄炒麵；返回岡山後於市區品嚐名物醬汁豬排丼，並進行最終採買！","images":[]},{"time":"13:45~14:30","item":"備中高梁駅 ➔ 備前一宮駅 (JR 伯備線/吉備線 往吉備津彥神社)","mode":"電車","cost":"¥770\n(⚠️ 需自費)","details":"非 Pass 天數・搭 JR 伯備線至總社轉吉備線至備前一宮","images":[{"url":"timetables/d12_bitchu_matsuyama_to_kibitsuhiko_1.jpg","caption":"備中高梁駅 ➔ 備前一宮駅 (JR伯備線+吉備線) 12:48 / 13:10 時刻表"}]},{"time":"14:30~15:20","item":"吉備津彥神社 (Kibitsuhiko Jinja)","mode":"桃太郎神話古社","cost":"-","details":"⏰ 開放時間：06:00 - 18:00 (社務所 08:30~17:00) (休：全年無休)\n🚶 接駁提示：JR 岡山站搭吉備線 (桃太郎線) 約 11 分抵達「備前一宮站」，出站徒步 3 分鐘即達 (與鬼ノ城、吉備津神社同一條吉備鐵路線！)","images":[]},{"time":"15:25~15:30","item":"備前一宮駅 ➔ 吉備津駅 (JR 吉備線 往吉備津神社)","mode":"電車","cost":"¥150\n(⚠️ 需自費)","details":"非 Pass 天數・JR 吉備線 1 站直達，參拜國寶大迴廊","images":[{"url":"timetables/d12_kibitsuhiko_to_kibitsu_1.jpg","caption":"備前一宮駅 ➔ 吉備津駅 (JR吉備線 3分) 15:04 / 15:34 / 16:04 時刻表"}]},{"time":"15:30~16:45","item":"吉備津神社 (Kibitsu Jinja)","mode":"國寶大迴廊神社","cost":"-","details":"⏰ 開放時間：05:00 - 18:00 (社務所 08:30~16:30) (休：全年無休)\n🚶 接駁提示：JR 岡山站搭吉備線 (桃太郎線) 約 17 分抵達「吉備津站」，步行約 10 分即達 (在岡山前往鬼ノ城的同一條鐵路線上！)","images":[]},{"time":"16:55~17:12","item":"吉備津駅 ➔ 岡山駅 (JR 吉備線 返回岡山站市區住宿)","mode":"電車","cost":"¥210\n(⚠️ 需自費)","details":"非 Pass 天數・JR 吉備線 17 分返回岡山站，夜宿岡山站前","images":[{"url":"timetables/d12_kibitsu_to_okayama_1.jpg","caption":"吉備津駅 ➔ 岡山駅 (JR吉備線 18分) 16:47 / 17:17 / 17:47 時刻表"}]},{"time":"17:30~","item":"VIA INN 岡山 ＆ 多蜜醬汁豬排丼晚宴","mode":"住宿 Check-in","cost":"-","details":"入住岡山站直通飯店，前往味司野村吃名物豬排丼，最後採買伴手禮","images":[]}],"transitAttachments":{"tomonoura_onsen_to_bitchu_matsuyama":{"notes":"巴士回車站 7:18-7:51\nJR 8:29-9:49\n10:00計程車預約 https://www.asoview.com/item/activity/pln3000045984/","images":[{"name":"1792209376728.jpg","url":"timetables/d12_tomonoura_to_bitchu_matsuyama_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/17"},{"name":"1792208889852.jpg","url":"timetables/d12_tomonoura_to_bitchu_matsuyama_2.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/17"}],"link":"https://tomotetsu.co.jp/cont/wp-content/uploads/2026/09/1.20261001jikoku-tomo.pdf"},"fukuyama_to_bitchu_matsuyama":{"notes":"巴士回車站 7:18-7:51\nJR 8:29-9:49\n10:00計程車預約 https://www.asoview.com/item/activity/pln3000045984/","images":[{"name":"1792209376728.jpg","url":"timetables/d12_tomonoura_to_bitchu_matsuyama_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/17"},{"name":"1792208889852.jpg","url":"timetables/d12_tomonoura_to_bitchu_matsuyama_2.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/17"}],"link":"https://tomotetsu.co.jp/cont/wp-content/uploads/2026/09/1.20261001jikoku-tomo.pdf"},"bitchu_matsuyama_to_kibitsuhiko_jinja":{"notes":"","images":[{"name":"1792242039636.jpg","url":"timetables/d12_bitchu_matsuyama_to_kibitsuhiko_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/17"}],"link":"https://transit.yahoo.co.jp/search/result?from=%E5%82%99%E4%B8%AD%E9%AB%98%E6%A2%81&to=%E5%82%99%E5%89%8D%E4%B8%80%E5%AE%AE"},"kibitsuhiko_jinja_to_kibitsu_jinja":{"notes":"","images":[{"name":"1792242236767.jpg","url":"timetables/d12_kibitsuhiko_to_kibitsu_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/17"}],"link":""},"kibitsu_jinja_to_okayama_hotel":{"notes":"","images":[{"name":"1792242347783.jpg","url":"timetables/d12_kibitsu_to_okayama_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/17"}],"link":"https://transit.yahoo.co.jp/search/result?from=%E5%90%89%E5%82%99%E6%B4%A5&to=%E5%B2%A1%E5%B1%B1"},"morning_origin_13":{"notes":"巴士回車站 7:18-7:51\nJR 8:29-9:49\n10:00計程車預約 https://www.asoview.com/item/activity/pln3000045984/","images":[{"name":"1792209376728.jpg","url":"timetables/d12_tomonoura_to_bitchu_matsuyama_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/17"},{"name":"1792208889852.jpg","url":"timetables/d12_tomonoura_to_bitchu_matsuyama_2.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/17"}],"link":"https://tomotetsu.co.jp/cont/wp-content/uploads/2026/09/1.20261001jikoku-tomo.pdf"}}},{"dayNumber":14,"date":"2027-01-25","shortTitle":"D14:岡山桃太郎機場(返台)","title":"Day 14：岡山市區漫遊伴手禮 ➔ 岡山桃太郎機場搭機返台 (2027/01/25 虎航 IT215)","baseStation":"岡山駅 / 岡山桃太郎機場 (OKJ)","lodging":"返抵台灣溫暖的家","lodgingLocation":"台北(桃園)國際機場 (TPE)","recommendedHotels":"無 (返抵國門)","passStatus":"刷交通 IC 卡 / 現金 (非 Pass 天數)","isPass":false,"steps":[{"time":"09:00~11:30","item":"岡山市區漫遊 ＆ 車站一番街伴手禮採買","mode":"伴手禮採買","cost":"-","details":"購買大手饅頭、廣榮堂吉備糰子、岡山白桃果凍名產","images":[]},{"time":"11:30~12:30","item":"🍽️ 岡山市區・岡山桃太郎機場 特色美食與名物料理","mode":"當地美食","cost":"自費","details":"必吃名物：🍡 岡山大手饅頭（大手まんぢゅう・天保年間創立，薄皮紅豆甘酒名菓。） ｜ 🍡 廣榮堂吉備糰子（元祖きびだんご・桃太郎故事傳說伴手禮。） ｜ 🍪 岡山白桃夾心法蘭酥與晴王麝香葡萄巧克力（機場免稅店人氣第一名產。） ｜ 🍱 機場限定和牛便當與岡山特產美食（登機前最後犒賞。）\n💡 賞味叮嚀：離境前於岡山站一番街與桃太郎機場出境免稅店採買齊全岡山與山陰山陽特產銘菓，滿載而歸！","images":[]},{"time":"12:40~13:10","item":"岡山駅西口 ➔ 岡山桃太郎機場 (機場利木津巴士 返台登機)","mode":"機場巴士","cost":"¥1,000\n(⚠️ 需自費)","details":"岡山站西口 21 號月台搭利木津巴士直達機場，搭乘 2027/01/25 虎航 IT215 (岡山 ➔ 台北(桃園)) 返台","images":[{"url":"timetables/d13_okayama_to_airport_bus_2.jpg","caption":"岡山站西口 ➔ 岡山桃太郎機場 (機場利木津巴士 14:50直達15:20) 時刻表"},{"url":"timetables/d13_okayama_to_airport_bus_1.jpg","caption":"機場 ➔ 岡山站西口 巴士時刻表對照"}]},{"time":"13:15~15:30","item":"岡山桃太郎機場 (OKJ) 報到返台","mode":"航班登機","cost":"-","details":"辦理台灣虎航 IT215 登機手續 (15:55 起飛 ➔ 17:40 抵桃園 T1)，滿載賦歸","images":[]}],"transitAttachments":{"okayama_hotel_to_okayama_airport":{"notes":"岡山 ➔ 台北(桃園) IT215 (2027/01/25 15:55 - 17:40)","images":[{"name":"1792242497253.jpg","url":"timetables/d13_okayama_to_airport_bus_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/17"},{"name":"1792242457470.jpg","url":"timetables/d13_okayama_to_airport_bus_2.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/17"}],"link":""},"morning_origin_14":{"notes":"岡山 ➔ 台北(桃園) IT215 (2027/01/25 15:55 - 17:40)","images":[{"name":"1792242497253.jpg","url":"timetables/d13_okayama_to_airport_bus_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/17"},{"name":"1792242457470.jpg","url":"timetables/d13_okayama_to_airport_bus_2.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/17"}],"link":""},"okayama_airport_14":{"notes":"岡山 ➔ 台北(桃園) IT215 (2027/01/25 15:55 - 17:40)","images":[{"name":"1792242457470.jpg","url":"timetables/d13_okayama_to_airport_bus_2.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/17"},{"name":"1792242497253.jpg","url":"timetables/d13_okayama_to_airport_bus_1.jpg","type":"image/jpeg","isPdf":false,"uploadedAt":"2026/10/17"}],"link":""}}}];
+
+    const HOTELS_DATA = [{"days": "Day 1 (1/12), Day 13 (1/24)", "city": "岡山 (Okayama)", "hotel": "VIA INN 岡山 (Via Inn Okayama)", "type": "車站直結飯店", "tag": "交通極致便利", "highlight": "岡山站正上方直結，出站免吹風淋雨即達大廳！周邊 AEON Mall、一番街與驚安殿堂採買極為方便。", "address": "岡山県岡山市北区駅元町1-25", "mapQuery": "VIA INN Okayama"}, {"days": "Day 2 (1/13)", "city": "鳥取 (Tottori)", "hotel": "APA飯店 鳥取車站前 (APA Hotel Tottori-Ekimae)", "type": "站前商務飯店", "tag": "出站即達", "highlight": "鳥取站南口徒步 2 分鐘，鄰近牛骨拉麵名店與便利商店，次日早晨前往鳥取城跡極為順暢。", "address": "鳥取県鳥取市富安2-138-2", "mapQuery": "APA Hotel Tottori-Ekimae"}, {"days": "Day 3 (1/14)", "city": "城崎溫泉 (Kinosaki Onsen)", "hotel": "城崎溫泉 和風旅館 (精選溫泉旅館)", "type": "七大外湯溫泉名宿", "tag": "冬季頂級松葉蟹", "highlight": "入住換穿花浴衣漫步柳樹小橋流水七大外湯，晚宴品嚐津居山港直送活松葉蟹刺身、烤蟹與火鍋全席！", "address": "兵庫県豊岡市城崎町湯島", "mapQuery": "Kinosaki Onsen Ryokan"}, {"days": "Day 4 (1/15)", "city": "米子 (Yonago)", "hotel": "Hotel Harvest In Yonago (米子豐收酒店)", "type": "站前商務飯店", "tag": "樞紐中心", "highlight": "米子站旁步行 1 分鐘，直通米子站交通動線。晚間前往「日本料理 荒磯」或「太平記」品嚐日本海海鮮。", "address": "鳥取県米子市弥生町8-27", "mapQuery": "Hotel Harvest In Yonago"}, {"days": "Day 5 (1/16)", "city": "米子皆生溫泉 (Kaike Onsen)", "hotel": "皆生溫泉 海濱和風溫泉旅館 (皆生グランドホテル天水 / 華水亭)", "type": "日本海海濱名宿", "tag": "含鹽化妝水神之湯", "highlight": "面朝日本海美景，享受日本少見的含鹽化妝水泉質，晚宴享用境港松葉蟹、喉黑魚（ノドグロ）鹽烤會席。", "address": "鳥取県米子市皆生温泉", "mapQuery": "Kaike Onsen Ryokan"}, {"days": "Day 6 (1/17)", "city": "松江玉造溫泉 (Tamatsukuri Onsen)", "hotel": "玉造溫泉 和風旅館 (保性館 / 佳翠苑皆美)", "type": "千年神之湯名宿", "tag": "日本第一美肌之湯", "highlight": "《出雲國風土記》記載千年美肌神之湯，溫泉街玉作湯神社參拜，晚間享用島根和牛與宍道湖名物會席。", "address": "島根県松江市玉湯町玉造", "mapQuery": "Tamatsukuri Onsen Ryokan"}, {"days": "Day 7 (1/18)", "city": "長州萩市 (Hagi)", "hotel": "萩市區飯店 / 萩溫泉旅館 (萩一景の宿 千春樂 / 萩之宿 常茂惠)", "type": "城下町溫泉名宿", "tag": "世界遺產歷史散策", "highlight": "漫步明治維新胎動之地萩城下町，品嚐稀少見蘭牛料理與長門仙崎特鮮透抽刺身。", "address": "山口県萩市堀内", "mapQuery": "Hagi Onsen Ryokan"}, {"days": "Day 8 (1/19), Day 9 (1/20)", "city": "新山口 (Shin-Yamaguchi)", "hotel": "Comfort Hotel Shin Yamaguchi (新山口康福酒店)", "type": "新幹線站前連住首選", "tag": "雙日連住免搬行李", "highlight": "新山口站北口徒步 1 分鐘，連住 2 晚行李免搬動！銜接秋芳洞、瑠璃光寺五重塔與防府天滿宮之交通樞紐。", "address": "山口県山口市小郡下郷1255-1", "mapQuery": "Comfort Hotel Shin-Yamaguchi"}, {"days": "Day 10 (1/21), Day 11 (1/22)", "city": "廣島 (Hiroshima)", "hotel": "Via Inn Hiroshima Shinkansenguchi (廣島維亞新幹線口)", "type": "廣島站直通連住", "tag": "雙日連住站前樞紐", "highlight": "廣島站新幹線口徒步 2 分鐘，極速前往宮島嚴島神社、岩國錦帶橋與廣島城，晚間品嚐頂級廣島牛鐵板燒。", "address": "広島県広島市東区二葉の里3-2-2", "mapQuery": "Via Inn Hiroshima Shinkansenguchi"}, {"days": "Day 12 (1/23)", "city": "福山鞆之浦 (Tomonoura)", "hotel": "鞆之浦溫泉 遠景之宿 (ホテル鴎風亭 / 景勝館漣亭)", "type": "瀨戶內海海景名宿", "tag": "宮崎駿波妞靈感故鄉", "highlight": "房間面朝瀨戶內海仙醉島絕景，屋頂露天風呂飽覽常夜燈港町夜色，享用經典鞆之浦鯛魚全席晚宴！", "address": "広島県福山市鞆町鞆", "mapQuery": "Tomonoura Onsen Ryokan"}];
+    const CHECKLIST_DEFAULT = [{"category": "🛂 重要證件與票券", "icon": "passport", "items": [{"id": "c1", "text": "中華民國護照（有效期限 6 個月以上）", "checked": true}, {"id": "c2", "text": "Visit Japan Web 事前填寫入境與海關 QR Code", "checked": true}, {"id": "c3", "text": "台灣虎航電子機票憑證 (IT214 / IT215)", "checked": true}, {"id": "c4", "text": "JR 山陽&山陰地區 7 日周遊券 兌換憑證 (MCO)", "checked": true}, {"id": "c5", "text": "日幣現金（建議備妥小額百円硬幣用於投幣機/公車）", "checked": false}, {"id": "c6", "text": "海外高回饋信用卡 / 簽帳金融卡 (2張以上備用)", "checked": true}, {"id": "c7", "text": "ICOCA / Suica 實體交通卡（或 Apple Wallet 綁定）", "checked": true}]}, {"category": "🎒 冬季禦寒衣物與裝備", "icon": "clothes", "items": [{"id": "c8", "text": "防風防水連帽保暖外套 / 輕量羽絨外套", "checked": true}, {"id": "c9", "text": "發熱衣、發熱褲 (3~4 套，採洋蔥式穿法)", "checked": true}, {"id": "c10", "text": "耐走、防滑、保暖鞋款（部分山城石階雪地需防滑）", "checked": true}, {"id": "c11", "text": "毛帽、保暖圍巾、觸控手套", "checked": true}, {"id": "c12", "text": "厚襪與換洗衣物 (飯店多有投幣洗烘衣機)", "checked": false}, {"id": "c13", "text": "輕量折疊晴雨傘 (日本海冬季氣候多變)", "checked": true}]}, {"category": "📱 3C通訊與充電設備", "icon": "devices", "items": [{"id": "c14", "text": "日本上網 SIM 卡 / eSIM (出發前確認開通方式)", "checked": true}, {"id": "c15", "text": "大容量行動電源 (隨身攜帶，不可託運)", "checked": true}, {"id": "c16", "text": "手機充電線、快充頭、萬用轉接頭", "checked": true}, {"id": "c17", "text": "相機、記憶卡與備用電池 (雪地耗電快)", "checked": false}]}, {"category": "💊 個人常備藥品與保濕", "icon": "medical", "items": [{"id": "c18", "text": "個人常備藥物、感冒止痛藥、腸胃藥、暈車藥", "checked": true}, {"id": "c19", "text": "手部高保濕乳液、護唇膏 (冬季日本室內外乾燥)", "checked": true}, {"id": "c20", "text": "隨身暖暖包 (貼式與手持式數包)", "checked": false}, {"id": "c21", "text": "休足時間 / 舒緩貼布 (登山步巡舒緩足部)", "checked": false}]}, {"category": "🏯 日本百名城巡禮特備", "icon": "castle", "items": [{"id": "c22", "text": "日本100名城官方集章本 (日本城郭協會指定冊)", "checked": true}, {"id": "c23", "text": "吸墨紙 / 紀念章保護小紙片 (防止印泥反印在對頁)", "checked": true}, {"id": "c24", "text": "透明防水拉鍊袋 (妥善保存各城參觀簡介與紀念門票)", "checked": true}]}];
+    const FLIGHT_DATA = {"id": "okayama_tiger", "destination": "岡山 (OKJ)", "destCity": "岡山桃太郎機場 (台北桃園 TPE 直飛)", "airline": "台灣虎航 (Tigerair Taiwan)", "airlineCode": "IT", "flightType": "LCC廉價航空", "aircraft": "A320 / A320neo", "frequency": "每天 1 班天天直飛 (2027/01/12 去 ➔ 2027/01/25 回，0天移動完美吻合)", "travelDates": "2027/01/12 (二) ~ 2027/01/25 (一) [共 14 天 13 晚]", "exactPrice": "NT$ 13,537", "priceRangeWithBaggage": "NT$ 13,537", "pricePeakWithBaggage": "含加購 20kg 托運行李直客價", "outbound": {"flightNo": "IT214", "date": "2027/01/12", "from": "台北(桃園)", "to": "岡山", "departure": "2027/01/12 11:30 台北(桃園) (TPE)", "arrival": "2027/01/12 15:05 岡山 (OKJ)", "duration": "2 小時 35 分鐘", "timingType": "午去 (2027/01/12 出發・舒適免天未亮出門)"}, "inbound": {"flightNo": "IT215", "date": "2027/01/25", "from": "岡山", "to": "台北(桃園)", "departure": "2027/01/25 15:55 岡山 (OKJ)", "arrival": "2027/01/25 17:40 台北(桃園) (TPE)", "duration": "2 小時 45 分鐘", "timingType": "下午回 (2027/01/25 返台)"}, "baggageIncluded": "已包含來回 20kg 托運行李 (約 NT$1,900，已計入票價)", "carryOn": "1件手提 + 1件隨身物品，合計 10kg", "jrPassLink": "機場搭乘中鐵/岡電機場巴士 30 分 (1,000円) 直達岡山站，立即開通山陽&山陰 Pass！", "pros": ["山陰山陽大環線地理幾何中心，南北進出最順暢", "天天直飛不卡班表，回程 15:55 起飛，最後一天早晨還能從容攻登備中松山城", "機場小而美，通關與行李提領極速 (15~20分鐘出關)"], "cons": ["票價隨日期浮動，熱門賞楓/雪季需提早開票", "機上餐飲與選位需額外加購"], "officialUrl": "https://www.tigerairtw.com/", "googleFlightsUrl": "https://www.google.com/travel/flights?q=Flights%20to%20OKJ%20from%20TPE", "skyscannerUrl": "https://www.skyscanner.com.tw/transport/flights/tpe/okj/"};
+
+    let currentDayIndex = 0;
+
+    // 1. 出發倒數計時器
+    function initCountdown() {
+      const targetDate = new Date('2027-01-12T11:30:00+08:00').getTime();
+
+      function update() {
+        const now = new Date().getTime();
+        const diff = targetDate - now;
+
+        if (diff <= 0) {
+          document.getElementById('cd-days').textContent = '00';
+          document.getElementById('cd-hours').textContent = '00';
+          document.getElementById('cd-mins').textContent = '00';
+          document.getElementById('cd-secs').textContent = '00';
+          return;
+        }
+
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+        document.getElementById('cd-days').textContent = String(d).padStart(2, '0');
+        document.getElementById('cd-hours').textContent = String(h).padStart(2, '0');
+        document.getElementById('cd-mins').textContent = String(m).padStart(2, '0');
+        document.getElementById('cd-secs').textContent = String(s).padStart(2, '0');
+      }
+
+      update();
+      setInterval(update, 1000);
+    }
+
+    // 2. 每日行程切換列與時間軸渲染
+    function initItinerary() {
+      const picker = document.getElementById('dayPickerBar');
+      picker.innerHTML = DAYS_DATA.map((day, idx) => {
+        const shortDate = day.date ? day.date.split(' ')[0] : '';
+        return `
+          <div class="day-tab ${idx === currentDayIndex ? 'active' : ''}" onclick="selectDay(${idx})" id="day-tab-${idx}">
+            <div class="day-tab-num">D${day.dayNumber}</div>
+            <div class="day-tab-date">${escapeHtml(shortDate)}</div>
+          </div>
+        `;
+      }).join('');
+
+      renderDayContent(currentDayIndex);
+    }
+
+    function selectDay(idx) {
+      currentDayIndex = idx;
+      document.querySelectorAll('.day-tab').forEach((el, i) => {
+        el.classList.toggle('active', i === idx);
+      });
+      // 平滑滾動讓選中的 tab 居中
+      const activeTab = document.getElementById(`day-tab-${idx}`);
+      if (activeTab) {
+        activeTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+      renderDayContent(idx);
+    }
+
+    // 將文字中的 URL 轉為可點擊超連結
+    function formatDetailsWithLinks(text) {
+      if (!text) return '';
+      let safe = escapeHtml(text);
+      safe = safe.replace(/(https?:\/\/[^\s\)\)\"\'，。、<>]+)/g, (url) => {
+        return `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color:#0284c7; text-decoration:underline; font-weight:800; word-break:break-all;">${url}</a>`;
+      });
+      return safe.replace(/\n/g, '<br>');
+    }
+
+    // 精準取得僅屬於當前步驟的時刻表／交通連結與備忘
+    function getStepTransitInfo(step, day, stepIdx) {
+      const links = [];
+      const seen = new Set();
+      const atts = day.transitAttachments || {};
+      let stepNote = '';
+
+      function addLink(url, label) {
+        if (!url) return;
+        url = url.trim();
+        if (!url.startsWith('http')) return;
+        if (seen.has(url)) return;
+        seen.add(url);
+
+        let tag = label;
+        if (!tag) {
+          if (url.endsWith('.pdf') || url.includes('.pdf')) tag = '時刻表 PDF';
+          else if (url.includes('bus') || url.includes('hinomaru') || url.includes('tankai') || url.includes('bocho') || url.includes('ichibata') || url.includes('hiroden')) tag = '公車/巴士時刻表';
+          else if (url.includes('transit.yahoo') || url.includes('jorudan') || url.includes('jr')) tag = '電車/轉乘時刻表';
+          else if (url.includes('asoview') || url.includes('rentcy') || url.includes('activity')) tag = '預約/租借連結';
+          else tag = '時刻表/官方連結';
+        }
+        links.push({ url, tag });
+      }
+
+      // 1. step 本身有 link 欄位
+      if (step.link) addLink(step.link, '時刻表官網');
+
+      // 2. step.details 內嵌的 URL
+      if (step.details) {
+        const matched = step.details.match(/https?:\/\/[^\s\)\)\"\'，。、<>]+/g);
+        if (matched) matched.forEach(u => addLink(u));
+      }
+
+      // 3. 透過圖片與附件關聯
+      const sImgUrls = (step.images || []).map(img => img.url).filter(Boolean);
+      if (sImgUrls.length > 0) {
+        for (const [k, att] of Object.entries(atts)) {
+          if (!att) continue;
+          const attImgUrls = (att.images || []).map(img => img.url).filter(Boolean);
+          const matchedByImg = sImgUrls.some(u => attImgUrls.includes(u));
+          if (matchedByImg) {
+            if (day.dayNumber === 13 && k.includes('tomonoura_onsen_to_bitchu') && stepIdx !== 0) {
+              // 排除跨段誤連
+            } else {
+              if (att.link) addLink(att.link);
+              if (att.notes) {
+                const nMatched = att.notes.match(/https?:\/\/[^\s\)\)\"\'，。、<>]+/g);
+                if (nMatched) nMatched.forEach(u => addLink(u));
+                // 若筆記包含備忘且未包含在 details 內，可提為 stepNote
+                const cleanNote = att.notes.replace(/https?:\/\/[^\s\)\)\"\'，。、<>]+/g, '').trim();
+                if (cleanNote && (!step.details || !step.details.includes(cleanNote))) {
+                  stepNote = cleanNote;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      // 4. 針對交通步驟進行精準名稱與站名比對
+      const m = step.mode || '';
+      const item = step.item || '';
+      const isTransit = m.includes('車') || m.includes('公車') || m.includes('巴士') || m.includes('電車') || m.includes('特急') || m.includes('新幹線') || m.includes('纜車') || m.includes('船') || item.includes('➔');
+
+      if (isTransit) {
+        for (const [k, att] of Object.entries(atts)) {
+          if (!att || (!att.link && (!att.notes || !att.notes.includes('http')))) continue;
+          let isMatch = false;
+
+          // Day 3
+          if (day.dayNumber === 3) {
+            if (k.includes('tottori_hotel_to_tottori') && item.includes('鳥取城') && item.includes('鳥取駅')) isMatch = true;
+            if (k.includes('tottori_hotel_to_hakuto') && item.includes('白兔')) isMatch = true;
+            if (k.includes('tottori_to_tottori_sakyu') && item.includes('鳥取城') && item.includes('砂丘')) isMatch = true;
+            if (k.includes('tottori_sakyu_to_tottori') && item.includes('砂丘') && item.includes('鳥取駅')) isMatch = true;
+          }
+          // Day 4
+          else if (day.dayNumber === 4) {
+            if (k.includes('amanohashidate_to_ine') && item.includes('天橋立') && item.includes('伊根')) isMatch = true;
+            if (k.includes('ine_funaya_to_araiso') && item.includes('天橋立') && item.includes('米子')) isMatch = true;
+          }
+          // Day 6
+          else if (day.dayNumber === 6) {
+            if (k.includes('kaike_onsen_to_gassan') && item.includes('皆生溫泉') && item.includes('米子')) isMatch = true;
+            if (k.includes('gassan_toda_to_adachi') && item.includes('月山') && item.includes('足立')) isMatch = true;
+            if (k.includes('adachi_museum_to_matsue_horikawa') && item.includes('足立美術館') && item.includes('安來')) isMatch = true;
+            if (k.includes('adachi_museum_to_matsue') && item.includes('松江') && item.includes('城')) isMatch = true;
+            if (k.includes('matsue_to_tamatsukuri') && item.includes('玉造溫泉') && item.includes('松江')) isMatch = true;
+          }
+          // Day 7
+          else if (day.dayNumber === 7) {
+            if (k.includes('tamatsukuri_onsen_to_izumo') && item.includes('玉造') && item.includes('出雲')) isMatch = true;
+            if (k.includes('izumo_taisha_to_iwami') && item.includes('出雲') && item.includes('大田市')) isMatch = true;
+            if (k.includes('izumo_taisha_to_iwami') && item.includes('大田市') && item.includes('石見銀山')) isMatch = true;
+          }
+          // Day 8
+          else if (day.dayNumber === 8) {
+            if (k.includes('hagi_to_shin_yamaguchi') && item.includes('萩') && item.includes('新山口')) isMatch = true;
+            if (k.includes('motonosumi') && item.includes('東萩')) isMatch = true;
+          }
+          // Day 9
+          else if (day.dayNumber === 9) {
+            if (k.includes('shin_yamaguchi_lodging_to_akiyoshidai') && item.includes('新山口') && item.includes('秋芳洞')) isMatch = true;
+            if (k.includes('akiyoshidai_akiyoshido_to_rurikoji') && item.includes('秋芳洞') && item.includes('山口')) isMatch = true;
+            if (k.includes('rurikoji_pagoda_to_hofu') && item.includes('山口') && item.includes('防府')) isMatch = true;
+          }
+          // Day 10
+          else if (day.dayNumber === 10) {
+            if (k.includes('shin_yamaguchi_lodging_to_kintaikyo') && item.includes('新岩國') && item.includes('錦帶橋')) isMatch = true;
+            if (k.includes('iwakuni_to_itsukushima') && item.includes('錦帶橋') && item.includes('岩國')) isMatch = true;
+          }
+          // Day 11
+          else if (day.dayNumber === 11) {
+            if (k.includes('hiroshima') && item.includes('廣島市內')) isMatch = true;
+          }
+          // Day 12
+          else if (day.dayNumber === 12) {
+            if (k.includes('yoshida_koriyama') && item.includes('吉田出張所')) isMatch = true;
+          }
+          // Day 13
+          else if (day.dayNumber === 13) {
+            if (k.includes('tomonoura_onsen_to_bitchu') && item.includes('鞆之浦') && item.includes('福山')) {
+              if (att.link) addLink(att.link, '鞆鐵道巴士時刻表 PDF');
+              continue;
+            }
+            if (k.includes('tomonoura_onsen_to_bitchu') && item.includes('鞴峠')) {
+              if (att.notes) {
+                const nMatched = att.notes.match(/https?:\/\/[^\s\)\)\"\'，。、<>]+/g);
+                if (nMatched) nMatched.forEach(u => addLink(u, '觀光計程車預約連結'));
+              }
+              continue;
+            }
+            if (k.includes('bitchu_matsuyama_to_kibitsuhiko') && item.includes('備中高梁') && item.includes('備前一宮')) isMatch = true;
+            if (k.includes('kibitsu_jinja_to_okayama') && item.includes('吉備津') && item.includes('岡山')) isMatch = true;
+          }
+
+          if (isMatch) {
+            if (att.link) addLink(att.link);
+            if (att.notes) {
+              const nMatched = att.notes.match(/https?:\/\/[^\s\)\)\"\'，。、<>]+/g);
+              if (nMatched) nMatched.forEach(u => addLink(u));
+              const cleanNote = att.notes.replace(/https?:\/\/[^\s\)\)\"\'，。、<>]+/g, '').trim();
+              if (cleanNote && (!step.details || !step.details.includes(cleanNote))) {
+                stepNote = cleanNote;
+              }
+            }
+          }
+        }
+      }
+
+      return { links, note: stepNote };
+    }
+
+    function renderDayContent(idx) {
+      const day = DAYS_DATA[idx];
+      const headerCard = document.getElementById('dayHeaderCard');
+      const timeline = document.getElementById('timelineList');
+
+      const passBadgeClass = day.isPass ? 'pass-yes' : 'pass-no';
+      const passBadgeText = day.isPass ? '🎫 JR Pass 適用日 (免費指定席)' : '💳 刷交通卡 / 現金 (非 Pass 天數)';
+
+      headerCard.innerHTML = `
+        <div class="day-main-title">${escapeHtml(day.shortTitle)}</div>
+        <div class="day-badges-row">
+          <span>🗓️ ${escapeHtml(day.date)}</span>
+          <span>｜ 樞紐站：${escapeHtml(day.baseStation)}</span>
+        </div>
+        <div class="day-badges-row" style="margin-top:6px;">
+          <span class="pass-tag ${passBadgeClass}">${passBadgeText}</span>
+          <span style="color:#0f172a; font-weight:800;">🏨 宿：${escapeHtml(day.lodging)}</span>
+        </div>
+      `;
+
+      timeline.innerHTML = day.steps.map((step, sIdx) => {
+        // 分配 mode 顏色
+        let modeClass = 'mode-other';
+        const m = step.mode || '';
+        if (m.includes('新幹線') || m.includes('特急') || m.includes('電車') || m.includes('渡輪')) modeClass = 'mode-shinkansen';
+        else if (m.includes('巴士') || m.includes('公車')) modeClass = 'mode-bus';
+        else if (m.includes('纜車')) modeClass = 'mode-ropeway';
+        else if (m.includes('城')) modeClass = 'mode-castle';
+        else if (m.includes('美食')) modeClass = 'mode-food';
+        else if (m.includes('宿') || m.includes('飯店') || m.includes('旅館')) modeClass = 'mode-lodging';
+
+        // 費用標籤
+        let costHtml = '';
+        if (step.cost && step.cost !== '-') {
+          const isPass = step.cost.includes('Pass免費') || step.cost.includes('Pass 全額');
+          const costClass = isPass ? 'cost-pass' : (step.cost.includes('自費') ? 'cost-self' : 'cost-pass');
+          costHtml = `<span class="step-cost-badge ${costClass}">${escapeHtml(step.cost)}</span>`;
+        }
+
+        // 判斷是否為百名城蓋章
+        let stampBoxHtml = '';
+        if (step.details && step.details.includes('百名城印章')) {
+          const stampLine = step.details.split('\n').find(l => l.includes('百名城印章')) || '';
+          stampBoxHtml = `
+            <div class="stamp-badge-box">
+              <span>🏯</span>
+              <span><strong>${escapeHtml(stampLine)}</strong></span>
+            </div>
+          `;
+        }
+
+        // 判斷是否為特色美食
+        let gourmetBoxHtml = '';
+        if (step.mode === '當地美食' || step.item.includes('美食')) {
+          gourmetBoxHtml = `
+            <div class="gourmet-badge-box">
+              ${formatDetailsWithLinks(step.details)}
+            </div>
+          `;
+        }
+
+        // 查找該步驟是否綁定精確時刻表圖片
+        let photoBtnHtml = '';
+        if (step.images && step.images.length > 0) {
+          photoBtnHtml = step.images.map(img => {
+            const imgUrl = resolveImgUrl(img.url);
+            const caption = img.caption || (step.item + ' 時刻表圖');
+            const displayTitle = caption.length > 20 ? caption.slice(0, 19) + '…' : caption;
+            return `
+              <button class="btn-photo-view" onclick="openModal('${escapeHtml(imgUrl)}', '${escapeHtml(caption)}')">
+                <span>📷</span>
+                <span>${escapeHtml(displayTitle)}</span>
+              </button>
+            `;
+          }).join(' ');
+        }
+
+        // 查找該交通步驟精確對應的時刻表/路線網址與附件
+        const transitInfo = getStepTransitInfo(step, day, sIdx);
+        let linkBtnHtml = '';
+        if (transitInfo.links && transitInfo.links.length > 0) {
+          linkBtnHtml = transitInfo.links.map(lk => `
+            <a href="${escapeHtml(lk.url)}" target="_blank" rel="noopener noreferrer" class="btn-link-view" title="${escapeHtml(lk.url)}">
+              <span>🔗</span>
+              <span>${escapeHtml(lk.tag)}</span>
+            </a>
+          `).join(' ');
+        }
+
+        // 當有圖片或連結或筆記時，呈現「JR / 巴士時刻表與乘車附件：」區塊
+        let transitSectionHtml = '';
+        if (photoBtnHtml || linkBtnHtml || transitInfo.note) {
+          const noteHtml = transitInfo.note ? `<div class="transit-note-text">📝 ${formatDetailsWithLinks(transitInfo.note)}</div>` : '';
+          transitSectionHtml = `
+            <div class="transit-attachment-section">
+              <div class="transit-attachment-title">
+                <span>🕒</span>
+                <span>JR / 巴士時刻表與乘車附件：</span>
+              </div>
+              ${noteHtml}
+              <div class="step-actions-row">
+                ${photoBtnHtml}
+                ${linkBtnHtml}
+              </div>
+            </div>
+          `;
+        }
+
+        return `
+          <div class="timeline-node">
+            <div class="step-card">
+              <div class="step-header">
+                <span class="step-time-badge">${escapeHtml(step.time)}</span>
+                <span class="mode-pill ${modeClass}">${escapeHtml(step.mode)}</span>
+              </div>
+              <div class="step-title">${escapeHtml(step.item)}</div>
+              ${costHtml}
+              ${(!gourmetBoxHtml && step.details) ? `<div class="step-desc">${formatDetailsWithLinks(step.details)}</div>` : ''}
+              ${stampBoxHtml}
+              ${gourmetBoxHtml}
+              ${transitSectionHtml}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // 解析圖片路徑（支援 Base64 fallback）
+    function resolveImgUrl(rawUrl) {
+      if (!rawUrl) return '';
+      if (rawUrl.startsWith('data:') || rawUrl.startsWith('http://') || rawUrl.startsWith('https://')) return rawUrl;
+      const cleanName = rawUrl.replace(/^.*[\\/]/, '');
+      const pathKey = 'timetables/' + cleanName;
+      if (window.TIMETABLES_IMAGE_DB) {
+        const item = window.TIMETABLES_IMAGE_DB[pathKey] || window.TIMETABLES_IMAGE_DB[cleanName];
+        if (item) {
+          if (typeof item === 'string') {
+            return item.startsWith('data:') ? item : 'data:image/jpeg;base64,' + item;
+          }
+          if (item && item.b64) {
+            return 'data:image/jpeg;base64,' + item.b64;
+          }
+        }
+      }
+      return 'timetables/' + cleanName;
+    }
+
+    // 3. 住宿卡片渲染
+    function initHotels() {
+      const list = document.getElementById('hotelList');
+      list.innerHTML = HOTELS_DATA.map(h => `
+        <div class="hotel-card">
+          <div class="hotel-head">
+            <span class="hotel-days">${escapeHtml(h.days)}</span>
+            <span style="font-size:0.75rem; font-weight:800; color:#0369a1; background:var(--mizu-light); padding:2px 8px; border-radius:6px; border:var(--border-thin);">${escapeHtml(h.tag)}</span>
+          </div>
+          <div class="hotel-name">${escapeHtml(h.hotel)}</div>
+          <div style="font-size:0.8rem; font-weight:800; color:#3b82f6; margin-bottom:4px;">📍 ${escapeHtml(h.city)} ｜ ${escapeHtml(h.type)}</div>
+          <div class="hotel-highlight">${escapeHtml(h.highlight)}</div>
+          <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(h.mapQuery)}" target="_blank" class="btn-map">
+            <span>🗺️ 開啟 Google Maps 導航</span>
+          </a>
+        </div>
+      `).join('');
+    }
+
+    // 4. 互動待辦清單
+    const TODO_STORAGE_KEY = 'japan_2027_trip_todos';
+    let userTodos = [];
+
+    function initChecklist() {
+      const saved = localStorage.getItem(TODO_STORAGE_KEY);
+      if (saved) {
+        try {
+          userTodos = JSON.parse(saved);
+        } catch (e) {
+          userTodos = CHECKLIST_DEFAULT;
+        }
+      } else {
+        userTodos = CHECKLIST_DEFAULT;
+      }
+      renderChecklist();
+    }
+
+    function saveChecklist() {
+      localStorage.setItem(TODO_STORAGE_KEY, JSON.stringify(userTodos));
+      updateChecklistProgress();
+    }
+
+    function toggleTodo(catIdx, itemIdx) {
+      userTodos[catIdx].items[itemIdx].checked = !userTodos[catIdx].items[itemIdx].checked;
+      saveChecklist();
+      renderChecklist();
+    }
+
+    function addCustomTodo() {
+      const input = document.getElementById('newTodoInput');
+      const val = input.value.trim();
+      if (!val) return;
+      if (!userTodos.length) userTodos = CHECKLIST_DEFAULT;
+      userTodos[0].items.push({
+        id: 'custom_' + Date.now(),
+        text: val,
+        checked: false
+      });
+      input.value = '';
+      saveChecklist();
+      renderChecklist();
+    }
+
+    function renderChecklist() {
+      const container = document.getElementById('checklistContainer');
+      container.innerHTML = userTodos.map((cat, cIdx) => `
+        <div class="checklist-category-title">${escapeHtml(cat.category)}</div>
+        <div>
+          ${cat.items.map((it, iIdx) => `
+            <div class="check-item ${it.checked ? 'done' : ''}" onclick="toggleTodo(${cIdx}, ${iIdx})">
+              <div class="check-box-custom">
+                ${it.checked ? '✓' : ''}
+              </div>
+              <span class="check-text">${escapeHtml(it.text)}</span>
+            </div>
+          `).join('')}
+        </div>
+      `).join('');
+      updateChecklistProgress();
+    }
+
+    function updateChecklistProgress() {
+      let total = 0;
+      let done = 0;
+      userTodos.forEach(c => {
+        c.items.forEach(it => {
+          total++;
+          if (it.checked) done++;
+        });
+      });
+      const pct = total === 0 ? 0 : Math.round((done / total) * 100);
+      document.getElementById('checklistProgressText').textContent = `${done} / ${total} (${pct}%)`;
+      document.getElementById('checklistProgressFill').style.width = pct + '%';
+    }
+
+
+    // 5. 圖片 Lightbox 彈窗
+    function openModal(imgUrl, caption) {
+      document.getElementById('modalImg').src = imgUrl;
+      document.getElementById('modalCaption').textContent = caption || '';
+      document.getElementById('photoModal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('photoModal').classList.remove('active');
+      document.getElementById('modalImg').src = '';
+    }
+
+    // 關閉彈窗點擊空白處
+    document.getElementById('photoModal').addEventListener('click', (e) => {
+      if (e.target.id === 'photoModal') closeModal();
+    });
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    // 頁面啟動
+    window.addEventListener('DOMContentLoaded', () => {
+      initCountdown();
+      initItinerary();
+      initHotels();
+      initChecklist();
+    });
+  </script>
+</body>
+</html>

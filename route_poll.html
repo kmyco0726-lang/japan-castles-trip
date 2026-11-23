@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>山陰山陽壯遊・旅伴路線二選一決策投票所</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* 滑順滾動與微互動 */
+    html {
+      scroll-behavior: smooth;
+    }
+    .option-card {
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .option-card.selected {
+      transform: translateY(-2px);
+    }
+    .pulse-amber {
+      animation: pulseAmber 1.5s infinite;
+    }
+    @keyframes pulseAmber {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
+      50% { box-shadow: 0 0 0 8px rgba(245, 158, 11, 0); }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col font-sans">
+
+  <!-- 頂部主導航列 -->
+  <header class="bg-slate-900 text-white sticky top-0 z-50 shadow-md">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <span class="text-3xl">🗳️</span>
+        <div>
+          <h1 class="text-base sm:text-lg font-bold tracking-wide flex items-center gap-2">
+            山陰山陽 旅伴路線二選一決策投票
+            <span class="text-[11px] bg-rose-600 px-2 py-0.5 rounded-full font-normal">決策救星</span>
+          </h1>
+          <p class="text-xs text-slate-400">交通耗時・班次密集度・景色氛圍・名城順路度 全面 PK 評比</p>
+        </div>
+      </div>
+      
+      <div class="flex items-center gap-2 flex-wrap text-xs">
+        <button onclick="copyLineReport()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-lg shadow-sm transition flex items-center gap-1.5">
+          <span>📋</span> 複製 LINE 投票結果
+        </button>
+        <button onclick="copyShareableUrl()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-3 py-1.5 rounded-lg shadow-sm transition flex items-center gap-1.5">
+          <span>🔗</span> 複製投票連結
+        </button>
+        <a href="index.html" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-1.5 rounded-lg transition flex items-center gap-1">
+          <span>🗺️</span> 行程總表
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 投票進度與決策看板 (Sticky Sub-bar) -->
+  <div class="bg-white border-b border-slate-200 shadow-2xs sticky top-[57px] z-40">
+    <div class="max-w-6xl mx-auto px-4 py-2.5 flex flex-wrap items-center justify-between gap-2 text-xs">
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-slate-700 flex items-center gap-1">
+          <span>📊</span> 當前決策進度：
+        </span>
+        <span id="decisionProgressBadge" class="bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded-full">
+          0 / 5 已選擇
+        </span>
+        <div class="w-24 sm:w-32 bg-slate-200 rounded-full h-2 overflow-hidden">
+          <div id="decisionProgressBar" class="bg-blue-600 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="resetAllChoices()" class="text-slate-500 hover:text-red-600 transition font-medium">
+          🔄 清空重選
+        </button>
+        <button onclick="openCustomQuestionModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-2.5 py-1 rounded border border-slate-300 flex items-center gap-1 transition">
+          <span>➕</span> 自訂二選一題目
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 主內容容器 -->
+  <main class="max-w-6xl mx-auto px-4 py-6 space-y-8 flex-1 w-full">
+
+    <!-- 前言提示卡片 -->
+    <div class="bg-gradient-to-r from-blue-900 to-indigo-950 text-white rounded-2xl p-4 sm:p-5 shadow-sm space-y-2">
+      <div class="flex items-center gap-2 text-amber-300 font-bold text-sm">
+        <span>💡</span>
+        <span>出發前不用再吵架！點擊卡片直接選擇你偏好的路線，系統自動產出 LINE 群組回報文</span>
+      </div>
+      <p class="text-xs text-slate-300 leading-relaxed">
+        山陰山陽地區幅員遼闊，同一天常有<strong>「交通超方便的和風老街」</strong>與<strong>「野趣震撼的秘境橫綱」</strong>兩種截然不同的取捨。
+        以下針對 5 個關鍵天數整理了完整的交通車次、景色氛圍與名城搭配評比，直接選出最符合你旅行節奏的方案！
+      </p>
+    </div>
+
+    <!-- 題目列表渲染區 -->
+    <div id="questionsContainer" class="space-y-8">
+      <!-- 由 JavaScript 動態渲染 -->
+    </div>
+
+    <!-- 底部總結與匯出區塊 -->
+    <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm space-y-4">
+      <div class="border-b border-slate-200 pb-3 flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <h2 class="font-bold text-base text-slate-900 flex items-center gap-2">
+            <span>📝</span> 旅伴專屬路線清單彙整
+          </h2>
+          <p class="text-xs text-slate-500 mt-0.5">根據上方勾選的結果，自動生成最終推薦路線清單</p>
+        </div>
+        <div class="flex items-center gap-2 flex-wrap">
+          <button onclick="openLineShareApp()" class="bg-[#06C755] hover:bg-[#05b04b] text-white font-bold text-xs px-3.5 py-1.5 rounded-lg shadow-sm transition flex items-center gap-1.5">
+            <span>📲</span> 點我直接叫出 LINE 回傳
+          </button>
+          <button onclick="copyLineReport()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-3 py-1.5 rounded-lg shadow-sm transition flex items-center gap-1">
+            <span>📋</span> 複製結果文字
+          </button>
+          <button onclick="copySurveyQuestionsForLine()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs px-3 py-1.5 rounded-lg shadow-sm transition flex items-center gap-1">
+            <span>📢</span> 複製給朋友的投票問卷
+          </button>
+        </div>
+      </div>
+
+      <div id="selectionSummaryBox" class="bg-slate-50 rounded-xl p-4 text-xs space-y-2 font-mono text-slate-700 border border-slate-200/80">
+        <!-- JS 填入即時清單 -->
+      </div>
+
+      <!-- 📥 收到朋友的回傳網址？貼在這邊查看朋友的選擇 -->
+      <div class="bg-blue-50/60 border border-blue-200 rounded-xl p-3.5 text-xs space-y-2">
+        <div class="font-bold text-blue-950 flex items-center gap-1.5">
+          <span>📥</span>
+          <span>收到朋友傳來的投票結果網址？貼在下方一鍵查看對方的選擇：</span>
+        </div>
+        <div class="flex gap-2">
+          <input type="text" id="friendUrlInput" placeholder="貼上朋友傳給你的網址或代碼 (例如：http://.../route_poll.html#d1_onsen=yubara...)" class="flex-1 border border-blue-300 rounded-lg px-3 py-1.5 bg-white text-xs font-mono">
+          <button onclick="loadFriendChoices()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-1.5 rounded-lg shrink-0 transition shadow-2xs">
+            載入朋友的選擇
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 頁尾 -->
+  <footer class="bg-slate-900 text-slate-400 text-center py-4 text-xs mt-10">
+    <p>山陰山陽 100名城巡禮路線決策系統・純前端單檔運作・免安裝依賴・支援手機直開</p>
+  </footer>
+
+  <!-- 彈窗：自訂二選一題目 Modal -->
+  <div id="customModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-5 space-y-3.5 max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center border-b pb-2">
+        <h3 class="font-bold text-slate-900 text-base flex items-center gap-1.5">
+          <span>➕</span> 新增自訂旅伴投票題目
+        </h3>
+        <button onclick="closeCustomQuestionModal()" class="text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">題目名稱 *</label>
+          <input type="text" id="custQuestionTitle" class="w-full border rounded-lg p-2" placeholder="例如：Day 4 出雲午餐大對決">
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">決策天數標記</label>
+          <input type="text" id="custDayLabel" class="w-full border rounded-lg p-2" placeholder="例如：Day 4">
+        </div>
+
+        <div class="border-t pt-2 grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <!-- 選項 A -->
+          <div class="bg-rose-50/50 p-3 rounded-xl border border-rose-200 space-y-2">
+            <span class="font-bold text-rose-800 block text-xs">選項 A</span>
+            <input type="text" id="custOptATitle" class="w-full border rounded p-1.5 text-xs font-bold" placeholder="選項 A 名稱 (如：出雲三大割子蕎麥麵)">
+            <textarea id="custOptATransit" class="w-full border rounded p-1.5 text-xs" rows="2" placeholder="交通如何 (如：出雲大社鳥居旁，步行 3 分鐘)"></textarea>
+            <textarea id="custOptAScenery" class="w-full border rounded p-1.5 text-xs" rows="2" placeholder="特色/景色 (如：三段紅漆圓盒、甜微辣特調醬汁)"></textarea>
+          </div>
+
+          <!-- 選項 B -->
+          <div class="bg-blue-50/50 p-3 rounded-xl border border-blue-200 space-y-2">
+            <span class="font-bold text-blue-800 block text-xs">選項 B</span>
+            <input type="text" id="custOptBTitle" class="w-full border rounded p-1.5 text-xs font-bold" placeholder="選項 B 名稱 (如：松江宍道湖七珍鱸魚料理)">
+            <textarea id="custOptBTransit" class="w-full border rounded p-1.5 text-xs" rows="2" placeholder="交通如何 (如：松江站前居酒屋街)"></textarea>
+            <textarea id="custOptBScenery" class="w-full border rounded p-1.5 text-xs" rows="2" placeholder="特色/景色 (如：奉書燒、肉質鮮甜細嫩)"></textarea>
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2 border-t">
+          <button onclick="closeCustomQuestionModal()" class="px-4 py-2 border rounded-lg hover:bg-slate-50 font-medium">取消</button>
+          <button onclick="saveCustomQuestion()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold shadow-sm">新增此題</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast 提示組件 -->
+  <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white px-4 py-2.5 rounded-xl shadow-xl text-xs font-medium transform transition-all duration-300 opacity-0 pointer-events-none z-50 flex items-center gap-2">
+    <span id="toastIcon">✅</span>
+    <span id="toastMsg">已複製到剪貼簿</span>
+  </div>
+
+  <script>
+    // ==========================================
+    // 決策題庫配置資料 (遵守 Rule 10：結構化資料庫)
+    // ==========================================
+    const DEFAULT_DECISION_BRANCHES = [
+      {
+        id: "d1_onsen",
+        dayLabel: "Day 1 岡山·美作名湯對決",
+        title: "攻完津山城後，今晚要住哪座溫泉？",
+        description: "津山城（百名城 67）備中櫓參觀結束後，傍晚進駐溫泉放鬆。面對「古典和風美肌老街」與「野溪露天巨岩橫綱」，你選哪一邊？",
+        optA: {
+          id: "yunogo",
+          title: "湯郷溫泉 (Yunogo Onsen)",
+          subtitle: "美作市・千年白鷺美肌之湯・懷舊和風老街",
+          themeColor: "rose",
+          gradient: "from-rose-600 to-red-700",
+          badgeBg: "bg-rose-100 text-rose-800 border-rose-300",
+          tag: "和風悠閒・交通順暢首選",
+          transit: {
+            time: "津山出發 35 分鐘",
+            method: "JR 津山駅搭乘「宇野巴士」直達溫泉街中心（單程約 630 円）",
+            frequency: "白天約每小時 1~2 班，班次穩定好搭，完全不用擔心脫班",
+            distance: "距津山城僅約 12 公里，與今日攻城節奏完美無縫銜接"
+          },
+          scenery: {
+            vibe: "平安時代慈覺大師見白鷺治癒傷口而發現的古湯，充滿昭和和風街道氣息",
+            highlights: "吉野川畔散步道、大谷川螢火蟲公園、現代玩具模型館、老鋪和菓子屋",
+            springType: "弱鹼性單純溫泉（名列美作三湯之一），水質滑嫩，極受女性青睞的美肌之湯"
+          },
+          castleFit: "★★★★★ (與津山城完全同向，當日攻城結束後抵達最輕鬆)",
+          suitableFor: "重視交通輕鬆不拉車、喜歡在老街悠哉散步、享受旅館會席料理的放鬆派"
+        },
+        optB: {
+          id: "yubara",
+          title: "湯原溫泉 (Yubara Onsen)",
+          subtitle: "真庭市・西日本露天橫綱「砂湯」・絕景水壩野溪",
+          themeColor: "blue",
+          gradient: "from-blue-600 to-indigo-700",
+          badgeBg: "bg-blue-100 text-blue-800 border-blue-300",
+          tag: "頂級野趣・露天巨岩震撼",
+          transit: {
+            time: "津山出發 約 1.5 ~ 2 小時",
+            method: "津山駅搭 JR 姫新線至中國勝山駅，轉乘真庭社區巴士（まにわくん）至湯原",
+            frequency: "巴士班次較稀疏（每日約 5~6 班），必須嚴格抓準發車時刻！",
+            distance: "位於旭川最上游峽谷深處，需往西北山區挺進"
+          },
+          scenery: {
+            vibe: "大自然的原始野溪震撼！背倚巨大的「湯原水壩」水泥巨壁，氣勢磅礡無比",
+            highlights: "西日本露天風呂橫綱「砂湯」（24小時免費野溪露天泉，夜間打燈極浪漫幽靜）",
+            springType: "低張性弱鹼性高溫純泉，自河底砂卵石中自然湧出，湧出量每分鐘高達數千公升"
+          },
+          castleFit: "★★★☆☆ (若隔天翻越蒜山高原往鳥取前進則相當順，但今日稍多拉車 1 小時)",
+          suitableFor: "熱愛戶外大自然、渴望體驗日本傳奇野溪露天溫泉、不介意稍微花時間換車的探險派"
+        }
+      },
+      {
+        id: "d2_sanin",
+        dayLabel: "Day 2 山陰海濱 vs 歷史鐳湯",
+        title: "鳥取往西推進，夜宿米子海邊還是倉吉山間？",
+        description: "參觀完鳥取城後，傍晚準備在山陰海岸落腳，要選擁有日本海沙灘日落的皆生，還是歷史悠久的世界最高濃度鐳溫泉三朝？",
+        optA: {
+          id: "kaike",
+          title: "皆生溫泉 (Kaike Onsen)",
+          subtitle: "米子市・日本海第一海濱鹽湯・白沙青松絕景",
+          themeColor: "cyan",
+          gradient: "from-cyan-600 to-blue-700",
+          badgeBg: "bg-cyan-100 text-cyan-800 border-cyan-300",
+          tag: "海景日落・海鮮美食派",
+          transit: {
+            time: "米子站出發 15 分鐘",
+            method: "JR 米子駅公車總站 3 號月台搭乘日本交通/日之丸巴士直達（單程 300 円）",
+            frequency: "班次極為密集（約 15-20 分鐘一班），隨到隨搭",
+            distance: "就在米子市區北側海岸，離米子城與境港鬼太郎都極近"
+          },
+          scenery: {
+            vibe: "被譽為「山陰的邁阿密海灘」，弓濱半島白色沙灘與日本海碧波一覽無遺",
+            highlights: "海邊溫泉街、可遠眺伯耆富士（大山）雄姿、夏季海邊花火、頂級松葉蟹海鮮",
+            springType: "含食鹽高溫化石鹽泉，具強效保溫保濕效果，泡完身體暖呼呼極抗疲勞"
+          },
+          castleFit: "★★★★★ (搭配隔天清晨攻米子城登頂看海景最順路)",
+          suitableFor: "愛看海景夕陽、想大啖海鮮刺身、想隔天快速銜接境港或米子城的旅伴"
+        },
+        optB: {
+          id: "misasa",
+          title: "三朝溫泉 (Misasa Onsen)",
+          subtitle: "三朝町・世界首屈一指高濃度鐳溫泉・古街川原風呂",
+          themeColor: "emerald",
+          gradient: "from-emerald-600 to-teal-700",
+          badgeBg: "bg-emerald-100 text-emerald-800 border-emerald-300",
+          tag: "古樸木造街・養生聖地",
+          transit: {
+            time: "倉吉站出發 20 分鐘",
+            method: "JR 倉吉駅搭乘日之丸路線巴士約 20 分鐘抵達溫泉街中心（單程 480 円）",
+            frequency: "約每小時 1~2 班，車次良好",
+            distance: "位於鳥取城與米子城的中間段，從鳥取移動過來剛好中繼"
+          },
+          scenery: {
+            vibe: "木造日式旅館沿著三德川綿延，三朝橋與石疊小路瀰漫古色古香的昭和文學風",
+            highlights: "三朝橋旁的「河原風呂」（免費露天混浴）、藥師之湯、國寶三德山投入堂山腳",
+            springType: "世界罕見高放射能鐳溫泉（氡泉），號稱「迎接三個早晨就能治百病」的國寶級湯治名所"
+          },
+          castleFit: "★★★★☆ (正好順道遊覽倉吉白壁土藏群，古城文化氣氛極為一致)",
+          suitableFor: "喜歡走訪老式日式溫泉街、熱愛文學歷史氣息、想體驗治癒級鐳溫泉的旅伴"
+        }
+      },
+      {
+        id: "d3_izumo",
+        dayLabel: "Day 3 島根水都 vs 神話古湯",
+        title: "松江城下巡禮後，住宿選千年玉造還是宍道湖畔？",
+        description: "探訪完國寶松江城與搭乘堀川遊覽船後，傍晚要前往出雲神話傳說的「勾玉美肌神湯」，還是留宿在市區宍道湖畔看百選落日？",
+        optA: {
+          id: "tamatsukuri",
+          title: "玉造溫泉 (Tamatsukuri Onsen)",
+          subtitle: "松江市・出雲神話三神器神湯・日本最古美肌化妝水泉",
+          themeColor: "purple",
+          gradient: "from-purple-600 to-indigo-700",
+          badgeBg: "bg-purple-100 text-purple-800 border-purple-300",
+          tag: "出雲神話・高級溫泉旅館首選",
+          transit: {
+            time: "松江出發 約 15 ~ 20 分鐘",
+            method: "JR 松江駅搭山陰本線 1 站至玉造溫泉駅（約 8 分），再轉接駁公車 5 分鐘",
+            frequency: "JR 電車班次多，各旅館多有預約接送專車",
+            distance: "位於松江與出雲大社之間，隔天前往出雲非常順暢"
+          },
+          scenery: {
+            vibe: "玉湯川兩旁栽滿垂柳與櫻花，勾玉造型的紅色宮橋是著名結緣打卡聖地",
+            highlights: "清光院足湯、出雲玉作神社（觸摸許願石可求好姻緣）、沿溪流的天然足湯池",
+            springType: "被稱作「天然化妝水」的硫酸鹽泉，保濕效果經日本皮膚科學實證第一"
+          },
+          castleFit: "★★★★☆ (松江城下來後放鬆極佳，隔天搭一畑電車或 JR 直衝出雲大社超順)",
+          suitableFor: "重視住頂級溫泉旅館、愛拍照打卡結緣祈福、注重皮膚保養的旅伴"
+        },
+        optB: {
+          id: "shinjiko",
+          title: "松江宍道湖溫泉 (Shinjiko Onsen)",
+          subtitle: "松江市・水都夕陽百選絶景・臨湖散步居酒屋街",
+          themeColor: "amber",
+          gradient: "from-amber-600 to-orange-700",
+          badgeBg: "bg-amber-100 text-amber-800 border-amber-300",
+          tag: "夕陽百選・水都夜生活便利",
+          transit: {
+            time: "松江城步行 10-15 分鐘",
+            method: "一畑電車「松江宍道湖溫泉駅」就在門口，離松江城護城河非常近",
+            frequency: "市區動線，可步行或搭乘循環巴士（ぐるっと松江レイクライン）",
+            distance: "就在市區中心，無需拉車換乘鄉間巴士"
+          },
+          scenery: {
+            vibe: "房間正對煙波浩渺的宍道湖，傍晚可坐在湖畔長椅欣賞被染成金紅色的絕美落日",
+            highlights: "宍道湖大橋暮色、白潟公園散步道、夜間至伊勢宮居酒屋街品嚐「宍道湖七珍」",
+            springType: "77度高溫鈉鈣鹽化物泉，舒緩神經痛與慢性關節炎極有成效"
+          },
+          castleFit: "★★★★★ (離松江城最近，當天逛完護城河能慢慢散步回旅館，完全免轉車)",
+          suitableFor: "討厭拖行李趕車、想在居酒屋痛快喝酒吃宵夜、熱愛夕陽湖景攝影的旅伴"
+        }
+      },
+      {
+        id: "d5_choshu",
+        dayLabel: "Day 5 山口長州歷史風雲之宿",
+        title: "漫步津和野與萩城後，要留宿萩市海濱還是前往湯田溫泉？",
+        description: "深入長州藩歷史核心，今晚是要留在日本海沿岸的萩城古都吹海風，還是推進到山口市中心的「白狐之湯」享受交通轉乘樞紐便利？",
+        optA: {
+          id: "hagi",
+          title: "萩溫泉鄉 (Hagi Onsen)",
+          subtitle: "萩市・城下町古都・日本海菊濱夕照海景",
+          themeColor: "emerald",
+          gradient: "from-emerald-700 to-teal-800",
+          badgeBg: "bg-emerald-100 text-emerald-800 border-emerald-300",
+          tag: "深邃歷史・海濱幽靜放空",
+          transit: {
+            time: "津和野至萩 約 1 小時 20 分鐘",
+            method: "搭乘特急巴士「津和野エクスプレス」或自駕抵達萩巴士中心",
+            frequency: "班次固定但較少，需要預留轉乘銜接時間",
+            distance: "地處本州最西北角，隔天離開需預留較長車程"
+          },
+          scenery: {
+            vibe: "充滿明治維新志士氣息的江戶城下町，白壁夏蜜柑、武家屋敷街道極度幽靜",
+            highlights: "菊濱海水浴場日本海沉夕陽、萩燒陶藝工坊親手拉胚、松下村塾歷史漫步",
+            springType: "源自地下 1500 公尺的深層弱鹼性食鹽泉，泡完神清氣爽"
+          },
+          castleFit: "★★★★★ (當天可以直接參觀萩城跡與指月公園，清晨漫步城下町氣氛無敵)",
+          suitableFor: "歷史迷、坂本龍馬與吉田松陰書迷、喜歡遠離喧囂與海風散步的旅伴"
+        },
+        optB: {
+          id: "yuda",
+          title: "湯田溫泉 (Yuda Onsen)",
+          subtitle: "山口市・白狐傳奇名湯・山陽山陰交通大樞紐",
+          themeColor: "orange",
+          gradient: "from-orange-600 to-amber-700",
+          badgeBg: "bg-orange-100 text-orange-800 border-orange-300",
+          tag: "足湯巡禮・新幹線轉乘極便",
+          transit: {
+            time: "津和野搭特急 Super Oki 約 1 小時",
+            method: "JR 山口線直達「湯田溫泉駅」，出站步行即可抵達各大飯店",
+            frequency: "班次密集，且距離山陽新幹線「新山口駅」僅 20 分鐘車程",
+            distance: "山口縣中央核心樞紐，隔天下半段行程調度最具彈性"
+          },
+          scenery: {
+            vibe: "相傳受傷白狐每夜在此泡腳療傷而名揚天下，街區各處設有可愛的免費足湯亭",
+            highlights: "「狐之足跡」足湯咖啡館、中原中也紀念館、熱鬧的瓦拉居酒屋街與瓦片燒麵",
+            springType: "高達 72 度的鹼性單純泉，無色透明潤滑，每天高達 2,000 噸湧出量"
+          },
+          castleFit: "★★★★☆ (雖不在萩城旁，但隔天搭車南下廣島或下關福山極其神速，省下 1 小時車程)",
+          suitableFor: "講求隔日交通轉乘效率、想體驗街頭隨處泡免費足湯、喜歡逛夜間居酒屋的旅伴"
+        }
+      },
+      {
+        id: "d6_seto",
+        dayLabel: "Day 6 瀨戶內海慢活對決",
+        title: "回到山陽側，要住尾道老屋文青區還是鞆之浦仙醉島？",
+        description: "行程接近尾聲，來到廣島福山周邊，要選擇在充滿文青坂道與貓之細道的「尾道」享受夜景拉麵，還是去宮崎駿波妞取景地「鞆之浦」泡海景露天溫泉？",
+        optA: {
+          id: "onomichi",
+          title: "尾道老屋町 (Onomichi)",
+          subtitle: "尾道市・千光寺百萬夜景・貓之細道與老倉庫酒吧",
+          themeColor: "rose",
+          gradient: "from-rose-600 to-pink-700",
+          badgeBg: "bg-rose-100 text-rose-800 border-rose-300",
+          tag: "文青美學・貓咪坂道夜景",
+          transit: {
+            time: "福山出發 約 20 分鐘",
+            method: "JR 山陽本線直達「尾道駅」，出站即是海濱商店街",
+            frequency: "每 15 分鐘一班車，交通極度發達便利",
+            distance: "位於福山與三原中間，隔日前往廣島或岡山機場均極快"
+          },
+          scenery: {
+            vibe: "依山傍海的坂道山城，復古黃色電車穿梭其間，充滿日本電影與動漫文藝感",
+            highlights: "千光寺纜車與展望台夜景、貓之細道散步、ONOMICHI U2 自行車老倉庫咖啡",
+            springType: "非典型大型溫泉鄉（以設計旅宿、老民家古民宅改建精品旅館為主）"
+          },
+          castleFit: "★★★★☆ (非常適合搭配三原城與福山城，漫遊生活感滿分)",
+          suitableFor: "喜愛文青雜貨、愛貓人士、想拍出日系質感美照、愛吃道地尾道背脂拉麵的旅伴"
+        },
+        optB: {
+          id: "tomonoura",
+          title: "鞆之浦溫泉 (Tomonoura Onsen)",
+          subtitle: "福山市・宮崎駿《崖上的波妞》舞台・江戶常夜燈古港",
+          themeColor: "blue",
+          gradient: "from-blue-600 to-cyan-700",
+          badgeBg: "bg-blue-100 text-blue-800 border-blue-300",
+          tag: "港町古風・絕美海景露天",
+          transit: {
+            time: "福山站出發 30 分鐘",
+            method: "JR 福山駅南口搭乘「鞆鐵道巴士」直達鞆港（單程 560 円）",
+            frequency: "約每 20-30 分鐘一班車，班次十分充足",
+            distance: "位於沼隈半島最南端，直面瀨戶內海平靜波光"
+          },
+          scenery: {
+            vibe: "江戶時代「等待潮汐之港」完整保留，石造常夜燈矗立海角，充滿悠悠懷古情調",
+            highlights: "對面即是神仙沉醉的「仙醉島」、太田家住宅、波妞動畫原形取景小巷",
+            springType: "富含鐳的放射能冷礦泉加溫，臨海飯店提供直面瀨戶內海群島的頂級露天風呂"
+          },
+          castleFit: "★★★★☆ (搭配福山城極順，看完城堡傍晚抵達港口泡湯看海景極享受)",
+          suitableFor: "喜愛江戶時代懷舊港灣風情、宮崎駿動畫迷、想邊泡露天溫泉邊看瀨戶內海群島者"
+        }
+      }
+    ];
+
+    // ==========================================
+    // 狀態管理 (支援 URL Hash 與 LocalStorage)
+    // ==========================================
+    let userChoices = {}; // { d1_onsen: "yunogo", d2_sanin: "misasa", ... }
+    let allBranches = [];
+
+    // 初始化載入
+    function initPollApp() {
+      // 讀取自訂題目
+      const savedCustom = localStorage.getItem("jp_custom_poll_questions");
+      let customList = [];
+      if (savedCustom) {
+        try {
+          customList = JSON.parse(savedCustom);
+        } catch (e) {
+          console.error("Failed to parse custom questions", e);
+        }
+      }
+      allBranches = [...DEFAULT_DECISION_BRANCHES, ...customList];
+
+      // 優先從 URL Hash 讀取朋友分享的選項
+      const hash = window.location.hash.replace(/^#/, '');
+      if (hash) {
+        const params = new URLSearchParams(hash);
+        for (const [key, val] of params.entries()) {
+          userChoices[key] = val;
+        }
+      } else {
+        // 從 LocalStorage 載入上次本機選擇
+        const saved = localStorage.getItem("jp_route_poll_choices");
+        if (saved) {
+          try {
+            userChoices = JSON.parse(saved);
+          } catch (e) {
+            userChoices = {};
+          }
+        } else {
+          // 預設帶入目前旅伴敲定的 4 大名湯選擇
+          userChoices = {
+            d1_onsen: "yunogo",
+            d2_sanin: "kaike",
+            d3_izumo: "tamatsukuri",
+            d6_seto: "tomonoura"
+          };
+        }
+      }
+
+      renderQuestions();
+      updateProgressBarAndSummary();
+    }
+
+    // 儲存狀態
+    function savePollState() {
+      localStorage.setItem("jp_route_poll_choices", JSON.stringify(userChoices));
+      // 同步更新 URL Hash，方便複製當前網址
+      const params = new URLSearchParams();
+      for (const [k, v] of Object.entries(userChoices)) {
+        if (v) params.set(k, v);
+      }
+      const hashStr = params.toString();
+      history.replaceState(null, '', hashStr ? `#${hashStr}` : window.location.pathname);
+      updateProgressBarAndSummary();
+    }
+
+    // ==========================================
+    // 渲染題目與比較卡片
+    // ==========================================
+    function renderQuestions() {
+      const container = document.getElementById("questionsContainer");
+      if (!container) return;
+
+      let html = "";
+      allBranches.forEach((branch, bIdx) => {
+        const currentChoice = userChoices[branch.id];
+
+        const isASelected = currentChoice === branch.optA.id;
+        const isBSelected = currentChoice === branch.optB.id;
+
+        html += `
+          <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden" id="card-${branch.id}">
+            <!-- 題目 Header -->
+            <div class="px-5 py-3.5 bg-slate-900 text-white flex flex-wrap items-center justify-between gap-2 border-b border-slate-800">
+              <div class="flex items-center gap-2.5">
+                <span class="bg-blue-600 text-white text-xs font-black px-2.5 py-1 rounded-full uppercase tracking-wider">
+                  ${escapeHtml(branch.dayLabel || `Q${bIdx + 1}`)}
+                </span>
+                <h3 class="font-bold text-sm sm:text-base text-white">
+                  ${escapeHtml(branch.title)}
+                </h3>
+              </div>
+              <div class="text-xs text-slate-400">
+                ${currentChoice ? `✅ 已選定：<strong class="text-amber-300 font-bold">${escapeHtml(currentChoice === branch.optA.id ? branch.optA.title.split(' ')[0] : branch.optB.title.split(' ')[0])}</strong>` : `⏳ 尚未選擇`}
+              </div>
+            </div>
+
+            <!-- 題目背景簡述 -->
+            <div class="px-5 py-2.5 bg-slate-50 border-b border-slate-200 text-xs text-slate-600 flex items-center justify-between flex-wrap gap-2">
+              <p>💡 ${escapeHtml(branch.description)}</p>
+              ${branch.isCustom ? `<button onclick="deleteCustomQuestion('${branch.id}')" class="text-red-500 hover:underline text-[11px]">刪除此自訂題 🗑️</button>` : ''}
+            </div>
+
+            <!-- 左右對決卡片 (Desktop: 2欄並排 / Mobile: 單欄堆疊) -->
+            <div class="p-4 sm:p-5 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+              ${renderOptionCard(branch.id, branch.optA, isASelected, 'A')}
+              ${renderOptionCard(branch.id, branch.optB, isBSelected, 'B')}
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    // 渲染單邊選項卡片
+    function renderOptionCard(branchId, opt, isSelected, sideLetter) {
+      const ringClass = isSelected ? `ring-3 ring-blue-600 border-blue-600 shadow-md bg-blue-50/15` : `border-slate-200 hover:border-slate-300 bg-white`;
+      const btnClass = isSelected 
+        ? `bg-blue-600 text-white font-bold shadow-sm` 
+        : `bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold border border-slate-300`;
+
+      return `
+        <div onclick="selectOption('${branchId}', '${opt.id}')" class="option-card ${isSelected ? 'selected' : ''} rounded-xl border p-4 sm:p-5 flex flex-col justify-between gap-4 cursor-pointer transition relative ${ringClass}">
+          
+          <!-- 選取狀態右上角徽章 -->
+          <div class="flex items-start justify-between gap-2">
+            <div class="space-y-1">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="w-6 h-6 rounded-full bg-slate-800 text-white text-xs font-black flex items-center justify-center shrink-0">
+                  ${sideLetter}
+                </span>
+                <h4 class="font-bold text-base text-slate-900">${escapeHtml(opt.title)}</h4>
+                <span class="text-[11px] px-2 py-0.5 rounded-full font-medium border ${opt.badgeBg || 'bg-slate-100 text-slate-700'}">
+                  ${escapeHtml(opt.tag || '')}
+                </span>
+              </div>
+              <p class="text-xs text-slate-500">${escapeHtml(opt.subtitle || '')}</p>
+            </div>
+
+            <!-- Radio 圓點視覺 -->
+            <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${isSelected ? 'border-blue-600 bg-blue-600 text-white' : 'border-slate-300 bg-white'}">
+              ${isSelected ? '✓' : ''}
+            </div>
+          </div>
+
+          <!-- 關鍵對比核心資訊表 -->
+          <div class="space-y-2.5 text-xs">
+            
+            <!-- 交通會如何 -->
+            <div class="bg-blue-50/70 border border-blue-100 p-2.5 rounded-lg space-y-1">
+              <div class="font-bold text-blue-950 flex items-center gap-1">
+                <span>🚅</span>
+                <span>交通會如何？</span>
+                <span class="ml-auto text-[11px] bg-blue-200/80 text-blue-900 px-1.5 py-0.2 rounded font-bold">${escapeHtml(opt.transit.time)}</span>
+              </div>
+              <p class="text-[11px] text-blue-900 leading-relaxed">
+                • <strong>路線：</strong>${escapeHtml(opt.transit.method)}<br>
+                • <strong>班次：</strong>${escapeHtml(opt.transit.frequency)}<br>
+                • <strong>位置：</strong>${escapeHtml(opt.transit.distance)}
+              </p>
+            </div>
+
+            <!-- 景色會如何 -->
+            <div class="bg-amber-50/70 border border-amber-100 p-2.5 rounded-lg space-y-1">
+              <div class="font-bold text-amber-950 flex items-center gap-1">
+                <span>🌄</span>
+                <span>景色氛圍會如何？</span>
+              </div>
+              <p class="text-[11px] text-amber-900 leading-relaxed">
+                • <strong>氛圍：</strong>${escapeHtml(opt.scenery.vibe)}<br>
+                • <strong>代表焦點：</strong>${escapeHtml(opt.scenery.highlights)}<br>
+                • <strong>泉質特徵：</strong>${escapeHtml(opt.scenery.springType)}
+              </p>
+            </div>
+
+            <!-- 名城順路度與契合性 -->
+            <div class="bg-slate-50 p-2 rounded-lg border border-slate-200/80 flex items-center justify-between text-[11px]">
+              <span class="text-slate-600 font-medium">🏯 名城搭配契合度：</span>
+              <span class="font-bold text-slate-800">${escapeHtml(opt.castleFit || '順路良好')}</span>
+            </div>
+
+            <!-- 適合對象 -->
+            <div class="text-[11px] text-slate-500 bg-white p-2 rounded border border-slate-200/60">
+              💡 <strong>推薦給：</strong>${escapeHtml(opt.suitableFor || '')}
+            </div>
+
+          </div>
+
+          <!-- 點選按鈕 -->
+          <div class="pt-2 border-t border-slate-100">
+            <button type="button" class="w-full py-2 px-3 rounded-lg text-xs transition flex items-center justify-center gap-1.5 ${btnClass}">
+              ${isSelected ? '<span>🎉 我投這條路線 (已選取)</span>' : '<span>👉 選擇此方案</span>'}
+            </button>
+          </div>
+
+        </div>
+      `;
+    }
+
+    // ==========================================
+    // 互動控制
+    // ==========================================
+    function selectOption(branchId, optId) {
+      userChoices[branchId] = optId;
+      savePollState();
+      renderQuestions();
+    }
+
+    function resetAllChoices() {
+      if (!confirm("確定要重設所有選項嗎？")) return;
+      userChoices = {};
+      savePollState();
+      renderQuestions();
+      showToast("已清空所有選項，請重新選擇", "🔄");
+    }
+
+    // 更新進度條與下方彙整框
+    function updateProgressBarAndSummary() {
+      const total = allBranches.length;
+      let chosen = 0;
+      allBranches.forEach(b => {
+        if (userChoices[b.id]) chosen++;
+      });
+
+      const badge = document.getElementById("decisionProgressBadge");
+      const bar = document.getElementById("decisionProgressBar");
+      if (badge) badge.innerText = `${chosen} / ${total} 已完成決策`;
+      if (bar) bar.style.width = `${total > 0 ? (chosen / total) * 100 : 0}%`;
+
+      // 產生下方摘要清單
+      const summaryBox = document.getElementById("selectionSummaryBox");
+      if (!summaryBox) return;
+
+      if (chosen === 0) {
+        summaryBox.innerHTML = `<p class="text-slate-400">目前尚未選擇任何路線。請在上方的各題目中點擊「選擇此方案」卡片，此處將自動產生群組專屬行程簡表。</p>`;
+        return;
+      }
+
+      let summaryHtml = `<div class="space-y-2">`;
+      summaryHtml += `<div class="font-bold text-slate-800 text-xs mb-1">👑 旅伴共同票選定案路線：</div>`;
+      
+      allBranches.forEach(branch => {
+        const cId = userChoices[branch.id];
+        if (!cId) {
+          summaryHtml += `<div class="text-slate-400">• 【${escapeHtml(branch.dayLabel)}】尚未決定 (待討論)</div>`;
+        } else {
+          const opt = cId === branch.optA.id ? branch.optA : branch.optB;
+          summaryHtml += `
+            <div class="text-slate-800">
+              • <strong>【${escapeHtml(branch.dayLabel)}】</strong>
+              <span class="text-blue-600 font-bold">${escapeHtml(opt.title)}</span>
+              <span class="text-slate-500">(${escapeHtml(opt.transit.time)} | ${escapeHtml(opt.tag)})</span>
+            </div>
+          `;
+        }
+      });
+
+      summaryHtml += `</div>`;
+      summaryBox.innerHTML = summaryHtml;
+    }
+
+    // ==========================================
+    // 複製與分享功能 (LINE 文字版 / 網址版)
+    // ==========================================
+    function copyLineReport() {
+      let text = `【🇯🇵 日本山陰山陽 100名城巡禮・旅伴路線票選結果】\n`;
+      text += `==============================\n`;
+
+      let hasChosen = false;
+      allBranches.forEach(branch => {
+        const cId = userChoices[branch.id];
+        if (cId) {
+          hasChosen = true;
+          const opt = cId === branch.optA.id ? branch.optA : branch.optB;
+          text += `📅 ${branch.dayLabel}\n`;
+          text += `👉 選擇：${opt.title}\n`;
+          text += `🚄 交通：${opt.transit.time} (${opt.transit.method})\n`;
+          text += `🌄 亮點：${opt.scenery.highlights}\n`;
+          text += `💡 評語：${opt.tag}\n\n`;
+        } else {
+          text += `📅 ${branch.dayLabel}：尚未決定 (待討論)\n\n`;
+        }
+      });
+
+      text += `==============================\n`;
+      text += `🔗 查看/修改路線投票：${window.location.href}\n`;
+
+      navigator.clipboard.writeText(text).then(() => {
+        showToast("已成功複製 LINE 格式清單！可直接貼到群組討論", "📋");
+      }).catch(() => {
+        // Fallback
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+        showToast("已成功複製 LINE 格式清單！", "📋");
+      });
+    }
+
+    function copyShareableUrl() {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        showToast("專屬投票連結已複製！朋友開啟會看到你的選擇", "🔗");
+      }).catch(() => {
+        showToast("請手動複製瀏覽器網址", "⚠️");
+      });
+    }
+
+    // 直接叫出手機 LINE App 分享
+    function openLineShareApp() {
+      let text = generateReportText();
+      const lineUrl = `https://line.me/R/msg/text/?${encodeURIComponent(text)}`;
+      window.open(lineUrl, '_blank');
+    }
+
+    // 產生給朋友的 LINE 投票問卷 (純文字題型)
+    function copySurveyQuestionsForLine() {
+      let text = `【🇯🇵 日本山陰山陽 100名城巡禮・旅伴路線二選一票選】\n`;
+      text += `各位旅伴！請大家幫忙決定一下關鍵天數的景點與住宿路線！\n\n`;
+      text += `📱 線上照片與交通完整評比網址：\n${window.location.href}\n\n`;
+      text += `------------------------------\n`;
+      text += `（也可以直接在群組回覆代碼，例如：1A 2B 3A 4B 5A）\n\n`;
+
+      allBranches.forEach((b, i) => {
+        text += `${i + 1}️⃣ 【${b.dayLabel}】\n`;
+        text += `   (A) ${b.optA.title.split(' ')[0]} - ${b.optA.tag} (${b.optA.transit.time})\n`;
+        text += `   (B) ${b.optB.title.split(' ')[0]} - ${b.optB.tag} (${b.optB.transit.time})\n\n`;
+      });
+
+      text += `------------------------------\n`;
+      text += `大家快來投出你想去的路線吧！🎉`;
+
+      navigator.clipboard.writeText(text).then(() => {
+        showToast("已複製問卷！快貼去 LINE 群組發起投票", "📢");
+      }).catch(() => {
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+        showToast("已複製問卷！快貼去 LINE 群組發起投票", "📢");
+      });
+    }
+
+    // 匯入朋友傳來的網址或選項代碼
+    function loadFriendChoices() {
+      const raw = document.getElementById("friendUrlInput").value.trim();
+      if (!raw) {
+        alert("請輸入或貼上朋友傳給你的投票網址或代碼！");
+        return;
+      }
+      let hash = raw;
+      if (raw.includes('#')) {
+        hash = raw.split('#')[1];
+      }
+      const params = new URLSearchParams(hash);
+      let count = 0;
+      for (const [key, val] of params.entries()) {
+        if (val) {
+          userChoices[key] = val;
+          count++;
+        }
+      }
+      if (count === 0) {
+        alert("在該網址中未解析到任何路線選擇代碼！請確認網址末端是否包含 #d1_onsen=... 等參數。");
+        return;
+      }
+      savePollState();
+      renderQuestions();
+      showToast(`成功載入朋友的 ${count} 項路線選擇！`, "🎉");
+    }
+
+    function generateReportText() {
+      let text = `【🇯🇵 日本山陰山陽 100名城巡禮・旅伴路線票選結果】\n`;
+      text += `==============================\n`;
+
+      let hasChosen = false;
+      allBranches.forEach(branch => {
+        const cId = userChoices[branch.id];
+        if (cId) {
+          hasChosen = true;
+          const opt = cId === branch.optA.id ? branch.optA : branch.optB;
+          text += `📅 ${branch.dayLabel}\n`;
+          text += `👉 選擇：${opt.title}\n`;
+          text += `🚄 交通：${opt.transit.time} (${opt.transit.method})\n`;
+          text += `🌄 亮點：${opt.scenery.highlights}\n`;
+          text += `💡 評語：${opt.tag}\n\n`;
+        } else {
+          text += `📅 ${branch.dayLabel}：尚未決定 (待討論)\n\n`;
+        }
+      });
+
+      text += `==============================\n`;
+      text += `🔗 查看/修改路線投票：${window.location.href}\n`;
+      return text;
+    }
+
+    // ==========================================
+    // 自訂題目管理
+    // ==========================================
+    function openCustomQuestionModal() {
+      document.getElementById("customModal").classList.remove("hidden");
+    }
+
+    function closeCustomQuestionModal() {
+      document.getElementById("customModal").classList.add("hidden");
+    }
+
+    function saveCustomQuestion() {
+      const title = document.getElementById("custQuestionTitle").value.trim();
+      const dayLabel = document.getElementById("custDayLabel").value.trim() || "自訂題";
+      const optATitle = document.getElementById("custOptATitle").value.trim();
+      const optATransit = document.getElementById("custOptATransit").value.trim() || "見行程安排";
+      const optAScenery = document.getElementById("custOptAScenery").value.trim() || "自訂景點特徵";
+      const optBTitle = document.getElementById("custOptBTitle").value.trim();
+      const optBTransit = document.getElementById("custOptBTransit").value.trim() || "見行程安排";
+      const optBScenery = document.getElementById("custOptBScenery").value.trim() || "自訂景點特徵";
+
+      if (!title || !optATitle || !optBTitle) {
+        alert("請至少填寫題目名稱與兩個選項的名稱！");
+        return;
+      }
+
+      const qId = `custom_${Date.now()}`;
+      const newQuestion = {
+        id: qId,
+        isCustom: true,
+        dayLabel: dayLabel,
+        title: title,
+        description: "旅伴自訂二選一評比題目",
+        optA: {
+          id: `${qId}_a`,
+          title: optATitle,
+          subtitle: "旅伴自選方案 A",
+          themeColor: "rose",
+          badgeBg: "bg-rose-100 text-rose-800 border-rose-300",
+          tag: "方案 A",
+          transit: {
+            time: "交通預估",
+            method: optATransit,
+            frequency: "以時刻表為準",
+            distance: "沿線順路"
+          },
+          scenery: {
+            vibe: "特色體驗",
+            highlights: optAScenery,
+            springType: "自選景致"
+          },
+          castleFit: "自由搭配",
+          suitableFor: "喜愛此方案的旅伴"
+        },
+        optB: {
+          id: `${qId}_b`,
+          title: optBTitle,
+          subtitle: "旅伴自選方案 B",
+          themeColor: "blue",
+          badgeBg: "bg-blue-100 text-blue-800 border-blue-300",
+          tag: "方案 B",
+          transit: {
+            time: "交通預估",
+            method: optBTransit,
+            frequency: "以時刻表為準",
+            distance: "沿線順路"
+          },
+          scenery: {
+            vibe: "特色體驗",
+            highlights: optBScenery,
+            springType: "自選景致"
+          },
+          castleFit: "自由搭配",
+          suitableFor: "喜愛此方案的旅伴"
+        }
+      };
+
+      const savedCustom = localStorage.getItem("jp_custom_poll_questions");
+      let customList = savedCustom ? JSON.parse(savedCustom) : [];
+      customList.push(newQuestion);
+      localStorage.setItem("jp_custom_poll_questions", JSON.stringify(customList));
+
+      // 清空表單
+      document.getElementById("custQuestionTitle").value = "";
+      document.getElementById("custOptATitle").value = "";
+      document.getElementById("custOptATransit").value = "";
+      document.getElementById("custOptAScenery").value = "";
+      document.getElementById("custOptBTitle").value = "";
+      document.getElementById("custOptBTransit").value = "";
+      document.getElementById("custOptBScenery").value = "";
+
+      closeCustomQuestionModal();
+      initPollApp();
+      showToast("成功新增自訂二選一題目！", "🎉");
+    }
+
+    function deleteCustomQuestion(qId) {
+      if (!confirm("確定要刪除這道自訂題目嗎？")) return;
+      const savedCustom = localStorage.getItem("jp_custom_poll_questions");
+      if (savedCustom) {
+        let customList = JSON.parse(savedCustom);
+        customList = customList.filter(q => q.id !== qId);
+        localStorage.setItem("jp_custom_poll_questions", JSON.stringify(customList));
+      }
+      delete userChoices[qId];
+      savePollState();
+      initPollApp();
+      showToast("已刪除該自訂題目", "🗑️");
+    }
+
+    // ==========================================
+    // 輔助函式
+    // ==========================================
+    function escapeHtml(str) {
+      if (!str) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function showToast(msg, icon = "✅") {
+      const toast = document.getElementById("toast");
+      const toastMsg = document.getElementById("toastMsg");
+      const toastIcon = document.getElementById("toastIcon");
+      if (!toast) return;
+
+      toastMsg.innerText = msg;
+      toastIcon.innerText = icon;
+      toast.classList.remove("opacity-0", "pointer-events-none");
+      toast.classList.add("opacity-100");
+
+      setTimeout(() => {
+        toast.classList.remove("opacity-100");
+        toast.classList.add("opacity-0", "pointer-events-none");
+      }, 2500);
+    }
+
+    // 啟動
+    window.addEventListener("DOMContentLoaded", initPollApp);
+  </script>
+</body>
+</html>
